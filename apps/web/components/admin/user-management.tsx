@@ -108,7 +108,7 @@ export function UserManagement() {
         id: "status",
         header: () => t("columns.status"),
         cell: ({ row: { original: u } }) => (
-          <span className={cn("inline-flex h-5 items-center border px-1.5 text-xs", STATUS_STYLE[u.status])}>
+          <span className={cn("inline-flex min-h-5 items-center border px-1.5 text-xs", STATUS_STYLE[u.status])}>
             {t(`statuses.${u.status}`)}
           </span>
         ),

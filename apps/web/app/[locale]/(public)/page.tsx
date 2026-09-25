@@ -44,14 +44,14 @@ function ReportSlide({
     <div className="press-surface relative flex h-full flex-col justify-center gap-1 px-4 py-2.5 transition-colors [--surface-scale:1] hover:bg-muted/50 xl:flex-row xl:items-center xl:gap-3">
       <Link
         href={`/fact-checks/${report.id}`}
-        className="line-clamp-1 text-sm font-medium after:absolute after:inset-0 hover:text-primary xl:min-w-0 xl:flex-1"
+        className="line-clamp-1 text-sm font-medium break-words after:absolute after:inset-0 hover:text-primary xl:min-w-0 xl:flex-1"
       >
         {report.title}
       </Link>
-      <div className="flex items-center gap-2 text-xs text-muted-foreground xl:shrink-0">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground xl:max-w-[55%] xl:shrink-0">
         <span className="shrink-0 font-semibold text-foreground">{tag}</span>
         <VerdictBadge verdict={report.verdict} size="sm" />
-        <span className="truncate">
+        <span className="min-w-0 flex-1 basis-0 truncate">
           {report.category} ·{" "}
           <time dateTime={report.checkedAt}>
             {formatDate(report.checkedAt)}
@@ -252,11 +252,11 @@ async function HomeHero() {
               >
                 <Link
                   href={`/fact-checks/${report.id}`}
-                  className="line-clamp-1 text-sm font-medium after:absolute after:inset-0 hover:text-primary xl:min-w-0 xl:flex-1"
+                  className="line-clamp-1 text-sm font-medium break-words after:absolute after:inset-0 hover:text-primary xl:min-w-0 xl:flex-1"
                 >
                   {report.title}
                 </Link>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground xl:shrink-0">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground xl:max-w-[55%] xl:shrink-0">
                   <span className="inline-flex shrink-0 items-center gap-1 font-semibold text-foreground">
                     <RiTrophyLine
                       className="size-3.5 text-primary"

@@ -105,7 +105,7 @@ export function BottomNav() {
           {left.map((tab) => (
             <TabLink key={tab.href} {...tab} />
           ))}
-          <li className="flex">
+          <li className="flex min-w-0 *:min-w-0">
             <Link
               href="/verify"
               aria-current={verifyActive ? "page" : undefined}
@@ -129,7 +129,7 @@ export function BottomNav() {
           {right.map((tab) => (
             <TabLink key={tab.href} {...tab} />
           ))}
-          <li className="flex">
+          <li className="flex min-w-0 *:min-w-0">
             <button
               type="button"
               onClick={() => setSheetOpen(true)}
@@ -178,7 +178,7 @@ const tabClass = cn(
 function TabLink({ href, label, icon, activeIcon, active }: Tab) {
   const Icon = active ? activeIcon : icon
   return (
-    <li className="flex">
+    <li className="flex min-w-0 *:min-w-0">
       <Link
         href={href}
         aria-current={active ? "page" : undefined}

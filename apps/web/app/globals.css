@@ -186,9 +186,20 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* A word too long for its box (common in Luganda, Runyankole and Ateso: 20+ letters)
+       breaks onto the next line instead of running out of the box. Words that fit are
+       unaffected. */
+    overflow-wrap: break-word;
   }
   html {
     @apply font-serif;
+  }
+  /* A grid with no column template (the phone layout of `grid lg:grid-cols-[…]`) gets one
+     implicit column sized to its widest unbreakable content, so a long label or a nowrap
+     table could make the whole page wider than the screen. This column fills the container
+     the same way but may shrink to it. Any grid-cols-* utility still overrides it. */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 /* Accessibility (WCAG 2.1 AA) -------------------------------------------------------------
