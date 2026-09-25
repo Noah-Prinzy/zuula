@@ -23,8 +23,9 @@ const T = { literal: 0, argument: 1, number: 2, date: 3, time: 4, select: 5, plu
 
 // Tags whose content is code, an address or only an argument: kept verbatim.
 const VERBATIM_TAGS = new Set(["code", "email", "q", "time"])
-// Keys deliberately left in English (brand name; language names shown in the picker).
-const SKIP = [/^Common\.appName$/, /^Languages\./]
+// Keys deliberately left in English because they're the same in every language: the brand
+// name, and the search keyboard shortcut (the model "translated" Ctrl K into a question).
+const SKIP = [/^Common\.appName$/, /^Search\.shortcut$/]
 const PROTECT = new RegExp(
   [
     String.raw`https?://\S+`,
