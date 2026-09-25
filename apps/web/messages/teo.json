@@ -163,6 +163,14 @@
       "unreadDot": "Mam esiomitai"
     },
     "profile": {
+      "fullName": "Ekiror loepol",
+      "password": {
+        "new": "Akirot naitetet naka aiyeyea",
+        "confirm": "Itigogongoi password loitetet"
+      },
+      "tfa": {
+        "label": "Aitogogongoret na iboro iarei"
+      },
       "securityTitle": "Ayuarite"
     }
   },
@@ -214,14 +222,134 @@
       "title": "Itunga lu itwasamaete"
     }
   },
+  "Community": {
+    "panel": {
+      "signIn": "Kobu toma"
+    }
+  },
   "Auth": {
+    "layout": {
+      "headline": "Opala aisiarakin akiro numam ebeit.",
+      "point1": "Koanyanaa imesejis, ikorion, aputosia, akiro nuka eporoto keda ebidio",
+      "point2": "Kosesen aiboisio nu ejaas kau naka atubokinio",
+      "point3": "Itogogongoi atubokineta kosodi aingarakin aituutoonor Zuula",
+      "point4": "Odum aicoreta nuikamunitos akiro nuka aisab nuikamunitos akiro nuetupit jo",
+      "headlineHighlight": "isipikakini.",
+      "developedBy": "Eswamaunitai ko Centre for Intelligent Technologies, Victoria University Kampala."
+    },
     "meta": {
       "signIn": "Alomar",
-      "signUp": "Kowadikaun"
+      "signUp": "Kowadikaun",
+      "verify": "Aitogogong akaunt",
+      "twoFactor": "Iboro iarei",
+      "forgot": "Imurokit Password",
+      "reset": "Aitemokin bobo Password"
+    },
+    "fields": {
+      "identifier": "E-mail arai esimu",
+      "identifierPlaceholder": "you@example.com arai 07XX XXX XXX",
+      "newPassword": "Akirot naitetet naka aiyeyea",
+      "confirmPassword": "Kitogogong password",
+      "confirmNewPassword": "Itigogongoi password loitetet",
+      "fullName": "Ekiror loepol"
+    },
+    "password": {
+      "show": "Kitodu password",
+      "hide": "Kanuwun password",
+      "notMet": "(mam itodolikinitai)",
+      "rules": {
+        "length": "Kanu at least {min} characters",
+        "case": "Ibaluan luapolok keda ludidik",
+        "number": "Enaba loka",
+        "symbol": "Aanyunet"
+      },
+      "strength": {
+        "0": "Etiono noi",
+        "1": "Loedit",
+        "2": "Ejokuna",
+        "3": "Ejokuna",
+        "4": "Egogong"
+      }
+    },
+    "demo": {
+      "roles": "Demo: epedori password kere aswam. Kogeu akiro nuka adrees keda <code>journalist@</code>, <code>expert@</code> arai <code>admin@</code> kanu aitam iponesio ice.",
+      "code": "Demo: edio 6 idigitin iswamaete, kilema 000000."
+    },
+    "social": {
+      "divider": "arai bo ainyikokin keda",
+      "notConnected": "Mam erucitai {provider} sign-in eringa",
+      "notConnectedBody": "Ebeit aswam arai ejaasi aanyunet naka API toma aswam.",
+      "dividerEmail": "Arai bo itwasam email kon arai esimu kon"
+    },
+    "resend": {
+      "prompt": "Mam abu kodum ngun?",
+      "wait": "Ibwaik bobo kotoma {seconds}s",
+      "action": "Abongokin ekode",
+      "sent": "Eijukunitai ekode loitetet",
+      "sentTo": "Aijukar mama ejai {destination}"
+    },
+    "signIn": {
+      "title": "Kobu toma",
+      "description": "Isukunyunitai bobo. Kocakak akan kanu aipima atubokineta, aanyanar aanyanareta kon kosodi adumun aikwenyar.",
+      "forgot": "Imurokinit jo apedor?",
+      "remember": "Koinak eong asalakinit alomar toma acuma na",
+      "submit": "Kobu toma",
+      "submitting": "Aiwadikaun…",
+      "newHere": "Erai loitetet mama ejai Zuula?",
+      "toastTitle": "Etapit eong aigir",
+      "toastBody": "Ijalakini sio abongun. Ijaasi jo keda ekiror kwape {role}."
+    },
+    "signUp": {
+      "title": "Kitolomu akaunt kon",
+      "description": "Erai lo atitai kanuka itunga kere. Itupakinit akiro, atupakinit akiro ka aanyanar aingicokon.",
+      "identifierHint": "Ibusakinit sio aijukar ekode kanu aitigogong ngun.",
+      "consent": "Ecamunit eong <terms>Atutubena nuka aswam</terms> keda <privacy>Aicoreta nuka Aiyeyea</privacy>, keda Zuula aitemonokin akiroka kotupitete Data Protection and Privacy Act, 2019.",
+      "submit": "Aitolomun akaunt",
+      "submitting": "Aitolomun akaunt…",
+      "haveAccount": "Ijaasi kereka jo keda akaunt?",
+      "signIn": "Kobu toma"
     },
     "verify": {
+      "title": "Kitogogong akaunt kon",
+      "sentTo": "{channel, select, sms {Apotu sio ijukasi enamba loka idigitin 6 kitosomaete SMS mama ejai <strong>{destination}</strong>.} other {Apotu sio ijukasi enamba loka idigitin 6 kitosomaete email mama ejai <strong>{destination}</strong>.}}",
+      "codeLabel": "Ekodet loka aitogogongio",
       "submit": "Kitogogong",
-      "goBack": "Abongun bobo"
+      "submitting": "Aitogogong…",
+      "wrongAddress": "Akiro nu mam edolitos?",
+      "goBack": "Abongun bobo",
+      "nothingTitle": "Emamei ibore yen itigogongoritai",
+      "nothingBody": "Apak kon naka aiwadikaun adaun arai bo egeunitai keda acuma ace.",
+      "startSignUp": "Ageun aiwadikaun",
+      "welcome": "Isukunyunitai toma Zuula!",
+      "welcomeName": "Isukunyunitai toma Zuula, {name}!",
+      "ready": "Ekapakina akaunt kon."
+    },
+    "twoFactor": {
+      "title": "Aitogogongoret na iboro iarei",
+      "descriptionApp": "Kobu kode loka idigitin 6 kotoma app kon loka authenticator.",
+      "descriptionBackup": "Kobu ediopet kotoma ikodin luka aingarakinio luimono ijo neitemonokina ijo iboro iarei.",
+      "sentTo": "Kobu akiro nuka 6-digit nuikamunitos alomar nu ijukunit sio nejaas <strong>{destination}</strong>.",
+      "cantReceive": "Mam apedori aijaun ekode?",
+      "codeLabel": "Ekode loka aanyunet",
+      "backupLabel": "Ekode loka aingarakinio",
+      "backupHint": "Isiomi kangin ekoodi loka aingarakinio irwan idiope.",
+      "trust": "Amunokina acuma na kanu apaarasia 30",
+      "submit": "Kinyikok",
+      "submitting": "Aanyanar...",
+      "useBackup": "Itwasam ekode lo ibwaikitai aiboisit",
+      "useApp": "Itwasam app kon loka authenticator",
+      "lostAccess": "Apotu itolomasi aingarakinio?",
+      "contactAdmin": "Korucokinos keda eyaiton",
+      "wrongCode": "Mam erai kode ngol lo abeit. Ijulakinete ikodin kangolis 30 atikatikan.",
+      "wrongBackup": "Mam ekode ngol loka aingarakinio ejokuna.",
+      "signInFirstTitle": "Kogeu alomar ber",
+      "signInFirstBody": "Aitogogongoret naka iboro iarei etupakinit epaswadi kon.",
+      "goToSignIn": "Kolot aanyun ebe ilogai jo",
+      "toastTitle": "Etapit eong aigir",
+      "trusted": "{role} · emunoi ebe iswamai eswamae lo adaun apaarasia 30"
+    },
+    "forgot": {
+      "title": "Imurokinit jo epaswadi kon?"
     }
   },
   "Developers": {
@@ -237,8 +365,43 @@
     }
   },
   "Home": {
+    "headline": {
+      "line1Before": "Koany a",
+      "line1Words": {
+        "0": "Akirot arai aitetem",
+        "1": "Akiro nu mam itigogongoritai",
+        "2": "Aputo",
+        "3": "Ebidio",
+        "4": "Akiro nu inera"
+      },
+      "line2Before": "erongo jo",
+      "line2After": "erai ngesi",
+      "line2Words": {
+        "0": "aimor",
+        "1": "eyuunit"
+      }
+    },
+    "subtitle": "Ibusakinit jo aipikakin emesej, arai bo aipikakin aiboisit arai bo aipikakin akiro. Zuula itijenikini jo arai erai abeit, mam erai abeit arai bo AI-etolomunitai — ido <scribble>itodunit jo akiro nu elomunitos</scribble>.",
+    "carousel": {
+      "previous": "Nakolo sek",
+      "stop": "Opala aijulakin aputosia",
+      "start": "Kogeu aijulakin isirigin",
+      "slides": "{title}: iswamaete",
+      "slide": "{current} kotoma {total}"
+    },
     "feed": {
-      "link": "Eibikiro loka itabon"
+      "title": "Aanyanario naka akiro",
+      "link": "Eibikiro loka itabon",
+      "tagNew": "Loitetet",
+      "tagDebated": "Aponi kitirianarai"
+    },
+    "community": {
+      "eyebrow": "Atukot naka itunga",
+      "title": "Inyoin bo euta Uganda aanyanar?",
+      "link": "Aingic",
+      "trending": "Iswamaenenei osabiti lo",
+      "rank": "Abu #{rank} kocam atubokinio",
+      "agree": "{ccs}% acamanaros · {total} aipimio"
     }
   },
   "About": {

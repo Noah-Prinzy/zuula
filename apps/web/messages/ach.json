@@ -160,6 +160,14 @@
       "unreadDot": "Pe kikwano"
     },
     "profile": {
+      "fullName": "Nyinge ducu",
+      "password": {
+        "new": "Mii manyen me donyo",
+        "confirm": "Nen ni miiyo password manyen"
+      },
+      "tfa": {
+        "label": "Ngiyo jami aryo"
+      },
       "securityTitle": "Gwoko kuc"
     }
   },
@@ -214,14 +222,135 @@
       "title": "Jo matiyo kwede"
     }
   },
+  "Community": {
+    "panel": {
+      "signIn": "Dony iye"
+    }
+  },
   "Auth": {
+    "layout": {
+      "headline": "Juk lok goba ma pud peya onya.",
+      "point1": "Rot kwena, kubbe, cal, dwan ma kimako ki vidio",
+      "point2": "Nen lok ma tye i nge ngolo kop acel-acel",
+      "point3": "Pim tam ma ki ngolo ki kony me pwonyo Zuula",
+      "point4": "Nong ngec manyen i kom lok goba i kom lok ma ilubu",
+      "headlineHighlight": "nyaa woko.",
+      "developedBy": "Ma Centre for Intelligent Technologies, Victoria University Kampala aye oyubu."
+    },
     "meta": {
       "signIn": "Dony Iye",
-      "signUp": "Coone Iye"
+      "signUp": "Coone Iye",
+      "verify": "Ngiyo Account",
+      "twoFactor": "Jami aryo ma mako",
+      "forgot": "Wiye owil ki Password",
+      "reset": "Lok mung me donyo"
+    },
+    "fields": {
+      "identifier": "Email onyo cim",
+      "identifierPlaceholder": "you@example.com onyo 07XX XXX XXX",
+      "newPassword": "Mii manyen me donyo",
+      "confirmPassword": "Nen ni mung me donyo tye kakare",
+      "confirmNewPassword": "Nen ni miiyo password manyen",
+      "fullName": "Nyinge ducu"
+    },
+    "password": {
+      "show": "Nyut password",
+      "hide": "Kanne password",
+      "notMet": "(pe ki cobo)",
+      "rules": {
+        "length": "Ma loyo {min} kit ma kicoyo kwede",
+        "case": "Waraga madongo ki matino",
+        "number": "Wel mo",
+        "symbol": "Lanyut"
+      },
+      "strength": {
+        "0": "Goro tutwal",
+        "1": "Goro",
+        "2": "Atir",
+        "3": "Ber",
+        "4": "Teko"
+      }
+    },
+    "demo": {
+      "roles": "Lanyut: password mo keken tiyo. Cak adrec ki <code>journalist@</code>, <code>expert@</code> onyo <code>admin@</code> me temo tic mukene.",
+      "code": "Nyutu: namba 6 mo keken tiyo, mapat ki 000000."
+    },
+    "social": {
+      "divider": "me mede ki",
+      "notConnected": "{provider} keto alama me donyo peya oribbe",
+      "notConnectedBody": "Obi tiyo kace yoo me moko API dong tye ka tic.",
+      "dividerEmail": "nyo ti ki email onyo cim megi"
+    },
+    "resend": {
+      "prompt": "Pe inongo ne?",
+      "wait": "Cwal odoco i {seconds}s",
+      "action": "Cwal code odoco",
+      "sent": "Kodi manyen kicwalo",
+      "sentTo": "Kicwalo bot {destination}"
+    },
+    "signIn": {
+      "title": "Dony iye",
+      "description": "Wajoli me dwogo cen. Ket cingi me miyo rwom me ngolo kop, lubu kor ngiyo ni ki nongo lok manyen.",
+      "forgot": "Wiye owil i kom password?",
+      "remember": "Gwok an ki ceya ma ki keto iye cing i nyonyo man",
+      "submit": "Dony iye",
+      "submitting": "Keto cing…",
+      "newHere": "Itye manyen bot Zuula?",
+      "toastTitle": "Kiketo cing iye",
+      "toastBody": "Wajoli me dwogo cen. Ki keto cingi iye calo {role}."
+    },
+    "signUp": {
+      "title": "Yub akaunt mamegi",
+      "description": "Pi dano weng tye me nono. Pim lok ma ki ngolo, lub lok ki neno jami ma ki ngiyo.",
+      "identifierHint": "Wabicwalo code me moko ne.",
+      "consent": "Ayee <terms>Cik me tic</terms> ki <privacy>Cik me mung</privacy>, ki Zuula me tic i kom ngec ma mega ite cik me Data Protection ki Privacy Act, 2019.",
+      "submit": "Yub akaunt",
+      "submitting": "Yubu akaunt…",
+      "haveAccount": "Itye dong ki account?",
+      "signIn": "Dony iye"
     },
     "verify": {
+      "title": "Ngi wang dul me akaunt mamegi",
+      "sentTo": "{channel, select, sms {Wacwalo 6-digit code kun watiyo ki SMS bot <strong>{destination}</strong>.} other {Wacwalo 6-digit code kun watiyo ki email bot <strong>{destination}</strong>.}}",
+      "codeLabel": "Kod me moko",
       "submit": "Ngiyo",
-      "goBack": "Dok cen"
+      "submitting": "Ngiyo…",
+      "wrongAddress": "Adrec ma pe tye kakare?",
+      "goBack": "Dok cen",
+      "nothingTitle": "Pe tye gin mo me moko",
+      "nothingBody": "Kare me coone ni dong okato woko onyo kicako i kom nyonyo mukene.",
+      "startSignUp": "Cak coone",
+      "welcome": "Wajoli i Zuula!",
+      "welcomeName": "Wajoli i Zuula, {name}!",
+      "ready": "Akaunt mamegi tye atera."
+    },
+    "twoFactor": {
+      "title": "Ngiyo jami aryo",
+      "descriptionApp": "Dony i 6-namba me coc ki i app me authenticator.",
+      "descriptionBackup": "Donyo i namba acel me backup ma igwoko i kare ma iyubu two-factor.",
+      "sentTo": "Dony i 6-digit code me donyo ma wa ocwalo bot <strong>{destination}</strong>.",
+      "cantReceive": "Pe itwero nongo code ne?",
+      "codeLabel": "Kod me moko ada",
+      "backupLabel": "Kod me backup",
+      "backupHint": "Kod acel acel me gwoko tic tiyo kicel keken.",
+      "trust": "Gen jami tic man pi nino 30",
+      "submit": "Mede anyim",
+      "submitting": "Pimo…",
+      "useBackup": "Tii ki code me backup me kakare ne",
+      "useApp": "Tii ki app me authenticator",
+      "lostAccess": "Ki rwenyo yoo me donyo i gin aryo weng?",
+      "contactAdmin": "Kube ki lador tic",
+      "wrongCode": "Code meno pe tye kakare. Code loko i ngee 30 cekon ducu.",
+      "wrongBackup": "Lanyut me backup code meno pe tiyo.",
+      "signInFirstTitle": "Dony iye me acel",
+      "signInFirstBody": "Ngiyo jami aryo me moko ni in aye itye lubu password me donyo.",
+      "goToSignIn": "Cit ka donyo",
+      "toastTitle": "Kiketo cing iye",
+      "trusted": "{role} · jami tic man ki geno ne pi nino 30"
+    },
+    "forgot": {
+      "title": "Wiye owil i kom password ni?",
+      "description": "Dony i email onyo namba cim ma tye i akaunt ni ci wabi cwali namba me loko."
     }
   },
   "Developers": {
@@ -237,8 +366,46 @@
     }
   },
   "Home": {
+    "badge": "Lok Ada me Uganda · Victoria University CIT",
+    "headline": {
+      "line1Before": "Rot a",
+      "line1Words": {
+        "0": "waco",
+        "1": "lok ma kicwalo",
+        "2": "cal",
+        "3": "vidiyo",
+        "4": "lok ma ki mako ki dwan"
+      },
+      "line2Before": "ma pud peya",
+      "line2After": "en",
+      "line2Words": {
+        "0": "nywako",
+        "1": "ye"
+      }
+    },
+    "subtitle": "Paste kwena, gin ma kubu onyo i keto media. Zuula waci ni ka tye ada, goba onyo AI-ma kiyubu — ki <scribble>nyuti in kama oaa iye</scribble>.",
+    "carousel": {
+      "previous": "Mukato angec",
+      "next": "Mabino",
+      "stop": "Juk wiro slide",
+      "start": "Cak yubu slide ma tye ka wot",
+      "slides": "{title}: yabo",
+      "slide": "{current} me {total}"
+    },
     "feed": {
-      "link": "Ot gwoko buk"
+      "eyebrow": "Ma cokcok-ki",
+      "title": "Ngiyo lok ada",
+      "link": "Ot gwoko buk",
+      "tagNew": "Manyen",
+      "tagDebated": "Kinywako tam iye"
+    },
+    "community": {
+      "eyebrow": "Lwak",
+      "title": "Ngo ma Uganda tye ka ngiyo",
+      "link": "Yeny",
+      "trending": "Tye ka time i cabit man",
+      "rank": "#{rank} oyee ki ngolo kop",
+      "agree": "{ccs}% oyee · {total} rwom me miyo tam"
     }
   },
   "About": {

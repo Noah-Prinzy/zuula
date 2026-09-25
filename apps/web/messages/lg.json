@@ -165,7 +165,16 @@
       "unreadDot": "Etasomeddwa"
     },
     "profile": {
-      "securityTitle": "Ebyokwerinda"
+      "fullName": "Erinnya lyonna mu bujjuvu",
+      "password": {
+        "new": "Akasumuluzo akapya",
+        "confirm": "Kakasa akasumuluzo akapya"
+      },
+      "tfa": {
+        "label": "Okukakasa okw'emirundi ebiri"
+      },
+      "securityTitle": "Ebyokwerinda",
+      "passwordLabel": "Akasumuluzo"
     }
   },
   "Review": {
@@ -219,14 +228,137 @@
       "title": "Abakozesa"
     }
   },
+  "Community": {
+    "panel": {
+      "signIn": "Yingira"
+    }
+  },
   "Auth": {
+    "layout": {
+      "headline": "Komya okusaasaanya obubaka obukyamu nga tebunnasaasaana.",
+      "point1": "Kebera obubaka, linki, ebifaananyi, obubaka bw'eddoboozi ne vidiyo",
+      "point2": "Laba ensibuko eri emabega wa buli nsala",
+      "point3": "Lamula ensala era oyambe okutendeka Zuula",
+      "point4": "Funa okulabulwa ku bubaka obukyamu ku nsonga z'ogoberera",
+      "headlineHighlight": "ebisaasaana.",
+      "developedBy": "Ekyakulaakulanyizibwa ekitongole ekya Centre for Intelligent Technologies, Victoria University Kampala."
+    },
     "meta": {
       "signIn": "Yingira mu akawunti",
-      "signUp": "Weerandiisa"
+      "signUp": "Weerandiisa",
+      "verify": "Kakasa akawunta",
+      "twoFactor": "Ebintu bibiri",
+      "forgot": "Yeerabidde Ppaaswadi",
+      "reset": "Kizza obusumuluzo"
+    },
+    "fields": {
+      "identifier": "Email oba essimu",
+      "identifierPlaceholder": "you@example.com oba 07XX XXX XXX",
+      "password": "Akasumuluzo",
+      "newPassword": "Akasumuluzo akapya",
+      "confirmPassword": "Kakasa akasumuluzo",
+      "confirmNewPassword": "Kakasa akasumuluzo akapya",
+      "fullName": "Erinnya lyonna mu bujjuvu"
+    },
+    "password": {
+      "show": "Laga akasumuluzo",
+      "hide": "Kweka password",
+      "met": "(met) kitegeeza ki?",
+      "notMet": "(tetutuukiriziddwa)",
+      "rules": {
+        "length": "Waakiri {min} abakalimagezi",
+        "case": "Enyukuta ennene n'entono",
+        "number": "Omuwendo",
+        "symbol": "Akabonero"
+      },
+      "strength": {
+        "0": "Nafu nnyo",
+        "1": "Nafu",
+        "2": "Kya bwenkanya",
+        "3": "Kirungi",
+        "4": "Ennywevu"
+      }
+    },
+    "demo": {
+      "roles": "Demo: Palwodi yonna ekola. Tandika endagiriro ne <code>journalist@</code>, <code>expert@</code> oba <code>admin@</code> okugezaako enkola endala.",
+      "code": "Demo: digito 6 yonna ekola, okuggyako 000000."
+    },
+    "social": {
+      "divider": "oba okweyongera mu maaso ne",
+      "notConnected": "Akabonero ka {provider} okuyingira tekannaba kuyunga",
+      "notConnectedBody": "Kijja kukola singa okukakasa API kuba nga kutandise okukola.",
+      "dividerEmail": "Oba kozesa email yo oba essimu yo"
+    },
+    "resend": {
+      "prompt": "Tewaakifunye?",
+      "wait": "Senddamu mu {seconds}s",
+      "action": "Ddamu owoleze koodi",
+      "sent": "Koodi empya etumiddwa",
+      "sentTo": "Yaweerezebwa eri {destination}"
+    },
+    "signIn": {
+      "title": "Yingira",
+      "description": "Tukwanirizza okudda. Yingira okupima ensala, okulondoola okukebera kwo n'okufuna obubaka.",
+      "forgot": "Yeerabidde password?",
+      "remember": "Mpa omukisa okusigala nga nnyingidde ku kyuma kino",
+      "submit": "Yingira",
+      "submitting": "Okuteekako omukono…",
+      "newHere": "Okyali mupya ku Zuula?",
+      "toastTitle": "Atadde omukono",
+      "toastBody": "Tukwanirizza okudda. Oyingidde nga {role}."
+    },
+    "signUp": {
+      "title": "Kola akawunti yo",
+      "description": "Buli omu wa ddembe. Weekebejje ensala, goberera emitwe era olondole okukebera kwo.",
+      "identifierHint": "Tujja kusindika kode okukakasa kino.",
+      "consent": "Nzikiriziganya ne <terms>Ebikwata ku buweereza</terms> ne <privacy>Enkola y'Obutereevu</privacy>, era ne Zuula okukola ku bubaka bwange wansi w'etteeka ly'Obukuumi bw'Obubaka n'Obwannamunigina, 2019.",
+      "submit": "Kola akawunta",
+      "submitting": "Okutondawo akawunti…",
+      "haveAccount": "Oba olina akawunti dda?",
+      "signIn": "Yingira"
     },
     "verify": {
+      "title": "Kakasa akawunta yo",
+      "sentTo": "{channel, select, sms {Twasindika ennamba ya diguli 6 okuyita mu SMS okugenda ku <strong>{destination}</strong>.} other {Twasindika ennamba ya digito 6 okuyita mu email eri <strong>{destination}</strong>.}}",
+      "codeLabel": "Koodi ey'okukakasa",
       "submit": "Kakasa",
-      "goBack": "Ddayo emabega"
+      "submitting": "Okukakasa…",
+      "wrongAddress": "Aderesi etuufu?",
+      "goBack": "Ddayo emabega",
+      "nothingTitle": "Tewali kya kukakasa",
+      "nothingBody": "Olutuula lwo olw'okwewandiisa luweddeko oba lwatandikibwa ku kyuma ekirala.",
+      "startSignUp": "Tandika okwewandiisa",
+      "welcome": "Tukwanirizza ku Zuula!",
+      "welcomeName": "Tukwanirizza ku Zuula, {name}!",
+      "ready": "Akawunta yo etuuse."
+    },
+    "twoFactor": {
+      "title": "Okukakasa okw'emirundi ebiri",
+      "descriptionApp": "Yingiza ennamba ya digito 6 okuva mu app yo ey'okukakasa.",
+      "descriptionBackup": "Yingiza ekimu ku nnamba ez'okuddamu ze wateeka ku mabbali ng'otaddeewo enkola ey'emirundi ebiri.",
+      "sentTo": "Yingiza ennamba ya 6-digit ey'akabonero k'okuyingira gye twasindika <strong>{destination}</strong>.",
+      "cantReceive": "Tosobola kufuna kode?",
+      "codeLabel": "Koodi ey'okukakasa",
+      "backupLabel": "Koodi ey'okuddamu",
+      "backupHint": "Buli kode ey'okuddamu ekola omulundi gumu.",
+      "trust": "Weesigenga ekyuma kino okumala ennaku 30",
+      "submit": "Genda mu maaso",
+      "submitting": "Okukebera…",
+      "useBackup": "Kozesa ennamba ey'okukuumirako mu kifo ky'ekyo",
+      "useApp": "Kozesa app yo ey'okukakasa",
+      "lostAccess": "Oweddwa okufuna byombi?",
+      "contactAdmin": "Kwatagana n'omukulembeze",
+      "wrongCode": "Koodi eyo si ntuufu. Koodi zikyuka buli 30 sikonda.",
+      "wrongBackup": "Koodi eyo ey'okuddamu teri ntuufu.",
+      "signInFirstTitle": "Sooka oyingire",
+      "signInFirstBody": "Okukakasa ebintu bibiri kugoberera okuyingira n'obusumuluzo bwo.",
+      "goToSignIn": "Genda okuyingira",
+      "toastTitle": "Atadde omukono",
+      "trusted": "{role} · ekyuma kino kyeesigika okumala ennaku 30"
+    },
+    "forgot": {
+      "title": "Oyerabidde password yo?",
+      "description": "Yingiza email oba ennamba y'essimu ku akawunti yo era tujja kukusindikira ennamba ey'okuddamu."
     }
   },
   "Developers": {
@@ -242,8 +374,44 @@
     }
   },
   "Home": {
+    "headline": {
+      "line1Before": "Kebera a",
+      "line1Words": {
+        "0": "ekyokwemulugunya",
+        "1": "olugambo",
+        "2": "Ekifaananyi",
+        "3": "Vidiyo",
+        "4": "Obubaka obw'eddoboozi"
+      },
+      "line2Before": "Nga tonnakola,",
+      "line2After": "Kyo kye ki? Nnyinza okukuyamba ntya?",
+      "line2Words": {
+        "0": "gabanira",
+        "1": "kkiriza"
+      }
+    },
+    "subtitle": "Koppa obubaka, akalulu oba teekako eby'amawulire. Zuula akulaga oba nga ddala kituufu, si kituufu oba AI-kyakolebwa — ne <scribble>akulaga ensibuko</scribble>.",
+    "carousel": {
+      "previous": "Eddako",
+      "next": "Ekiddako",
+      "stop": "Komya okuzunguza slides",
+      "start": "Tandika okuzunguza siraayidi",
+      "slide": "{current} ku {total}"
+    },
     "feed": {
-      "link": "Ettendekero ly'ebitabo"
+      "eyebrow": "Ebyakagwa",
+      "title": "Okukebera amazima",
+      "link": "Ettendekero ly'ebitabo",
+      "tagNew": "Mupya",
+      "tagDebated": "Okuwakanya"
+    },
+    "community": {
+      "eyebrow": "Abantu b'ekitundu",
+      "title": "Kiki Uganda ky'ekyagenda okukebera?",
+      "link": "Okunoonyereza",
+      "trending": "Ebyali ku mulembe wiiki eno",
+      "rank": "#{rank} yakkiriziganya ku nsala",
+      "agree": "{ccs}% bakkiriza · {total} okupima"
     }
   },
   "About": {
