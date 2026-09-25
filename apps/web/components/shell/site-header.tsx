@@ -41,7 +41,11 @@ export function SiteHeader() {
         {pushed && <MobileBack pathname={pathname} />}
         <Logo className={cn(pushed && "max-md:hidden")} />
 
-        <nav aria-label={t("main")} className="hidden items-center gap-1 md:flex">
+        <nav
+          aria-label={t("main")}
+          // Longer labels (translations) scroll inside the bar rather than widening the page.
+          className="hidden min-w-0 items-stretch gap-1 self-stretch overflow-x-auto [scrollbar-width:none] md:flex"
+        >
           {nav.map((item) => {
             const active = isInSection(pathname, item.href)
             return (
@@ -50,7 +54,7 @@ export function SiteHeader() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "press px-2.5 py-1.5 text-sm text-muted-foreground [--press-tint:transparent] hover:text-foreground",
+                  "press flex shrink-0 items-center px-2.5 text-sm whitespace-nowrap text-muted-foreground [--press-tint:transparent] hover:text-foreground",
                   active && "text-foreground underline decoration-primary decoration-2 underline-offset-[18px]"
                 )}
               >

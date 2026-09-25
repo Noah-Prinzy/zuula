@@ -50,7 +50,7 @@ export function CommunityBadge({
   return (
     <span
       className={cn(
-        "inline-flex h-5 w-fit items-center gap-1 border px-1.5 text-xs font-medium whitespace-nowrap",
+        "inline-flex min-h-5 w-fit max-w-full items-center gap-1 border px-1.5 text-xs font-medium",
         meta.className,
         className
       )}

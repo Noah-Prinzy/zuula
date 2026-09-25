@@ -44,12 +44,13 @@ export function GlobalSearch() {
         onClick={() => show(true)}
         onPointerEnter={() => void loadPalette()}
         onFocus={() => void loadPalette()}
-        // An icon in the phone app bar, a search field from md up.
-        className="justify-start text-muted-foreground max-md:size-11 max-md:justify-center max-md:border-transparent max-md:bg-transparent max-md:dark:border-transparent max-md:dark:bg-transparent max-md:text-foreground max-md:shadow-none max-md:[&_svg:not([class*='size-'])]:size-5 md:w-36 lg:w-56"
+        // An icon on phones and tablets (leaving the tablet header room for the section links,
+        // which run longer in translation), a search field from lg up.
+        className="justify-start text-muted-foreground max-lg:size-11 max-lg:justify-center max-lg:border-transparent max-lg:bg-transparent max-lg:dark:border-transparent max-lg:dark:bg-transparent max-lg:text-foreground max-lg:shadow-none max-lg:[&_svg:not([class*='size-'])]:size-5 lg:w-56"
         aria-label={t("label")}
       >
         <RiSearchLine aria-hidden />
-        <span className="truncate max-md:hidden">{t("button")}</span>
+        <span className="truncate max-lg:hidden">{t("button")}</span>
         <Kbd className="ml-auto hidden lg:inline-flex">{t("shortcut")}</Kbd>
       </Button>
       {wanted && <GlobalSearchPalette open={open} onOpenChange={setOpen} />}

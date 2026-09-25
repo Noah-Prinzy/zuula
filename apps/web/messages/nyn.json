@@ -165,7 +165,16 @@
       "unreadDot": "Ekitakashomiibwe"
     },
     "profile": {
-      "securityTitle": "Eby'okwerinda"
+      "fullName": "Eiziina ryona",
+      "password": {
+        "new": "Akasumuruzo akasya",
+        "confirm": "Hamya akasumuruzo akasya"
+      },
+      "tfa": {
+        "label": "Okukakasa ebintu bibiri"
+      },
+      "securityTitle": "Eby'okwerinda",
+      "passwordLabel": "Akasumuruzo"
     }
   },
   "Review": {
@@ -219,14 +228,135 @@
       "title": "Abakozesa"
     }
   },
+  "Community": {
+    "panel": {
+      "signIn": "Yingira"
+    }
+  },
   "Auth": {
+    "layout": {
+      "headline": "Rekyera okubugabura amakuru agatahikire gatakajanjaara.",
+      "point1": "Kyebera obutumwa, obuhuunga, ebishushani, obutumwa bw'eiraka hamwe n'obutambi",
+      "point2": "Reeba oburugo bw'okusharaho buri kusharaho",
+      "point3": "Okusharamu ebirarugamu n'okuhwera kutendeka Zuula",
+      "point4": "Funa okurabura aha bigambo ebihikire aha mutwe ogu orikukuratira",
+      "headlineHighlight": "nikyeyongyera.",
+      "developedBy": "Ekozirwe ekitongore ekya Centre for Intelligent Technologies, Victoria University Kampala."
+    },
     "meta": {
       "signIn": "Yingira",
-      "signUp": "Handiika"
+      "signUp": "Handiika",
+      "verify": "Kakasa akawunti",
+      "twoFactor": "Ebintu bibiri",
+      "forgot": "Nyeberwe enyuguta z'ekihama",
+      "reset": "Garura busya akasumuruzo"
+    },
+    "fields": {
+      "identifier": "E-mayiro nainga esimu",
+      "identifierPlaceholder": "you@example.com nainga 07XX XXX XXX",
+      "password": "Akasumuruzo",
+      "newPassword": "Akasumuruzo akasya",
+      "confirmPassword": "Hamya akasumuruzo",
+      "confirmNewPassword": "Hamya akasumuruzo akasya",
+      "fullName": "Eiziina ryona"
+    },
+    "password": {
+      "show": "Yoreka akasumuruzo",
+      "hide": "Kushereka akasumuruzo",
+      "notMet": "(takarahikirwe)",
+      "rules": {
+        "length": "Haakiri {min} abantu b'obumanyiso",
+        "case": "Enyuguta empango hamwe n'entono",
+        "number": "Omubare",
+        "symbol": "Akamanyiso"
+      },
+      "strength": {
+        "0": "N'ahwaire amaani",
+        "1": "Gw'amaani makye",
+        "2": "Oburingaaniza",
+        "3": "Kirungi",
+        "4": "Amaani"
+      }
+    },
+    "demo": {
+      "roles": "Demo: Pasiwadi yoona neekora. Tandika endagiriro na <code>journalist@</code>, <code>expert@</code> nainga <code>admin@</code> okugyezaho emirimo endiijo.",
+      "code": "Demo: enamba yoona 6 neekora, okwihaho 000000."
+    },
+    "social": {
+      "divider": "nari ogumizemu na",
+      "notConnected": "Akamanyiso ka {provider} okutaahamu tikakahikaine",
+      "notConnectedBody": "Nikiija kukora obu okuhamya API kuraabe kuriho.",
+      "dividerEmail": "nari okorese e-mayiro yaawe nainga esimu"
+    },
+    "resend": {
+      "prompt": "Torakagitungire?",
+      "wait": "Resend omuri {seconds}s",
+      "action": "Garukamu koodi",
+      "sent": "Koodi ensya esindikirwe",
+      "sentTo": "Yasindikirwa {destination}"
+    },
+    "signIn": {
+      "title": "Yingira",
+      "description": "Mwakiirizibwa kugaruka. Ta omukono kushwijuma ebirugiremu, kurondoora okushwijuma kwawe n'okutunga okurabura.",
+      "forgot": "Nyeberwe akasumuruzo?",
+      "remember": "Mugume mumpandiikire aha kyoma eki",
+      "submit": "Yingira",
+      "submitting": "Okuta omukono…",
+      "newHere": "Ori omusya ahari Zuula?",
+      "toastTitle": "Kikateebwaho omukono",
+      "toastBody": "Mukakiirwa kugaruka. Ohandiikirwe nka {role}."
+    },
+    "signUp": {
+      "title": "Kora akawunti yaawe",
+      "description": "Tihariho sente aha buri omwe. Pima ebyarugamu, kuratiira enshonga n'okukuratira okukyebera kwawe.",
+      "identifierHint": "Nitwija kwohereza kode kugumya ekyo.",
+      "consent": "Ninyikirizana na <terms>Ebiragiro by'obuheereza</terms> na <privacy>Ekiragiro ky'obusherekye</privacy>, kandi na Zuula okukora aha data yangye ahansi y'ekiragiro ky'okurinda ebihandiiko hamwe n'enshonga z'ekihama, 2019.",
+      "submit": "Kora akawunti",
+      "submitting": "Okukora akaunti…",
+      "haveAccount": "Oine akawunti?",
+      "signIn": "Yingira"
     },
     "verify": {
+      "title": "Kakasa akawunti yaawe",
+      "sentTo": "{channel, select, sms {Tukasindika kode ya digito 6 kurabira omuri SMS kuza ahari <strong>{destination}</strong>.} other {Tukasindika kode ya digito 6 kurabira omu email ahari <strong>{destination}</strong>.}}",
+      "codeLabel": "Koodi y'okukakasamu",
       "submit": "Kikakasibwa",
-      "goBack": "Garuka enyima"
+      "submitting": "Okukakasa…",
+      "wrongAddress": "Endagiriro etahikire?",
+      "goBack": "Garuka enyima",
+      "nothingTitle": "Tihariho ky'okuhamya",
+      "nothingBody": "Obwire bw'okwihandiikisa bwahwaireho nari butandikiire aha kyoma ekindi.",
+      "startSignUp": "Tandika okwehandiikisa",
+      "welcome": "Mwakiirwa omuri Zuula!",
+      "welcomeName": "Mwakiirwa omuri Zuula, {name}!",
+      "ready": "Akaunti yaawe eyeteekateekire."
+    },
+    "twoFactor": {
+      "title": "Okukakasa ebintu bibiri",
+      "descriptionApp": "Taahamu enamba ya digito 6 kuruga omu puroguraamu yaawe.",
+      "descriptionBackup": "Taahamu emwe aha koodi z'okugarukamu ezi waabiikire waaba nootaho obubonero bubiri.",
+      "sentTo": "Taahamu kode y'okutaahamu eya digito 6 ei twasindikire <strong>{destination}</strong>.",
+      "cantReceive": "Torikubaasa kutunga kode?",
+      "codeLabel": "Koodi y'okworeka obuhame",
+      "backupLabel": "Koodi ya backup",
+      "backupHint": "Buri kode y'okugarukamu neekora omurundi gumwe.",
+      "trust": "Yesiga ekyoma eki kumara ebiro 30",
+      "submit": "Gumizamu",
+      "submitting": "Okukyebera…",
+      "useBackup": "Kozesa kode ya back up omu mwanya gw'ekyo",
+      "useApp": "Kozesa app yaawe eya authenticator",
+      "lostAccess": "Okafeerwa okuhikwaho byombi?",
+      "contactAdmin": "Gambira omwebembezi",
+      "wrongCode": "Koodi egyo teri ntuufu. Koodi nizihinduka buri 30 sekonda.",
+      "wrongBackup": "Koodi egyo ey'okugarukamu teri nungi.",
+      "signInFirstTitle": "Yamba omu kubanza",
+      "signInFirstBody": "Okukakasa emiringo ebiri nikukuratira akasumuruzo kaawe.",
+      "goToSignIn": "Gyenda okuta omukono",
+      "toastTitle": "Kikateebwaho omukono",
+      "trusted": "{role} · ekyoma eki nikyesigwa kumara ebiro 30"
+    },
+    "forgot": {
+      "title": "Oyebirwe enamba yaawe ey'ekihama?"
     }
   },
   "Developers": {
@@ -242,8 +372,46 @@
     }
   },
   "Home": {
+    "badge": "Ekitongore kya Uganda Fact-Guard · Victoria University CIT",
+    "headline": {
+      "line1Before": "Kyebera a",
+      "line1Words": {
+        "0": "eky'okushaba",
+        "1": "orugambo",
+        "2": "ekishushani",
+        "3": "Vidiyo",
+        "4": "akabokisi k'eiraka"
+      },
+      "line2Before": "otakakozire",
+      "line2After": "ni",
+      "line2Words": {
+        "0": "okugabana",
+        "1": "kwikiriza"
+      }
+    },
+    "subtitle": "Kwata obutumwa, akakwate nainga oteho eby'amakuru. Zuula neekugambira yaaba n'obwesigwa, n'ekishuba nainga AI-ekikozirwe — kandi <scribble>nikyoreka oburugo</scribble>.",
+    "carousel": {
+      "previous": "Ebyabaireho enyima",
+      "next": "Erikurataho",
+      "stop": "Reka okwetooroora zaasireedi",
+      "start": "Tandika okuhindura zaasireedi",
+      "slides": "{title}: nizisheerura",
+      "slide": "{current} ahari {total}"
+    },
     "feed": {
-      "link": "Eibikiro ry'ebitabo"
+      "eyebrow": "Ebyahererukireyo",
+      "title": "Okukyebera amazima",
+      "link": "Eibikiro ry'ebitabo",
+      "tagNew": "Eshyaaka",
+      "tagDebated": "Okuhanuura"
+    },
+    "community": {
+      "eyebrow": "Abantu b'omukyanga",
+      "title": "Eki Uganda eriyo nekyebera",
+      "link": "Okucondooza",
+      "trending": "Eriyo neetambura esande egi",
+      "rank": "#{rank} akaikirizana n'encwamu",
+      "agree": "{ccs}% nibaikirizana · {total} okuteebereza"
     }
   },
   "About": {

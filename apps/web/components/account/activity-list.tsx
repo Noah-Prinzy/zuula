@@ -83,7 +83,7 @@ function Submissions() {
                 <time dateTime={s.submittedAt}>{relativeTime(s.submittedAt)}</time>
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <StatusCell s={s} />
               {s.reportId ? (
                 <Button variant="outline" size="sm" asChild>

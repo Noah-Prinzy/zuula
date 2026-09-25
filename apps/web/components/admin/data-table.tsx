@@ -204,7 +204,7 @@ export function TableCards<TFeatures extends TableFeatures, TData extends RowDat
                 </dl>
               )}
               {actions.length > 0 && (
-                <div className="-mx-3 -mb-3 flex items-center justify-end gap-2 border-t px-3 py-2">
+                <div className="-mx-3 -mb-3 flex flex-wrap items-center justify-end gap-2 border-t px-3 py-2">
                   {actions.map((cell) => (
                     <React.Fragment key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</React.Fragment>
                   ))}

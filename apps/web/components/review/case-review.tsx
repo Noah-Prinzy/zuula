@@ -66,9 +66,9 @@ function CommunitySignals({ report }: { report: FactCheckReport }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t("rater")}</TableHead>
-            <TableHead className="text-right">{t("accurate")}</TableHead>
-            <TableHead className="text-right">{t("inaccurate")}</TableHead>
+            <TableHead className="whitespace-normal">{t("rater")}</TableHead>
+            <TableHead className="text-right whitespace-normal">{t("accurate")}</TableHead>
+            <TableHead className="text-right whitespace-normal">{t("inaccurate")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

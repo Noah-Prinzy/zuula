@@ -43,12 +43,38 @@ Tests against the live API showed the model translates named placeholders (`{nam
 exactly English's placeholders, tags and plural/select options. It also formats each one through
 next-intl's `createTranslator`, for every select value and several plural counts.
 
+## Checking the layout in every language
+
+Translations run longer than English (about 1.1–1.3x on average, up to 2x, with single words of
+20+ letters), which can push text out of buttons, badges, tabs and rows. `check-overflow.mjs`
+loads every page of a running build in each language at 360, 768 and 1280px. It reports:
+horizontal page scroll, text wider or taller than its box, text pushed off-screen, and text cut off
+by a clipping parent. It sorts each issue into one of two groups: it also happens in English
+(pre-existing), or only in a translation. It exits 1 on any translation-only issue.
+
+`pseudo-locale.mjs` fills every message with lengthened English (each word doubled, placeholders
+intact), so pages that aren't translated yet can be checked too. Build it in place of one
+locale, scan, then put the real file back.
+
+```bash
+# Playwright is not an apps/web dependency: install it anywhere and point NODE_PATH at it.
+npm i --prefix /tmp/pw playwright
+cd ../../apps/web && npm run build && npx next start -p 3000 &
+NODE_PATH=/tmp/pw/node_modules node check-overflow.mjs                  # all pages, all languages
+NODE_PATH=/tmp/pw/node_modules node check-overflow.mjs --locales=lg --routes=/,/verify
+
+# Worst case for pages not translated yet: build with the pseudo-locale standing in for teo.
+cp ../../apps/web/messages/teo.json /tmp/teo.json && node pseudo-locale.mjs > ../../apps/web/messages/teo.json
+(cd ../../apps/web && npm run build) && cp /tmp/teo.json ../../apps/web/messages/teo.json
+```
+
 ## Files
 
 - `cache.jsonl`: every raw reply from Sunbird. Commit it: it's what lets a later run resume
   without paying for the same calls again. Losing it means rebuilding from scratch, which would
   empty the locale files.
 - `report.json` (ignored): per-section coverage and the reason each key was left out.
+- `overflow-report.json` (ignored): every layout issue from the last `check-overflow.mjs` run.
 
 ## Sunbird API notes (checked live, 2026-09-24)
 
