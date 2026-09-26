@@ -134,6 +134,16 @@
   "RoleGate": {
     "title": "Kiketo kigeng i kom yoo me donyo"
   },
+  "Validation": {
+    "identifierRequired": "Ket email onyo namba cim mamegi.",
+    "identifierInvalid": "Ket email matye atir onyo namba cim me Uganda (07XX XXX XXX).",
+    "passwordRequired": "Dony i password mamegi.",
+    "passwordMin": "Ti ki kit ma romo {min} ki nyig coc.",
+    "passwordWeak": "Wek obed matek: rib waraga, namba ki lanyut.",
+    "passwordsMismatch": "Password pe rwate.",
+    "nameRequired": "Dony i nyingi ma weng.",
+    "consentRequired": "Omyero i ye cik ki lok ma mako mung."
+  },
   "Verdicts": {
     "summary": {
       "language": "Leb"
@@ -151,15 +161,171 @@
     "backToLibrary": "Ot gwoko buk",
     "sources": "Kama oaa ki iye"
   },
+  "Status": {
+    "metaTitle": "Rwom {id}",
+    "title": "Rwom",
+    "descriptionValid": "Lub yoo me ngiyo kit ma woto kwede.",
+    "descriptionInvalid": "Nong kit ma kiketo kwede ID.",
+    "notFoundTitle": "Pe watwero nongo ID me lubu kor",
+    "notFoundBody": "Rot ID ki item doki. Tracking IDs nen calo ZL-7K3P-Q9.",
+    "copyLink": "Kob link",
+    "idCopied": "Lubu ID kicwalo woko",
+    "copyFailed": "Pe onongo twero kopi. Yer ki kopi ne ki cingi.",
+    "saveIdHint": "Gwok ID man wek idwog cen i adwogi tic ma aa ki i nyonyo mo keken.",
+    "readyTitle": "Ripot mamegi dong tye atera",
+    "openingIn": "{count, plural, one {Yabo ne i # cekon…} other {Yabo ne i # cekon…}}",
+    "readyBody": "Nen lok ma ki ngolo, caden ki ngo ma lwak tamo.",
+    "viewReport": "Nen adwogi tic",
+    "stay": "Bed i pot buk man",
+    "errorTitle": "Pe watwero tyeko ngiyo man",
+    "errorBody": "Link ne onongo pe kitwero yabo ne. Twero bedo ni obedo pa ngat acel, kikwanyo onyo tye ka gengo yoo me donyo ma kiyubu pire kene. Tem doki, onyo ket coc me pwony ne me kakare.",
+    "tryAgain": "Tem doki",
+    "pasteInstead": "Ket coc ne me kakare",
+    "fetchError": "Pe onongo twero yabo link.",
+    "elapsed": "{seconds}s okato woko · pol kare tero {expected}",
+    "expected": {
+      "text": "ma romo 10 cekon",
+      "media": "naka wa i dakika acel"
+    },
+    "progressTitle": "Ngiyo kit ma tic tye ka wot kwede",
+    "submittedTitle": "Ngo ma i cwalo",
+    "submittedMeta": "{type} · {language} · ma kicwalo {time}",
+    "types": {
+      "article": "Gajeti"
+    },
+    "notifySignedIn": "Wabi niango in ka adwogi tic ne tye atera, kadi bed ni iweko pot buk man.",
+    "notifyGuest": "Gwok pot buk man ayaba onyo gwok kit ma itye ka lubu kwede ID. <link>Yub akaunt</link> me nongo ngec me kakare.",
+    "progress": {
+      "complete": "Ngiyo ne dong otum",
+      "stopped": "Ngiyo lok ogik woko",
+      "srComplete": "Ngiyo ne dong otum.",
+      "srError": "Bal: {error}",
+      "status": {
+        "done": "tyeko",
+        "active": "tye katimme",
+        "error": "pe olare",
+        "pending": "kuru"
+      }
+    },
+    "steps": {
+      "received": {
+        "label": "Kinongo",
+        "detail": "Cwalo ni tye i lain."
+      },
+      "scan": {
+        "label": "Kwedo pwail",
+        "detail": "Ngiyo kit file ki ngiyo pi malware."
+      },
+      "fetch": {
+        "label": "Nongo pwony ne",
+        "detail": "Tye ka gamo pot buk ki kwanyo coc ne."
+      },
+      "transcribe": {
+        "label": "Cooyo lok",
+        "detail": "Loko lok me dwon me doko coc."
+      },
+      "media": {
+        "label": "Ngiyo lok ma i odi poko ngec",
+        "detail": "Ngiyo pi deepfake, aloka-loka ki balo metadata."
+      },
+      "language": {
+        "label": "Nongo leb",
+        "detail": "Ngeyo leb ki kit ma kiloko kwede ki leb mukene."
+      },
+      "claims": {
+        "label": "Nongo lok ma ki waco",
+        "detail": "Kwanyo lok ma kitwero ngiyo ne."
+      },
+      "sources": {
+        "label": "Ngiyo kama oaa iye",
+        "detail": "Ngiyo lok ki i kabedo ma genne me lobo Uganda ki lobo ma woko."
+      },
+      "ai": {
+        "label": "AI- nongo jami ma tye iye",
+        "detail": "Itye kayenyo lanyut ni jami ne kiyubu ki macin."
+      },
+      "report": {
+        "label": "Cooyo adwogi tic",
+        "detail": "Yubbe pi ngolo kop, tito lok ki lok ma ki nwoyo."
+      }
+    },
+    "lookup": {
+      "hint": "Inongo man ID ikare ma i cwalo.",
+      "invalid": "Tracking IDs nen calo ZL-7K3P-Q9."
+    }
+  },
   "Verify": {
     "metaTitle": "Ngiyo",
-    "title": "Ngiyo"
+    "metaDescription": "Rot kwena, kakube, cal, dwan onyo vidio pi ngec ma pe atir.",
+    "title": "Ngiyo",
+    "description": "Rot kwena, gin ma kubu, cal, dwan onyo vidio ma pud pe ipoko ne.",
+    "photoCaption": "Iwinyo ne i WhatsApp? Rot ne kany.",
+    "howTitle": "Kit ma tiyo kwede",
+    "steps": {
+      "submit": {
+        "title": "Cwal",
+        "body": "Paste coc, nywak ki link onyo i yubu media. Inongo ID me lubu kor."
+      },
+      "analyse": {
+        "title": "Watimo ngiyo lok",
+        "body": "Lok ma ki waco ki ngiyo ne ki i kom kama gene ki AI-detection models. Coc tero cekon 10, media oo i dakika acel."
+      },
+      "read": {
+        "title": "Kwan adwogi tic",
+        "body": "Nen lok ma ki ngolo, caden, ki ngo ma lwak tamo."
+      }
+    },
+    "whatTitle": "Gin ango ma itwero cwalo",
+    "types": {
+      "text": {
+        "body": "WhatsApp anyim, coc me kin dano, lok ma ki nwoyo"
+      },
+      "link": {
+        "body": "Lok angea ki pot buk me intanet"
+      },
+      "media": {
+        "body": "Cal, dwan ma ki mako ki vidio ma oo 50 MB"
+      },
+      "article": {
+        "title": "Gajeti",
+        "body": "Lok ma tye i pwony ma opong ma ikobo"
+      }
+    },
+    "alreadyTitle": "Dong kicwalo woko?",
+    "whatsapp": "Cokcok-ki: cwalo kwena anyim bot namba me Zuula WhatsApp me ngiyo gi.",
+    "privacy": "Kiketo pwail i yamo me neno ka tye ki malware ki dong kigwoko maber ite cik me gwoko ngec ki mung, 2019."
+  },
+  "Submit": {
+    "detectLanguage": "Nongo pire kene",
+    "dropzone": {
+      "dragOr": "Yway file kany, onyo <browse>Yeny jami i kom nyonyo ni</browse>",
+      "tapToChoose": "<browse>Yer cal, vidio onyo dwan ma ki mako</browse>",
+      "accepts": "Cal, dwan onyo vidio · oo {size}",
+      "unsupported": "Fail ma pe kicwako",
+      "uploading": "Keto {percent}%",
+      "scanning": "Yenyo jami",
+      "remove": "Kwanyo pwail",
+      "uploadProgress": "Keto ngec ma itimo"
+    },
+    "captcha": {
+      "on": "Ki gwoko ki Cloudflare Turnstile.",
+      "off": "Pimo pa dano (Cloudflare Turnstile) pe tye ka tic i kare me dongo ne."
+    }
   },
   "Account": {
     "notifications": {
       "unreadDot": "Pe kikwano"
     },
+    "activity": {
+      "types": {
+        "article": "Gajeti"
+      },
+      "viewReport": "Nen adwogi tic"
+    },
     "profile": {
+      "errors": {
+        "name": "Dony i nyingi ma weng."
+      },
       "fullName": "Nyinge ducu",
       "password": {
         "new": "Mii manyen me donyo",
@@ -174,11 +340,20 @@
   "Review": {
     "queue": {
       "review": "Ngiyo"
+    },
+    "case": {
+      "submit": "Cwal"
     }
   },
   "Admin": {
     "broadcasts": {
       "administrator": "Lador tic"
+    },
+    "users": {
+      "columns": {
+        "status": "Rwom"
+      },
+      "status": "Rwom"
     }
   },
   "Pages": {
@@ -296,6 +471,7 @@
       "submit": "Dony iye",
       "submitting": "Keto cing…",
       "newHere": "Itye manyen bot Zuula?",
+      "createAccount": "Yub akaunt",
       "toastTitle": "Kiketo cing iye",
       "toastBody": "Wajoli me dwogo cen. Ki keto cingi iye calo {role}."
     },
@@ -350,8 +526,39 @@
     },
     "forgot": {
       "title": "Wiye owil i kom password ni?",
-      "description": "Dony i email onyo namba cim ma tye i akaunt ni ci wabi cwali namba me loko."
+      "description": "Dony i email onyo namba cim ma tye i akaunt ni ci wabi cwali namba me loko.",
+      "submit": "Cwal kod me reset",
+      "submitting": "Cwalo…",
+      "sentTitle": "Rot kwena ni",
+      "sentBody": "{channel, select, sms {Ka account tye pi <strong>{destination}</strong>, wa ocwalo 6-digit reset code ki SMS. En tum i 15 dakika.} other {Ka account tye pi <strong>{destination}</strong>, wa ocwalo 6-digit reset code kun tiyo ki email. Eni tum woko i 15 dakika.}}",
+      "enterCode": "Dony i reset code",
+      "backToSignIn": "Dwogo cen me donyo"
+    },
+    "reset": {
+      "title": "Ket mung manyen me donyo",
+      "descriptionTo": "Dony i code ma kicwalo bot <strong>{destination}</strong> ki iyer mung manyen.",
+      "description": "Ket kod me reset ma wacwali ki iyer mung manyen me donyo.",
+      "codeLabel": "Cako coc manyen",
+      "submit": "Lok mung me donyo",
+      "submitting": "Lok manyen…",
+      "noCode": "Pe tye code mo?",
+      "requestNew": "Peny pi manyen",
+      "toastTitle": "Ki loko mung me donyo",
+      "toastBody": "Donyo ki i nywako mamegi manyen.",
+      "startFirst": "Kong ipeny pi namba me reset, wek wangee account mene ma omyero walok.",
+      "startFirstAction": "Nong kod me reset"
+    },
+    "errors": {
+      "network": "Pe onongo twero oo Zuula. Rot kube ni ki item doki.",
+      "unconfigured": "Coyo nying pe tye i kabedo man pud.",
+      "signOutFailed": "Pe onongo atwero keto woko. Tem doki."
     }
+  },
+  "Offline": {
+    "retry": "Tem doki"
+  },
+  "Errors": {
+    "retry": "Tem doki"
   },
   "Developers": {
     "toc": {

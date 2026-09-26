@@ -134,6 +134,14 @@
   "RoleGate": {
     "title": "Ejaasi aitikitik na alomar"
   },
+  "Validation": {
+    "identifierRequired": "Kobu email kon arai enaaba loka esimu.",
+    "identifierInvalid": "Iwadika email lo ejok arai enaaba loka esimu loko Uganda (07XX XXX XXX).",
+    "passwordRequired": "Kobu password kon.",
+    "passwordMin": "Itwasam at least {min} itunga.",
+    "passwordWeak": "Kitogogong ejok: imorikikin inyukutan, inaabai keda aanyuneta.",
+    "passwordsMismatch": "Mam epaswadi edumunete."
+  },
   "Verdicts": {
     "summary": {
       "language": "Angajep"
@@ -151,9 +159,160 @@
     "backToLibrary": "Eibikiro loka itabon",
     "sources": "Ipuak luka akiro"
   },
+  "Status": {
+    "metaTitle": "Adoketait {id}",
+    "title": "Adoketait",
+    "descriptionValid": "Kotup aanyanaret kon kwape elosere.",
+    "descriptionInvalid": "Aanyun aijukario kotoma ID.",
+    "notFoundTitle": "Mam apotu sio adumutu aingic ngin ID",
+    "notFoundBody": "Koany ID kosodi aitam bobo. Esubit bala ejaasi Tracking IDs kwape ZL-7K3P-Q9.",
+    "copyId": "Kopu ID",
+    "copyLink": "Kopu elink",
+    "idCopied": "Aponi ikoparai ID",
+    "copyFailed": "Mam apedori aipikakin. Aseun kosodi aipikakin bon.",
+    "saveIdHint": "Kiswama ID kanu abongun aanyun akiro kon kotoma acuma adio.",
+    "readyTitle": "Ekapakina eripoota kon",
+    "openingIn": "{count, plural, one {Aapukor ngin kotoma # atikat…} other {Aitogogongio ke kotoma # atikatikan...}}",
+    "readyBody": "Kosesen atubokinio, ajenanut keda nu eomitos itunga.",
+    "viewReport": "Asesen eripoota",
+    "stay": "Kosalak toma atutubet kana",
+    "errorTitle": "Mam apedori sio angetakin aanyanario na",
+    "errorBody": "Mam epedorio apukor arucokina ngin. Aticepak erai lo aiyeyea, elemaritai arai bo itikitikini adolokinio naka acuma. Kotam bobo, arai bo ibwaik akiro nuka atutubet aiboisit.",
+    "tryAgain": "Kotam bobo",
+    "pasteInstead": "Ibusakinit jo aipikakin akiro ngun",
+    "fetchError": "Mam apedori eong apukor elink.",
+    "elapsed": "{seconds}s apotu kotuboros · etapit duc ayangaun {expected}",
+    "expected": {
+      "text": "nepetai 10 atikatikan",
+      "media": "kitoni toma atutubet adiope"
+    },
+    "progressTitle": "Aingic apol",
+    "submittedTitle": "Inyoin bo abu jo ijukak",
+    "submittedMeta": "{type} · {language} · aponi ijukarai {time}",
+    "types": {
+      "article": "Atutubet",
+      "media": "Akiro nuka iyemuto"
+    },
+    "notifySignedIn": "Ibuni sio alimokin jo neadolio eripoota, araida konyou jo kotoma atutubet kana.",
+    "notifyGuest": "Koinak eijin lo apukor arai bo kimono akirokon nuka alupok ID. <link>Ibusakinit jo aitolomun akaunt</link> kanu adumun aijen.",
+    "progress": {
+      "complete": "Angetakin aingic",
+      "stopped": "Abu aingic kopala",
+      "srComplete": "Angetakin aingic.",
+      "srError": "Aibucaret: {error}",
+      "status": {
+        "done": "nginipongon",
+        "active": "Ejai toma aswam",
+        "error": "abu komen",
+        "pending": "aidar"
+      }
+    },
+    "steps": {
+      "received": {
+        "label": "Adumunitai",
+        "detail": "Ejaasi aijukaret kon toma okokoro."
+      },
+      "scan": {
+        "label": "Aingic efile",
+        "detail": "Aanyanar epone loka akiro kosodi aingic kanu malware."
+      },
+      "fetch": {
+        "label": "Aidumun akiro ngun",
+        "detail": "Aidokun apapula kosodi alemun akiroke."
+      },
+      "transcribe": {
+        "label": "Aijulakin akiro",
+        "detail": "Aijulakin einer araun akiro."
+      },
+      "media": {
+        "label": "Aingic iyemuto",
+        "detail": "Aanyanar kanu deepfakes, aijulakineta keda aitolitol metadata."
+      },
+      "language": {
+        "label": "Ajenun angajep",
+        "detail": "Ajenun angajep keda aijulujuleta ace nuka angajep."
+      },
+      "claims": {
+        "label": "Adumun aitoroneta",
+        "detail": "Alemun akiro nu epedorio aanyun."
+      },
+      "sources": {
+        "label": "Aanyanar akiro",
+        "detail": "Aitirian akiro nuka Uganda keda akwapin ace."
+      },
+      "ai": {
+        "label": "AI-Ajenunet naka akiro",
+        "detail": "Amoot aanyuneta ebe aponi kitolomunai akiro ngun keda acuma."
+      },
+      "report": {
+        "label": "Aiwadik eripoota",
+        "detail": "Aitemonokin atubokinio, aitetemio keda aiwadikaeta."
+      }
+    },
+    "lookup": {
+      "track": "Aiwadikaet",
+      "hint": "Idumunit jo ngun ID neinakina jo.",
+      "invalid": "Esubit bala ejaasi Tracking IDs kwape ZL-7K3P-Q9."
+    }
+  },
   "Verify": {
     "metaTitle": "Kitogogong",
-    "title": "Kitogogong"
+    "metaDescription": "Koanyanaa emeseji, arucokina, aputo, eporoto arai bo ebidio kanu ajenun akiro numam eraasi nukabeit.",
+    "title": "Kitogogong",
+    "description": "Kosesen emeseji, arucokina, aputo, eporoto arai bo ebidio eringa imorikina.",
+    "photoCaption": "Apupunit eong ngun ko WhatsApp? Koany eong ngun kane.",
+    "howTitle": "Epone lo iswamai ngin",
+    "steps": {
+      "submit": {
+        "title": "Ijukak",
+        "body": "Ibusakinit jo aipikakin akiro, aimor elink arai bo aipikakin aputosia. Idumuni jo aingic ID."
+      },
+      "analyse": {
+        "title": "Iwosia oni",
+        "body": "Eripimatai akiro ngun keda aiboisio nu emunoi keda AI-detection models. Eyangaikini akiro ngun nepetai 10 atikatikan, iboro luka elago kitoni atikatikan adiope."
+      },
+      "read": {
+        "title": "Kosiom eripoota",
+        "body": "Koany etube, ajenanut, keda ibore eomoomotor itunga."
+      }
+    },
+    "whatTitle": "Inyoin bo ipedori jo aijukar",
+    "types": {
+      "text": {
+        "body": "WhatsApp lu engarenok, aiwadikaeta nuka itunga, akiro nu elimunitai"
+      },
+      "link": {
+        "body": "Akiro nuka iyemuto keda iwaitin luka elago"
+      },
+      "media": {
+        "title": "Erai Media ewai lo itolomunere akiro",
+        "body": "Aputosia, akiro nu irwan ka ebidio kitoni 50 MB"
+      },
+      "article": {
+        "title": "Atutubet",
+        "body": "Akiro kere nuka atutubet nuikoparit jo"
+      }
+    },
+    "alreadyTitle": "Aponi koinakinai sek?",
+    "whatsapp": "Atipet: ijukak akiro mama ejai enaaba loka Zuula WhatsApp kanu awanyanar kes.",
+    "privacy": "Ewadikatai akiro nu iyatakitai kanu aanyanar malware kosodi aingadaikin ejok kotupitete Data Protection and Privacy Act, 2019."
+  },
+  "Submit": {
+    "detectLanguage": "Ajenun bon",
+    "dropzone": {
+      "dragOr": "Korutu akiro kane, arai bo <browse>Aingic elago loka esimu kon</browse>",
+      "tapToChoose": "<browse>Koseu aputo, ebidio arai bo aineran naka eporoto</browse>",
+      "accepts": "Aputosia, eporoto arai bo ebidio · kitoni {size}",
+      "unsupported": "Emamei agangat naka idoket",
+      "uploading": "Aipikakin {percent}%",
+      "scanning": "Aingic",
+      "remove": "Kolema efile",
+      "uploadProgress": "Aitodun apol naka aipikakin"
+    },
+    "captcha": {
+      "on": "Eyuwaritai keda Cloudflare Turnstile.",
+      "off": "Aingic naka itunga (Cloudflare Turnstile) mam ejai toma aitolomunio."
+    }
   },
   "Account": {
     "notifications": {
@@ -161,6 +320,13 @@
         "accreditation": "Akaunt"
       },
       "unreadDot": "Mam esiomitai"
+    },
+    "activity": {
+      "types": {
+        "media": "Erai Media ewai lo itolomunere akiro",
+        "article": "Atutubet"
+      },
+      "viewReport": "Asesen eripoota"
     },
     "profile": {
       "fullName": "Ekiror loepol",
@@ -177,11 +343,20 @@
   "Review": {
     "queue": {
       "review": "Aingic bobo"
+    },
+    "case": {
+      "submit": "Ijukak"
     }
   },
   "Admin": {
     "broadcasts": {
       "administrator": "Eyaiton"
+    },
+    "users": {
+      "columns": {
+        "status": "Adoketait"
+      },
+      "status": "Adoketait"
     }
   },
   "Pages": {
@@ -296,6 +471,7 @@
       "submit": "Kobu toma",
       "submitting": "Aiwadikaun…",
       "newHere": "Erai loitetet mama ejai Zuula?",
+      "createAccount": "Ibusakinit jo aitolomun akaunt",
       "toastTitle": "Etapit eong aigir",
       "toastBody": "Ijalakini sio abongun. Ijaasi jo keda ekiror kwape {role}."
     },
@@ -349,8 +525,40 @@
       "trusted": "{role} · emunoi ebe iswamai eswamae lo adaun apaarasia 30"
     },
     "forgot": {
-      "title": "Imurokinit jo epaswadi kon?"
+      "title": "Imurokinit jo epaswadi kon?",
+      "description": "Kobu email arai enaaba loka esimu loejai akaunt kon kosodi sio aijukar jo enaaba loitemonokini.",
+      "submit": "Ijukakini ekode loka aitemokin bobo",
+      "submitting": "Aijukar…",
+      "sentTitle": "Kosesen imesan kon",
+      "sentBody": "{channel, select, sms {Arai ejai akaunt kanuka <strong>{destination}</strong>, apotu sio ijukasi 6-digit reset code kotoma SMS. Etwaniari ngesi kotoma idakikan 15.} other {Arai ejai akaunt kanuka <strong>{destination}</strong>, apotu sio ijukasi 6-digit reset code kitosomaete email. Etwaniari ngesi kotoma idakikan 15.}}",
+      "enterCode": "Ibwaik kode loka aitemokin",
+      "backToSignIn": "Abongun aipikakin akan"
+    },
+    "reset": {
+      "title": "Ibusakinit jo aitemokin epaswadi loitetet",
+      "descriptionTo": "Kobu ekoodi lo ijukunitai mama ejai <strong>{destination}</strong> kosodi aseun epaswadi loitetet.",
+      "description": "Kobu kode lo iteteunere lo ijukunit sio kosodi aseun apasaran naitetet.",
+      "codeLabel": "Aitemokin bobo ekode",
+      "submit": "Aijulakin password",
+      "submitting": "Aitogogong…",
+      "noCode": "Emamei kode?",
+      "requestNew": "Ilipit idio itegelikina",
+      "toastTitle": "Aponi itojokarai password",
+      "toastBody": "Kobu toma keda apasaran kon naitetet.",
+      "startFirst": "Kotam ber aijaun ekod lo itemonokinere, tetere oni ijeni akaunt na ebeit aisiteteun.",
+      "startFirstAction": "Adumun ekode loka areset"
+    },
+    "errors": {
+      "network": "Mam apedori adolokin Zuula. Koany arucokina kon kosodi aitam bobo.",
+      "unconfigured": "Mam ber ejai aanyunet naka alomar toma osite lo.",
+      "signOutFailed": "Mam apedori aitolomun jo kinga. Kotam bobo."
     }
+  },
+  "Offline": {
+    "retry": "Kotam bobo"
+  },
+  "Errors": {
+    "retry": "Kotam bobo"
   },
   "Developers": {
     "toc": {

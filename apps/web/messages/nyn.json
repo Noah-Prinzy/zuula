@@ -136,6 +136,14 @@
   "RoleGate": {
     "title": "Okuhikwaho kuzibirwe"
   },
+  "Validation": {
+    "identifierRequired": "Taahamu e-mayiro yaawe nainga enamba ya esimu.",
+    "identifierInvalid": "Taahamu e-mayiro ehikire nainga enamba y'esimu eya Uganda (07XX XXX XXX).",
+    "passwordRequired": "Taahamu paasiwaadi yaawe.",
+    "passwordMin": "Kozesa hakiri {min} abantu.",
+    "passwordWeak": "Kigire ky'amaani: tabura enyuguta, enamba hamwe n'obubonero.",
+    "passwordsMismatch": "Obusumuruzo tiburikuhikaana."
+  },
   "Verdicts": {
     "summary": {
       "language": "Orurimi"
@@ -153,9 +161,160 @@
     "backToLibrary": "Eibikiro ry'ebitabo",
     "sources": "Oburugo"
   },
+  "Status": {
+    "metaTitle": "Embeera {id}",
+    "title": "Embeera",
+    "descriptionValid": "Kuratiire okukyebera kwawe nk'oku kurikugyenda.",
+    "descriptionInvalid": "Kurondoora okuhayo kurugiirira aha ID.",
+    "notFoundTitle": "Titurabaasize kushanga okurondoora ID",
+    "notFoundBody": "Kyebera ID ogaruke ogyezeho. Ebirikurondoora IDs nibireebeka nka ZL-7K3P-Q9.",
+    "copyId": "Kopa ID",
+    "copyLink": "Kopa akakwate",
+    "idCopied": "Okurondoora ID kopiirwe",
+    "copyFailed": "Tikabaasize kukopa. Toorana kandi okikope omu butoosha.",
+    "saveIdHint": "Rinda eki ID kugaruka omu birugire omu kyoma kyona.",
+    "readyTitle": "Ripoota yaawe eyeteekateekire",
+    "openingIn": "{count, plural, one {Okukigura omuri # sekonda…} other {Okugiguraho omu sekonda za #…}}",
+    "readyBody": "Reeba encwamu, obujurizi hamwe n'eki abantu barikuteekateeka.",
+    "viewReport": "Reeba ripoota",
+    "stay": "Guma aha rupapura oru",
+    "errorTitle": "Tukaba tutarikubaasa kumaririza okukyebera oku",
+    "errorBody": "Akakwate tikarabaasize kwigurwaho. Nikabaasa kuba kari ak'omuntu buntu, kashazirwemu nainga karikuzibira okuhikwaho okw'okweyambisa. Gyezaho ogaruke, nainga ote omu mwanya ogwo ebigambo by'ekihandiiko omu mwanya gw'ekyo.",
+    "tryAgain": "Gyezaho ogaruke",
+    "pasteInstead": "Gumira aha kihandiiko omu mwanya gw'ekyo",
+    "fetchError": "Tikabaasa kwigura akakwate.",
+    "elapsed": "{seconds}s zihingwireho · buriijo nizitwara {expected}",
+    "expected": {
+      "text": "nk'obu 10 obutikitiki",
+      "media": "kushika aha dakiika"
+    },
+    "progressTitle": "Okushwijuma entunguuka",
+    "submittedTitle": "Eki waahaireyo",
+    "submittedMeta": "{type} · {language} · ehaireyo {time}",
+    "types": {
+      "article": "Ekicweka",
+      "media": "Ekihandiiko ky'empurizagana"
+    },
+    "notifySignedIn": "Nituza kubamanyisa ripoota ku eraabe eyeteekateekire, nobu waakuba orugire aha rupapura.",
+    "notifyGuest": "Guma orikwigura orupapura oru nari oteereho okukuratira kwawe ID. <link>Kora akaunti</link> kutunga okumanyisibwa omu mwanya gw'ekyo.",
+    "progress": {
+      "complete": "Okushwijuma kuhwaire",
+      "stopped": "Okushwijuma kwayemereziibwe",
+      "srComplete": "Okushwijuma kuhwaire.",
+      "srError": "Enshobi: {error}",
+      "status": {
+        "done": "ekihikire",
+        "active": "ekiri omu kukorwa",
+        "error": "ekaremirwe",
+        "pending": "okurinda"
+      }
+    },
+    "steps": {
+      "received": {
+        "label": "Nkatunga",
+        "detail": "Okuhayo kwawe kuteirwe omu runyiriri."
+      },
+      "scan": {
+        "label": "Okusikana fayiro",
+        "detail": "Okukyebera ekika kya fayiro n'okukyebera obukooko."
+      },
+      "fetch": {
+        "label": "Okutunga ekicweka",
+        "detail": "Okutunga orupapura n'okwiha omu bigambo byarwo."
+      },
+      "transcribe": {
+        "label": "Okuhandiika",
+        "detail": "Okuhindura orugambo omu bihandiiko."
+      },
+      "media": {
+        "label": "Okushwijuma emikutu",
+        "detail": "Okukyebera obw'okwiba, okuhindura hamwe n'okuhenda metadata."
+      },
+      "language": {
+        "label": "Okumanya orurimi",
+        "detail": "Okumanya orurimi hamwe n'okuhindura kode."
+      },
+      "claims": {
+        "label": "Okushanga okushaba",
+        "detail": "Okwiha omu kihandiiko ebirikubaasa kushwijumwa."
+      },
+      "sources": {
+        "label": "Okukyebera oburugo",
+        "detail": "Okukwatanisa oburugo oburikwesigwa omu Uganda n'ensi yoona."
+      },
+      "ai": {
+        "label": "AI-okushanga ebirikukwataho",
+        "detail": "Okuronda obumanyiso ngu ebirimu bikakorwa ekyoma."
+      },
+      "report": {
+        "label": "Okuhandiika ripoota",
+        "detail": "Okutebeekanisa encwamu, okushoborora hamwe n'obujurizi."
+      }
+    },
+    "lookup": {
+      "track": "Orutindo",
+      "hint": "Okatunga eki ID obu waahayo.",
+      "invalid": "Tracking IDs nizireebeka nka ZL-7K3P-Q9."
+    }
+  },
   "Verify": {
     "metaTitle": "Kikakasibwa",
-    "title": "Kikakasibwa"
+    "metaDescription": "Kyebera obutumwa, akakwate, ekishushani, eiraka nari vidiyo okureeba obutumwa butahikire.",
+    "title": "Kikakasibwa",
+    "description": "Kyebera obutumwa, akakwate, ekishushani, eiraka nari vidiyo otakagabaniise.",
+    "photoCaption": "Okakihurira ahari WhatsApp? Kikyebera aha.",
+    "howTitle": "Oku kirikukora",
+    "steps": {
+      "submit": {
+        "title": "Heereza",
+        "body": "Gumira omu bihandiiko, ogabane akakwate nainga oteho eby'amakuru. Nootunga okurondoora ID."
+      },
+      "analyse": {
+        "title": "Nitushwijuma",
+        "body": "Okugamba nikushwijumwa kurugirira aha burugo oburikwesigwa hamwe na AI-okumanya emiringo. Ebigambo nibitwara obutikitiki bwa 10, eby'amakuru kuhika aha dakiika."
+      },
+      "read": {
+        "title": "Shoma ripoota",
+        "body": "Reeba okusharaho, obujurizi, hamwe n'eki abantu barikuteekateeka."
+      }
+    },
+    "whatTitle": "Eki orabaasa kuhayo",
+    "types": {
+      "text": {
+        "body": "WhatsApp ab'omumaisho, obutumwa bw'abantu, ebigambirwe"
+      },
+      "link": {
+        "body": "Ebicweka by'amakuru hamwe n'emiko ya webu"
+      },
+      "media": {
+        "title": "Eby'amakuru",
+        "body": "Ebishushani, obutumwa bw'eiraka hamwe na vidiyo kuhika ahari 50 MB"
+      },
+      "article": {
+        "title": "Ekicweka",
+        "body": "Ekihandiiko ky'ekicweka kyona eki waakopire"
+      }
+    },
+    "alreadyTitle": "Yaaherize kuheebwayo?",
+    "whatsapp": "Juba: yeyongyerayo obutumwa aha namba ya Zuula WhatsApp okubukyebera.",
+    "privacy": "Fayiro eziteirweho nizishwijumwa obutafaari bw'akabi kandi zibiikwa omu muringo ogurikwesigwa ahansi y'ekiragiro ky'okurinda ebihandiiko, 2019."
+  },
+  "Submit": {
+    "detectLanguage": "Kumanya byonka",
+    "dropzone": {
+      "dragOr": "Kurura fayiro aha, nainga <browse>sherura aha kyoma kyawe</browse>",
+      "tapToChoose": "<browse>Toorana ekishushani, vidiyo nari akatambi k'eiraka</browse>",
+      "accepts": "Ebishushani, audio nainga vidiyo · kuhika ahari {size}",
+      "unsupported": "Fayiro etarikushagikwa",
+      "uploading": "Okutwara ahaiguru {percent}%",
+      "scanning": "Okushwijuma",
+      "remove": "Yihamu fayiro",
+      "uploadProgress": "Entunguuka y'okutwara aha mitimbagano"
+    },
+    "captcha": {
+      "on": "Erikurindwa Cloudflare Turnstile.",
+      "off": "Okukyebera kw'abantu (Cloudflare Turnstile) kuzimirwe omu kutunguura."
+    }
   },
   "Account": {
     "notifications": {
@@ -163,6 +322,13 @@
         "accreditation": "Akaunti"
       },
       "unreadDot": "Ekitakashomiibwe"
+    },
+    "activity": {
+      "types": {
+        "media": "Eby'amakuru",
+        "article": "Ekicweka"
+      },
+      "viewReport": "Reeba ripoota"
     },
     "profile": {
       "fullName": "Eiziina ryona",
@@ -180,11 +346,20 @@
   "Review": {
     "queue": {
       "review": "Okugarukamu"
+    },
+    "case": {
+      "submit": "Heereza"
     }
   },
   "Admin": {
     "broadcasts": {
       "administrator": "Omwebembezi"
+    },
+    "users": {
+      "columns": {
+        "status": "Embeera"
+      },
+      "status": "Embeera"
     }
   },
   "Pages": {
@@ -303,6 +478,7 @@
       "submit": "Yingira",
       "submitting": "Okuta omukono…",
       "newHere": "Ori omusya ahari Zuula?",
+      "createAccount": "Kora akaunti",
       "toastTitle": "Kikateebwaho omukono",
       "toastBody": "Mukakiirwa kugaruka. Ohandiikirwe nka {role}."
     },
@@ -356,8 +532,40 @@
       "trusted": "{role} · ekyoma eki nikyesigwa kumara ebiro 30"
     },
     "forgot": {
-      "title": "Oyebirwe enamba yaawe ey'ekihama?"
+      "title": "Oyebirwe enamba yaawe ey'ekihama?",
+      "description": "Taahamu e-mayiro nari enamba ya esimu aha akawunti yaawe kandi nitwija kukwohereza koodi y'okugarura busya.",
+      "submit": "Oheereze enamba y'okugarura busya",
+      "submitting": "Okwohereza…",
+      "sentTitle": "Kyebera obutumwa bwawe",
+      "sentBody": "{channel, select, sms {Ku haraabe hariho akawunti ahari <strong>{destination}</strong>, twasindika koodi ya 6-digit reset code kurabira omuri SMS. Neehwaho omu dakiika 15.} other {Ku haraabe hariho akaunti ya <strong>{destination}</strong>, twasindika koodi y'okugarura busya eya digito 6 kurabira omu email. Neehwaho omu dakiika 15.}}",
+      "enterCode": "Taahamu enamba y'okugarura busya",
+      "backToSignIn": "Okugaruka kuta omukono"
+    },
+    "reset": {
+      "title": "Teekaho akasumuruzo akasya",
+      "descriptionTo": "Taahamu enamba eyohereziibwe ahari <strong>{destination}</strong> kandi otoorane akasumuruzo akasya.",
+      "description": "Taahamu enamba y'okugaruraho ei twakwohereza kandi otoorane akasumuruzo akasya.",
+      "codeLabel": "Okugarura enamba",
+      "submit": "Okuhindura akasumuruzo",
+      "submitting": "Okuhindura…",
+      "noCode": "Tihariho kode?",
+      "requestNew": "Shaba ekindi kisya",
+      "toastTitle": "Akasumuruzo kahindwirwe",
+      "toastBody": "Yingira n'akapapura k'okushumurura akasya.",
+      "startFirst": "Shaba koodi y'okugarura busya, kubaasa kumanya akawunti ei turikwenda kuhindura.",
+      "startFirstAction": "Funa kode y'okugarura busya"
+    },
+    "errors": {
+      "network": "Tikabaasa kuhika Zuula. Kyebera enkwatanisa yaawe ogaruke ogyezeho.",
+      "unconfigured": "Okutaahamu tikuriho aha mukutu ogu.",
+      "signOutFailed": "Tikabaasa kukushohoza. Gyezaho ogaruke."
     }
+  },
+  "Offline": {
+    "retry": "Gyezaho ogaruke"
+  },
+  "Errors": {
+    "retry": "Gyezaho ogaruke"
   },
   "Developers": {
     "toc": {
