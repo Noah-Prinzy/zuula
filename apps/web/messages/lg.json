@@ -135,6 +135,15 @@
   "RoleGate": {
     "title": "Okutuuka kukugiriddwa"
   },
+  "Validation": {
+    "identifierRequired": "Yingiza email yo oba ennamba y'essimu.",
+    "identifierInvalid": "Yingiza email entuufu oba ennamba y'essimu eya Uganda (07XX XXX XXX).",
+    "passwordRequired": "Yingizaamu password yo.",
+    "passwordMin": "Kozesa waakiri {min} ennukuta.",
+    "passwordWeak": "Kikakase nti kinywevu: tabula ennukuta, ennamba n'obubonero.",
+    "passwordsMismatch": "Obusumuluzo tebuwera.",
+    "nameRequired": "Yingiza erinnya lyo mu bujjuvu."
+  },
   "Verdicts": {
     "summary": {
       "language": "Olulimi"
@@ -152,9 +161,160 @@
     "backToLibrary": "Ettendekero ly'ebitabo",
     "sources": "Ensibuko"
   },
+  "Status": {
+    "metaTitle": "Embeera {id}",
+    "title": "Embeera",
+    "descriptionValid": "Goberera okukebera kwo nga bwe kugenda.",
+    "descriptionInvalid": "Londoola okuwaayo ng'okozesa ID.",
+    "notFoundTitle": "Tetwasobodde kuzuula okunoonya okwo ID",
+    "notFoundBody": "Kebera ID olwo ozzeemu ogezeeko. Ebikozesebwa mu kulondoola birabika nga ZL-7K3P-Q9.",
+    "copyId": "Koppa ID",
+    "copyLink": "Koppa akakubo",
+    "idCopied": "Okulondoola ID kukoppiddwa",
+    "copyFailed": "Teyasobola kukoppa. Londa ogikoppe mu ngeri ey'obukugu.",
+    "saveIdHint": "Kino ID kikuume osobole okudda ku byava mu kalulu ku kyuma kyonna.",
+    "readyTitle": "Alipoota yo etuuse",
+    "openingIn": "{count, plural, one {Okugiggula mu sekonda #…} other {Okugiggula mu sikonda #…}}",
+    "readyBody": "Laba ensala, obujulizi n'ekyo abantu kye balowooza.",
+    "viewReport": "Laba alipoota",
+    "stay": "Sigala ku lupapula luno",
+    "errorTitle": "Tetwasobola kumaliriza okukebera kuno",
+    "errorBody": "Akakwate tekasobola kuggulwawo. Kayinza okuba nga ka kyama, kaaggyiddwawo oba nga kagaana okutuuka okw'okukozesa kompyuta. Gezaako nate, oba gattaamu ebigambo by'ekiwandiiko mu kifo kyakyo.",
+    "tryAgain": "Gezaako nate",
+    "pasteInstead": "Teeka obubaka mu kifo ky'ekyo",
+    "fetchError": "Teyasobola kuggulawo linki.",
+    "elapsed": "{seconds}s ziyiseewo · bulijjo kitwala {expected}",
+    "expected": {
+      "text": "kumpi 10 sikonda",
+      "media": "okutuuka ku ddakiika emu"
+    },
+    "progressTitle": "Okwekenneenya okutambula",
+    "submittedTitle": "Kye wawaayo",
+    "submittedMeta": "{type} · {language} · yaweereddwayo {time}",
+    "types": {
+      "article": "Ekitundu",
+      "media": "Fayiro y'emikutu gy'amawulire"
+    },
+    "notifySignedIn": "Tujja kukutegeeza singa alipoota eba emaliriziddwa, ne bw'oba ng'ovudde ku lupapula luno.",
+    "notifyGuest": "Gumya olupapula luno nga luggule oba okuuma okunoonyereza kwo ID. <link>Kola akawunta</link> okutegeezebwa mu kifo ky'ekyo.",
+    "progress": {
+      "complete": "Okwekenneenya kuwedde",
+      "stopped": "Okwekaliriza kwakoma",
+      "srComplete": "Okwekenneenya kuwedde.",
+      "srError": "Ensobi: {error}",
+      "status": {
+        "done": "ekijjuvu",
+        "active": "kiri mu kukolebwa",
+        "error": "yalemereddwa",
+        "pending": "okulinda"
+      }
+    },
+    "steps": {
+      "received": {
+        "label": "Nfunye",
+        "detail": "Okuwaayo kwo kuli mu layini."
+      },
+      "scan": {
+        "label": "Okusoma fayiro",
+        "detail": "Okukebera ekika ky'efayiro n'okulondoola obulabe bwa malware."
+      },
+      "fetch": {
+        "label": "Okunoonya ekitundu",
+        "detail": "Okutikkula olupapula n'okuggyamu ebigambo byalwo."
+      },
+      "transcribe": {
+        "label": "Okuwandiika",
+        "detail": "Okukyusa okwogera okukifuula ebiwandiiko."
+      },
+      "media": {
+        "label": "Okwekenneenya emikutu gy'amawulire",
+        "detail": "Okukebera oba nga mulimu deepfakes, okukyusa n'okukozesa metadata."
+      },
+      "language": {
+        "label": "Okuzuula olulimi",
+        "detail": "Okumanya olulimi n'engeri yonna ey'okukyusakyusa mu nnimi."
+      },
+      "claims": {
+        "label": "Okuzuula ebisaba",
+        "detail": "Okuggyayo ebiwandiiko ebiyinza okukeberebwa."
+      },
+      "sources": {
+        "label": "Okukebera ensibuko",
+        "detail": "Okukwataganya ensibuko eza Uganda ez'obwesigwa n'ez'ensi yonna."
+      },
+      "ai": {
+        "label": "AI-okuzuula ebirimu",
+        "detail": "Nnoonya obubonero obulaga nti ebirimu byakolebwa kompyuta."
+      },
+      "report": {
+        "label": "Okuwandiika alipoota",
+        "detail": "Okuteekateeka ensala, okunnyonnyola n'okujuliza."
+      }
+    },
+    "lookup": {
+      "track": "Oluguudo",
+      "hint": "Wafunye kino ID bwe wawaayo.",
+      "invalid": "Ebirondoozo bya ID birabika nga ZL-7K3P-Q9."
+    }
+  },
   "Verify": {
     "metaTitle": "Kakasa",
-    "title": "Kakasa"
+    "metaDescription": "Kebera obubaka, akakwate, ekifaananyi, amaloboozi oba vidiyo olabe oba mulimu obulimba.",
+    "title": "Kakasa",
+    "description": "Kebera obubaka, akakwate, ekifaananyi, amaloboozi oba vidiyo nga tonnaagabana.",
+    "photoCaption": "Kyawulidde ku WhatsApp? Kikebere wano.",
+    "howTitle": "Engeri gye kikola",
+    "steps": {
+      "submit": {
+        "title": "Waayo",
+        "body": "Koppa ebyawandiikibwa, gabanako akakubo oba teekako ebifaananyi. Ofuna okugoberera ID."
+      },
+      "analyse": {
+        "title": "Twekenneenya",
+        "body": "Ebiwandiiko bikakasibwa nga bigeraageranyizibwa n'ensibuko ezeesigika n'enkola ez'okuzuula AI. Ebiwandiiko bitwala obutikitiki nga 10, emikutu gy'empuliziganya kituuka ku ddakiika."
+      },
+      "read": {
+        "title": "Soma alipoota",
+        "body": "Laba ensala, obujulizi, n'ekyo abantu b'omu kitundu kye balowooza."
+      }
+    },
+    "whatTitle": "By'osobola okuwaayo",
+    "types": {
+      "text": {
+        "body": "WhatsApp abakulembeze, ebiwandiiko by'abantu, ebigambo"
+      },
+      "link": {
+        "body": "Ebitundu by'amawulire ne web pages"
+      },
+      "media": {
+        "title": "Emikutu gy'amawulire",
+        "body": "Ebifaananyi, obubaka obw'eddoboozi ne vidiyo okutuuka ku 50 MB"
+      },
+      "article": {
+        "title": "Ekitundu",
+        "body": "Ekitundu ky'ekiwandiiko kyonna ky'okoppye"
+      }
+    },
+    "alreadyTitle": "Ddala omaze okuwaayo?",
+    "whatsapp": "Mangu: okusindika obubaka eri nnamba Zuula WhatsApp okubukebera.",
+    "privacy": "Fayiro eziteekeddwako zikeberwa okulaba oba ziriko obulabe era ne ziterekebwa mu ngeri ennungi wansi w'etteeka ly'Obukuumi bw'Obubaka n'Obwannamunigina, 2019."
+  },
+  "Submit": {
+    "detectLanguage": "Kizuula mu ngeri ya otomaatiki",
+    "dropzone": {
+      "dragOr": "Sika fayiro wano, oba <browse>Okunonyereza ku kyuma kyo</browse>",
+      "tapToChoose": "<browse>Londa ekifaananyi, vidiyo oba akatambi k'eddoboozi</browse>",
+      "accepts": "Ebifaananyi, amaloboozi oba vidiyo · okutuuka ku {size}",
+      "unsupported": "Fayiro etawagirwa",
+      "uploading": "Okutikka {percent}%",
+      "scanning": "Okusoma",
+      "remove": "Ggyako fayiro",
+      "uploadProgress": "Enkulaakulana y'okutikka fayiro"
+    },
+    "captcha": {
+      "on": "Kikuumibwa Cloudflare Turnstile.",
+      "off": "Okukebera kw'omuntu (Cloudflare Turnstile) kuziyiziddwa mu kukulaakulanya."
+    }
   },
   "Account": {
     "notifications": {
@@ -163,7 +323,17 @@
       },
       "unreadDot": "Etasomeddwa"
     },
+    "activity": {
+      "types": {
+        "media": "Emikutu gy'amawulire",
+        "article": "Ekitundu"
+      },
+      "viewReport": "Laba alipoota"
+    },
     "profile": {
+      "errors": {
+        "name": "Yingiza erinnya lyo mu bujjuvu."
+      },
       "fullName": "Erinnya lyonna mu bujjuvu",
       "password": {
         "new": "Akasumuluzo akapya",
@@ -179,11 +349,20 @@
   "Review": {
     "queue": {
       "review": "Okuddamu okwekenneenya"
+    },
+    "case": {
+      "submit": "Waayo"
     }
   },
   "Admin": {
     "broadcasts": {
       "administrator": "Omukulembeze"
+    },
+    "users": {
+      "columns": {
+        "status": "Embeera"
+      },
+      "status": "Embeera"
     }
   },
   "Pages": {
@@ -303,6 +482,7 @@
       "submit": "Yingira",
       "submitting": "Okuteekako omukono…",
       "newHere": "Okyali mupya ku Zuula?",
+      "createAccount": "Kola akawunta",
       "toastTitle": "Atadde omukono",
       "toastBody": "Tukwanirizza okudda. Oyingidde nga {role}."
     },
@@ -357,8 +537,39 @@
     },
     "forgot": {
       "title": "Oyerabidde password yo?",
-      "description": "Yingiza email oba ennamba y'essimu ku akawunti yo era tujja kukusindikira ennamba ey'okuddamu."
+      "description": "Yingiza email oba ennamba y'essimu ku akawunti yo era tujja kukusindikira ennamba ey'okuddamu.",
+      "submit": "Sindika ennamba ey'okutereeza",
+      "submitting": "Okusindika…",
+      "sentTitle": "Kebera obubaka bwo",
+      "sentBody": "{channel, select, sms {Singa akawunta ebeera nga eriwo ku <strong>{destination}</strong>, tuweerezza ennamba ya 6 ey'okutereeza okuyita mu SMS. Ebaako ennaku 15 okuggwako.} other {Singa akawunta eriwo ku <strong>{destination}</strong>, tuweerezza ennamba ya 6 ey'okutereeza okuyitira mu email. Ebaako ebbanga lya ddakiika 15.}}",
+      "enterCode": "Yingiza ennamba ey'okuddamu",
+      "backToSignIn": "Ddamu okuyingira"
+    },
+    "reset": {
+      "title": "Teekawo akasumuluzo akapya",
+      "descriptionTo": "Yingiza ennamba eyaweerezebwa ku <strong>{destination}</strong> olonde n'akakwate akapya.",
+      "description": "Yingira ennamba ey'okutereeza gye twakusindikira olonde n'akagambo akapya ak'ekyama.",
+      "codeLabel": "Okuddamu koodi",
+      "submit": "Kyuusa akasumuluzo",
+      "submitting": "Okutereeza…",
+      "noCode": "Tewali kode?",
+      "requestNew": "Saba ekirala ekipya",
+      "toastTitle": "Akasumuluzo kakyusiddwa",
+      "toastBody": "Yingira ng'okozesa akasumuluzo kwo akapya.",
+      "startFirst": "Sooka osabe ennamba ey'okutereeza, tusobole okumanya akawunta gye tulina okutereeza.",
+      "startFirstAction": "Funa ennamba ey'okuddamu"
+    },
+    "errors": {
+      "network": "Tekyasobose kutuuka ku Zuula. Kebera ennyunga yo era ogezeeko nate.",
+      "unconfigured": "Okuyingira tekunnabaawo ku mukutu guno.",
+      "signOutFailed": "Siyasobola kukuggya ku mukutu. Gezako nate."
     }
+  },
+  "Offline": {
+    "retry": "Gezaako nate"
+  },
+  "Errors": {
+    "retry": "Gezaako nate"
   },
   "Developers": {
     "toc": {
