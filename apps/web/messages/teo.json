@@ -140,24 +140,144 @@
     "passwordRequired": "Kobu password kon.",
     "passwordMin": "Itwasam at least {min} itunga.",
     "passwordWeak": "Kitogogong ejok: imorikikin inyukutan, inaabai keda aanyuneta.",
-    "passwordsMismatch": "Mam epaswadi edumunete."
+    "passwordsMismatch": "Mam epaswadi edumunete.",
+    "nameRequired": "Iwadika ekirorikon kere.",
+    "consentRequired": "Ekot ijo acamun Atukonokineta keda Atukot Naka Aiyeyea.",
+    "codeSixDigits": "Kobu kode loka idigitin 6.",
+    "codeAllDigits": "Ibusakinit jo aipikakin idigitin kere 6.",
+    "codeInvalid": "Mam ekode ngol erai loabeit arai bo atwania apak."
   },
   "Verdicts": {
+    "labels": {
+      "authentic": "Na abeit",
+      "likely-false": "Aticepak mam Erai abeit",
+      "false": "Mam erai abeit",
+      "ai-generated": "AI-Aitolomunitai",
+      "unverifiable": "Mam epedorio aitogogong"
+    },
+    "descriptions": {
+      "authentic": "Igangitai keda aiboisio nu emunoi.",
+      "likely-false": "Akiro nuepolok etepegio arai bo emamei agangat.",
+      "false": "Etelekaritai keda akiro nu emunoi.",
+      "ai-generated": "Ejaasi keda aanyuneta nu agogong nuka aitolomun arai aijulakinio keda AI.",
+      "unverifiable": "Emamei bobo aitijenaret naedolit koipone kangin."
+    },
+    "claims": {
+      "false": "Mam erai abeit",
+      "misleading": "Naingarenikinitai",
+      "unsupported": "Mam igangitai",
+      "out-of-context": "Mam ejai toma akirot",
+      "supported": "Igangitai"
+    },
+    "stance": {
+      "supports": "Icamunitos",
+      "contradicts": "Etepegit",
+      "context": "Akiro nuikamunitos akirot"
+    },
+    "confidence": {
+      "high": "Amuno naepol noi",
+      "moderate": "Amuno naedit",
+      "low": "Amamut amunokina naepol noi",
+      "label": "AI adoketait naka amunokina",
+      "aria": "AI amunokina {value}%"
+    },
+    "human": {
+      "badge": "Itigogongoritai itunga",
+      "confirmed": "Abu {reviewer} kitogogong",
+      "overridden": "Aponi itelekarai kama ejai {verdict} keda {reviewer}"
+    },
+    "citation": {
+      "trusted": "Alibunet na emunoi",
+      "newTab": "(eyangari toma atab naitetet)"
+    },
+    "findings": {
+      "false": "Inyoin bo erai aisab?",
+      "true": "Inyoin bo erai abeit?"
+    },
+    "claim": {
+      "srLabel": " (claim {index}: {assessment}, kitodu ibore)",
+      "heading": "Akiro {index} · {assessment}"
+    },
+    "signals": {
+      "summary": "{triggered} kotoma {total} ajenuneta nuka aanyanaret aponi kitolosai.",
+      "triggered": "Aponi kitolomunai",
+      "notTriggered": "Mam aponi kisinyikokinitai",
+      "bar": "Ejaasi amakesin keda {score}%, atutubet {threshold}%",
+      "method": "Eipone: {method} · Atiaketait {threshold}%"
+    },
     "summary": {
-      "language": "Angajep"
+      "contentType": "Epone loka akiro",
+      "language": "Angajep",
+      "checked": "Aanyanario",
+      "checkedIn": "Aanyunitai <time>{date}</time> kotoma {seconds}s",
+      "category": "Atutubet",
+      "trackingId": "Aingic ID"
+    },
+    "card": {
+      "ccs": "Etapit loka amunokina naka itunga"
     }
   },
   "Library": {
     "metaTitle": "Eibikiro loka itabon",
+    "metaDescription": "Aingic akiro ka atutubena nu ejaasi Zuula aanyunitai sek.",
+    "eyebrow": "Eitabo lo itigogongit akiro",
     "title": "Eibikiro loka itabon",
+    "description": "Aingic akiro ka atutubena nu aanyunitai sek.",
+    "filters": "Iboro lu itikitikere",
+    "filtersCount": "Iwaitin ({count})",
+    "clearAll": "Kilacakin kere",
+    "results": "{count, plural, one {# akiro nuelomunitos} other {# akiro nu elomunitos}}",
+    "showResults": "{count, plural, one {Itodu # akiro nuelomunitos} other {Itodu # akiro}}",
+    "searchPlaceholder": "Aingic akiro, akiro arai bo akiro nu elomunitos…",
     "searchLabel": "Aingic akiro nu aanyanario",
+    "sortBy": "Sorut kotupitete",
+    "sorts": {
+      "relevance": "Abuikin naejok kakere",
+      "newest": "Naitetet noi",
+      "most-rated": "Luepolok noi"
+    },
+    "count": "{count, plural, one {<strong>{count}</strong> aanyanar akiro} other {<strong>{count}</strong> aanyanario naka abeit}}",
+    "countFor": "{count, plural, one {<strong>{count}</strong> aanyanar akiro kanu “<q>{query}</q>”} other {<strong>{count}</strong> aanyanario naka abeit kanu “<q>{query}</q>”}}",
+    "removeFilter": "Kotub filter {label}",
+    "emptyTitle": "Emamei aanyanario naka akiro",
+    "emptyBody": "Kotam akiro nuegelegela arai bo alemar acuman ace. Arai emamei idiotunganan yen angicunit aitoroneta nu, ipedori jo aijukar.",
+    "clearSearch": "Aingic na elai",
+    "verifyClaim": "Aitogogong aineranara",
+    "contentTypeShort": {
+      "url": "Erai Link"
+    },
     "filter": {
-      "language": "Angajep"
+      "verdict": "Aseunet",
+      "category": "Atutubet",
+      "allCategories": "Atutubena kere",
+      "language": "Angajep",
+      "allLanguages": "Angajepisinei kere",
+      "contentType": "Epone loka akiro",
+      "allTypes": "Ipu luka iponesio",
+      "dateChecked": "Apak na aanyanario",
+      "from": "Ageun",
+      "to": "Kanu"
     }
   },
   "Report": {
+    "metaFallback": "Aripoota",
     "backToLibrary": "Eibikiro loka itabon",
-    "sources": "Ipuak luka akiro"
+    "checked": "Inyoin bo aponi koanyunai?",
+    "checkedHint": "Aponi itirianai akiro nu itodunitai. Koseu adiopet kanu aanyun ibore.",
+    "findings": "Adumununeta",
+    "signals": "AI ajenunet naka ijenuneta",
+    "signalsHint": "Apotu sio aanyutu kanu AI-etolomunitai arai bo aitolitol akiro.",
+    "comments": "Akiro nuka itunga",
+    "commentsHint": "Akiro nu ijaikitos itunga keda aipimakec.",
+    "expertNotes": "Iwadikaeta luka ipirioitin",
+    "rating": "Aitirian naka itunga",
+    "sources": "Ipuak luka akiro",
+    "sourcesHint": "{count, plural, one {# loelomunit aanyanario naka akiro} other {# aponi kowanyunai akiro}}",
+    "actions": "Aitodun aswamisinei",
+    "rate": "Etapit",
+    "share": "Inyikokisi",
+    "linkCopied": "Aponi ikoparai elink",
+    "shareFailed": "Mam apedori aimor. Ibusakinit jo aipikakin aiboisit kotoma obrowser kon."
   },
   "Status": {
     "metaTitle": "Adoketait {id}",
@@ -166,9 +286,11 @@
     "descriptionInvalid": "Aanyun aijukario kotoma ID.",
     "notFoundTitle": "Mam apotu sio adumutu aingic ngin ID",
     "notFoundBody": "Koany ID kosodi aitam bobo. Esubit bala ejaasi Tracking IDs kwape ZL-7K3P-Q9.",
+    "trackingId": "Aingic ID",
     "copyId": "Kopu ID",
     "copyLink": "Kopu elink",
     "idCopied": "Aponi ikoparai ID",
+    "linkCopied": "Aponi ikoparai elink",
     "copyFailed": "Mam apedori aipikakin. Aseun kosodi aipikakin bon.",
     "saveIdHint": "Kiswama ID kanu abongun aanyun akiro kon kotoma acuma adio.",
     "readyTitle": "Ekapakina eripoota kon",
@@ -190,6 +312,7 @@
     "submittedTitle": "Inyoin bo abu jo ijukak",
     "submittedMeta": "{type} · {language} · aponi ijukarai {time}",
     "types": {
+      "url": "Erai Link",
       "article": "Atutubet",
       "media": "Akiro nuka iyemuto"
     },
@@ -250,6 +373,7 @@
       }
     },
     "lookup": {
+      "label": "Aingic ID",
       "track": "Aiwadikaet",
       "hint": "Idumunit jo ngun ID neinakina jo.",
       "invalid": "Esubit bala ejaasi Tracking IDs kwape ZL-7K3P-Q9."
@@ -282,6 +406,7 @@
         "body": "WhatsApp lu engarenok, aiwadikaeta nuka itunga, akiro nu elimunitai"
       },
       "link": {
+        "title": "Erai Link",
         "body": "Akiro nuka iyemuto keda iwaitin luka elago"
       },
       "media": {
@@ -323,12 +448,17 @@
     },
     "activity": {
       "types": {
+        "url": "Erai Link",
         "media": "Erai Media ewai lo itolomunere akiro",
         "article": "Atutubet"
       },
+      "verifyClaim": "Aitogogong aineranara",
       "viewReport": "Asesen eripoota"
     },
     "profile": {
+      "errors": {
+        "name": "Iwadika ekirorikon kere."
+      },
       "fullName": "Ekiror loepol",
       "password": {
         "new": "Akirot naitetet naka aiyeyea",
@@ -351,6 +481,9 @@
   "Admin": {
     "broadcasts": {
       "administrator": "Eyaiton"
+    },
+    "sources": {
+      "allTypes": "Ipu luka iponesio"
     },
     "users": {
       "columns": {
@@ -398,6 +531,9 @@
     }
   },
   "Community": {
+    "ccs": {
+      "title": "Etapit loka amunokina naka itunga"
+    },
     "panel": {
       "signIn": "Kobu toma"
     }
@@ -554,11 +690,44 @@
       "signOutFailed": "Mam apedori aitolomun jo kinga. Kotam bobo."
     }
   },
+  "Pwa": {
+    "description": "Koanyanaa imesejis, aiboisio, aputosia ka ebidio kanu ajenun akiro numam eraasi nukabeit eroko imorikikina.",
+    "shortcutLibrary": "Eitabo lo itigogongit akiro"
+  },
   "Offline": {
-    "retry": "Kotam bobo"
+    "eyebrow": "Mam ejai elago",
+    "title": "Eyuaritai kanu offline",
+    "description": "Ejaasi iripotan lu apukorit jo pac toma acuma kana, aso ipedori jo asiom kes komamei arucokina.",
+    "stillOffline": "Mam jo ijai offline. Aanyanar akiro nuitetiak ekoto arucokina, konye apotu iripootin kon lu imonoitai kwap eringa epukoro.",
+    "backOnline": "Ijai jo toma olago. Akiro nu apukoria jo eyangaritai ne bon.",
+    "retry": "Kotam bobo",
+    "savedTitle": "Aripotin nu asesenitai pac",
+    "savedDescription": "Kitoni 30 kotoma oripootin lu apukorit jo pac.",
+    "savedAt": "Ayuwara {when}",
+    "emptyTitle": "Emamei aiwadikaeta nu eyuwaritai",
+    "emptyDescription": "Apukor aanyanario naka akiro najaar jo toma olago ido ebuni aingadaun ne kanu ekaulo.",
+    "browseLibrary": "Kotoma aiboisit naka aingadis naka itabon",
+    "banner": "Mam jo ijai offline",
+    "bannerAction": "Apukor iripotan lu eyuwaritai",
+    "bannerBack": "Abongun toma olago"
   },
   "Errors": {
-    "retry": "Kotam bobo"
+    "eyebrow": "Ajai ibore yen abu kobwang",
+    "title": "Mam apedori sio aipikakin atutubet na",
+    "description": "Erai na ationis kotoma atutubetekosi, mere kon. Kotam bobo kotoma apak adio.",
+    "offlineTitle": "Mam jo ijai offline",
+    "offlineDescription": "Ipuda atutubet na arucokina. Eringa iripotan lu apukoritai pac ejai.",
+    "retry": "Kotam bobo",
+    "home": "Kolot toma atutubet naka ore",
+    "back": "Abongun toma akaunt kon",
+    "savedReports": "Kosesen iripotan lu eyuwaritai",
+    "reference": "Aitijenaret: {digest}",
+    "notFoundMetaTitle": "Mam adumunitai apapula",
+    "notFoundTitle": "Mam apotu oni kodumutu atutubet kangin",
+    "notFoundDescription": "Aticepak emunaaritai arucokina, arai bo aticepak abu atutubet kobwo. Koomoom nuikamunitos aiboisit nainwakere akiro, arai bo kogeun kotoma atutubet naka ore.",
+    "browseLibrary": "Koomoomu Library",
+    "globalTitle": "Abu Zuula kodum ationis",
+    "globalDescription": "Ajai ibore yen abu kotubor kotoma aipikakin app. Kotam bobo, ido arai inyikokini iswamaun, kobongu bobo kotoma idakikan idis."
   },
   "Developers": {
     "toc": {
@@ -601,7 +770,8 @@
       "title": "Aanyanario naka akiro",
       "link": "Eibikiro loka itabon",
       "tagNew": "Loitetet",
-      "tagDebated": "Aponi kitirianarai"
+      "tagDebated": "Aponi kitirianarai",
+      "ccsTitle": "Etapit loka amunokina naka itunga"
     },
     "community": {
       "eyebrow": "Atukot naka itunga",

@@ -1454,3 +1454,503 @@
 {"lang":"lg","src":"Enter your full name.","out":"Yingiza erinnya lyo mu bujjuvu."}
 {"lang":"ach","src":"Enter your full name.","out":"Dony i nyingi ma weng."}
 {"lang":"ach","src":"You need to accept the Terms and Privacy Policy.","out":"Omyero i ye cik ki lok ma mako mung."}
+{"lang":"teo","src":"Enter your full name.","out":"Iwadika ekirorikon kere."}
+{"lang":"nyn","src":"Enter your full name.","out":"Taahamu eiziina ryawe ryona."}
+{"lang":"lg","src":"You need to accept the Terms and Privacy Policy.","out":"Olina okukkiriza Endagaano n'Enkola y'Obwannannyini."}
+{"lang":"nyn","src":"You need to accept the Terms and Privacy Policy.","out":"Oine kwikiriza ebiragiro hamwe n'ebirikukwata aha bantu."}
+{"lang":"lg","src":"Enter the {0}-digit code.","out":"Yingiza ennamba ya digito {0}."}
+{"lang":"ach","src":"Enter the {0}-digit code.","out":"Dony i {0}-digit code."}
+{"lang":"nyn","src":"Enter the {0}-digit code.","out":"Taahamu kode y'ebicweka {0}."}
+{"lang":"teo","src":"You need to accept the Terms and Privacy Policy.","out":"Ekot ijo acamun Atukonokineta keda Atukot Naka Aiyeyea."}
+{"lang":"teo","src":"Enter the {0}-digit code.","out":"Kobu kode loka idigitin {0}."}
+{"lang":"lg","src":"Enter all {0} digits.","out":"Yingiza ennamba {0} zonna."}
+{"lang":"ach","src":"Enter all {0} digits.","out":"Dony i namba {0} weng."}
+{"lang":"nyn","src":"Enter all {0} digits.","out":"Taahamu enamba zoona eza {0}."}
+{"lang":"teo","src":"Enter all {0} digits.","out":"Ibusakinit jo aipikakin idigitin kere {0}."}
+{"lang":"nyn","src":"That code is incorrect or has expired.","out":"Koodi egyo terahikire nainga ehweireho."}
+{"lang":"lg","src":"That code is incorrect or has expired.","out":"Koodi eyo si ntuufu oba eweddeko."}
+{"lang":"ach","src":"That code is incorrect or has expired.","out":"Lanyut eni pe tye kakare onyo dong okato woko."}
+{"lang":"ach","src":"Something went wrong","out":"Gin mo otimme marac"}
+{"lang":"lg","src":"Something went wrong","out":"Waliwo ekintu ekyagenda obubi."}
+{"lang":"nyn","src":"Something went wrong","out":"Hariho ekintu ekyagyenzire kubi."}
+{"lang":"teo","src":"That code is incorrect or has expired.","out":"Mam ekode ngol erai loabeit arai bo atwania apak."}
+{"lang":"ach","src":"We couldn't load this page","out":"Pe watwero keto pot buk man"}
+{"lang":"teo","src":"Something went wrong","out":"Ajai ibore yen abu kobwang."}
+{"lang":"lg","src":"We couldn't load this page","out":"Tetwasobodde kutikka olupapula luno."}
+{"lang":"nyn","src":"We couldn't load this page","out":"Titurabaasize kuta aha rupapura oru"}
+{"lang":"teo","src":"We couldn't load this page","out":"Mam apedori sio aipikakin atutubet na."}
+{"lang":"lg","src":"This is a problem on our side, not yours. Try again in a moment.","out":"Kino kizibu ku ludda lwaffe, si ku lulwo. Gezaako nate mu kaseera akatono."}
+{"lang":"ach","src":"This is a problem on our side, not yours. Try again in a moment.","out":"Man obedo peko i tenge wa, pe megi. Tem doki i ngee kare manok."}
+{"lang":"nyn","src":"This is a problem on our side, not yours. Try again in a moment.","out":"Eki n'oburemeezi aha rubaju rwaitu, ti orwawe. Gyezaho ogaruke omu kashozi."}
+{"lang":"ach","src":"This page needs a connection. Reports you opened recently are still available.","out":"Pot buk man mito kube. Ripot ma iyabo cokcok-ki pud tye."}
+{"lang":"nyn","src":"This page needs a connection. Reports you opened recently are still available.","out":"Orupapura oru nirwetenga okugaitwa. Ripoota ezi waigwireho juba zikiriho."}
+{"lang":"teo","src":"This is a problem on our side, not yours. Try again in a moment.","out":"Erai na ationis kotoma atutubetekosi, mere kon. Kotam bobo kotoma apak adio."}
+{"lang":"lg","src":"This page needs a connection. Reports you opened recently are still available.","out":"Olupapula luno lwetaaga okuyunga. Alipoota z'oyiseeko gye buvuddeko awo zikyaliwo."}
+{"lang":"lg","src":"Go to the home page","out":"Genda ku lupapula lw'awaka."}
+{"lang":"ach","src":"Go to the home page","out":"Citi i pot buk me gang"}
+{"lang":"nyn","src":"Go to the home page","out":"Gyenda aha rupapura rw'omuka."}
+{"lang":"teo","src":"This page needs a connection. Reports you opened recently are still available.","out":"Ipuda atutubet na arucokina. Eringa iripotan lu apukoritai pac ejai."}
+{"lang":"teo","src":"Go to the home page","out":"Kolot toma atutubet naka ore."}
+{"lang":"lg","src":"Back to your account","out":"Ddayo ku akawunti yo."}
+{"lang":"ach","src":"Back to your account","out":"Dwogo cen i akaunt mamegi"}
+{"lang":"nyn","src":"Back to your account","out":"Okugaruka aha akawunti yaawe"}
+{"lang":"teo","src":"Back to your account","out":"Abongun toma akaunt kon."}
+{"lang":"lg","src":"See saved reports","out":"Laba alipoota ezaterekebwa."}
+{"lang":"nyn","src":"See saved reports","out":"Reeba ripoota ezabiikirwe"}
+{"lang":"ach","src":"See saved reports","out":"Nen adwogi tic ma ki gwoko"}
+{"lang":"teo","src":"See saved reports","out":"Kosesen iripotan lu eyuwaritai"}
+{"lang":"lg","src":"Reference: {0}","out":"Ekyokulabirako: {0}"}
+{"lang":"teo","src":"Reference: {0}","out":"Aitijenaret: {0}"}
+{"lang":"nyn","src":"Reference: {0}","out":"Okurabiraho: {0}"}
+{"lang":"ach","src":"Reference: {0}","out":"Lok ma ki loko iye: {0}"}
+{"lang":"lg","src":"Page not found","out":"Olupapula teruzuuliddwa."}
+{"lang":"ach","src":"Page not found","out":"Pe kinongo pot buk"}
+{"lang":"teo","src":"Page not found","out":"Mam adumunitai apapula."}
+{"lang":"nyn","src":"Page not found","out":"Orupapura tirushangirwe"}
+{"lang":"lg","src":"We couldn't find that page","out":"Tetwasobodde kuzuula olupapula olwo."}
+{"lang":"ach","src":"We couldn't find that page","out":"Pe watwero nongo pot buk meno"}
+{"lang":"nyn","src":"We couldn't find that page","out":"Titurabaasize kushanga orupapura orwo."}
+{"lang":"teo","src":"We couldn't find that page","out":"Mam apotu oni kodumutu atutubet kangin."}
+{"lang":"ach","src":"The link may be broken, or the page may have moved. Search the fact-check library, or start from the home page.","out":"Link ne twero bedo ni otur, onyo pot buk ne twero bedo ni okobo. Yen lok ma mako library me fact-check, onyo cak ki i pot buk me gang."}
+{"lang":"lg","src":"The link may be broken, or the page may have moved. Search the fact-check library, or start from the home page.","out":"Akakubo kayinza okuba nga kamenyese, oba olupapula luyinza okuba nga lwakyusiddwa. Noonya mu tterekero ly'okukebera amazima, oba tandikira ku lupapula olusooka."}
+{"lang":"teo","src":"The link may be broken, or the page may have moved. Search the fact-check library, or start from the home page.","out":"Aticepak emunaaritai arucokina, arai bo aticepak abu atutubet kobwo. Koomoom nuikamunitos aiboisit nainwakere akiro, arai bo kogeun kotoma atutubet naka ore."}
+{"lang":"nyn","src":"The link may be broken, or the page may have moved. Search the fact-check library, or start from the home page.","out":"Akakwate nikabaasa kuba kahendekire, nari orupapura rurabaasa kuba rwatambwire. Shuuruura eibikiro ry'okukyebera amazima, nari otandikire aha rupapura rw'omuka."}
+{"lang":"ach","src":"Search the Library","out":"Yeny i Library"}
+{"lang":"teo","src":"Search the Library","out":"Koomoomu Library"}
+{"lang":"lg","src":"Search the Library","out":"Noonya mu tterekero."}
+{"lang":"nyn","src":"Search the Library","out":"Ronda omu ibiikiro"}
+{"lang":"nyn","src":"{0} ran into a problem","out":"{0} akatunga oburemeezi"}
+{"lang":"teo","src":"{0} ran into a problem","out":"Abu {0} kodum ationis."}
+{"lang":"ach","src":"{0} ran into a problem","out":"{0} orwate ki peko"}
+{"lang":"lg","src":"{0} ran into a problem","out":"{0} yatuukirwako ekizibu."}
+{"lang":"ach","src":"Something went wrong while loading the app. Try again, and if it keeps happening, come back in a few minutes.","out":"Gin mo ocwalo bal ikare me loading app. Tem doki, ki ka pud mede ki timme, dwog cen i dakika manok."}
+{"lang":"teo","src":"Something went wrong while loading the app. Try again, and if it keeps happening, come back in a few minutes.","out":"Ajai ibore yen abu kotubor kotoma aipikakin app. Kotam bobo, ido arai inyikokini iswamaun, kobongu bobo kotoma idakikan idis."}
+{"lang":"nyn","src":"Something went wrong while loading the app. Try again, and if it keeps happening, come back in a few minutes.","out":"Hariho ekintu ekyagwire kubi obu yaabaire neetwara app. Gyezaho ogaruke, kandi kyaba nikigumizamu kubaho, garuka omu bwire bw'edakiika nkye."}
+{"lang":"lg","src":"Something went wrong while loading the app. Try again, and if it keeps happening, come back in a few minutes.","out":"Waliwo ekintu ekyagenze obubi ng'osika app. Gezaako nate, era singa kiba nga kyeyongera okubaawo, komawo oluvannyuma lw'eddakiika ntono."}
+{"lang":"teo","src":"Authentic","out":"Na abeit."}
+{"lang":"nyn","src":"Authentic","out":"Ekihikire"}
+{"lang":"ach","src":"Authentic","out":"Maber atir"}
+{"lang":"lg","src":"Authentic","out":"Entuufu."}
+{"lang":"ach","src":"Likely False","out":"Twero bedo ni pe tye ada"}
+{"lang":"nyn","src":"Likely False","out":"Obundi ekishuba"}
+{"lang":"lg","src":"Likely False","out":"Kirabika nga si kituufu."}
+{"lang":"teo","src":"Likely False","out":"Aticepak mam Erai abeit"}
+{"lang":"ach","src":"False","out":"Goba"}
+{"lang":"lg","src":"False","out":"Bikyaamu"}
+{"lang":"teo","src":"False","out":"Mam erai abeit"}
+{"lang":"nyn","src":"False","out":"Ekitahikire"}
+{"lang":"ach","src":"{0}-Generated","out":"{0}-Kiyubu"}
+{"lang":"lg","src":"{0}-Generated","out":"{0}-Ekikoleddwa."}
+{"lang":"nyn","src":"{0}-Generated","out":"{0}-Ekozirwe"}
+{"lang":"teo","src":"{0}-Generated","out":"{0}-Aitolomunitai"}
+{"lang":"lg","src":"Unverifiable","out":"Etakakasiddwa."}
+{"lang":"nyn","src":"Unverifiable","out":"Ekitarikubaasa kuhamibwa"}
+{"lang":"ach","src":"Unverifiable","out":"Pe ki twero moko"}
+{"lang":"teo","src":"Unverifiable","out":"Mam epedorio aitogogong."}
+{"lang":"lg","src":"Supported by trusted sources.","out":"Ekiwagirwa ensibuko ezesigika."}
+{"lang":"ach","src":"Supported by trusted sources.","out":"Ki cwak ki lok ma genne."}
+{"lang":"nyn","src":"Supported by trusted sources.","out":"Eshagikirwe oburugo oburikwesigwa."}
+{"lang":"teo","src":"Supported by trusted sources.","out":"Igangitai keda aiboisio nu emunoi."}
+{"lang":"lg","src":"Key claims are contradicted or lack support.","out":"Ebyo ebikulu ebyogerwa bikontana oba tebirina buwagizi."}
+{"lang":"nyn","src":"Key claims are contradicted or lack support.","out":"Ebi barikugamba nibihakanisibwa nari tibaine buhame."}
+{"lang":"ach","src":"Key claims are contradicted or lack support.","out":"Lok ma pigi tego ki pyem onyo pe tye ki cwak."}
+{"lang":"teo","src":"Key claims are contradicted or lack support.","out":"Akiro nuepolok etepegio arai bo emamei agangat."}
+{"lang":"lg","src":"Contradicted by trusted sources.","out":"Kyawakanyizibwa ensibuko ezeesigika."}
+{"lang":"ach","src":"Contradicted by trusted sources.","out":"Lok ma ki kwero ki ka ma gene."}
+{"lang":"teo","src":"Contradicted by trusted sources.","out":"Etelekaritai keda akiro nu emunoi."}
+{"lang":"nyn","src":"Contradicted by trusted sources.","out":"Kikahakanisibwa oburugo oburikwesigwa."}
+{"lang":"lg","src":"Shows strong signs of being created or altered by {0}.","out":"Kiraga obubonero obw'amaanyi obw'okuba nti kyatondebwa oba kyakyusibwa {0}."}
+{"lang":"ach","src":"Shows strong signs of being created or altered by {0}.","out":"Nyutu lanyut matek me cweyo onyo aloka-loka ki {0}."}
+{"lang":"nyn","src":"Shows strong signs of being created or altered by {0}.","out":"Nikworeka obubonero bw'amaani obw'okuhangwa nainga kuhindurwa {0}."}
+{"lang":"lg","src":"Not enough reliable evidence either way.","out":"Wadde ku njuyi zombi tewali bujulizi bumala."}
+{"lang":"teo","src":"Shows strong signs of being created or altered by {0}.","out":"Ejaasi keda aanyuneta nu agogong nuka aitolomun arai aijulakinio keda {0}."}
+{"lang":"lg","src":"Misleading","out":"Okubuzaabuza."}
+{"lang":"ach","src":"Not enough reliable evidence either way.","out":"Caden ma genne bene pe romo i yoo mo keken."}
+{"lang":"teo","src":"Not enough reliable evidence either way.","out":"Emamei bobo aitijenaret naedolit koipone kangin."}
+{"lang":"nyn","src":"Not enough reliable evidence either way.","out":"Tihariho obuhame burikumara oburikwesigwa omu miringo yoona."}
+{"lang":"nyn","src":"Misleading","out":"Okutabuzabuza"}
+{"lang":"ach","src":"Misleading","out":"Tye ka bwolo dano"}
+{"lang":"teo","src":"Misleading","out":"Naingarenikinitai."}
+{"lang":"lg","src":"Unsupported","out":"Tekiwagirwa."}
+{"lang":"ach","src":"Unsupported","out":"Pe kicwako"}
+{"lang":"lg","src":"Out of context","out":"Okuva mu mbeera."}
+{"lang":"teo","src":"Unsupported","out":"Mam igangitai"}
+{"lang":"nyn","src":"Unsupported","out":"Ekitarikushagikwa"}
+{"lang":"teo","src":"Out of context","out":"Mam ejai toma akirot."}
+{"lang":"lg","src":"Supported","out":"Ekiwagirwa."}
+{"lang":"nyn","src":"Out of context","out":"Ahabw'okutaba omu muringo"}
+{"lang":"ach","src":"Out of context","out":"Ma pe tye i lok"}
+{"lang":"ach","src":"Supported","out":"Kicwako"}
+{"lang":"teo","src":"Supported","out":"Igangitai"}
+{"lang":"lg","src":"Supports","out":"Kkiriza."}
+{"lang":"nyn","src":"Supports","out":"Okushagika"}
+{"lang":"nyn","src":"Supported","out":"Eshagikirwe"}
+{"lang":"ach","src":"Supports","out":"Miti"}
+{"lang":"teo","src":"Supports","out":"Icamunitos"}
+{"lang":"ach","src":"Contradicts","out":"Pyem ki lok ada"}
+{"lang":"nyn","src":"Contradicts","out":"Nikihakanisa"}
+{"lang":"lg","src":"Contradicts","out":"Kikontana."}
+{"lang":"teo","src":"Contradicts","out":"Etepegit."}
+{"lang":"lg","src":"Context","out":"Embeera."}
+{"lang":"ach","src":"Context","out":"Kabedo"}
+{"lang":"nyn","src":"Context","out":"Enshonga"}
+{"lang":"teo","src":"Context","out":"Akiro nuikamunitos akirot."}
+{"lang":"lg","src":"High confidence","out":"Obwesige obw'amaanyi."}
+{"lang":"ach","src":"High confidence","out":"Gen matut"}
+{"lang":"nyn","src":"High confidence","out":"Obwesigye bwingi"}
+{"lang":"ach","src":"Moderate confidence","out":"Gen matye i rwom ma lamal"}
+{"lang":"lg","src":"Moderate confidence","out":"Obwesige obw'ekigero."}
+{"lang":"teo","src":"Moderate confidence","out":"Amuno naedit."}
+{"lang":"lg","src":"Low confidence","out":"Obwesige obutono."}
+{"lang":"ach","src":"Low confidence","out":"Gen ma nok"}
+{"lang":"nyn","src":"Low confidence","out":"Obwesigye bukye"}
+{"lang":"teo","src":"Low confidence","out":"Amamut amunokina naepol noi"}
+{"lang":"lg","src":"{0} confidence score","out":"{0} obubonero bw'obwesige"}
+{"lang":"ach","src":"{0} confidence score","out":"{0} rwom me gen"}
+{"lang":"nyn","src":"{0} confidence score","out":"{0} obubonero bw'obwesigye"}
+{"lang":"teo","src":"{0} confidence score","out":"{0} adoketait naka amunokina"}
+{"lang":"lg","src":"{0} confidence {1}%","out":"{0} obwesige {1} %"}
+{"lang":"ach","src":"{0} confidence {1}%","out":"{0} gen {1} %"}
+{"lang":"nyn","src":"{0} confidence {1}%","out":"{0} obwesigye {1}%"}
+{"lang":"teo","src":"{0} confidence {1}%","out":"{0} amunokina {1}%"}
+{"lang":"lg","src":"Human Verified","out":"Omuntu akakasiddwa."}
+{"lang":"ach","src":"Human Verified","out":"Dano ma ki moko"}
+{"lang":"nyn","src":"Human Verified","out":"Okukakasibwa omuntu"}
+{"lang":"teo","src":"Human Verified","out":"Itigogongoritai itunga."}
+{"lang":"lg","src":"Confirmed by {0}","out":"Kikakasiddwa {0}"}
+{"lang":"ach","src":"Confirmed by {0}","out":"Ki moko ki {0}"}
+{"lang":"nyn","src":"Confirmed by {0}","out":"Kikahamiibwa {0}"}
+{"lang":"teo","src":"Confirmed by {0}","out":"Abu {0} kitogogong."}
+{"lang":"lg","src":"Overridden from {0} by {1}","out":"Okusikirizibwa okuva ku {0} ne {1}"}
+{"lang":"ach","src":"Overridden from {0} by {1}","out":"Ki loyo woko ki {0} ki {1}"}
+{"lang":"nyn","src":"Overridden from {0} by {1}","out":"Okusingwa {0} kuruga ahari {1}"}
+{"lang":"teo","src":"Overridden from {0} by {1}","out":"Aponi itelekarai kama ejai {0} keda {1}"}
+{"lang":"lg","src":"Trusted source","out":"Ensibuko eyeesigika."}
+{"lang":"teo","src":"High confidence","out":"Amuno naepol noi."}
+{"lang":"nyn","src":"Moderate confidence","out":"Obwesigye oburi ahagati"}
+{"lang":"ach","src":"Trusted source","out":"Kama genne tye iye"}
+{"lang":"nyn","src":"Trusted source","out":"Oburugo oburikwesigwa"}
+{"lang":"lg","src":"(opens in a new tab)","out":"(Egiggulawo mu tab empya)"}
+{"lang":"teo","src":"Trusted source","out":"Alibunet na emunoi"}
+{"lang":"ach","src":"(opens in a new tab)","out":"(yabbe i tab manyen)"}
+{"lang":"lg","src":"What is false","out":"Kiki ekiba eky'obulimba?"}
+{"lang":"teo","src":"(opens in a new tab)","out":"(eyangari toma atab naitetet)"}
+{"lang":"nyn","src":"(opens in a new tab)","out":"(ekiguraho omu tabu ensya)"}
+{"lang":"ach","src":"What is false","out":"Gin ango ma obedo goba"}
+{"lang":"nyn","src":"What is false","out":"Ekishobobo niki?"}
+{"lang":"lg","src":"What is true","out":"Kiki eky'amazima?"}
+{"lang":"teo","src":"What is false","out":"Inyoin bo erai aisab?"}
+{"lang":"ach","src":"What is true","out":"Gin ango ma tye ada"}
+{"lang":"nyn","src":"What is true","out":"Niki ekiri ekyamazima?"}
+{"lang":"teo","src":"What is true","out":"Inyoin bo erai abeit?"}
+{"lang":"lg","src":"(claim {0}: {1}, show why)","out":"(ekigambibwa {0}: {1}, kirage lwaki)"}
+{"lang":"ach","src":"(claim {0}: {1}, show why)","out":"(lok {0}: {1}, nyut pingo)"}
+{"lang":"nyn","src":"(claim {0}: {1}, show why)","out":"(ekigambirwe {0}: {1}, yoreka ahabwenki)"}
+{"lang":"teo","src":"(claim {0}: {1}, show why)","out":"(claim {0}: {1}, kitodu ibore)"}
+{"lang":"lg","src":"Claim {0} · {1}","out":"Okusaba {0} · {1}"}
+{"lang":"ach","src":"Claim {0} · {1}","out":"Kwayo {0} · {1}"}
+{"lang":"nyn","src":"Claim {0} · {1}","out":"Okushaba {0} · {1}"}
+{"lang":"teo","src":"Claim {0} · {1}","out":"Akiro {0} · {1}"}
+{"lang":"lg","src":"{0} of {1} detection signals were triggered.","out":"Obubonero bwa {0} ku {1} obulaga okuzuula bwakubiddwa."}
+{"lang":"ach","src":"{0} of {1} detection signals were triggered.","out":"{0} iwi {1} lanyut me nongo gin mo kicako tic kwede."}
+{"lang":"nyn","src":"{0} of {1} detection signals were triggered.","out":"Obubonero bwa {0} ahari {1} bwatandikire."}
+{"lang":"teo","src":"{0} of {1} detection signals were triggered.","out":"{0} kotoma {1} ajenuneta nuka aanyanaret aponi kitolosai."}
+{"lang":"ach","src":"Triggered","out":"Kicako"}
+{"lang":"lg","src":"Triggered","out":"Ekitandikiddwa."}
+{"lang":"teo","src":"Triggered","out":"Aponi kitolomunai"}
+{"lang":"ach","src":"Not triggered","out":"Pe okelo"}
+{"lang":"nyn","src":"Triggered","out":"Ekatandikwaho"}
+{"lang":"lg","src":"Not triggered","out":"Tekyayisiddwa."}
+{"lang":"nyn","src":"Not triggered","out":"Tikirareesireho"}
+{"lang":"teo","src":"Not triggered","out":"Mam aponi kisinyikokinitai"}
+{"lang":"lg","src":"Score {0}%, threshold {1}%","out":"Obubonero {0}%, ekigero {1}%"}
+{"lang":"nyn","src":"Score {0}%, threshold {1}%","out":"Obubonero {0}%, ekikomo {1}%"}
+{"lang":"ach","src":"Score {0}%, threshold {1}%","out":"Score {0}%, kigeng {1} %"}
+{"lang":"teo","src":"Score {0}%, threshold {1}%","out":"Ejaasi amakesin keda {0}%, atutubet {1}%"}
+{"lang":"nyn","src":"Method: {0} · Threshold {1}%","out":"Omuringo: {0} · Ekikomo {1}%"}
+{"lang":"ach","src":"Method: {0} · Threshold {1}%","out":"Yo me tic: {0} · Wel ma ki keto {1}%"}
+{"lang":"lg","src":"Method: {0} · Threshold {1}%","out":"Enkola: {0} · Olukugiro {1}%"}
+{"lang":"teo","src":"Method: {0} · Threshold {1}%","out":"Eipone: {0} · Atiaketait {1}%"}
+{"lang":"lg","src":"Content type","out":"Ekika ky'ebirimu."}
+{"lang":"ach","src":"Content type","out":"Kit ma tye iye"}
+{"lang":"nyn","src":"Content type","out":"Ekika ky'ebirimu"}
+{"lang":"ach","src":"Checked","out":"Ki ngiyo"}
+{"lang":"lg","src":"Checked","out":"Kebeddwa."}
+{"lang":"teo","src":"Content type","out":"Epone loka akiro"}
+{"lang":"nyn","src":"Checked","out":"Kikakyeberwa"}
+{"lang":"teo","src":"Checked","out":"Aanyanario"}
+{"lang":"ach","src":"Checked {0} in {1}s","out":"Ki ngiyo {0} i {1}s"}
+{"lang":"lg","src":"Checked {0} in {1}s","out":"Nkebedde {0} mu {1}s"}
+{"lang":"lg","src":"Category","out":"Ekibinja"}
+{"lang":"ach","src":"Category","out":"Category"}
+{"lang":"teo","src":"Checked {0} in {1}s","out":"Aanyunitai {0} kotoma {1}s"}
+{"lang":"nyn","src":"Checked {0} in {1}s","out":"Kikyeberwa {0} omuri {1}s"}
+{"lang":"nyn","src":"Category","out":"Ekicweka"}
+{"lang":"teo","src":"Category","out":"Atutubet"}
+{"lang":"lg","src":"Tracking {0}","out":"Okulondoola {0}"}
+{"lang":"ach","src":"Tracking {0}","out":"Lubu {0}"}
+{"lang":"nyn","src":"Tracking {0}","out":"Okurondoora {0}"}
+{"lang":"teo","src":"Tracking {0}","out":"Aingic {0}"}
+{"lang":"lg","src":"Community Confidence Score","out":"Obubonero bw'Obwesige mu Kitundu"}
+{"lang":"ach","src":"Community Confidence Score","out":"Rwom me gen pa lwak"}
+{"lang":"nyn","src":"Community Confidence Score","out":"Obwesigye bw'abantu omu kyanga"}
+{"lang":"teo","src":"Community Confidence Score","out":"Etapit loka amunokina naka itunga"}
+{"lang":"lg","src":"Search claims and articles that {0} has already checked.","out":"Noonya ebiwandiiko n'ebitundu {0} bye yamala dda okukebera."}
+{"lang":"ach","src":"Search claims and articles that {0} has already checked.","out":"Yeny lok ki coc ma {0} dong ongiyo."}
+{"lang":"nyn","src":"Search claims and articles that {0} has already checked.","out":"Shuuruura ebirikugambwaho hamwe n'ebicweka ebi {0} yaaherize kushwijuma."}
+{"lang":"lg","src":"Fact-check library","out":"Ettendekero erikebera amazima."}
+{"lang":"teo","src":"Search claims and articles that {0} has already checked.","out":"Aingic akiro ka atutubena nu ejaasi {0} aanyunitai sek."}
+{"lang":"ach","src":"Fact-check library","out":"Kabedo me moko lok ada"}
+{"lang":"nyn","src":"Fact-check library","out":"Eibikiro ry'okukyebera amazima"}
+{"lang":"teo","src":"Fact-check library","out":"Eitabo lo itigogongit akiro."}
+{"lang":"lg","src":"Search claims and articles that have already been checked.","out":"Noonya ebiwandiiko n'ebitundu ebyamala dda okukeberebwa."}
+{"lang":"ach","src":"Search claims and articles that have already been checked.","out":"Yeny lok ma kiwaco ki coc ma dong kityeko ngiyo."}
+{"lang":"nyn","src":"Search claims and articles that have already been checked.","out":"Shuuruura ebiragiro hamwe n'ebihandiiko ebyashwijumirwe."}
+{"lang":"teo","src":"Search claims and articles that have already been checked.","out":"Aingic akiro ka atutubena nu aanyunitai sek."}
+{"lang":"ach","src":"Filters","out":"Jami ma yubu"}
+{"lang":"nyn","src":"Filters","out":"Fayiro"}
+{"lang":"teo","src":"Filters","out":"Iboro lu itikitikere"}
+{"lang":"lg","src":"Filters ({0})","out":"Fuluta ({0})"}
+{"lang":"nyn","src":"Filters ({0})","out":"Fayiroozi ({0})"}
+{"lang":"lg","src":"Filters","out":"Fuluta"}
+{"lang":"ach","src":"Filters ({0})","out":"Filters ({0})"}
+{"lang":"ach","src":"Clear all","out":"Yer jami weng"}
+{"lang":"nyn","src":"Clear all","out":"Shangura byona"}
+{"lang":"teo","src":"Clear all","out":"Kilacakin kere"}
+{"lang":"lg","src":"{0} result","out":"{0} ekivaamu"}
+{"lang":"teo","src":"Filters ({0})","out":"Ipuak (0)"}
+{"lang":"lg","src":"Clear all","out":"Sangula byonna."}
+{"lang":"teo","src":"Filters ({0})","out":"Iwaitin ({0})"}
+{"lang":"lg","src":"{0} results","out":"{0} ebivaamu"}
+{"lang":"ach","src":"{0} result","out":"{0} adwogi tic"}
+{"lang":"nyn","src":"{0} results","out":"{0} ebirugiremu"}
+{"lang":"nyn","src":"{0} result","out":"{0} ekirugiremu"}
+{"lang":"ach","src":"{0} results","out":"Adwogi {0}"}
+{"lang":"teo","src":"{0} result","out":"{0} akiro nuelomunitos"}
+{"lang":"teo","src":"{0} results","out":"{0} akiro nu elomunitos"}
+{"lang":"lg","src":"Show {0} results","out":"Laga {0} ebivaamu."}
+{"lang":"lg","src":"Show {0} result","out":"Laga {0} ebyavaamu."}
+{"lang":"ach","src":"Show {0} result","out":"Nyut adwogi {0}"}
+{"lang":"nyn","src":"Show {0} result","out":"Yoreka {0} ekirugiremu"}
+{"lang":"ach","src":"Show {0} results","out":"Nyut adwogi {0}"}
+{"lang":"nyn","src":"Show {0} results","out":"Yoreka {0} ebirugiremu"}
+{"lang":"teo","src":"Show {0} result","out":"Itodu {0} akiro nuelomunitos"}
+{"lang":"teo","src":"Show {0} results","out":"Itodu {0} akiro"}
+{"lang":"lg","src":"Search claims, topics or sources…","out":"Noonya ebiwandiiko, emitwe oba ensibuko…"}
+{"lang":"ach","src":"Search claims, topics or sources…","out":"Yeny lok, wi lok onyo yoo me nongo lok…"}
+{"lang":"nyn","src":"Search claims, topics or sources…","out":"Okuronda ebirikugambwaho, omutwe nari oburugo…"}
+{"lang":"lg","src":"Sort by","out":"Tegeka nga"}
+{"lang":"teo","src":"Search claims, topics or sources…","out":"Aingic akiro, akiro arai bo akiro nu elomunitos…"}
+{"lang":"ach","src":"Sort by","out":"Yer malube ki"}
+{"lang":"nyn","src":"Sort by","out":"Sorita kurugirira"}
+{"lang":"ach","src":"Best match","out":"Best match"}
+{"lang":"lg","src":"Best match","out":"Ekikwatagana ekisinga obulungi."}
+{"lang":"teo","src":"Sort by","out":"Sorut kotupitete"}
+{"lang":"nyn","src":"Best match","out":"Okuhikaana okurikukirayo oburungi"}
+{"lang":"ach","src":"Best match","out":"Best match"}
+{"lang":"teo","src":"Best match","out":"Abuikin naejok kakere"}
+{"lang":"lg","src":"Newest","out":"Ekisinga obuggya."}
+{"lang":"ach","src":"Newest","out":"Manyen loyo"}
+{"lang":"ach","src":"Best match","out":"Best match"}
+{"lang":"nyn","src":"Newest","out":"Ekisya munonga"}
+{"lang":"ach","src":"Most rated","out":"Pol ma ki keto rwom"}
+{"lang":"teo","src":"Newest","out":"Naitetet noi"}
+{"lang":"lg","src":"Most rated","out":"Abasinga okupimirwa."}
+{"lang":"nyn","src":"Most rated","out":"Abarikukirayo kuteebwamu"}
+{"lang":"teo","src":"Most rated","out":"Luepolok noi"}
+{"lang":"lg","src":"{0} fact-check","out":"{0} okukebera amazima."}
+{"lang":"lg","src":"{0} fact-checks","out":"{0} okukebera amazima."}
+{"lang":"ach","src":"{0} fact-check","out":"{0} me moko lok ada"}
+{"lang":"nyn","src":"{0} fact-check","out":"{0} okukyebera amazima"}
+{"lang":"ach","src":"{0} fact-checks","out":"{0} ngiyo lok ada"}
+{"lang":"nyn","src":"{0} fact-checks","out":"{0} okukyebera amazima"}
+{"lang":"lg","src":"{0} fact-check for “{1}”","out":"{0} kebera amazima ku “{1}”"}
+{"lang":"teo","src":"{0} fact-checks","out":"{0} aanyanario naka abeit"}
+{"lang":"teo","src":"{0} fact-check","out":"{0} aanyanar akiro"}
+{"lang":"lg","src":"{0} fact-checks for “{1}”","out":"{0} akakasa amazima ga \"{1}\""}
+{"lang":"ach","src":"{0} fact-checks for “{1}”","out":"{0} ngiyo lok ada pi \"{1}\""}
+{"lang":"nyn","src":"{0} fact-check for “{1}”","out":"{0} okukyebera amazima ga “{1}”"}
+{"lang":"ach","src":"{0} fact-check for “{1}”","out":"{0} me moko ada pi “{1}”"}
+{"lang":"teo","src":"{0} fact-checks for “{1}”","out":"{0} aanyanario naka abeit kanu “{1}”"}
+{"lang":"nyn","src":"{0} fact-checks for “{1}”","out":"{0} okukyebera amazima ga “{1}”"}
+{"lang":"lg","src":"Remove filter {0}","out":"Ggyako filter {0}"}
+{"lang":"teo","src":"{0} fact-check for “{1}”","out":"{0} aanyanar akiro kanu “{1}”"}
+{"lang":"ach","src":"Remove filter {0}","out":"Kwany filter {0}"}
+{"lang":"nyn","src":"Remove filter {0}","out":"Yihamu filter {0}"}
+{"lang":"teo","src":"Remove filter {0}","out":"Kotub filter {0}"}
+{"lang":"lg","src":"No fact-checks found","out":"Tewali kwekenneenya mazima kwazuuliddwa."}
+{"lang":"ach","src":"No fact-checks found","out":"Pe kinongo lok me moko ada"}
+{"lang":"nyn","src":"No fact-checks found","out":"Tihariho okukyebera amazima kwashangwa"}
+{"lang":"teo","src":"No fact-checks found","out":"Emamei aanyanario naka akiro."}
+{"lang":"lg","src":"Try different words or remove some filters. If nobody has checked this claim yet, you can submit it.","out":"Gezaako ebigambo ebirala oba oggyeko obukwakkulizo obumu. Bwe waba nga tewali muntu yenna akebedde okwemulugunya kuno, osobola okukutwala."}
+{"lang":"ach","src":"Try different words or remove some filters. If nobody has checked this claim yet, you can submit it.","out":"Tem nyig lok mapat onyo kwany lageng mogo. Ka ngat mo pud pe ongiyo lok man, itwero cwalo ne."}
+{"lang":"teo","src":"Try different words or remove some filters. If nobody has checked this claim yet, you can submit it.","out":"Kotam akiro nuegelegela arai bo alemar acuman ace. Arai emamei idiotunganan yen angicunit aitoroneta nu, ipedori jo aijukar."}
+{"lang":"lg","src":"Clear search","out":"Okunoonya okwerufu."}
+{"lang":"ach","src":"Clear search","out":"Yeny ma atir"}
+{"lang":"nyn","src":"Try different words or remove some filters. If nobody has checked this claim yet, you can submit it.","out":"Gyezaho ebigambo ebitarikushushana nainga oihemu obumanyiso obumwe. Ku haraabe hatariho owaakyebera ekihandiiko eki, noobaasa kukyohereza."}
+{"lang":"nyn","src":"Clear search","out":"Okuronda okurungi"}
+{"lang":"teo","src":"Clear search","out":"Aingic na elai"}
+{"lang":"lg","src":"Verify a claim","out":"Kakasa ekyogerwa."}
+{"lang":"ach","src":"Verify a claim","out":"Ngiyo lok ma ki waco"}
+{"lang":"nyn","src":"Verify a claim","out":"Kukakasa ekihandiiko"}
+{"lang":"teo","src":"Verify a claim","out":"Aitogogong aineranara."}
+{"lang":"lg","src":"Link","out":"Linki"}
+{"lang":"ach","src":"Link","out":"Link"}
+{"lang":"nyn","src":"Link","out":"Link"}
+{"lang":"ach","src":"Verdict","out":"Ngolo kop"}
+{"lang":"nyn","src":"Verdict","out":"Okusharamu"}
+{"lang":"teo","src":"Link","out":"Erai Link"}
+{"lang":"lg","src":"Verdict","out":"Okusalawo."}
+{"lang":"teo","src":"Verdict","out":"Aseunet."}
+{"lang":"teo","src":"All categories","out":"Atutubena kere"}
+{"lang":"nyn","src":"All categories","out":"Ebicweka byona"}
+{"lang":"lg","src":"All categories","out":"Ebika byonna."}
+{"lang":"ach","src":"All categories","out":"Kit mapat-pat weng"}
+{"lang":"lg","src":"All languages","out":"Ennimi zonna."}
+{"lang":"ach","src":"All languages","out":"Leb weng"}
+{"lang":"nyn","src":"All languages","out":"Endimi zoona"}
+{"lang":"nyn","src":"All types","out":"Emiringo yoona"}
+{"lang":"ach","src":"All types","out":"Kit weng"}
+{"lang":"teo","src":"All languages","out":"Angajepisinei kere"}
+{"lang":"lg","src":"All types","out":"Ebika byonna."}
+{"lang":"lg","src":"Date checked","out":"Olunaku lwe kebeddwa."}
+{"lang":"teo","src":"All types","out":"Ipu luka iponesio."}
+{"lang":"ach","src":"Date checked","out":"Nino ma ki ngiyo"}
+{"lang":"teo","src":"Date checked","out":"Apak na aanyanario"}
+{"lang":"lg","src":"From","out":"Okuva"}
+{"lang":"nyn","src":"Date checked","out":"Eizooba erikyeberwa"}
+{"lang":"ach","src":"From","out":"Ki i"}
+{"lang":"nyn","src":"From","out":"Kuruga"}
+{"lang":"ach","src":"To","out":"Me"}
+{"lang":"lg","src":"To","out":"Okutuuka ku"}
+{"lang":"teo","src":"From","out":"Ageun"}
+{"lang":"teo","src":"To","out":"Kanu"}
+{"lang":"nyn","src":"To","out":"Kuri"}
+{"lang":"ach","src":"Report","out":"Ripot"}
+{"lang":"lg","src":"Report","out":"Alipoota"}
+{"lang":"teo","src":"Report","out":"Aripoota"}
+{"lang":"nyn","src":"Report","out":"Ripoota"}
+{"lang":"lg","src":"What was checked","out":"Kiki ekyakeberebwa?"}
+{"lang":"teo","src":"What was checked","out":"Inyoin bo aponi koanyunai?"}
+{"lang":"ach","src":"What was checked","out":"Ngo ma ki ngiyo"}
+{"lang":"lg","src":"Highlighted claims were assessed individually. Select one to see why.","out":"Okwemulugunya okw'enkukunala kwatunuulirwa kimu ku kimu. Londa ekimu olabe lwaki."}
+{"lang":"nyn","src":"What was checked","out":"Niki ekyashwijumirwe?"}
+{"lang":"ach","src":"Highlighted claims were assessed individually. Select one to see why.","out":"Lok ma ki keto alama iye ki ngiyo ne ki acel acel. Yer acel me neno pingo."}
+{"lang":"lg","src":"Findings","out":"Ebyazuulibwa."}
+{"lang":"teo","src":"Highlighted claims were assessed individually. Select one to see why.","out":"Aponi itirianai akiro nu itodunitai. Koseu adiopet kanu aanyun ibore."}
+{"lang":"ach","src":"Findings","out":"Adwogi me kwed"}
+{"lang":"nyn","src":"Highlighted claims were assessed individually. Select one to see why.","out":"Ebi barikugamba ebikwatsirweho bikashwijumwa kimwe. Toorana kimwe kureeba ahabwenki."}
+{"lang":"nyn","src":"Findings","out":"Ebyarugiremu"}
+{"lang":"teo","src":"Findings","out":"Adumununeta"}
+{"lang":"lg","src":"{0} detection signals","out":"Obubonero obulaga okuzuula."}
+{"lang":"ach","src":"{0} detection signals","out":"Lanyut me nongo {0}"}
+{"lang":"nyn","src":"{0} detection signals","out":"Obubonero bwa {0} okumanywa"}
+{"lang":"teo","src":"{0} detection signals","out":"{0} ajenunet naka ijenuneta"}
+{"lang":"lg","src":"{0} detection signals","out":"Obubonero obulaga okuzuula."}
+{"lang":"ach","src":"The checks we ran for {0}-generated or manipulated content.","out":"Pim ma watimo pi {0}-ma kiyubu onyo jami ma kiyubo."}
+{"lang":"lg","src":"The checks we ran for {0}-generated or manipulated content.","out":"Okukebera kwe twakola okw'ebintu {0} ebikolebwa oba ebikyusiddwamu."}
+{"lang":"lg","src":"{0} detection signals","out":"Obubonero obuzuula {0}"}
+{"lang":"nyn","src":"The checks we ran for {0}-generated or manipulated content.","out":"Okukyebera oku twakozire ahabw'ebirikukorwa {0} nari ebihindwirwemu."}
+{"lang":"teo","src":"The checks we ran for {0}-generated or manipulated content.","out":"Apotu sio aanyutu kanu {0}-etolomunitai arai bo aitolitol akiro."}
+{"lang":"lg","src":"Community comments","out":"Ebyogerwa abantu b'ekitundu."}
+{"lang":"ach","src":"Community comments","out":"Lok pa lwak"}
+{"lang":"teo","src":"Community comments","out":"Akiro nuka itunga"}
+{"lang":"lg","src":"Reasons people gave with their ratings.","out":"Ensonga abantu ze bawa mu kuteebereza kwabwe."}
+{"lang":"nyn","src":"Community comments","out":"Eby'okugarukamu by'abantu."}
+{"lang":"ach","src":"Reasons people gave with their ratings.","out":"Tyen lok ma oweko dano omiyo rwom gi."}
+{"lang":"nyn","src":"Reasons people gave with their ratings.","out":"Enshonga ahabw'enki abantu baabaire nibaha obubonero."}
+{"lang":"lg","src":"Expert notes","out":"Ebiwandiiko by'abakugu."}
+{"lang":"teo","src":"Reasons people gave with their ratings.","out":"Akiro nu ijaikitos itunga keda aipimakec."}
+{"lang":"ach","src":"Expert notes","out":"Ngec pa ludiro"}
+{"lang":"teo","src":"Expert notes","out":"Iwadikaeta luka ipirioitin"}
+{"lang":"lg","src":"Community rating","out":"Okupima kw'abatuuze."}
+{"lang":"nyn","src":"Expert notes","out":"Obuhabuzi bw'abakugu"}
+{"lang":"ach","src":"Community rating","out":"Rwom me rwom me kabedo"}
+{"lang":"lg","src":"{0} source cross-referenced","out":"{0} ensibuko yajulizibwako."}
+{"lang":"nyn","src":"Community rating","out":"Okuteera akaruuru kw'abantu"}
+{"lang":"teo","src":"Community rating","out":"Aitirian naka itunga."}
+{"lang":"lg","src":"{0} sources cross-referenced","out":"{0} ensibuko zeekenneenyeza wamu."}
+{"lang":"ach","src":"{0} source cross-referenced","out":"{0} ma aa ki iye ki poro ne ki mukene"}
+{"lang":"ach","src":"{0} sources cross-referenced","out":"{0} yoo me kwedo lok mapat-pat"}
+{"lang":"nyn","src":"{0} source cross-referenced","out":"{0} oburugo bukahandiikwa"}
+{"lang":"nyn","src":"{0} sources cross-referenced","out":"Oburugo {0} bukahikaana"}
+{"lang":"teo","src":"{0} sources cross-referenced","out":"{0} aponi kowanyunai akiro."}
+{"lang":"teo","src":"{0} source cross-referenced","out":"{0} loelomunit aanyanario naka akiro"}
+{"lang":"lg","src":"Report actions","out":"Laga ebikolwa."}
+{"lang":"ach","src":"Report actions","out":"Miyo ripot i kom tic"}
+{"lang":"nyn","src":"Report actions","out":"Okugamba ebikorwa"}
+{"lang":"lg","src":"Rate","out":"Omutemwa."}
+{"lang":"teo","src":"Report actions","out":"Aitodun aswamisinei"}
+{"lang":"nyn","src":"Rate","out":"Omuhendo"}
+{"lang":"ach","src":"Rate","out":"Wel"}
+{"lang":"teo","src":"Rate","out":"Etapit"}
+{"lang":"ach","src":"Share","out":"Poko"}
+{"lang":"nyn","src":"Share","out":"Gabana"}
+{"lang":"lg","src":"Share","out":"Gabanira."}
+{"lang":"teo","src":"Share","out":"Inyikokisi"}
+{"lang":"lg","src":"Link copied","out":"Link kopiiddwa."}
+{"lang":"ach","src":"Link copied","out":"Ki kwanyo ki kubu"}
+{"lang":"nyn","src":"Link copied","out":"Akakwate kakahindwirwe"}
+{"lang":"lg","src":"Couldn't share. Copy the address from your browser instead.","out":"Teyasobola kugabana. Koppa endagiriro okuva mu browser yo mu kifo ky'ekyo."}
+{"lang":"teo","src":"Link copied","out":"Aponi ikoparai elink."}
+{"lang":"nyn","src":"Couldn't share. Copy the address from your browser instead.","out":"Tikabaasa kugabana. Kopiira endagiriro kuruga omu browser yaawe omu mwanya gw'ekyo."}
+{"lang":"ach","src":"Couldn't share. Copy the address from your browser instead.","out":"Pe atwero nywako. Kobo adrec ki i browser megi me kakare."}
+{"lang":"teo","src":"Couldn't share. Copy the address from your browser instead.","out":"Mam apedori aimor. Ibusakinit jo aipikakin aiboisit kotoma obrowser kon."}
+{"lang":"lg","src":"Offline","out":"Tewali ku mutimbagano."}
+{"lang":"ach","src":"Offline","out":"Pe tye ki intanet"}
+{"lang":"teo","src":"Offline","out":"Mam ejai elago."}
+{"lang":"nyn","src":"Offline","out":"Otari aha mitimbagano"}
+{"lang":"nyn","src":"Saved for offline","out":"Ebiibiikirwe kutakoresa intaneeti"}
+{"lang":"lg","src":"Saved for offline","out":"Ekuumiddwa okukozesebwa nga teri ku mutimbagano."}
+{"lang":"teo","src":"Saved for offline","out":"Eyuaritai kanu offline"}
+{"lang":"ach","src":"Saved for offline","out":"Kigwoko pi tic ma pe i layin"}
+{"lang":"ach","src":"Reports you've opened recently are kept on this device, so you can read them without a connection.","out":"Ripot ma iyabo cokcok-ki kigwoko i nyonyo man, pi meno itwero kwano gi labongo kubbe."}
+{"lang":"teo","src":"Reports you've opened recently are kept on this device, so you can read them without a connection.","out":"Ejaasi iripotan lu apukorit jo pac toma acuma kana, aso ipedori jo asiom kes komamei arucokina."}
+{"lang":"lg","src":"Reports you've opened recently are kept on this device, so you can read them without a connection.","out":"Alipoota ze wagguddewo gye buvuddeko zikuumibwa ku kyuma kino, osobola okuzisoma nga tolina kuyunga."}
+{"lang":"nyn","src":"Reports you've opened recently are kept on this device, so you can read them without a connection.","out":"Amakuru agu waigwireho juba nigabiikwa aha kyoma eki, n'ahabw'ekyo noobaasa kugashoma otaine kakwate."}
+{"lang":"lg","src":"You're offline. Checking new claims needs a connection, but your saved reports below still open.","out":"Tolina yintaneeti. Okukebera okwemulugunya okupya kyetaaga okubaako ennyunga, naye alipoota zo eziterekebwa wammanga zikyali zigule."}
+{"lang":"nyn","src":"You're offline. Checking new claims needs a connection, but your saved reports below still open.","out":"Torikukoresa intaneeti. Okukyebera okushaba okusya nikwetenga okugaitwa, kwonka ripoota zaawe ezabiikirwe ahansi zikiriho."}
+{"lang":"ach","src":"You're offline. Checking new claims needs a connection, but your saved reports below still open.","out":"Pe itye ki kubbe. Ngiyo lok manyen me waco mito kubbe, ento ripot ma igwoko piny piny pud tye ayaba."}
+{"lang":"teo","src":"You're offline. Checking new claims needs a connection, but your saved reports below still open.","out":"Mam jo ijai offline. Aanyanar akiro nuitetiak ekoto arucokina, konye apotu iripootin kon lu imonoitai kwap eringa epukoro."}
+{"lang":"lg","src":"You're online. Reports you open are saved here automatically.","out":"Oli ku mutimbagano. Alipoota z'ogulawo zikuumibwa wano mu ngeri ey'otomaatiki."}
+{"lang":"ach","src":"You're online. Reports you open are saved here automatically.","out":"Itye iwi yamo. Ripot ma iyabo kigwoko kany pire kene."}
+{"lang":"nyn","src":"You're online. Reports you open are saved here automatically.","out":"Ori aha mitimbagano. Ripoota ezi orikwiguraho nizibiikwa aha omu bw'obutegyeki."}
+{"lang":"teo","src":"You're online. Reports you open are saved here automatically.","out":"Ijai jo toma olago. Akiro nu apukoria jo eyangaritai ne bon."}
+{"lang":"ach","src":"Recently viewed reports","out":"Adwogi tic ma kineno cokcok-ki"}
+{"lang":"lg","src":"Recently viewed reports","out":"Alipoota ezaakalabibwako gye buvuddeko."}
+{"lang":"nyn","src":"Recently viewed reports","out":"Ebihandiiko ebireebirweho juba"}
+{"lang":"teo","src":"Recently viewed reports","out":"Aripotin nu asesenitai pac."}
+{"lang":"ach","src":"Up to {0} of the reports you opened most recently.","out":"Nongo {0} pa adwogi tic ma iyabo cokcok-ki."}
+{"lang":"lg","src":"Up to {0} of the reports you opened most recently.","out":"Okutuuka ku {0} ku alipoota ze waggulawo gye buvuddeko."}
+{"lang":"nyn","src":"Up to {0} of the reports you opened most recently.","out":"Okuhika ahari {0} aha ripoota ezi waigwireho obwahati."}
+{"lang":"lg","src":"Saved {0}","out":"Kikuuma {0}"}
+{"lang":"teo","src":"Up to {0} of the reports you opened most recently.","out":"Kitoni {0} kotoma oripootin lu apukorit jo pac."}
+{"lang":"ach","src":"Saved {0}","out":"Ki gwoko {0}"}
+{"lang":"nyn","src":"Saved {0}","out":"Kajunirwe {0}"}
+{"lang":"teo","src":"Saved {0}","out":"Ayuwara {0}"}
+{"lang":"lg","src":"No saved reports yet","out":"Tewali alipoota zikuuma zikyaliwo."}
+{"lang":"ach","src":"No saved reports yet","out":"Pe ki gwoko ripot mo keken"}
+{"lang":"nyn","src":"No saved reports yet","out":"Tihaine ripoota ezabiikirwe."}
+{"lang":"teo","src":"No saved reports yet","out":"Emamei aiwadikaeta nu eyuwaritai."}
+{"lang":"ach","src":"Open a fact-check while you're online and it will be saved here for later.","out":"Yab yoo me ngiyo lok ada kun nongo pud itye i intanet ci kibigwoko ne kany pi nino mukene."}
+{"lang":"lg","src":"Open a fact-check while you're online and it will be saved here for later.","out":"Ggula ekyuma ekebera amazima ng'oli ku mutimbagano era kijja kuba kikuumiddwa wano olw'okukozesebwa oluvannyuma."}
+{"lang":"lg","src":"Browse the Library","out":"Noonya mu tterekero."}
+{"lang":"nyn","src":"Open a fact-check while you're online and it will be saved here for later.","out":"Yigura okukyebera amazima waaba ori aha intaneti kandi nikiija kubiikwa aha ahabw'obundi."}
+{"lang":"teo","src":"Open a fact-check while you're online and it will be saved here for later.","out":"Apukor aanyanario naka akiro najaar jo toma olago ido ebuni aingadaun ne kanu ekaulo."}
+{"lang":"ach","src":"Browse the Library","out":"Yeny i Library"}
+{"lang":"nyn","src":"Browse the Library","out":"Ronda omu ibiikiro"}
+{"lang":"lg","src":"You're offline","out":"Oli offline."}
+{"lang":"teo","src":"Browse the Library","out":"Kotoma aiboisit naka aingadis naka itabon"}
+{"lang":"ach","src":"You're offline","out":"Pe itye offline"}
+{"lang":"teo","src":"You're offline","out":"Mam jo ijai offline."}
+{"lang":"lg","src":"Open saved reports","out":"Ggulawo alipoota ezaaterekebwa."}
+{"lang":"nyn","src":"Open saved reports","out":"Yigura ripoota ezabiikirwe"}
+{"lang":"ach","src":"Open saved reports","out":"Yab adwogi tic ma kigwoko"}
+{"lang":"nyn","src":"You're offline","out":"Torikukora aha mitimbagano"}
+{"lang":"teo","src":"Open saved reports","out":"Apukor iripotan lu eyuwaritai"}
+{"lang":"nyn","src":"Back online","out":"Okugaruka aha intaneeti"}
+{"lang":"ach","src":"Back online","out":"Dwogo cen iwi yamo"}
+{"lang":"lg","src":"Back online","out":"Okudda ku mutimbagano."}
+{"lang":"teo","src":"Back online","out":"Abongun toma olago."}
+{"lang":"lg","src":"Check messages, links, photos and videos for misinformation before you share them.","out":"Kebera obubaka, links, ebifaananyi n'obutambi olabe oba mulimu obulimba nga tonnaabugabana."}
+{"lang":"teo","src":"Check messages, links, photos and videos for misinformation before you share them.","out":"Koanyanaa imesejis, aiboisio, aputosia ka ebidio kanu ajenun akiro numam eraasi nukabeit eroko imorikikina."}

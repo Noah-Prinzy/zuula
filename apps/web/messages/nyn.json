@@ -142,24 +142,141 @@
     "passwordRequired": "Taahamu paasiwaadi yaawe.",
     "passwordMin": "Kozesa hakiri {min} abantu.",
     "passwordWeak": "Kigire ky'amaani: tabura enyuguta, enamba hamwe n'obubonero.",
-    "passwordsMismatch": "Obusumuruzo tiburikuhikaana."
+    "passwordsMismatch": "Obusumuruzo tiburikuhikaana.",
+    "nameRequired": "Taahamu eiziina ryawe ryona.",
+    "consentRequired": "Oine kwikiriza ebiragiro hamwe n'ebirikukwata aha bantu.",
+    "codeSixDigits": "Taahamu kode y'ebicweka 6.",
+    "codeAllDigits": "Taahamu enamba zoona eza 6.",
+    "codeInvalid": "Koodi egyo terahikire nainga ehweireho."
   },
   "Verdicts": {
+    "labels": {
+      "authentic": "Ekihikire",
+      "likely-false": "Obundi ekishuba",
+      "false": "Ekitahikire",
+      "ai-generated": "AI-Ekozirwe",
+      "unverifiable": "Ekitarikubaasa kuhamibwa"
+    },
+    "descriptions": {
+      "authentic": "Eshagikirwe oburugo oburikwesigwa.",
+      "likely-false": "Ebi barikugamba nibihakanisibwa nari tibaine buhame.",
+      "false": "Kikahakanisibwa oburugo oburikwesigwa.",
+      "ai-generated": "Nikworeka obubonero bw'amaani obw'okuhangwa nainga kuhindurwa AI.",
+      "unverifiable": "Tihariho obuhame burikumara oburikwesigwa omu miringo yoona."
+    },
+    "claims": {
+      "false": "Ekitahikire",
+      "misleading": "Okutabuzabuza",
+      "unsupported": "Ekitarikushagikwa",
+      "out-of-context": "Ahabw'okutaba omu muringo",
+      "supported": "Eshagikirwe"
+    },
+    "stance": {
+      "supports": "Okushagika",
+      "contradicts": "Nikihakanisa",
+      "context": "Enshonga"
+    },
+    "confidence": {
+      "high": "Obwesigye bwingi",
+      "moderate": "Obwesigye oburi ahagati",
+      "low": "Obwesigye bukye",
+      "label": "AI obubonero bw'obwesigye",
+      "aria": "AI obwesigye {value}%"
+    },
+    "human": {
+      "badge": "Okukakasibwa omuntu",
+      "confirmed": "Kikahamiibwa {reviewer}",
+      "overridden": "Okusingwa {verdict} kuruga ahari {reviewer}"
+    },
+    "citation": {
+      "trusted": "Oburugo oburikwesigwa",
+      "newTab": "(ekiguraho omu tabu ensya)"
+    },
+    "findings": {
+      "false": "Ekishobobo niki?",
+      "true": "Niki ekiri ekyamazima?"
+    },
+    "claim": {
+      "srLabel": " (ekigambirwe {index}: {assessment}, yoreka ahabwenki)",
+      "heading": "Okushaba {index} · {assessment}"
+    },
+    "signals": {
+      "summary": "Obubonero bwa {triggered} ahari {total} bwatandikire.",
+      "triggered": "Ekatandikwaho",
+      "notTriggered": "Tikirareesireho",
+      "bar": "Obubonero {score}%, ekikomo {threshold}%",
+      "method": "Omuringo: {method} · Ekikomo {threshold}%"
+    },
     "summary": {
-      "language": "Orurimi"
+      "contentType": "Ekika ky'ebirimu",
+      "language": "Orurimi",
+      "checked": "Kikakyeberwa",
+      "checkedIn": "Kikyeberwa <time>{date}</time> omuri {seconds}s",
+      "category": "Ekicweka",
+      "trackingId": "Okurondoora ID"
+    },
+    "card": {
+      "ccs": "Obwesigye bw'abantu omu kyanga"
     }
   },
   "Library": {
     "metaTitle": "Eibikiro ry'ebitabo",
+    "metaDescription": "Shuuruura ebirikugambwaho hamwe n'ebicweka ebi Zuula yaaherize kushwijuma.",
+    "eyebrow": "Eibikiro ry'okukyebera amazima",
     "title": "Eibikiro ry'ebitabo",
+    "description": "Shuuruura ebiragiro hamwe n'ebihandiiko ebyashwijumirwe.",
+    "filters": "Fayiro",
+    "filtersCount": "Fayiroozi ({count})",
+    "clearAll": "Shangura byona",
+    "results": "{count, plural, one {# ekirugiremu} other {# ebirugiremu}}",
+    "showResults": "{count, plural, one {Yoreka # ekirugiremu} other {Yoreka # ebirugiremu}}",
+    "searchPlaceholder": "Okuronda ebirikugambwaho, omutwe nari oburugo…",
     "searchLabel": "Ronda ebirikukyebera amazima",
+    "sortBy": "Sorita kurugirira",
+    "sorts": {
+      "relevance": "Okuhikaana okurikukirayo oburungi",
+      "newest": "Ekisya munonga",
+      "most-rated": "Abarikukirayo kuteebwamu"
+    },
+    "count": "{count, plural, one {<strong>{count}</strong> okukyebera amazima} other {<strong>{count}</strong> okukyebera amazima}}",
+    "countFor": "{count, plural, one {<strong>{count}</strong> okukyebera amazima ga “<q>{query}</q>”} other {<strong>{count}</strong> okukyebera amazima ga “<q>{query}</q>”}}",
+    "removeFilter": "Yihamu filter {label}",
+    "emptyTitle": "Tihariho okukyebera amazima kwashangwa",
+    "emptyBody": "Gyezaho ebigambo ebitarikushushana nainga oihemu obumanyiso obumwe. Ku haraabe hatariho owaakyebera ekihandiiko eki, noobaasa kukyohereza.",
+    "clearSearch": "Okuronda okurungi",
+    "verifyClaim": "Kukakasa ekihandiiko",
     "filter": {
-      "language": "Orurimi"
+      "verdict": "Okusharamu",
+      "category": "Ekicweka",
+      "allCategories": "Ebicweka byona",
+      "language": "Orurimi",
+      "allLanguages": "Endimi zoona",
+      "contentType": "Ekika ky'ebirimu",
+      "allTypes": "Emiringo yoona",
+      "dateChecked": "Eizooba erikyeberwa",
+      "from": "Kuruga",
+      "to": "Kuri"
     }
   },
   "Report": {
+    "metaFallback": "Ripoota",
     "backToLibrary": "Eibikiro ry'ebitabo",
-    "sources": "Oburugo"
+    "checked": "Niki ekyashwijumirwe?",
+    "checkedHint": "Ebi barikugamba ebikwatsirweho bikashwijumwa kimwe. Toorana kimwe kureeba ahabwenki.",
+    "findings": "Ebyarugiremu",
+    "signals": "Obubonero bwa AI okumanywa",
+    "signalsHint": "Okukyebera oku twakozire ahabw'ebirikukorwa AI nari ebihindwirwemu.",
+    "comments": "Eby'okugarukamu by'abantu",
+    "commentsHint": "Enshonga ahabw'enki abantu baabaire nibaha obubonero.",
+    "expertNotes": "Obuhabuzi bw'abakugu",
+    "rating": "Okuteera akaruuru kw'abantu",
+    "sources": "Oburugo",
+    "sourcesHint": "{count, plural, one {# oburugo bukahandiikwa} other {Oburugo # bukahikaana}}",
+    "actions": "Okugamba ebikorwa",
+    "rate": "Omuhendo",
+    "share": "Gabana",
+    "linkCopied": "Akakwate kakahindwirwe",
+    "shareFailed": "Tikabaasa kugabana. Kopiira endagiriro kuruga omu browser yaawe omu mwanya gw'ekyo."
   },
   "Status": {
     "metaTitle": "Embeera {id}",
@@ -168,9 +285,11 @@
     "descriptionInvalid": "Kurondoora okuhayo kurugiirira aha ID.",
     "notFoundTitle": "Titurabaasize kushanga okurondoora ID",
     "notFoundBody": "Kyebera ID ogaruke ogyezeho. Ebirikurondoora IDs nibireebeka nka ZL-7K3P-Q9.",
+    "trackingId": "Okurondoora ID",
     "copyId": "Kopa ID",
     "copyLink": "Kopa akakwate",
     "idCopied": "Okurondoora ID kopiirwe",
+    "linkCopied": "Akakwate kakahindwirwe",
     "copyFailed": "Tikabaasize kukopa. Toorana kandi okikope omu butoosha.",
     "saveIdHint": "Rinda eki ID kugaruka omu birugire omu kyoma kyona.",
     "readyTitle": "Ripoota yaawe eyeteekateekire",
@@ -252,6 +371,7 @@
       }
     },
     "lookup": {
+      "label": "Okurondoora ID",
       "track": "Orutindo",
       "hint": "Okatunga eki ID obu waahayo.",
       "invalid": "Tracking IDs nizireebeka nka ZL-7K3P-Q9."
@@ -328,9 +448,13 @@
         "media": "Eby'amakuru",
         "article": "Ekicweka"
       },
+      "verifyClaim": "Kukakasa ekihandiiko",
       "viewReport": "Reeba ripoota"
     },
     "profile": {
+      "errors": {
+        "name": "Taahamu eiziina ryawe ryona."
+      },
       "fullName": "Eiziina ryona",
       "password": {
         "new": "Akasumuruzo akasya",
@@ -354,6 +478,9 @@
   "Admin": {
     "broadcasts": {
       "administrator": "Omwebembezi"
+    },
+    "sources": {
+      "allTypes": "Emiringo yoona"
     },
     "users": {
       "columns": {
@@ -404,6 +531,9 @@
     }
   },
   "Community": {
+    "ccs": {
+      "title": "Obwesigye bw'abantu omu kyanga"
+    },
     "panel": {
       "signIn": "Yingira"
     }
@@ -561,11 +691,43 @@
       "signOutFailed": "Tikabaasa kukushohoza. Gyezaho ogaruke."
     }
   },
+  "Pwa": {
+    "shortcutLibrary": "Eibikiro ry'okukyebera amazima"
+  },
   "Offline": {
-    "retry": "Gyezaho ogaruke"
+    "eyebrow": "Otari aha mitimbagano",
+    "title": "Ebiibiikirwe kutakoresa intaneeti",
+    "description": "Amakuru agu waigwireho juba nigabiikwa aha kyoma eki, n'ahabw'ekyo noobaasa kugashoma otaine kakwate.",
+    "stillOffline": "Torikukoresa intaneeti. Okukyebera okushaba okusya nikwetenga okugaitwa, kwonka ripoota zaawe ezabiikirwe ahansi zikiriho.",
+    "backOnline": "Ori aha mitimbagano. Ripoota ezi orikwiguraho nizibiikwa aha omu bw'obutegyeki.",
+    "retry": "Gyezaho ogaruke",
+    "savedTitle": "Ebihandiiko ebireebirweho juba",
+    "savedDescription": "Okuhika ahari 30 aha ripoota ezi waigwireho obwahati.",
+    "savedAt": "Kajunirwe {when}",
+    "emptyTitle": "Tihaine ripoota ezabiikirwe",
+    "emptyDescription": "Yigura okukyebera amazima waaba ori aha intaneti kandi nikiija kubiikwa aha ahabw'obundi.",
+    "browseLibrary": "Ronda omu ibiikiro",
+    "banner": "Torikukora aha mitimbagano",
+    "bannerAction": "Yigura ripoota ezabiikirwe",
+    "bannerBack": "Okugaruka aha intaneeti"
   },
   "Errors": {
-    "retry": "Gyezaho ogaruke"
+    "eyebrow": "Hariho ekintu ekyagyenzire kubi",
+    "title": "Titurabaasize kuta aha rupapura oru",
+    "description": "Eki n'oburemeezi aha rubaju rwaitu, ti orwawe. Gyezaho ogaruke omu kashozi.",
+    "offlineTitle": "Torikukora aha mitimbagano",
+    "offlineDescription": "Orupapura oru nirwetenga okugaitwa. Ripoota ezi waigwireho juba zikiriho.",
+    "retry": "Gyezaho ogaruke",
+    "home": "Gyenda aha rupapura rw'omuka",
+    "back": "Okugaruka aha akawunti yaawe",
+    "savedReports": "Reeba ripoota ezabiikirwe",
+    "reference": "Okurabiraho: {digest}",
+    "notFoundMetaTitle": "Orupapura tirushangirwe",
+    "notFoundTitle": "Titurabaasize kushanga orupapura orwo",
+    "notFoundDescription": "Akakwate nikabaasa kuba kahendekire, nari orupapura rurabaasa kuba rwatambwire. Shuuruura eibikiro ry'okukyebera amazima, nari otandikire aha rupapura rw'omuka.",
+    "browseLibrary": "Ronda omu ibiikiro",
+    "globalTitle": "Zuula akatunga oburemeezi",
+    "globalDescription": "Hariho ekintu ekyagwire kubi obu yaabaire neetwara app. Gyezaho ogaruke, kandi kyaba nikigumizamu kubaho, garuka omu bwire bw'edakiika nkye."
   },
   "Developers": {
     "toc": {
@@ -611,7 +773,8 @@
       "title": "Okukyebera amazima",
       "link": "Eibikiro ry'ebitabo",
       "tagNew": "Eshyaaka",
-      "tagDebated": "Okuhanuura"
+      "tagDebated": "Okuhanuura",
+      "ccsTitle": "Obwesigye bw'abantu omu kyanga"
     },
     "community": {
       "eyebrow": "Abantu b'omukyanga",
