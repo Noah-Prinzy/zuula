@@ -142,24 +142,143 @@
     "passwordMin": "Kozesa waakiri {min} ennukuta.",
     "passwordWeak": "Kikakase nti kinywevu: tabula ennukuta, ennamba n'obubonero.",
     "passwordsMismatch": "Obusumuluzo tebuwera.",
-    "nameRequired": "Yingiza erinnya lyo mu bujjuvu."
+    "nameRequired": "Yingiza erinnya lyo mu bujjuvu.",
+    "consentRequired": "Olina okukkiriza Endagaano n'Enkola y'Obwannannyini.",
+    "codeSixDigits": "Yingiza ennamba ya digito 6.",
+    "codeAllDigits": "Yingiza ennamba 6 zonna.",
+    "codeInvalid": "Koodi eyo si ntuufu oba eweddeko."
   },
   "Verdicts": {
+    "labels": {
+      "authentic": "Entuufu",
+      "likely-false": "Kirabika nga si kituufu",
+      "false": "Bikyaamu",
+      "ai-generated": "AI-Ekikoleddwa",
+      "unverifiable": "Etakakasiddwa"
+    },
+    "descriptions": {
+      "authentic": "Ekiwagirwa ensibuko ezesigika.",
+      "likely-false": "Ebyo ebikulu ebyogerwa bikontana oba tebirina buwagizi.",
+      "false": "Kyawakanyizibwa ensibuko ezeesigika.",
+      "ai-generated": "Kiraga obubonero obw'amaanyi obw'okuba nti kyatondebwa oba kyakyusibwa AI.",
+      "unverifiable": "Wadde ku njuyi zombi tewali bujulizi bumala."
+    },
+    "claims": {
+      "false": "Bikyaamu",
+      "misleading": "Okubuzaabuza",
+      "unsupported": "Tekiwagirwa",
+      "out-of-context": "Okuva mu mbeera",
+      "supported": "Ekiwagirwa"
+    },
+    "stance": {
+      "supports": "Kkiriza",
+      "contradicts": "Kikontana",
+      "context": "Embeera"
+    },
+    "confidence": {
+      "high": "Obwesige obw'amaanyi",
+      "moderate": "Obwesige obw'ekigero",
+      "low": "Obwesige obutono",
+      "label": "AI obubonero bw'obwesige",
+      "aria": "AI obwesige {value} %"
+    },
+    "human": {
+      "badge": "Omuntu akakasiddwa",
+      "confirmed": "Kikakasiddwa {reviewer}",
+      "overridden": "Okusikirizibwa okuva ku {verdict} ne {reviewer}"
+    },
+    "citation": {
+      "trusted": "Ensibuko eyeesigika",
+      "newTab": "(Egiggulawo mu tab empya)"
+    },
+    "findings": {
+      "false": "Kiki ekiba eky'obulimba?",
+      "true": "Kiki eky'amazima?"
+    },
+    "claim": {
+      "srLabel": " (ekigambibwa {index}: {assessment}, kirage lwaki)",
+      "heading": "Okusaba {index} · {assessment}"
+    },
+    "signals": {
+      "summary": "Obubonero bwa {triggered} ku {total} obulaga okuzuula bwakubiddwa.",
+      "triggered": "Ekitandikiddwa",
+      "notTriggered": "Tekyayisiddwa",
+      "bar": "Obubonero {score}%, ekigero {threshold}%",
+      "method": "Enkola: {method} · Olukugiro {threshold}%"
+    },
     "summary": {
-      "language": "Olulimi"
+      "contentType": "Ekika ky'ebirimu",
+      "language": "Olulimi",
+      "checked": "Kebeddwa",
+      "checkedIn": "Nkebedde <time>{date}</time> mu {seconds}s",
+      "category": "Ekibinja",
+      "trackingId": "Okulondoola ID"
+    },
+    "card": {
+      "ccs": "Obubonero bw'Obwesige mu Kitundu"
     }
   },
   "Library": {
     "metaTitle": "Ettendekero ly'ebitabo",
+    "metaDescription": "Noonya ebiwandiiko n'ebitundu Zuula bye yamala dda okukebera.",
+    "eyebrow": "Ettendekero erikebera amazima",
     "title": "Ettendekero ly'ebitabo",
+    "description": "Noonya ebiwandiiko n'ebitundu ebyamala dda okukeberebwa.",
+    "filters": "Fuluta",
+    "filtersCount": "Fuluta ({count})",
+    "clearAll": "Sangula byonna",
+    "results": "{count, plural, one {# ekivaamu} other {# ebivaamu}}",
+    "showResults": "{count, plural, one {Laga # ebyavaamu} other {Laga # ebivaamu}}",
+    "searchPlaceholder": "Noonya ebiwandiiko, emitwe oba ensibuko…",
     "searchLabel": "Noonya okukebera amazima",
+    "sortBy": "Tegeka nga",
+    "sorts": {
+      "relevance": "Ekikwatagana ekisinga obulungi",
+      "newest": "Ekisinga obuggya",
+      "most-rated": "Abasinga okupimirwa"
+    },
+    "count": "{count, plural, one {<strong>{count}</strong> okukebera amazima} other {<strong>{count}</strong> okukebera amazima}}",
+    "countFor": "{count, plural, one {<strong>{count}</strong> kebera amazima ku “<q>{query}</q>”} other {<strong>{count}</strong> akakasa amazima ga \"<q>{query}</q>\"}}",
+    "removeFilter": "Ggyako filter {label}",
+    "emptyTitle": "Tewali kwekenneenya mazima kwazuuliddwa",
+    "emptyBody": "Gezaako ebigambo ebirala oba oggyeko obukwakkulizo obumu. Bwe waba nga tewali muntu yenna akebedde okwemulugunya kuno, osobola okukutwala.",
+    "clearSearch": "Okunoonya okwerufu",
+    "verifyClaim": "Kakasa ekyogerwa",
+    "contentTypeShort": {
+      "url": "Linki"
+    },
     "filter": {
-      "language": "Olulimi"
+      "verdict": "Okusalawo",
+      "category": "Ekibinja",
+      "allCategories": "Ebika byonna",
+      "language": "Olulimi",
+      "allLanguages": "Ennimi zonna",
+      "contentType": "Ekika ky'ebirimu",
+      "allTypes": "Ebika byonna",
+      "dateChecked": "Olunaku lwe kebeddwa",
+      "from": "Okuva",
+      "to": "Okutuuka ku"
     }
   },
   "Report": {
+    "metaFallback": "Alipoota",
     "backToLibrary": "Ettendekero ly'ebitabo",
-    "sources": "Ensibuko"
+    "checked": "Kiki ekyakeberebwa?",
+    "checkedHint": "Okwemulugunya okw'enkukunala kwatunuulirwa kimu ku kimu. Londa ekimu olabe lwaki.",
+    "findings": "Ebyazuulibwa",
+    "signals": "Obubonero obuzuula AI",
+    "signalsHint": "Okukebera kwe twakola okw'ebintu AI ebikolebwa oba ebikyusiddwamu.",
+    "comments": "Ebyogerwa abantu b'ekitundu",
+    "commentsHint": "Ensonga abantu ze bawa mu kuteebereza kwabwe.",
+    "expertNotes": "Ebiwandiiko by'abakugu",
+    "rating": "Okupima kw'abatuuze",
+    "sources": "Ensibuko",
+    "sourcesHint": "{count, plural, one {# ensibuko yajulizibwako} other {# ensibuko zeekenneenyeza wamu}}",
+    "actions": "Laga ebikolwa",
+    "rate": "Omutemwa",
+    "share": "Gabanira",
+    "linkCopied": "Link kopiiddwa",
+    "shareFailed": "Teyasobola kugabana. Koppa endagiriro okuva mu browser yo mu kifo ky'ekyo."
   },
   "Status": {
     "metaTitle": "Embeera {id}",
@@ -168,9 +287,11 @@
     "descriptionInvalid": "Londoola okuwaayo ng'okozesa ID.",
     "notFoundTitle": "Tetwasobodde kuzuula okunoonya okwo ID",
     "notFoundBody": "Kebera ID olwo ozzeemu ogezeeko. Ebikozesebwa mu kulondoola birabika nga ZL-7K3P-Q9.",
+    "trackingId": "Okulondoola ID",
     "copyId": "Koppa ID",
     "copyLink": "Koppa akakubo",
     "idCopied": "Okulondoola ID kukoppiddwa",
+    "linkCopied": "Link kopiiddwa",
     "copyFailed": "Teyasobola kukoppa. Londa ogikoppe mu ngeri ey'obukugu.",
     "saveIdHint": "Kino ID kikuume osobole okudda ku byava mu kalulu ku kyuma kyonna.",
     "readyTitle": "Alipoota yo etuuse",
@@ -192,6 +313,7 @@
     "submittedTitle": "Kye wawaayo",
     "submittedMeta": "{type} · {language} · yaweereddwayo {time}",
     "types": {
+      "url": "Linki",
       "article": "Ekitundu",
       "media": "Fayiro y'emikutu gy'amawulire"
     },
@@ -252,6 +374,7 @@
       }
     },
     "lookup": {
+      "label": "Okulondoola ID",
       "track": "Oluguudo",
       "hint": "Wafunye kino ID bwe wawaayo.",
       "invalid": "Ebirondoozo bya ID birabika nga ZL-7K3P-Q9."
@@ -284,6 +407,7 @@
         "body": "WhatsApp abakulembeze, ebiwandiiko by'abantu, ebigambo"
       },
       "link": {
+        "title": "Linki",
         "body": "Ebitundu by'amawulire ne web pages"
       },
       "media": {
@@ -325,9 +449,11 @@
     },
     "activity": {
       "types": {
+        "url": "Linki",
         "media": "Emikutu gy'amawulire",
         "article": "Ekitundu"
       },
+      "verifyClaim": "Kakasa ekyogerwa",
       "viewReport": "Laba alipoota"
     },
     "profile": {
@@ -357,6 +483,9 @@
   "Admin": {
     "broadcasts": {
       "administrator": "Omukulembeze"
+    },
+    "sources": {
+      "allTypes": "Ebika byonna"
     },
     "users": {
       "columns": {
@@ -407,6 +536,9 @@
     }
   },
   "Community": {
+    "ccs": {
+      "title": "Obubonero bw'Obwesige mu Kitundu"
+    },
     "panel": {
       "signIn": "Yingira"
     }
@@ -565,11 +697,44 @@
       "signOutFailed": "Siyasobola kukuggya ku mukutu. Gezako nate."
     }
   },
+  "Pwa": {
+    "description": "Kebera obubaka, links, ebifaananyi n'obutambi olabe oba mulimu obulimba nga tonnaabugabana.",
+    "shortcutLibrary": "Ettendekero erikebera amazima"
+  },
   "Offline": {
-    "retry": "Gezaako nate"
+    "eyebrow": "Tewali ku mutimbagano",
+    "title": "Ekuumiddwa okukozesebwa nga teri ku mutimbagano",
+    "description": "Alipoota ze wagguddewo gye buvuddeko zikuumibwa ku kyuma kino, osobola okuzisoma nga tolina kuyunga.",
+    "stillOffline": "Tolina yintaneeti. Okukebera okwemulugunya okupya kyetaaga okubaako ennyunga, naye alipoota zo eziterekebwa wammanga zikyali zigule.",
+    "backOnline": "Oli ku mutimbagano. Alipoota z'ogulawo zikuumibwa wano mu ngeri ey'otomaatiki.",
+    "retry": "Gezaako nate",
+    "savedTitle": "Alipoota ezaakalabibwako gye buvuddeko",
+    "savedDescription": "Okutuuka ku 30 ku alipoota ze waggulawo gye buvuddeko.",
+    "savedAt": "Kikuuma {when}",
+    "emptyTitle": "Tewali alipoota zikuuma zikyaliwo",
+    "emptyDescription": "Ggula ekyuma ekebera amazima ng'oli ku mutimbagano era kijja kuba kikuumiddwa wano olw'okukozesebwa oluvannyuma.",
+    "browseLibrary": "Noonya mu tterekero",
+    "banner": "Oli offline",
+    "bannerAction": "Ggulawo alipoota ezaaterekebwa",
+    "bannerBack": "Okudda ku mutimbagano"
   },
   "Errors": {
-    "retry": "Gezaako nate"
+    "eyebrow": "Waliwo ekintu ekyagenda obubi",
+    "title": "Tetwasobodde kutikka olupapula luno",
+    "description": "Kino kizibu ku ludda lwaffe, si ku lulwo. Gezaako nate mu kaseera akatono.",
+    "offlineTitle": "Oli offline",
+    "offlineDescription": "Olupapula luno lwetaaga okuyunga. Alipoota z'oyiseeko gye buvuddeko awo zikyaliwo.",
+    "retry": "Gezaako nate",
+    "home": "Genda ku lupapula lw'awaka",
+    "back": "Ddayo ku akawunti yo",
+    "savedReports": "Laba alipoota ezaterekebwa",
+    "reference": "Ekyokulabirako: {digest}",
+    "notFoundMetaTitle": "Olupapula teruzuuliddwa",
+    "notFoundTitle": "Tetwasobodde kuzuula olupapula olwo",
+    "notFoundDescription": "Akakubo kayinza okuba nga kamenyese, oba olupapula luyinza okuba nga lwakyusiddwa. Noonya mu tterekero ly'okukebera amazima, oba tandikira ku lupapula olusooka.",
+    "browseLibrary": "Noonya mu tterekero",
+    "globalTitle": "Zuula yatuukirwako ekizibu",
+    "globalDescription": "Waliwo ekintu ekyagenze obubi ng'osika app. Gezaako nate, era singa kiba nga kyeyongera okubaawo, komawo oluvannyuma lw'eddakiika ntono."
   },
   "Developers": {
     "toc": {
@@ -613,7 +778,8 @@
       "title": "Okukebera amazima",
       "link": "Ettendekero ly'ebitabo",
       "tagNew": "Mupya",
-      "tagDebated": "Okuwakanya"
+      "tagDebated": "Okuwakanya",
+      "ccsTitle": "Obubonero bw'Obwesige mu Kitundu"
     },
     "community": {
       "eyebrow": "Abantu b'ekitundu",

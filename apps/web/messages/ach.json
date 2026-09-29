@@ -142,24 +142,135 @@
     "passwordWeak": "Wek obed matek: rib waraga, namba ki lanyut.",
     "passwordsMismatch": "Password pe rwate.",
     "nameRequired": "Dony i nyingi ma weng.",
-    "consentRequired": "Omyero i ye cik ki lok ma mako mung."
+    "consentRequired": "Omyero i ye cik ki lok ma mako mung.",
+    "codeSixDigits": "Dony i 6-digit code.",
+    "codeAllDigits": "Dony i namba 6 weng.",
+    "codeInvalid": "Lanyut eni pe tye kakare onyo dong okato woko."
   },
   "Verdicts": {
+    "labels": {
+      "authentic": "Maber atir",
+      "likely-false": "Twero bedo ni pe tye ada",
+      "false": "Goba",
+      "ai-generated": "AI-Kiyubu",
+      "unverifiable": "Pe ki twero moko"
+    },
+    "descriptions": {
+      "authentic": "Ki cwak ki lok ma genne.",
+      "likely-false": "Lok ma pigi tego ki pyem onyo pe tye ki cwak.",
+      "false": "Lok ma ki kwero ki ka ma gene.",
+      "ai-generated": "Nyutu lanyut matek me cweyo onyo aloka-loka ki AI.",
+      "unverifiable": "Caden ma genne bene pe romo i yoo mo keken."
+    },
+    "claims": {
+      "false": "Goba",
+      "misleading": "Tye ka bwolo dano",
+      "unsupported": "Pe kicwako",
+      "out-of-context": "Ma pe tye i lok",
+      "supported": "Kicwako"
+    },
+    "stance": {
+      "supports": "Miti",
+      "contradicts": "Pyem ki lok ada",
+      "context": "Kabedo"
+    },
+    "confidence": {
+      "high": "Gen matut",
+      "moderate": "Gen matye i rwom ma lamal",
+      "low": "Gen ma nok",
+      "label": "AI rwom me gen",
+      "aria": "AI gen {value} %"
+    },
+    "human": {
+      "badge": "Dano ma ki moko",
+      "confirmed": "Ki moko ki {reviewer}",
+      "overridden": "Ki loyo woko ki {verdict} ki {reviewer}"
+    },
+    "citation": {
+      "trusted": "Kama genne tye iye",
+      "newTab": "(yabbe i tab manyen)"
+    },
+    "findings": {
+      "false": "Gin ango ma obedo goba",
+      "true": "Gin ango ma tye ada"
+    },
+    "claim": {
+      "srLabel": " (lok {index}: {assessment}, nyut pingo)",
+      "heading": "Kwayo {index} · {assessment}"
+    },
+    "signals": {
+      "summary": "{triggered} iwi {total} lanyut me nongo gin mo kicako tic kwede.",
+      "triggered": "Kicako",
+      "notTriggered": "Pe okelo",
+      "bar": "Score {score}%, kigeng {threshold} %",
+      "method": "Yo me tic: {method} · Wel ma ki keto {threshold}%"
+    },
     "summary": {
-      "language": "Leb"
+      "contentType": "Kit ma tye iye",
+      "language": "Leb",
+      "checked": "Ki ngiyo",
+      "checkedIn": "Ki ngiyo <time>{date}</time> i {seconds}s",
+      "trackingId": "Lubu ID"
+    },
+    "card": {
+      "ccs": "Rwom me gen pa lwak"
     }
   },
   "Library": {
     "metaTitle": "Ot gwoko buk",
+    "metaDescription": "Yeny lok ki coc ma Zuula dong ongiyo.",
+    "eyebrow": "Kabedo me moko lok ada",
     "title": "Ot gwoko buk",
+    "description": "Yeny lok ma kiwaco ki coc ma dong kityeko ngiyo.",
+    "filters": "Jami ma yubu",
+    "clearAll": "Yer jami weng",
+    "results": "{count, plural, one {# adwogi tic} other {Adwogi #}}",
+    "showResults": "{count, plural, one {Nyut adwogi #} other {Nyut adwogi #}}",
+    "searchPlaceholder": "Yeny lok, wi lok onyo yoo me nongo lok…",
     "searchLabel": "Yeny lok ada me moko",
+    "sortBy": "Yer malube ki",
+    "sorts": {
+      "newest": "Manyen loyo",
+      "most-rated": "Pol ma ki keto rwom"
+    },
+    "count": "{count, plural, one {<strong>{count}</strong> me moko lok ada} other {<strong>{count}</strong> ngiyo lok ada}}",
+    "countFor": "{count, plural, one {<strong>{count}</strong> me moko ada pi “<q>{query}</q>”} other {<strong>{count}</strong> ngiyo lok ada pi \"<q>{query}</q>\"}}",
+    "removeFilter": "Kwany filter {label}",
+    "emptyTitle": "Pe kinongo lok me moko ada",
+    "emptyBody": "Tem nyig lok mapat onyo kwany lageng mogo. Ka ngat mo pud pe ongiyo lok man, itwero cwalo ne.",
+    "clearSearch": "Yeny ma atir",
+    "verifyClaim": "Ngiyo lok ma ki waco",
     "filter": {
-      "language": "Leb"
+      "verdict": "Ngolo kop",
+      "allCategories": "Kit mapat-pat weng",
+      "language": "Leb",
+      "allLanguages": "Leb weng",
+      "contentType": "Kit ma tye iye",
+      "allTypes": "Kit weng",
+      "dateChecked": "Nino ma ki ngiyo",
+      "from": "Ki i",
+      "to": "Me"
     }
   },
   "Report": {
+    "metaFallback": "Ripot",
     "backToLibrary": "Ot gwoko buk",
-    "sources": "Kama oaa ki iye"
+    "checked": "Ngo ma ki ngiyo",
+    "checkedHint": "Lok ma ki keto alama iye ki ngiyo ne ki acel acel. Yer acel me neno pingo.",
+    "findings": "Adwogi me kwed",
+    "signals": "Lanyut me nongo AI",
+    "signalsHint": "Pim ma watimo pi AI-ma kiyubu onyo jami ma kiyubo.",
+    "comments": "Lok pa lwak",
+    "commentsHint": "Tyen lok ma oweko dano omiyo rwom gi.",
+    "expertNotes": "Ngec pa ludiro",
+    "rating": "Rwom me rwom me kabedo",
+    "sources": "Kama oaa ki iye",
+    "sourcesHint": "{count, plural, one {# ma aa ki iye ki poro ne ki mukene} other {# yoo me kwedo lok mapat-pat}}",
+    "actions": "Miyo ripot i kom tic",
+    "rate": "Wel",
+    "share": "Poko",
+    "linkCopied": "Ki kwanyo ki kubu",
+    "shareFailed": "Pe atwero nywako. Kobo adrec ki i browser megi me kakare."
   },
   "Status": {
     "metaTitle": "Rwom {id}",
@@ -168,8 +279,10 @@
     "descriptionInvalid": "Nong kit ma kiketo kwede ID.",
     "notFoundTitle": "Pe watwero nongo ID me lubu kor",
     "notFoundBody": "Rot ID ki item doki. Tracking IDs nen calo ZL-7K3P-Q9.",
+    "trackingId": "Lubu ID",
     "copyLink": "Kob link",
     "idCopied": "Lubu ID kicwalo woko",
+    "linkCopied": "Ki kwanyo ki kubu",
     "copyFailed": "Pe onongo twero kopi. Yer ki kopi ne ki cingi.",
     "saveIdHint": "Gwok ID man wek idwog cen i adwogi tic ma aa ki i nyonyo mo keken.",
     "readyTitle": "Ripot mamegi dong tye atera",
@@ -250,6 +363,7 @@
       }
     },
     "lookup": {
+      "label": "Lubu ID",
       "hint": "Inongo man ID ikare ma i cwalo.",
       "invalid": "Tracking IDs nen calo ZL-7K3P-Q9."
     }
@@ -320,6 +434,7 @@
       "types": {
         "article": "Gajeti"
       },
+      "verifyClaim": "Ngiyo lok ma ki waco",
       "viewReport": "Nen adwogi tic"
     },
     "profile": {
@@ -348,6 +463,9 @@
   "Admin": {
     "broadcasts": {
       "administrator": "Lador tic"
+    },
+    "sources": {
+      "allTypes": "Kit weng"
     },
     "users": {
       "columns": {
@@ -398,6 +516,9 @@
     }
   },
   "Community": {
+    "ccs": {
+      "title": "Rwom me gen pa lwak"
+    },
     "panel": {
       "signIn": "Dony iye"
     }
@@ -554,11 +675,43 @@
       "signOutFailed": "Pe onongo atwero keto woko. Tem doki."
     }
   },
+  "Pwa": {
+    "shortcutLibrary": "Kabedo me moko lok ada"
+  },
   "Offline": {
-    "retry": "Tem doki"
+    "eyebrow": "Pe tye ki intanet",
+    "title": "Kigwoko pi tic ma pe i layin",
+    "description": "Ripot ma iyabo cokcok-ki kigwoko i nyonyo man, pi meno itwero kwano gi labongo kubbe.",
+    "stillOffline": "Pe itye ki kubbe. Ngiyo lok manyen me waco mito kubbe, ento ripot ma igwoko piny piny pud tye ayaba.",
+    "backOnline": "Itye iwi yamo. Ripot ma iyabo kigwoko kany pire kene.",
+    "retry": "Tem doki",
+    "savedTitle": "Adwogi tic ma kineno cokcok-ki",
+    "savedDescription": "Nongo 30 pa adwogi tic ma iyabo cokcok-ki.",
+    "savedAt": "Ki gwoko {when}",
+    "emptyTitle": "Pe ki gwoko ripot mo keken",
+    "emptyDescription": "Yab yoo me ngiyo lok ada kun nongo pud itye i intanet ci kibigwoko ne kany pi nino mukene.",
+    "browseLibrary": "Yeny i Library",
+    "banner": "Pe itye offline",
+    "bannerAction": "Yab adwogi tic ma kigwoko",
+    "bannerBack": "Dwogo cen iwi yamo"
   },
   "Errors": {
-    "retry": "Tem doki"
+    "eyebrow": "Gin mo otimme marac",
+    "title": "Pe watwero keto pot buk man",
+    "description": "Man obedo peko i tenge wa, pe megi. Tem doki i ngee kare manok.",
+    "offlineTitle": "Pe itye offline",
+    "offlineDescription": "Pot buk man mito kube. Ripot ma iyabo cokcok-ki pud tye.",
+    "retry": "Tem doki",
+    "home": "Citi i pot buk me gang",
+    "back": "Dwogo cen i akaunt mamegi",
+    "savedReports": "Nen adwogi tic ma ki gwoko",
+    "reference": "Lok ma ki loko iye: {digest}",
+    "notFoundMetaTitle": "Pe kinongo pot buk",
+    "notFoundTitle": "Pe watwero nongo pot buk meno",
+    "notFoundDescription": "Link ne twero bedo ni otur, onyo pot buk ne twero bedo ni okobo. Yen lok ma mako library me fact-check, onyo cak ki i pot buk me gang.",
+    "browseLibrary": "Yeny i Library",
+    "globalTitle": "Zuula orwate ki peko",
+    "globalDescription": "Gin mo ocwalo bal ikare me loading app. Tem doki, ki ka pud mede ki timme, dwog cen i dakika manok."
   },
   "Developers": {
     "toc": {
@@ -604,7 +757,8 @@
       "title": "Ngiyo lok ada",
       "link": "Ot gwoko buk",
       "tagNew": "Manyen",
-      "tagDebated": "Kinywako tam iye"
+      "tagDebated": "Kinywako tam iye",
+      "ccsTitle": "Rwom me gen pa lwak"
     },
     "community": {
       "eyebrow": "Lwak",
