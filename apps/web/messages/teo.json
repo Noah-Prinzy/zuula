@@ -132,7 +132,8 @@
     "viewAll": "Asesen akiro kere nuikamunitos"
   },
   "RoleGate": {
-    "title": "Ejaasi aitikitik na alomar"
+    "title": "Ejaasi aitikitik na alomar",
+    "body": "Ekoto aiboisit na adumunun {roles}."
   },
   "Validation": {
     "identifierRequired": "Kobu email kon arai enaaba loka esimu.",
@@ -146,6 +147,19 @@
     "codeSixDigits": "Kobu kode loka idigitin 6.",
     "codeAllDigits": "Ibusakinit jo aipikakin idigitin kere 6.",
     "codeInvalid": "Mam ekode ngol erai loabeit arai bo atwania apak."
+  },
+  "Languages": {
+    "English": "English erai angajep na itosomatai ko Uganda",
+    "Luganda": "Arai Luganda angajep naka Uganda",
+    "Acholi": "Acholi erai ateker na ejai ko Uganda",
+    "Runyankole": "Runyankole ngesi angajep naka aborigines nako Uganda",
+    "Ateso": "Atekerin nuka itunga luko Uganda"
+  },
+  "ContentTypes": {
+    "text": "Akirot",
+    "url": "Akiro nuikamunitos arucokina",
+    "image": "Aputo",
+    "video": "Ebidio"
   },
   "Verdicts": {
     "labels": {
@@ -244,7 +258,10 @@
     "clearSearch": "Aingic na elai",
     "verifyClaim": "Aitogogong aineranara",
     "contentTypeShort": {
-      "url": "Erai Link"
+      "text": "Akirot",
+      "url": "Erai Link",
+      "image": "Aputo",
+      "video": "Ebidio"
     },
     "filter": {
       "verdict": "Aseunet",
@@ -312,6 +329,7 @@
     "submittedTitle": "Inyoin bo abu jo ijukak",
     "submittedMeta": "{type} · {language} · aponi ijukarai {time}",
     "types": {
+      "text": "Akirot",
       "url": "Erai Link",
       "article": "Atutubet",
       "media": "Akiro nuka iyemuto"
@@ -403,6 +421,7 @@
     "whatTitle": "Inyoin bo ipedori jo aijukar",
     "types": {
       "text": {
+        "title": "Akirot",
         "body": "WhatsApp lu engarenok, aiwadikaeta nuka itunga, akiro nu elimunitai"
       },
       "link": {
@@ -428,6 +447,10 @@
       "dragOr": "Korutu akiro kane, arai bo <browse>Aingic elago loka esimu kon</browse>",
       "tapToChoose": "<browse>Koseu aputo, ebidio arai bo aineran naka eporoto</browse>",
       "accepts": "Aputosia, eporoto arai bo ebidio · kitoni {size}",
+      "kinds": {
+        "image": "Aputo",
+        "video": "Ebidio"
+      },
       "unsupported": "Emamei agangat naka idoket",
       "uploading": "Aipikakin {percent}%",
       "scanning": "Aingic",
@@ -440,26 +463,73 @@
     }
   },
   "Account": {
+    "unsavedChanges": "Ijaas ijo keda aijulanakineta numam imenitai",
     "notifications": {
       "kinds": {
+        "verdict-ready": "Etapit aitemokin akiro",
+        "topic-alert": "Akiro nu itegelikina",
+        "review-outcome": "Aingic naka ipirioitin",
+        "broadcast": "Akiro nu engeso",
         "accreditation": "Akaunt"
       },
-      "unreadDot": "Mam esiomitai"
+      "filterLabel": "Aitikitik akiro nu iyemuto",
+      "all": "Kere ({count})",
+      "unread": "Mam esiomitai ({count})",
+      "alertSettings": "Aitemonokineta nuka aco",
+      "emptyUnread": "Idumunitai yesi kere",
+      "emptyAll": "Emamei aijen",
+      "emptyBody": "Ejaasi akiro nuka aingic kon keda aikwenyar kanu akiro nu etupit jo kane.",
+      "unreadDot": "Mam esiomitai",
+      "options": "Iwaitin kanu \"{title}\"",
+      "markUnread": "Kitodun kwape mam esiomitai",
+      "markRead": "Koinak kwape asiomitai"
     },
     "activity": {
       "types": {
+        "text": "Akirot",
         "url": "Erai Link",
         "media": "Erai Media ewai lo itolomunere akiro",
         "article": "Atutubet"
       },
+      "checking": "Aingic",
+      "failed": "Abu komen",
+      "emptyTitle": "Emamei aijukario kopana",
+      "emptyBody": "Iboro lu inwakete ijo nejaas ijo toma alomar ejaas kane.",
       "verifyClaim": "Aitogogong aineranara",
-      "viewReport": "Asesen eripoota"
+      "viewReport": "Asesen eripoota",
+      "viewStatus": "Kosesen adoketait",
+      "resubmit": "Abongokin bobo",
+      "resubmitLabel": "Abongokin {id}",
+      "youRated": "{vote, select, accurate {Ibwaikinit jo kwape naedolit} other {Ibwaikit jo ebe mam erai abeit}}",
+      "submissionsTab": "Aijukar ({count})",
+      "ratingsTab": "Atiakatiaka ({count})"
+    },
+    "alerts": {
+      "topicHints": {
+        "health": "Abwangunun nuka adekasinei, amukian, ikee lu ekato",
+        "politics": "Apugan, airabet, itunga luejenara noi",
+        "elections": "Aseun, akiro, ikampeins",
+        "economy": "Itiaisinei, ikapun, isolosinei, aswamisinei",
+        "education": "Isomeroi, aingito, iunibasitin",
+        "technology": "Amusungununeta, phishing, mobile money",
+        "weather": "Ebulone, akamu, atiokisio",
+        "security": "Abilibilio naka ikisila, ingungeta, ayuara naka itunga"
+      },
+      "channels": {
+        "inapp": {
+          "description": "Ebell loejai Zuula"
+        },
+        "email": {
+          "label": "E-mail"
+        }
+      }
     },
     "profile": {
       "errors": {
         "name": "Iwadika ekirorikon kere."
       },
       "fullName": "Ekiror loepol",
+      "email": "E-mail",
       "password": {
         "new": "Akirot naitetet naka aiyeyea",
         "confirm": "Itigogongoi password loitetet"
@@ -471,6 +541,11 @@
     }
   },
   "Review": {
+    "history": {
+      "filters": {
+        "all": "Kere ({count})"
+      }
+    },
     "queue": {
       "review": "Aingic bobo"
     },
@@ -480,6 +555,9 @@
   },
   "Admin": {
     "broadcasts": {
+      "channels": {
+        "Email": "E-mail"
+      },
       "administrator": "Eyaiton"
     },
     "sources": {
@@ -494,48 +572,139 @@
   },
   "Pages": {
     "activity": {
-      "title": "Aswamisioit"
+      "title": "Aswamisioit",
+      "description": "Iboro kere lu ijukunit jo kosodi aitemokin."
     },
     "alerts": {
-      "title": "Akiro nuikamunitos"
+      "title": "Akiro nuikamunitos",
+      "description": "Koseu akiro nu etupit ijo ka epone lo edolunia akiro ngun."
     },
     "apiKeys": {
-      "title": "API Ikeys"
+      "title": "API Ikeys",
+      "description": "Koanyanaar akiro kotoma aiboisio nuka iyemuto kon."
     },
     "notifications": {
-      "title": "Akiro nu iwanyunitai"
+      "title": "Akiro nu iwanyunitai",
+      "description": "Akiro nuka aingicokon, aicoreta nuka akiro keda alimonoreta."
     },
     "profile": {
-      "title": "Akiro nuikamunitos itunganan"
+      "title": "Akiro nuikamunitos itunganan",
+      "description": "Akiro kon, ayuwara keda akiro kon nuka itunganan."
     },
     "accreditation": {
-      "title": "Aitigogongio"
+      "title": "Aitigogongio",
+      "description": "Itunga luejenara kwape arotak iyemuto ingarakinete itunga aanyanar atubokinio."
+    },
+    "auditLog": {
+      "description": "Kangin aswamisioit naka eyaitene keda epirioit, keda ingai, awene ka kanukinyo."
     },
     "broadcasts": {
-      "title": "Aitodianareta"
+      "title": "Aitodianareta",
+      "description": "Aicoreta nuka atipet kanuikamunitos akiro numam eraasi nuka abeit."
     },
     "settings": {
-      "title": "Aitemonokineta"
+      "title": "Aitemonokineta",
+      "description": "Atiaketait naka adoketait, apim naka apolou, airereor SLA keda aituutoorio bobo."
     },
     "moderation": {
-      "title": "Aitikitik"
+      "title": "Aitikitik",
+      "description": "Akiro nu elimoritai keda aomisioit naka aitolitol adoketait."
+    },
+    "adminOverview": {
+      "title": "Aanyanaret naka eyaitene",
+      "description": "Ipuakata luka ekaru losodit, aswamisio nuka epuraitolasi keda angaleu naka eswamae."
     },
     "reports": {
-      "title": "Aripootin"
+      "title": "Aripootin",
+      "description": "Eipone lo aitolot akiro nuka aisab kangolilap ko Uganda."
     },
     "sources": {
-      "title": "Ipuak luka akiro"
+      "title": "Ipuak luka akiro",
+      "description": "Iboro lu emunoi ebe ejaasi keda aingic na itegelikina."
     },
     "users": {
-      "title": "Itunga lu itwasamaete"
+      "title": "Itunga lu itwasamaete",
+      "description": "Aitwasam, aiyengun, acamun acamanara kosodi aijulakin aswamisinei."
+    },
+    "reviewHistory": {
+      "title": "Aanyanar akiro nukolo",
+      "description": "Kangin aseunet na iswamat ijo, kwape iwadikatai kotoma aiwadikaeta."
+    },
+    "reviewOverview": {
+      "title": "Aanyanario naka akiro kere",
+      "description": "Aponi kitodunai atubokineta, apakio nuka airereor keda aseununeta kon."
+    },
+    "reviewQueue": {
+      "title": "Aiboisit na aanyanaret",
+      "description": "Aseuneta nuetijenaritos itunga, asiomak arai bo luemamete AI amunokina. Nu epolok noi kes losodit."
+    },
+    "caseReview": {
+      "title": "Aanyanario naka emusago",
+      "description": "Kosesen ajenanut, kosodi aitigogong arai alemar atubokinio.",
+      "metaTitle": "Emusago {id}"
+    },
+    "site": {
+      "description": "AI-epedori ajenun iyemuto lumam eraasi luka abeit ka akiro numam eraasi nukabeit ko Uganda. Aponi kitolomunai ko Victoria University CIT."
     }
   },
   "Community": {
+    "status": {
+      "verified": {
+        "label": "Itigogongoritai kotoma atutubet",
+        "title": "Itigogongoritai kotoma atutubet",
+        "description": "Aticepak 90% kotoma aseo naka itunga ecamunitos keda atubokinio kana."
+      },
+      "questioned": {
+        "label": "Abu kingitai",
+        "title": "Engisete itunga atubokinio na",
+        "description": "Kiding 40% keda 69% loka aomisio ecamunitos. Kosiom akiro ka aineranara eringa imorikina."
+      },
+      "escalated": {
+        "label": "Kotoma airereonor naka ipirioitin",
+        "title": "Aijukar kanu airereonor naka epirioit",
+        "description": "Ikidioko adepar 40% kotoma aipimio naka 100 acamanara keda atubokinio kana. Ebuni Expert Reviewer aanyun ngun kotoma osawan 48."
+      },
+      "suspended": {
+        "title": "Aponi ikisarai etube kitoni airereor",
+        "description": "Ikidioko adepar 20% naka aiboisio nuedeparete 200 nu ecamunitos. Ejaasi atubokinio toma aingic kitoni ne airereoror epirioit."
+      }
+    },
     "ccs": {
-      "title": "Etapit loka amunokina naka itunga"
+      "title": "Etapit loka amunokina naka itunga",
+      "weighted": "etiai lo itegelikina kotoma aswam",
+      "none": "Emamei aanyanaret kopana",
+      "aria": "{accurate}% kotoma aipimeta nu ebeit ebakasi ebe ejokuna, {inaccurate}% ebakasi ebe mam ejokuna",
+      "accurate": "{count} naedolit",
+      "inaccurate": "{count} mam erai na abeit"
     },
     "panel": {
-      "signIn": "Kobu toma"
+      "question": "Erai kereka atubokinio na na abeit?",
+      "group": "Kotub aomisioit na",
+      "signIn": "Kobu toma",
+      "signInRest": "kanu aitemokin atubokinio na. Inaabai ingarakinete aituutoonor Zuula.",
+      "youRated": "Ibwaikinit jo <strong>{vote, select, accurate {na abeit} other {mam erai abeit}}</strong> lo. Ipedori jo aijulakin ngun adio apak kere.",
+      "editReason": "Edit akirot",
+      "addReason": "Kiyatak alosikinet",
+      "weight": "Erai adoketait kon na imarimarit {weight}× kwape {role}.",
+      "weightNoRole": "Erai adoketait kon {weight}× kwape etosoman.",
+      "thanks": "Eyalama kanu aipima",
+      "changed": "Aijulakinio naka erating",
+      "ratedAs": "{vote, select, accurate {Ibwaikinit jo atubokineta ngun kwape nu abeit.} other {Abu jo kitodu ebe mam atubokinio na erai na abeit.}}",
+      "addReasonAction": "Kiyatak aomisioit",
+      "reasonSaved": "Aponi eyuwarai aomisioit",
+      "reasonRemoved": "Alemar alosikinet",
+      "dialogTitle": "{vote, select, accurate {Kanukinyo abu jo kitodunia ebe erai abeit?} other {Kanukinyo abu jo kitema ebe mam erai abeit?}}",
+      "dialogBody": "Ejaasi alosikinet kon toma aiboisit naetijenarere keda ekirorikon ido ingarakini aanyanaret.",
+      "reasonLabel": "Alosikinet (na ekotoi)",
+      "reasonPlaceholder": "E.g. Abu eong awanyun akirot na abeit ido…",
+      "saveReason": "Kiyuwar aomisioit"
+    },
+    "comments": {
+      "empty": "Emamei idiotunganan abu kitetemununei adoketait kec.",
+      "filter": "Aitub aineranara",
+      "all": "Kere ({count})",
+      "accurate": "Naedolit ({count})",
+      "inaccurate": "Mam ejokuna ({count})"
     }
   },
   "Auth": {
@@ -692,9 +861,12 @@
   },
   "Pwa": {
     "description": "Koanyanaa imesejis, aiboisio, aputosia ka ebidio kanu ajenun akiro numam eraasi nukabeit eroko imorikikina.",
-    "shortcutLibrary": "Eitabo lo itigogongit akiro"
+    "shortcutVerify": "Koanyanaar aibwaikin",
+    "shortcutLibrary": "Eitabo lo itigogongit akiro",
+    "shortcutSaved": "Aponi iyatakinai iripotan"
   },
   "Offline": {
+    "metaTitle": "Aponi iyatakinai iripotan",
     "eyebrow": "Mam ejai elago",
     "title": "Eyuaritai kanu offline",
     "description": "Ejaasi iripotan lu apukorit jo pac toma acuma kana, aso ipedori jo asiom kes komamei arucokina.",
@@ -741,6 +913,10 @@
       "title": "Aingic akiro nu aanyanario"
     }
   },
+  "Related": {
+    "title": "Aingic na ikamanara",
+    "description": "Aingic ace naka abeit kotoma akirot adiope arai akiro."
+  },
   "Home": {
     "headline": {
       "line1Before": "Koany a",
@@ -786,6 +962,9 @@
     "metaTitle": "Kanuikamunitos",
     "banner": {
       "title": "Kanuikamunitos"
+    },
+    "why": {
+      "cta": "Koanyanaar aibwaikin"
     },
     "methodology": {
       "eyebrow": "Eipone lo itwasamatere"
