@@ -132,7 +132,9 @@
     "viewAll": "Nen lok ducu ma ki cwalo"
   },
   "RoleGate": {
-    "title": "Kiketo kigeng i kom yoo me donyo"
+    "title": "Kiketo kigeng i kom yoo me donyo",
+    "body": "Kabedo man mito {roles} me donyo iye.",
+    "or": "nyo"
   },
   "Validation": {
     "identifierRequired": "Ket email onyo namba cim mamegi.",
@@ -146,6 +148,13 @@
     "codeSixDigits": "Dony i 6-digit code.",
     "codeAllDigits": "Dony i namba 6 weng.",
     "codeInvalid": "Lanyut eni pe tye kakare onyo dong okato woko."
+  },
+  "Languages": {
+    "English": "Acholi"
+  },
+  "ContentTypes": {
+    "url": "Link me coc",
+    "image": "Cal"
   },
   "Verdicts": {
     "labels": {
@@ -240,6 +249,9 @@
     "emptyBody": "Tem nyig lok mapat onyo kwany lageng mogo. Ka ngat mo pud pe ongiyo lok man, itwero cwalo ne.",
     "clearSearch": "Yeny ma atir",
     "verifyClaim": "Ngiyo lok ma ki waco",
+    "contentTypeShort": {
+      "image": "Cal"
+    },
     "filter": {
       "verdict": "Ngolo kop",
       "allCategories": "Kit mapat-pat weng",
@@ -415,6 +427,9 @@
       "dragOr": "Yway file kany, onyo <browse>Yeny jami i kom nyonyo ni</browse>",
       "tapToChoose": "<browse>Yer cal, vidio onyo dwan ma ki mako</browse>",
       "accepts": "Cal, dwan onyo vidio · oo {size}",
+      "kinds": {
+        "image": "Cal"
+      },
       "unsupported": "Fail ma pe kicwako",
       "uploading": "Keto {percent}%",
       "scanning": "Yenyo jami",
@@ -427,15 +442,60 @@
     }
   },
   "Account": {
+    "unsavedChanges": "Itye ki aloka-loka ma pe ki gwoko",
     "notifications": {
-      "unreadDot": "Pe kikwano"
+      "kinds": {
+        "verdict-ready": "Adwogi tye atera",
+        "topic-alert": "Ngec manyen",
+        "review-outcome": "Ngiyo pa ladiro",
+        "broadcast": "Cik me poyo wic pi peko atura"
+      },
+      "filterLabel": "Ngiyo lok ma ki cwalo",
+      "all": "Ducu ({count})",
+      "unread": "Pe okwano ({count})",
+      "alertSettings": "Yub me alert",
+      "emptyUnread": "Wun weng dong ki mako wu",
+      "emptyAll": "Pe tye ngec mo",
+      "emptyBody": "Adwogi me kwed ki ciko dano pi lok ma ilubu nen kany.",
+      "unreadDot": "Pe kikwano",
+      "options": "Yer pi \"{title}\"",
+      "markUnread": "Mark calo gin ma pe ki kwano",
+      "markRead": "Mark calo gin ma ki kwano"
     },
     "activity": {
       "types": {
         "article": "Gajeti"
       },
+      "checking": "Ngiyo",
+      "failed": "Pe olare",
+      "emptyTitle": "Pud pe tye gin mo ma ki cwalo",
+      "emptyBody": "Jami ma i ngiyo ka dong i donyo iye tye kany.",
       "verifyClaim": "Ngiyo lok ma ki waco",
-      "viewReport": "Nen adwogi tic"
+      "viewReport": "Nen adwogi tic",
+      "viewStatus": "Neno kit ma tye kwede",
+      "resubmit": "Cwal odoco",
+      "resubmitLabel": "Cwal {id} odoco",
+      "youRated": "{vote, select, accurate {Iwilo ne ni tye kakare} other {Iwilo ne calo gin ma pe tye kakare}}",
+      "submissionsTab": "Cwalo ({count})",
+      "ratingsTab": "Rwom me tic ({count})"
+    },
+    "alerts": {
+      "topicHints": {
+        "health": "Poto pa two, cango, ki yub me gwero",
+        "politics": "Gamente, ot moko cik, lutela ma oywek",
+        "elections": "Bolo kwir, adwogi kwir, bito kwir",
+        "economy": "Wel, cente, mucoro, tic",
+        "education": "Cukul, peny, univaciti",
+        "technology": "Kwo, mako ngec, mobile money",
+        "weather": "Pii aluka, ceng, peko ma poto atura",
+        "security": "Tim bal, lweny, ber bedo pa lwak"
+      },
+      "channels": {
+        "inapp": {
+          "label": "I-app",
+          "description": "Bell ma tye i Zuula"
+        }
+      }
     },
     "profile": {
       "errors": {
@@ -453,6 +513,11 @@
     }
   },
   "Review": {
+    "history": {
+      "filters": {
+        "all": "Ducu ({count})"
+      }
+    },
     "queue": {
       "review": "Ngiyo"
     },
@@ -462,6 +527,9 @@
   },
   "Admin": {
     "broadcasts": {
+      "channels": {
+        "In-app": "I-app"
+      },
       "administrator": "Lador tic"
     },
     "sources": {
@@ -476,51 +544,140 @@
   },
   "Pages": {
     "activity": {
-      "title": "Tic"
+      "title": "Tic",
+      "description": "Jami weng ma i cwalo ki ma i rwate kwede."
     },
     "alerts": {
-      "title": "Cik me ciko dano"
+      "title": "Cik me ciko dano",
+      "description": "Yer lok ma ilubu ki kit ma lok manyen oo kwede boti."
     },
     "apiKeys": {
-      "title": "API Lagony"
+      "title": "API Lagony",
+      "description": "Rot jami ma tye ki i jami tic me newsroom ma megi."
     },
     "notifications": {
-      "title": "Ngec manyen"
+      "title": "Ngec manyen",
+      "description": "Adwogi me ngiyo ni, lok ma ki keto iwi yamo ki lok angeya."
     },
     "profile": {
-      "title": "Kit ma ngat moni tye kwede"
+      "title": "Kit ma ngat moni tye kwede",
+      "description": "Ngec ma mako in, gwoko kuc ki ngec ma mako in."
     },
     "accreditation": {
-      "title": "Nongo twero"
+      "title": "Nongo twero",
+      "description": "Lucoo lok angeya ma ki moko gi konyo lwak me ngolo kop."
     },
     "auditLog": {
-      "title": "Log me Audit"
+      "title": "Log me Audit",
+      "description": "Tic weng me tela ki diro, ki anga, awene ki pingo."
     },
     "broadcasts": {
-      "title": "Cwalo lok angeya"
+      "title": "Cwalo lok angeya",
+      "description": "Cik ma ki keto pi ngec ma pe atir ma pire tek."
     },
     "settings": {
-      "title": "Yub me tic"
+      "title": "Yub me tic",
+      "description": "Rwom me mede pa jami, rwom me pek, ngiyo SLA ki pwonye manyen."
     },
     "moderation": {
-      "title": "Bedo ki ngec"
+      "title": "Bedo ki ngec",
+      "description": "Lok ma kiwaco ki byek me loko rwom."
+    },
+    "adminOverview": {
+      "title": "Neno jami ma tye iye",
+      "description": "Miti me mwaka me acel, tic me platform ki yotkom me yub."
     },
     "reports": {
-      "title": "Ripot"
+      "title": "Ripot",
+      "description": "Lok ma pe atir ma time dwe ki dwe i Uganda."
     },
     "sources": {
-      "title": "Kama oaa ki iye"
+      "title": "Kama oaa ki iye",
+      "description": "Lok ma ki geno ne ki waco ni ki poro ki jami mukene."
     },
     "users": {
-      "title": "Jo matiyo kwede"
+      "title": "Jo matiyo kwede",
+      "description": "Tic, juko, moko ki yee ki lok me miyo twero ki loko tic."
+    },
+    "reviewHistory": {
+      "title": "Ngiyo lok macon",
+      "description": "Moko tam weng ma dong itimo, kit ma kicoyo i log me audit."
+    },
+    "reviewOverview": {
+      "title": "Ngiyo lok ma pigi tego",
+      "description": "Lok ma kingolo, nino me ngiyo lok ki tam ma in imoko cokcok-ki."
+    },
+    "reviewQueue": {
+      "title": "Lain me ngiyo lok",
+      "description": "Lok ma dano me kabedo, lukwan onyo jo ma tye ki gen AI matidi aye gu keto alama iye."
+    },
+    "caseReview": {
+      "title": "Ngiyo lok",
+      "description": "Rot caden, ci imok onyo ilok adwogi me ngolo kop.",
+      "metaTitle": "Pido {id}"
+    },
+    "site": {
+      "description": "AI-ma tiyo ki diro me nongo lok angeya ma pe atir ki ngec ma pe atir i Uganda. Victoria University aye oyubu CIT."
     }
   },
   "Community": {
+    "status": {
+      "verified": {
+        "label": "Kacokke ma ki moko",
+        "title": "Kacokke ma ki moko",
+        "description": "Ma peya 90% pa rwom me miyo tam pa lwak ma ki pimo gi yee ki ngolo kop man."
+      },
+      "questioned": {
+        "label": "Kipenyo lapeny",
+        "title": "Lwak tye ka penyo lok i kom ngolo kop man",
+        "description": "I kin 40% ki 69% me rwate tye ma oyee. Kwan lok ma aa ki iye ki tam ma peya ipoko."
+      },
+      "escalated": {
+        "label": "I te ngiyo pa ladiro",
+        "title": "Cwalo pi ngiyo pa ladiro",
+        "description": "Ma pe romo 40% pa rwom ma kato 100 oyee ki ngolo kop man. Ngat ma ngiyo lok pa ludiro obi ngiyo ne i 48 cawa."
+      },
+      "suspended": {
+        "title": "Pido ne kicoro woko pi ngiyo lok",
+        "description": "Ma pe romo 20% pa rwom ma kato 200 oyee. Ngolo kop tye ma okanne ki i yeny wang ma ladiro mo ongiyo ne."
+      }
+    },
     "ccs": {
-      "title": "Rwom me gen pa lwak"
+      "title": "Rwom me gen pa lwak",
+      "weighted": "ma ki pimo ki tic",
+      "none": "Pe tye rwom mo keken",
+      "aria": "{accurate}% me rwom ma ki keto iye pek waco ni tye kakare, {inaccurate}% waco ni pe tye kakare",
+      "accurate": "{count} tye kakare",
+      "inaccurate": "{count} pe tye kakare"
     },
     "panel": {
-      "signIn": "Dony iye"
+      "question": "Ngolo kop man tye kakare?",
+      "group": "Pim kit ma ngolo kop man tye kwede",
+      "signIn": "Dony iye",
+      "signInRest": "me miyo rwom me ngolo kop man. Rwom konyo me pwonyo Zuula odoco.",
+      "youRated": "I miyo rwom man <strong>{vote, select, accurate {ma tye kakare} other {pe tye kakare}}</strong>. Itwero loko ne ikare mo keken.",
+      "editReason": "Yub tyen lok",
+      "addReason": "Med tyen lok",
+      "weight": "Rwom ma imiyo kwano {weight}× calo {role}.",
+      "weightNoRole": "Rwom me miini tye ka kwano {weight}× calo latic.",
+      "thanks": "Apwoyo pi miyo rwom",
+      "changed": "Rwom olokke",
+      "ratedAs": "{vote, select, accurate {Iwilo lok man ni obedo ada.} other {Iwilo ni ngolo kop man pe tye kakare.}}",
+      "addReasonAction": "Med tyen lok",
+      "reasonSaved": "Tyen lok ma ki gwoko",
+      "reasonRemoved": "Tyen lok kikwanyo woko",
+      "dialogTitle": "{vote, select, accurate {Pingo i keto rwom ne ni tye kakare?} other {Pingo imiyo rwom me ne calo ma pe atir?}}",
+      "dialogBody": "Tyen lok ni kinyutu i dye lwak ki nyingi dok konyo luryeko ma ngiyo lok.",
+      "reasonLabel": "Tyen lok (ma mite)",
+      "reasonPlaceholder": "E.g. Angiyo lok ma aa ki bot gamente ki…",
+      "saveReason": "Gwoko tyen lok"
+    },
+    "comments": {
+      "empty": "Pe tye ngat mo ma otito rwom megi.",
+      "filter": "Yer lok ma ki waco",
+      "all": "Ducu ({count})",
+      "accurate": "Maber tutwal ({count})",
+      "inaccurate": "Pe tye kakare ({count})"
     }
   },
   "Auth": {
@@ -676,9 +833,13 @@
     }
   },
   "Pwa": {
-    "shortcutLibrary": "Kabedo me moko lok ada"
+    "description": "Rot kwena, kubbe, cal ki vidio wek pe i nywak lok ma pe atir.",
+    "shortcutVerify": "Ngiyo lok ma ki waco",
+    "shortcutLibrary": "Kabedo me moko lok ada",
+    "shortcutSaved": "Ripot ma kigwoko"
   },
   "Offline": {
+    "metaTitle": "Ripot ma kigwoko",
     "eyebrow": "Pe tye ki intanet",
     "title": "Kigwoko pi tic ma pe i layin",
     "description": "Ripot ma iyabo cokcok-ki kigwoko i nyonyo man, pi meno itwero kwano gi labongo kubbe.",
@@ -724,6 +885,10 @@
     "search": {
       "title": "Yeny lok ada me moko"
     }
+  },
+  "Related": {
+    "title": "Pimo ma kubbe kwede",
+    "description": "Ngiyo lok mukene i kom lok onyo lok ma ki waco."
   },
   "Home": {
     "badge": "Lok Ada me Uganda · Victoria University CIT",
@@ -773,6 +938,9 @@
     "metaTitle": "I kom",
     "banner": {
       "title": "I kom"
+    },
+    "why": {
+      "cta": "Ngiyo lok ma ki waco"
     },
     "methodology": {
       "eyebrow": "Kit me tic"
