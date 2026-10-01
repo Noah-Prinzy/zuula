@@ -521,14 +521,179 @@
           "description": "Ekyoma ky'okuteera omu Zuula"
         },
         "email": {
-          "label": "E-mayiro"
+          "label": "E-mayiro",
+          "description": "Aha akawunti yaawe eya email"
+        },
+        "push": {
+          "label": "Okurabura okw'okukanyisa",
+          "description": "Aha simu ahu Zuula erikuba eriho"
+        },
+        "sms": {
+          "description": "Nikyetenga enamba y'esimu aha purofaayiro yaawe"
+        },
+        "whatsapp": {
+          "description": "Kwatanisa enamba yaawe WhatsApp"
+        },
+        "telegram": {
+          "description": "Kwatanisa Zuula Telegram bot"
         }
-      }
+      },
+      "frequencies": {
+        "instant": {
+          "label": "Nk'oku kirikubaho",
+          "description": "Ekirikukirayo oburungi aha bahandiiki hamwe n'abarikushwijuma"
+        },
+        "daily": {
+          "label": "Okushwijuma buriizooba",
+          "description": "Okushoborora omu bwijwire buri mwebazyo"
+        },
+        "weekly": {
+          "label": "Okushoborora kwa buri sande",
+          "description": "Okushoborora okuri ahansi buri rwokubanza"
+        }
+      },
+      "saved": "Ebyokukunda ebirikurabura bikabiikwa",
+      "savedSummary": "{count, plural, one {# omutwe · {frequency}} other {# emitwe · {frequency}}}",
+      "save": "Kubiika ebyokutooranaho",
+      "topicsTitle": "Emitwe ei orikukuratira",
+      "topicsDescription": "Muhurire obu ebihikire ebisya birikushohozibwa omu mitwe egi.",
+      "followAll": "Kuratira byona",
+      "clear": "Okwihaho",
+      "followed": "{count} ya {total} ekakuratirwa",
+      "typesTitle": "Eki ndikwenda kumanyisibwa",
+      "types": {
+        "results": {
+          "label": "Ebirugire omu kushaba kwangye",
+          "description": "Ku kiraabe ngu cheki ei waheireyo yaahwa."
+        },
+        "viral": {
+          "label": "Amakuru g'ebishobobo",
+          "description": "Ku haraabe hariho okugamba kw'ebishuba, kandi kurikujanjaara juba, n'obu haakuba aheeru y'emitwe yaawe."
+        },
+        "reviews": {
+          "label": "Okugarukamu kw'abakugu",
+          "description": "Ku haraabe hariho ekyarugamu eki waabaire oshaziremu kandi kyahamibwa nari kikahindurwa omukugu."
+        },
+        "broadcast": {
+          "label": "Okuranga kw'ahonaaho",
+          "description": "Okurabura okw'omugasho kuruga omu ba Zuula abarikukurira. Buriijo kuriho."
+        }
+      },
+      "required": "Ekirikwetengwa",
+      "deliveryTitle": "Oku n'obwire",
+      "deliveryDescription": "Toorana ahu okuraburwa kurikuhika kandi n'obwire obu kirahikiraho.",
+      "connect": "Kwatanisa",
+      "connectSimulated": "Okukwatanisa {channel} nikuteebwaho",
+      "connectSimulatedBody": "Okukwatanisa okwabuzima nikwija n'okugaita obutumwa.",
+      "frequencyLegend": "Okugamba aha mutwe gw'ekigambo",
+      "frequencyNote": "Ebirugire omu kukyebera kwawe hamwe n'okuranga okw'ahonaaho nibyo birikwoherezibwa ahonaaho."
+    },
+    "apiKeys": {
+      "scopes": {
+        "submit": {
+          "label": "Heereza ebirikukwataho",
+          "description": "POST /v1/checks: ohereza obutumwa, emikono nainga eby'amakuru okukyebera"
+        },
+        "read": {
+          "label": "Shoma ebirugiremu",
+          "description": "GET /v1/checks na /v1/fact-checks: encwamu, okushoborora, ebyahandiikirwe"
+        }
+      },
+      "copied": "Kikopwa aha kihandiiko",
+      "copyFailed": "Tikirabaasa kukopa. Toorana ekishumuruzo kandi okikope n'engaro.",
+      "nameRequired": "Ha ekishumuruzo eiziina kugira ngu obone bwanyima.",
+      "scopeRequired": "Toorana hakiri obugabe bumwe.",
+      "copyTitle": "Kopa ekishumuruzo kyawe ekisya",
+      "copyBody": "Ogu nigwo murundi gwonka ogu turikworeka ekishumuruzo kyona. Kigume omu mukuru w'ebishumuruzo nainga omu kibiina kyawe eky'ekihama, otakakita omu koodi y'omumaisho.",
+      "copyKey": "Kopa ekishumuruzo",
+      "saved": "Nkagihunika",
+      "createTitle": "Kora ekishumuruzo API",
+      "createBody": "Buri kishumuruzo nikikora {limit} okushaba buri shaaha.",
+      "name": "Eiziina",
+      "permissions": "Obushoboorozi",
+      "createKey": "Kora ekishumuruzo",
+      "keysTitle": "Ebisumuruzo byawe",
+      "keysDescription": "Kozesa ebishumuruzo okuheereza ebirikukwataho kandi oshome ebyarugamu kuruga omu byoma byawe.",
+      "emptyTitle": "Tihariho API ebikwato",
+      "emptyBody": "Kora ekishumuruzo kutandika kukoresa Zuula API.",
+      "created": "Kikakorwa {date}",
+      "lastUsed": "Ekyahererukireyo kukoresibwa {when}",
+      "neverUsed": "Tikirakozesiibwe",
+      "revoke": "Okwihaho",
+      "revokeTitle": "Okwihaho “{name}”?",
+      "revokeBody": "Ekintu kyona ekirikukoresa ekishumuruzo eki nikirekyera aho kukora ahonaaho. Eki tikirikubaasa kugarurwa enyima.",
+      "revokeKey": "Okwihaho ekishumuruzo",
+      "revoked": "Okwihaho “{name}”",
+      "maxKeys": "Noobaasa kugira ebishumuruzo kuhika ahari {max}. Yihaho kimwe okore ekindi.",
+      "usageTitle": "Okukoresa",
+      "thisHour": "Eshaaha egi",
+      "usageLabel": "{percent}% y'ekikomo ky'eshaaha kikozesiibwe",
+      "usageBody": "{count} okushaba omu shaaha 24 ezihwaireho. Ebyokukozesa nibigaruka buri shaaha. Nooyenda ebirikukiraho? Twahurira aha nteekateeka y'omukago.",
+      "secretNote": "Guma ebishumuruzo biri eby'ekihama. Obiheereze omu mutwe gwa <code>Authorization</code> kuruga aha seva yaawe wenka. Shoma <link>API ebihandiiko</link>."
+    },
+    "accreditation": {
+      "benefits": {
+        "weight": "Okuteebereza kwawe nikubara 2× omu kuteebereza obwesigye bw'abantu.",
+        "badge": "Akabonero k'omunyamakuru owaahamibwa haihi n'eiziina ryawe hamwe n'ebigambo byawe.",
+        "api": "API okuhika aha kushwijuma ebirikukwata aha by'amakuru kuruga omu bintu by'omu kishengye ky'amakuru."
+      },
+      "timeline": {
+        "submitted": "Okushaba kwaitwairwe",
+        "review": "Eri omu kushwijumwa",
+        "reviewDetail": "Omwebembezi naakyebera ebirikukwata aha nkwatanisa yaawe n'ekitongore ky'amahurire gaawe. Buriijo 5 ebiro by'okukora.",
+        "decision": "Okusharamu",
+        "decisionDetail": "Nitwija kukumanyisa kurabira omu email hamwe na Zuula."
+      },
+      "errors": {
+        "outlet": "Taahamu omu nju yaawe y'eby'amakuru.",
+        "title": "Taahamu omutwe gw'omurimo gwawe.",
+        "workEmail": "Taahamu endagiriro yaawe y'okukoreraho.",
+        "file": "Taho kaadi yaawe y'abanyamakuru nainga ebaruha y'omurimo.",
+        "fileSize": "Fayiro zishemereire kuba 50 MB nari nkye.",
+        "declare": "Nyabura we hamya okurangirira."
+      },
+      "submitted": "Okushaba kwaitwairwe",
+      "submittedBody": "Nitwija kukumanyisa omu biro 5 by'okukora.",
+      "applyTitle": "Shaba obuheereza bw'okuba omunyamakuru owaahamibwa",
+      "applyDescription": "Okushaba nka {name}. Nitukyebera buri kushaba n'ekitongore ky'amahurire.",
+      "you": "iwe",
+      "submitting": "Okuhayo…",
+      "submit": "Heereza okushaba kwaawe",
+      "outlet": "Ekitongore ky'amakuru",
+      "jobTitle": "Eiziina ry'omurimo",
+      "jobTitlePlaceholder": "e.g. Omushaki w'amakuru g'eby'amagara",
+      "workEmail": "E-mayiro y'okukora",
+      "workEmailHint": "Nitwohereza akakwate k'okukakasa aha.",
+      "membership": "UJA enamba y'obwa memba (ekirikubaasa kubaho)",
+      "membershipPlaceholder": "Ekibiina ky'abanyamakuru ekya Uganda",
+      "file": "Kaadi y'okukora nari ebaruha y'omurimo",
+      "filePrompt": "Toorana PDF nainga ekishushani (kuza kuhika ahari 50 MB)",
+      "links": "Obukwate bw'omurimo gwawe ogushohozibwe (obutari bwa butoosha)",
+      "linksPlaceholder": "Akakwate kamwe aha runyiriri",
+      "declaration": "Nimpamya ngu ebirikukwata ahari ebi n'eby'amazima, kandi ninza kushwijuma okusharamu kurugirira aha buhame, kutari aha nyegyesa y'eby'obutegyeki nainga eby'obushubuzi. Zuula neebaasa kwihaho akabonero ku kiraabe kiri ekishobobo.",
+      "verifiedTitle": "Ori omunyamakuru owaahamibwa",
+      "name": "Eiziina",
+      "verified": "Okukakasibwa",
+      "sampleOutlet": "Daily Monitor (eky'okureeberaho)",
+      "changedNewsroom": "Okahindura omwanya gw'amakuru? Hindura ebirikukukwataho kandi nitwija kubigarukamu. Akabonero kaawe karaguma obu turikukyebera.",
+      "updateDetails": "Okuhindura ebirikukwataho",
+      "updateLater": "Okushaba kw'okuhindura kwiigwire aha akawunti API",
+      "benefitsTitle": "Emigasho yaawe",
+      "receivedTitle": "Okushaba kukaheebwa",
+      "withdraw": "Okwiha omu nkora okushaba",
+      "withdrawn": "Okushaba kwihirweho",
+      "whyTitle": "Ahabwenki okukakasibwa?",
+      "whyDescription": "Aha banyamakuru abarikukora omu bitongore by'amahurire ebirikumanywa omu Uganda."
     },
     "profile": {
       "errors": {
-        "name": "Taahamu eiziina ryawe ryona."
+        "name": "Taahamu eiziina ryawe ryona.",
+        "email": "Taahamu endagiriro ya email ehikire.",
+        "phone": "Taahamu enamba ya Uganda nka 07XX XXX XXX.",
+        "contact": "Yongyeraho e-mayiro nainga enamba y'esimu."
       },
+      "saved": "Eby'omuntu bikabiikwa",
+      "detailsTitle": "Ebirikukukwataho",
       "fullName": "Eiziina ryona",
       "email": "E-mayiro",
       "password": {
@@ -564,6 +729,10 @@
       "administrator": "Omwebembezi"
     },
     "sources": {
+      "types": {
+        "media": "Ekitongore ky'amakuru"
+      },
+      "name": "Eiziina",
       "allTypes": "Emiringo yoona"
     },
     "users": {
@@ -913,6 +1082,10 @@
     },
     "overview": {
       "title": "Okureeba hamwe"
+    },
+    "table": {
+      "field": "Eiziina",
+      "required": "Ekirikwetengwa"
     },
     "search": {
       "title": "Ronda ebirikukyebera amazima"

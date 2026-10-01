@@ -494,13 +494,181 @@
         "inapp": {
           "label": "I-app",
           "description": "Bell ma tye i Zuula"
+        },
+        "email": {
+          "description": "I email me akaunt ni"
+        },
+        "push": {
+          "label": "Ngec ma kicwalo",
+          "description": "I cim ma Zuula ki keto iye"
+        },
+        "sms": {
+          "description": "Mito namba cim i komi"
+        },
+        "whatsapp": {
+          "description": "Kube ki namba ni WhatsApp"
+        },
+        "telegram": {
+          "description": "Kube Zuula Telegram bot"
         }
-      }
+      },
+      "frequencies": {
+        "instant": {
+          "label": "Kit ma timme kwede",
+          "description": "Maber pi lucoo lok angeya ki jo ma ngiyo lok"
+        },
+        "daily": {
+          "label": "Ngec ma mako jami mapat-pat",
+          "description": "Lok ma mako lok ducu otyeno ki otyeno"
+        },
+        "weekly": {
+          "label": "Ngiyo lok ma otime i cabit",
+          "description": "Coko lok macek i ceng baraja"
+        }
+      },
+      "saved": "Cwiny me yero jami ki gwoko",
+      "savedSummary": "{count, plural, one {# lok ma mako {frequency}} other {# pwonye · {frequency}}}",
+      "save": "Gwoko gin ma imaro",
+      "topicsTitle": "Lok ma ilubu",
+      "topicsDescription": "Nong ngec ka lok manyen me moko ada kicoyo i kom lok magi.",
+      "followAll": "Lub cik weng",
+      "clear": "Nen maleng",
+      "followed": "{count} me {total} olubu",
+      "typesTitle": "Ngo me miya ngec",
+      "types": {
+        "results": {
+          "label": "Adwogi me miyo lok ma atye kwede",
+          "description": "Ka ce cek ma icwalo otum."
+        },
+        "viral": {
+          "label": "Lok ma pe tye ada",
+          "description": "Ka lok goba tye ka nya oyot, kadi wa iwi lok ma pe ikelo."
+        },
+        "reviews": {
+          "label": "Ngiyo pa ludiro",
+          "description": "Ka ngat ma okwano lok matut omoko nyo oloko tam ma in imoko."
+        },
+        "broadcast": {
+          "label": "Lok ma ki cwalo pi peko ma opoto atura",
+          "description": "Cik ma pigi tegu tutwal ki bot Zuula ludito. Kare weng tye ka tic."
+        }
+      },
+      "required": "Mite",
+      "deliveryTitle": "Kit ki awene",
+      "deliveryDescription": "Yer kama lok ma poyo wii dano oo iye ki tyen adi.",
+      "connect": "Kube",
+      "connectSimulated": "{channel} kubbe ki kelo",
+      "connectSimulatedBody": "Kube me ada oo ki kubbe pa lok ma kicwalo.",
+      "frequencyLegend": "Kare me ngeyo pi lok ma mako",
+      "frequencyNote": "Adwogi me kwed ma in iketo ki cwalo lok angeya pi peko ma opoto atura kare weng ki cwalo oyot."
+    },
+    "apiKeys": {
+      "scopes": {
+        "submit": {
+          "label": "Cwal jami ma tye iye",
+          "description": "POST /v1/checks: cwalo coc, kubbe onyo jami me moko ada"
+        },
+        "read": {
+          "label": "Kwan adwogi me kwir",
+          "description": "GET /v1/checks ki /v1/fact-checks: ngolo kop, tito lok, nyutu"
+        }
+      },
+      "copied": "Kikobo i clipboard",
+      "copyFailed": "Pe onongo twero kwanyo. Yer lagony ki ikwany ne ki cingi.",
+      "nameRequired": "Mi ki lagony ne nying wek inge ni lacen.",
+      "scopeRequired": "Yer twero acel onyo makato.",
+      "copyTitle": "Coo kopi me lagony ni manyen",
+      "copyBody": "Man aye kare acel keken ma wan nyutu lagony weng. Gwok ne i password manager onyo ka gwoko mung pa server ni, pe i front-end code.",
+      "copyKey": "Kop me key",
+      "saved": "A gwoko ne",
+      "createTitle": "Yubu API lagony",
+      "createBody": "Kit ma ki tiimo kwede jami tye ki {limit} pi cawa acel.",
+      "name": "Nying",
+      "namePlaceholder": "e.g. Ot poko lok angeya CMS",
+      "permissions": "Twero",
+      "createKey": "Yubu lagony madit",
+      "keysTitle": "Lok megi",
+      "keysDescription": "Tii ki lagony me cwalo ngec ki dok me kwano adwogi ne ki i kom jami tic ma itye kwede.",
+      "emptyTitle": "Pe tye ki API lagony",
+      "emptyBody": "Yubu lagony me cako tic ki Zuula API.",
+      "created": "Kiyubu {date}",
+      "lastUsed": "Ma kitiyo kwede me agiki {when}",
+      "neverUsed": "Pe kitiyo kwede",
+      "revoke": "Jwayo",
+      "revokeTitle": "Jwiko “{name}”?",
+      "revokeBody": "Gin mo keken ma tiyo ki lagony man juko tic cutcut. Man pe kitwero dwoko cen.",
+      "revokeKey": "Lok lagony",
+      "revoked": "Ki kwanyo “{name}”",
+      "maxKeys": "Itwero bedo ki {max} lagony. Kwany acel me yubu mukene.",
+      "usageTitle": "Tic kwede",
+      "thisHour": "Cawa man",
+      "usageLabel": "{percent}% me kigeng me cawa ma ki tiyo kwede",
+      "usageBody": "{count} kwac i cawa ma okato 24. Kigeng ki dwoko cen cawa weng. Imito mukene? Lok kwedwa pi yub pa lawote.",
+      "secretNote": "Gwok lagony ma pe ngene. Cwal gi i <code>Authorization</code> wiye ki bot lapok tic ni keken. Kwan <link>API coc me pwony</link>."
+    },
+    "accreditation": {
+      "benefits": {
+        "weight": "Rwom me tic ma imiyo tye ki 2× i Community Confidence Score.",
+        "badge": "Lanyut pa lacoo lok angeya ma ki moko cok ki nyingi ki tam ma imiyo.",
+        "api": "API twero me ngiyo gin ma tye ki i jami tic me ot lok angeya ni."
+      },
+      "timeline": {
+        "submitted": "Kicwalo waraga me penyo pi tic",
+        "review": "Tye ka ngiyo",
+        "reviewDetail": "Lador tic ngiyo jami ma mite ki ot me poko lok angeya ni. Pol kare 5 nino me tic.",
+        "decision": "Moko tam",
+        "decisionDetail": "Wabinyuti in ki email ki i Zuula."
+      },
+      "errors": {
+        "outlet": "Dony i ot me poko ngec.",
+        "title": "Donyo ki nying tic ma itimo.",
+        "workEmail": "Ket email me tic ni.",
+        "file": "Ket kad me tic onyo waraga me tic.",
+        "fileSize": "Faili omyero obed 50 MB onyo matidi loyo.",
+        "declare": "Tim ber imok lok ma ki waco ni."
+      },
+      "submitted": "Kicwalo waraga me penyo pi tic",
+      "submittedBody": "Wabi weko ingeyo i nino me tic 5.",
+      "applyTitle": "Peny pi bedo ki rwom me latic me lok angeya",
+      "applyDescription": "Keto macalo {name}. Waniang tic acel acel ki ot me poko lok angeya.",
+      "you": "in",
+      "submitting": "Cwalo…",
+      "submit": "Cwal waraga me penyo pi tic",
+      "outlet": "Ot poko lok angeya",
+      "jobTitle": "Nying tic",
+      "jobTitlePlaceholder": "e.g. Lami lok angeya me yot kom",
+      "workEmail": "Email me tic",
+      "workEmailHint": "Wacwalo kakube me moko lok kany.",
+      "membership": "UJA namba me bedo lamemba (ma mite)",
+      "file": "Karatac me tic onyo waraga me tic",
+      "filePrompt": "Yer PDF onyo cal (ma romo 50 MB)",
+      "links": "Kubbe ki tic ma kicoyo (ma mite)",
+      "linksPlaceholder": "Kube acel i lain",
+      "declaration": "Aye ni lok magi tye ada, dok abicwalo tam i kom caden, pe i kom miti me cungu iwi bye onyo biacara. Zuula twero kwanyo badge ka man otur.",
+      "verifiedTitle": "In itye laco lok angeya ma ki moko",
+      "name": "Nying",
+      "verified": "Ki moko",
+      "sampleOutlet": "Daily Monitor (lanyut)",
+      "changedNewsroom": "Lok ma ki loko i kom lok angeya? Lok ngec ma mako in ci wabi ngiyo ne odoco. Badge ni bedo ka watye ka ngiyo ne.",
+      "updateDetails": "Ngec manyen",
+      "updateLater": "Kwayo me ngec manyen tye ayaba ki account API",
+      "benefitsTitle": "Adwogi maber ma inongo",
+      "receivedTitle": "Kicwalo kwac",
+      "withdraw": "Jwiko tic ma ki penyo",
+      "withdrawn": "Kikwanyo waraga me penyo pi tic",
+      "whyTitle": "Pingo inongo moko ada?",
+      "whyDescription": "Pi lucoo lok angeya ma tiyo i odi poko ngec ma ki yee gi"
     },
     "profile": {
       "errors": {
-        "name": "Dony i nyingi ma weng."
+        "name": "Dony i nyingi ma weng.",
+        "email": "Ket email address matye atir.",
+        "phone": "Ket namba me Uganda calo 07XX XXX XXX.",
+        "contact": "Med iye email onyo namba cim."
       },
+      "saved": "Kigwoko lok ma mako in",
+      "detailsTitle": "Ngec ma mako in",
+      "detailsDescription": "Kinyutu ki rwom megi ki tam ma imiyo. Email ni ki cim pe kitiyo kwede pi lwak.",
       "fullName": "Nyinge ducu",
       "password": {
         "new": "Mii manyen me donyo",
@@ -533,6 +701,10 @@
       "administrator": "Lador tic"
     },
     "sources": {
+      "types": {
+        "media": "Ot poko lok angeya"
+      },
+      "name": "Nying",
       "allTypes": "Kit weng"
     },
     "users": {
@@ -881,6 +1053,10 @@
     },
     "overview": {
       "title": "Neno weng"
+    },
+    "table": {
+      "field": "Nying",
+      "required": "Mite"
     },
     "search": {
       "title": "Yeny lok ada me moko"

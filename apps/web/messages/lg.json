@@ -527,13 +527,180 @@
         "email": {
           "label": "Emeeri y'obubaka",
           "description": "Ku akawunti yo eya email"
+        },
+        "push": {
+          "label": "Okukubira ku ssimu",
+          "description": "Ku ssimu ku Zuula we kuteekebwa"
+        },
+        "sms": {
+          "description": "Yeetaaga ennamba y'essimu ku pulofayiro yo"
+        },
+        "whatsapp": {
+          "description": "Kwataganya ennamba yo WhatsApp"
+        },
+        "telegram": {
+          "description": "Kwataganya Zuula Telegram bot"
         }
-      }
+      },
+      "frequencies": {
+        "instant": {
+          "label": "Nga bwe kibaawo",
+          "description": "Ekisinga obulungi eri bannamawulire n'abakugu"
+        },
+        "daily": {
+          "label": "Okutambuza amawulire buli lunaku",
+          "description": "Okusunsula okumu buli kiro"
+        },
+        "weekly": {
+          "label": "Okutwalira awamu okwa buli wiiki",
+          "description": "Okufunayo akatundu buli Lwokubiri"
+        }
+      },
+      "saved": "Okwagala okutegeera kukuuma",
+      "savedSummary": "{count, plural, one {# omutwe · {frequency}} other {# ensonga · {frequency}}}",
+      "save": "Kuuma ebyetaago",
+      "topicsTitle": "Ensonga z'ogoberera",
+      "topicsDescription": "Bategeezebwa buli lwe wabaawo ebipya ebikakasiddwa mu nsonga zino.",
+      "followAll": "Goberera byonna",
+      "clear": "Kitegeerekeka",
+      "followed": "{count} ku {total} kyagoberera",
+      "typesTitle": "Kiki ky'oyagala nkumanyiseko?",
+      "types": {
+        "results": {
+          "label": "Ebiva mu kuwaayo kwange",
+          "description": "Bwe kiba nti ceeke gy'owaddeyo emaliriziddwa."
+        },
+        "viral": {
+          "label": "Obubaka obukyamu obusaasaana",
+          "description": "Obulimba bwe busaasaana amangu, ne bwe kiba nga tebukwatagana na by'oyogerako."
+        },
+        "reviews": {
+          "label": "Okwekenneenya kwa bannakugu",
+          "description": "Ekiragiro ky'omulamuzi kye wawa bwe kikakasibwa oba ne kikyusibwa omukugu."
+        },
+        "broadcast": {
+          "label": "Okuweereza okw'amangu",
+          "description": "Okulabula okw'amaanyi okuva mu bakulembeze ba Zuula. Bulijjo ku."
+        }
+      },
+      "required": "Kyetaagisa",
+      "deliveryTitle": "Kiki era ddi?",
+      "deliveryDescription": "Londa we by'okulabula bikutuukako era n'emirundi emeka.",
+      "connect": "Kwatagana",
+      "connectSimulated": "{channel} okuyunga kuteeberezebwa",
+      "connectSimulatedBody": "Okukwatagana okw'amazima kujja n'okugattibwa kw'obubaka.",
+      "frequencyLegend": "Obungi bw'okulabula ku mutwe",
+      "frequencyNote": "Ebiva mu kwekebejja kw'omuntu n'okulanga okw'amangu bitwalibwa mangu ddala."
+    },
+    "apiKeys": {
+      "scopes": {
+        "submit": {
+          "label": "Waayo ebirimu",
+          "description": "POST /v1/checks: okusindika obubaka, links oba ebifaananyi okukakasa"
+        },
+        "read": {
+          "label": "Soma ebivudde mu kulonda",
+          "description": "GET /v1/checks ne /v1/fact-checks: ensala, ennyinnyonnyola, okujuliza"
+        }
+      },
+      "copied": "Kikoppe ku clipboard",
+      "copyFailed": "Teyasobola kukoppa. Londa ekisumuluzo okikoppe mu ngalo.",
+      "nameRequired": "Wa ekisumuluzo erinnya osobole okukimanya oluvannyuma.",
+      "scopeRequired": "Londa waakiri olukusa lumu.",
+      "copyTitle": "Koppa ekisumuluzo kyo ekipya",
+      "copyBody": "Kino kye kiseera kyokka lwe tulaga ekisumuluzo ekijjuvu. Kiteeke mu mukuumi wa password oba mu tterekero ly'ekyama erya server yo, tokitereka mu code ya front-end.",
+      "copyKey": "Koppa ekisumuluzo",
+      "saved": "Nkikuumye",
+      "createTitle": "Kola ekisumuluzo API",
+      "createBody": "Buli kiyungo kikugirwa okukola {limit} okusaba buli ssaawa.",
+      "name": "Erinnya",
+      "namePlaceholder": "gamba nga Newsroom CMS",
+      "permissions": "Obuyinza",
+      "createKey": "Kola ekisumuluzo",
+      "keysTitle": "Ebisumuluzo byo",
+      "keysDescription": "Kozesa ebisumuluzo okuwaayo ebikwata ku bintu era osome ebyava mu bikozesebwa byo.",
+      "emptyTitle": "Tewali API key",
+      "emptyBody": "Kola ekisumuluzo okutandika okukozesa Zuula API.",
+      "created": "Yatondeddwawo {date}",
+      "lastUsed": "Ekikozesebwa ekyasembayo {when}",
+      "neverUsed": "Tekyakozesebwangako",
+      "revoke": "Kuggyawo",
+      "revokeTitle": "Okuggyawo “{name}”?",
+      "revokeBody": "Ekintu kyonna ekikozesa key eno kirekera awo okukola amangu ago. Kino tekisobola kukyusibwa.",
+      "revokeKey": "Komyawo ekisumuluzo",
+      "revoked": "Kiddiziddwa “{name}”",
+      "maxKeys": "Osobola okuba n'ebisumuluzo ebiri wakati wa {max}. Sazaamu ekimu okukola ekirala.",
+      "usageTitle": "Okukozesa",
+      "thisHour": "Essaawa eno",
+      "usageLabel": "Ebitundu {percent}% ku kikomo ky'essaawa bikozeseddwa",
+      "usageBody": "{count} okusaba mu ssaawa 24 ezisembyeyo. Ekkomo likyusibwa buli ssaawa. Oyagala ebisingawo? Tukwatagane ku nteekateeka ya bannaffe.",
+      "secretNote": "Kuumira ebisumuluzo nga bya kyama. Bibeere mu <code>Authorization</code> okuva ku server yo yokka. Soma <link>API ebyokulabirako</link>."
+    },
+    "accreditation": {
+      "benefits": {
+        "weight": "Okuteebereza kwo kubalibwa 2× mu bubonero bw'obwesige bw'ekitundu.",
+        "badge": "Akabonero k'omusasi w'amawulire akakakasiddwa okumpi n'erinnya lyo n'ebiwandiiko.",
+        "api": "API okufuna okukebera ebiri mu mawulire g'ebikozesebwa byo."
+      },
+      "timeline": {
+        "submitted": "Okusaba kwaweereddwaayo",
+        "review": "Ekyaali mu kwekenneenyezebwa",
+        "reviewDetail": "Omukulembeze akebera ebikwata ku ggwe n'ekitongole kyo eky'amawulire. Bulijjo 5 ennaku z'okukola.",
+        "decision": "Okusalawo",
+        "decisionDetail": "Tujja kukutegeeza nga tukozesa email ne mu Zuula."
+      },
+      "errors": {
+        "outlet": "Yingira mu nnyumba yo ey'amawulire.",
+        "title": "Yingiza omutwe gw'omulimu gwo.",
+        "workEmail": "Teekamu endagiriro yo ey'omulimu.",
+        "file": "Teekako kaadi yo ey'abamawulire oba ebbaluwa y'omulimu.",
+        "fileSize": "Fayiro zirina okuba 50 MB oba entono.",
+        "declare": "Nsaba okakasa okulangirira."
+      },
+      "submitted": "Okusaba kwaweereddwaayo",
+      "submittedBody": "Tujja kukutegeeza mu nnaku 5 ez'okukola.",
+      "applyTitle": "Saba okufuna obukugu bw'omusasi w'amawulire omukakafu",
+      "applyDescription": "Okusaba nga {name}. Tukakasa buli kusaba n'ennyumba y'amawulire.",
+      "you": "Gwe",
+      "submitting": "Okuwaayo…",
+      "submit": "Waayo okusaba kwo",
+      "outlet": "Ekitongole ky'amawulire",
+      "jobTitle": "Ekitiibwa ky'omulimu",
+      "jobTitlePlaceholder": "Okugeza omusasi w'amawulire ag'ebyobulamu",
+      "workEmail": "Email y'okukola",
+      "workEmailHint": "Tusindika akakwate k'okukakasa wano.",
+      "membership": "UJA ennamba y'obwa memba (ekyeyagalire)",
+      "membershipPlaceholder": "Ekibiina ky'abannamawulire mu Uganda",
+      "file": "Kadde oba ebbaluwa y'omulimu",
+      "filePrompt": "Londa PDF oba ekifaananyi (okutuuka ku 50 MB)",
+      "links": "Obukwakkulizo ku mulimu gwo ogwafulumizibwa (ky'ekyeyagalire)",
+      "linksPlaceholder": "Olukalala lumu ku buli layini",
+      "declaration": "Nkikakasa nti ebintu bino bya mazima, era ndiwa obukulu ku bujulizi, si ku byobufuzi oba ebyobusuubuzi. Zuula ayinza okuggyako akabonero singa kino kiba nga tekikola bulungi.",
+      "verifiedTitle": "Oli munnamawulire akakasiddwa",
+      "name": "Erinnya",
+      "verified": "Ekakasa",
+      "renews": "Eddamu obuggya",
+      "sampleOutlet": "Daily Monitor (ekyokulabirako)",
+      "changedNewsroom": "Okukyusa ekifo ky'amawulire? Ggyayo ebikwata ku ggwe era tujja kuddamu okubikebera. Akabonero ko kasigala nga tukyakebera.",
+      "updateDetails": "Ebirala ebikwata ku nsonga eno",
+      "updateLater": "Okusaba okw'okukola enkyukakyuka kugguliddwa ku akawunti API",
+      "benefitsTitle": "Ebirungi byo",
+      "receivedTitle": "Okusaba kufuniddwa",
+      "withdraw": "Okuggyayo okusaba",
+      "withdrawn": "Okusaba kwaggyiddwaayo",
+      "whyTitle": "Lwaki okakasa?",
+      "whyDescription": "Ku bannamawulire abakola mu bitongole by'amawulire ebimanyiddwa mu Uganda."
     },
     "profile": {
       "errors": {
-        "name": "Yingiza erinnya lyo mu bujjuvu."
+        "name": "Yingiza erinnya lyo mu bujjuvu.",
+        "email": "Yingiza endagiriro ya email entuufu.",
+        "phone": "Yingiza ennamba ya Uganda nga 07XX XXX XXX.",
+        "contact": "Yongerako email oba ennamba y'essimu."
       },
+      "saved": "Obubaka bukuumiddwa",
+      "detailsTitle": "Ebikukwatako",
+      "detailsDescription": "Kiragiddwa n'okulonda kwo n'ebigambo byo. E-mail yo ne ssimu yo tebiraga mu lujjudde.",
       "fullName": "Erinnya lyonna mu bujjuvu",
       "email": "Emeeri y'obubaka",
       "password": {
@@ -569,6 +736,10 @@
       "administrator": "Omukulembeze"
     },
     "sources": {
+      "types": {
+        "media": "Ekitongole ky'amawulire"
+      },
+      "name": "Erinnya",
       "allTypes": "Ebika byonna"
     },
     "users": {
@@ -916,6 +1087,10 @@
     },
     "overview": {
       "title": "Okutunuulira mu bufunze"
+    },
+    "table": {
+      "field": "Erinnya",
+      "required": "Kyetaagisa"
     },
     "search": {
       "title": "Noonya okukebera amazima"
