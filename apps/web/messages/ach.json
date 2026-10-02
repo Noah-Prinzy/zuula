@@ -670,14 +670,61 @@
       "detailsTitle": "Ngec ma mako in",
       "detailsDescription": "Kinyutu ki rwom megi ki tam ma imiyo. Email ni ki cim pe kitiyo kwede pi lwak.",
       "fullName": "Nyinge ducu",
+      "phone": "Cim (pi SMS me ciko dano)",
+      "language": "Leb ma imaro",
+      "languageHint": "Kitiyo kwede pi nyutu jami ki pi lok ma poyo wii.",
+      "districtHint": "Konyo wa me cwali lok ma mako kabedo ni.",
       "password": {
+        "currentRequired": "Donyo i mung me donyo ni ma kombedi.",
+        "weak": "Tii ki nyig coc ma romo {min} ki nyig coc, namba ki lanyut.",
+        "mismatch": "Nyig coc manyen pe rwate.",
+        "reused": "Yer mung me donyo ma pud pe itiyo kwede con.",
+        "changed": "Password kiloko",
+        "changedBody": "Jami tic mukene dong ki kwanyo woko.",
+        "title": "Lok mung me donyo",
+        "description": "Ibi bedo ki coc ma ki keto iye cingi kany. Jami tic mukene kibiketo gi woko.",
+        "current": "Mung me donyo ma kombedi",
         "new": "Mii manyen me donyo",
         "confirm": "Nen ni miiyo password manyen"
       },
       "tfa": {
-        "label": "Ngiyo jami aryo"
+        "mismatch": "Kod ne pe orwatte. Rot cawa i cim mamegi ki item doki.",
+        "enabled": "Ngiyo jami aryo tye ka tic",
+        "enabledBody": "Gwok namba me kopi ni kamo ma ber.",
+        "disabled": "Moko ni lok ada tye ki jami aryo peke",
+        "title": "Ket yoo aryo me moko ni itye",
+        "description": "Med Zuula i app me authenticator (Google Authenticator, Microsoft Authenticator, Authy), kadong iket 6-digit code ma en nyutu.",
+        "setupKey": "Ket lagony (ket i cingi onyo kwany QR code kace tye ka tic)",
+        "code": "Kod ma aa ki i app mamegi",
+        "demoHint": "Nyutu: 6 namba ma pe kwako 000000.",
+        "turnOn": "Yab",
+        "label": "Ngiyo jami aryo",
+        "required": "Mite pi {role} akaunt ki bedo iye kare weng.",
+        "optional": "Peny pi namba ki i cimmi ka itye ka keto cingi iye."
       },
-      "securityTitle": "Gwoko kuc"
+      "securityTitle": "Gwoko kuc",
+      "securityDescription": "Gwok akaunt ni ki inen kama itye ka donyo iye.",
+      "passwordAge": "Kiloko me agiki 3 dwe ma okato",
+      "devices": "Jami ma ki keto alama iye",
+      "signOutOthers": "Kwanyo woko ki i kom jo mukene",
+      "signedOutOthers": "Kiketo cing me aa ki i nyonyo mukene",
+      "thisDevice": "Diro man",
+      "signOut": "Kwanyo woko",
+      "signedOutOf": "Ki keto cing me aa ki {device}",
+      "dataTitle": "Data ni",
+      "dataDescription": "I te cik me gwoko ngec ki mung, 2019 itwero gamo onyo kwanyo ngec ma mako komi ikare mo keken.",
+      "downloadTitle": "Gam ngec ma imito",
+      "downloadBody": "Kwedo, miyo, rwom ki lok ma calo JSON pwail.",
+      "download": "Gam ki i intanet",
+      "downloading": "Data ni tye ka poto",
+      "deleteTitle": "Jwayo akaunt ni",
+      "deleteBody": "Kwanyo nyingi ki ngec ma mako komi. Rwom megi bedo calo wel ma pe ngene. Jami ma kiketo iye cing gi ki loko nying gi inge kare me kwed me dwe 12.",
+      "deleteAccount": "Jwayo akaunt",
+      "deleteConfirmTitle": "Jwayo akaunt ni?",
+      "deleteConfirmBody": "Man pe kitwero timo ne odoco. Ket <strong>DELETE</strong> me moko ada.",
+      "deleteConfirmLabel": "Co DELETE me moko",
+      "deleted": "Kikwanyo akaunt woko",
+      "deletedBody": "Kikwanyo ngec ma mako komi."
     }
   },
   "Review": {
@@ -1113,28 +1160,155 @@
   "About": {
     "metaTitle": "I kom",
     "banner": {
-      "title": "I kom"
+      "eyebrow": "I kom Zuula",
+      "title": "I kom",
+      "description": "Miti wa, yoo me tic ki bedo agonya i lok ma kicoyo."
     },
     "why": {
-      "cta": "Ngiyo lok ma ki waco"
+      "eyebrow": "Pingo Zuula",
+      "title": "Kiyubu pi kit ma lok angeya woto kwede i Uganda.",
+      "cta": "Ngiyo lok ma ki waco",
+      "features": {
+        "sources": {
+          "title": "Kabedo ma genne",
+          "body": "Lok ma ki waco ni tye ada ki ngiyo ne ki dul me Uganda kacel ki lobo mukene ki jo ma gi ngiyo lok ada."
+        },
+        "ai": {
+          "title": "AI nongo jami ma tye",
+          "body": "Cal ma ki yubu AI-ma kiyubu ki coc, cal ma ki loko lok iye, dwan ma kiyubu ki vidio ma ki loko."
+        },
+        "languages": {
+          "title": "Leb me Uganda",
+          "body": "Lingala, Luganda, Acholi, Runyankole ki Ateso."
+        }
+      }
+    },
+    "mission": {
+      "title": "Uganda neno wel lok ma ki cwalo ne dano mapol nino ki nino. Zuula ngiyo gi ma pud pe i nywako ne.",
+      "body": "Zuula (ma kiyubu ki Uganda Fact-Guard) obedo AI-kony me ngiyo lok ada ma kiyubu pi kit ma lok angeya woto kwede kany — i WhatsApp, i lok me gurup ki i kabedo me nywako lok, pol kare oyot loyo kit ma ot poko lok angeya mo keken twero moko ne. Mi lok ma iwaco ci inong tam ma jenge i kom caden, pe tam keken."
     },
     "methodology": {
-      "eyebrow": "Kit me tic"
+      "eyebrow": "Kit me tic",
+      "title": "Kit ma wacobo kwede lok",
+      "description": "Pimo acel acel lubu yoo angwen ma rom, kadi bed ni ki tiyo kwede onyo ki cwalo ne bot ngat mo me ngiyo.",
+      "steps": {
+        "submit": {
+          "title": "I cwalo lok me kwac",
+          "body": "Ket coc, nywak ki yoo me kube onyo ket jami ma ineno (ma oo 50 MB). Inongo namba me lubu kor ID ki itwero lubu kwed ne kare ki kare."
+        },
+        "check": {
+          "title": "Watye ka ngiyo ne",
+          "body": "Lok ne ki ngiyo i kom lok ma genne pa dano me Uganda ki lobo mawoko, ki ngiyo pi AI-ma kiyubu ki coc, deepfakes ki audio onyo vidio ma ki yubo."
+        },
+        "publish": {
+          "title": "Kikatti ki ngolo kop",
+          "body": "Ineno kop ma ki ngolo, caden matye i ngeye ki yoo mene ma giyee onyo pe giyee — pe obedo alama keken."
+        },
+        "review": {
+          "title": "Lwak ki jo ma ngiyo lok gi miyo tam",
+          "body": "Lukwan pimo tam ma kimoko. Ka dano mapol pe giyee, ladiro ma ki yee ni ngiyo lok ne dok twero moko onyo kwanyo woko — adwogi tic ne dong ki keto alama iye ni “Dano oyee.”"
+        }
+      }
     },
     "independence": {
-      "eyebrow": "Bedo agonya me editorial"
+      "eyebrow": "Bedo agonya me editorial",
+      "title": "Cik ma wamako kenwa",
+      "description": "Zuula pe cato ngolo kop, dok bene pe dong otyeko labongo yo me pyem iye.",
+      "principles": {
+        "label": {
+          "title": "Wan wacoyo nying, pe wa jwayo",
+          "body": "Zuula pe kwanyo coc pa ngat mo keken. Wa coyo lok ma ki ngolo ki caden kacel kwede."
+        },
+        "rules": {
+          "title": "Rwom me ngiyo jami weng tye ki cik marom",
+          "body": "Lwak, lucoo lok angeya ki ludiro ma gi miyo tam gi konyo me nongo rwom me gen pa lwak, ma ki keto iye pek malube ki rekod me tic — pe tye ngat mo ma bolo kwir ne ki kwero labongo tyen lok."
+        },
+        "accountable": {
+          "title": "Lungol tic gi tiyo ticgi",
+          "body": "Ludiro ma gitye ki ngec me tic gi mito ni omyero kicoyo lok ma moko tam ne dok bene kicoyo i buk pa ludito ma twero ngiyo."
+        },
+        "sources": {
+          "title": "Kama oaa iye kinyutu, pe okanne",
+          "body": "Ripot weng kubu caden ma ki ngiyo, pi meno itwero moko tam wa in ikomi."
+        }
+      }
+    },
+    "whatsapp": {
+      "eyebrow": "Bino cok",
+      "title": "Ngi lok ma aa ki bot WhatsApp",
+      "description": "Pe tye app, pe tye data bundle pi browser — cwalo kwena ki nongo adwogi ne i lok me coko tam.",
+      "body": "A WhatsApp ki Telegram bot kiyubu pi yub me API pa platform, dong ibi bedo ki kero me cwalo kwena atir bot Zuula kit ma dong icwalo ne bot luremi. Pe tye ka tic kombedi — pi kombedi, ti ki <link>Ngiyo</link> iwi yamo.",
+      "badge": "Ma kiyubu"
+    },
+    "faq": {
+      "title": "Lapeny ma ki penyo kare ki kare",
+      "items": {
+        "free": {
+          "q": "Zuula tye agonya me tic kwede?",
+          "a": "Ngiyo lok ki kwano Library tye me nono pi dano weng. Journalist ki Expert accounts mito accreditation, pien gin gi tingo pek madit i community score dok twero ngiyo lok ma ki keto alama iye."
+        },
+        "submit": {
+          "q": "Atwero cwalo ngo?",
+          "a": "Text (calo WhatsApp ma cito anyim), kubu, coc weng, onyo jami me mako lok — cal, dwon ki vidio ma oo 50 MB."
+        },
+        "time": {
+          "q": "Pimo cente tero kare ma rom mene?",
+          "a": "Lok ma kicoyo ipol kare tero cekon 10. Media twero tero dakika acel. Lok ma ki cwalo bot ngat ma ngeyo lok me ngiyo ne lubu agiki me ngiyo ne me kakare."
+        },
+        "verdicts": {
+          "q": "Adwoki me ngolo kop ni tye ki tyen lok ango?"
+        },
+        "disagree": {
+          "q": "Ka ce pe acwako kop ma ki ngolo?",
+          "a": "Ket rwom ne. Rwom ma aa ki bot lwak, lucoo lok angeya ki ludiro ki ribo gi i Community Confidence Score. Ka adwogi me ngolo kop opoto piny tutwal ki rwom ma oromo, ki keto alama pi ladiro me ngiyo ki moko onyo kwanyo woko."
+        },
+        "languages": {
+          "q": "Lok mene ma Zuula cwako?",
+          "a": "Kwac twero ngiyo i leb munu, Luganda, Acholi, Runyankole ki Ateso. Kabedo ne bene tye ka gonyo i leb magi bene; gin mo keken ma pud pe kigonyo nen i leb munu."
+        },
+        "data": {
+          "q": "Kigwoko ngec na nining?",
+          "a": "I te cik me Uganda's Data Protection and Privacy Act, 2019. Nen <link>Cik me mung</link> wa."
+        },
+        "who": {
+          "q": "Anga ma yubu ki miyo cente me Zuula?",
+          "a": "Zuula (“Uganda Fact-Guard”) kiyubu ki Centre for Intelligent Technologies i Victoria University Kampala macalo yub me kwan ki miti pa lwak. Ngolo kop ki nongo ne labongo jami mo keken ma miyo cente onyo lacat wil."
+        }
+      }
     },
     "contact": {
-      "eyebrow": "Kube"
+      "eyebrow": "Kube",
+      "title": "Nong lok",
+      "description": "Lapeny ma mako lok me ngolo kop, kabedo onyo ribbe.",
+      "general": {
+        "title": "Lapeny mapat-pat",
+        "body": "Lok me poko lok angeya, ribbe ki lapeny me yoo me tic."
+      },
+      "cit": {
+        "title": "Kabedo me diro manyen",
+        "body": "Victoria University, Kampala",
+        "cta": "API & latic ma yubu"
+      }
     }
   },
   "Legal": {
+    "lastUpdated": "Ki loko ne me agiki {date}",
     "privacy": {
       "metaTitle": "Mung",
+      "metaDescription": "Kit ma Zuula coko, tiyo ki gwoko ngec ma mako in.",
       "title": "Mung",
+      "description": "Kit ma wan wayubu, watiyo ki dok wagwoko kwede lok ma mako komi.",
       "sections": {
         "overview": {
-          "title": "Neno weng"
+          "title": "Neno weng",
+          "body": "Cik man tito ngo ma Zuula coko ka ineno lok me cul, yeny i Library onyo cako akaunt, ki kit ma ngec meno kitiyo kwede ki gwoko ite cik me <strong>Cik me gwoko ngec ki mung, 2019</strong> me Uganda. Tiyo pi website me Zuula ki, ka dong ocako tic, WhatsApp ki Telegram bots ki partner API."
+        },
+        "collect": {
+          "title": "Ngec ma wa coko",
+          "items": {
+            "account": "<strong>Lok matut i kom akaunt</strong> — nying, email onyo nama cim, ki tic (Lwak, Lacoo lok angeya, Ngat ma tye ki ngec onyo latic).",
+            "submissions": "<strong>Coyo lok</strong> — coc, kubu onyo jami ma in ipenyo Zuula me ngiyo, ki lubu kor ID ma kimiyo."
+          }
         }
       }
     },
