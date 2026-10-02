@@ -703,15 +703,63 @@
       "detailsDescription": "Kiragiddwa n'okulonda kwo n'ebigambo byo. E-mail yo ne ssimu yo tebiraga mu lujjudde.",
       "fullName": "Erinnya lyonna mu bujjuvu",
       "email": "Emeeri y'obubaka",
+      "phone": "Essimu (ku kulabula kwa SMS)",
+      "language": "Olulimi olw'okukozesa",
+      "languageHint": "Kikozesebwa mu kuyungibwa n'okulabula.",
+      "district": "Disitulikiti",
+      "districtHint": "Kituyamba okukusindikira obubaka obw'awaka.",
       "password": {
+        "currentRequired": "Yingizaamu akasumuluzo k'olina kati.",
+        "weak": "Kozesa waakiri {min} ennukuta ezirimu enamba n'obubonero.",
+        "mismatch": "Obusumuluzo obupya tebusaanidde.",
+        "reused": "Londa akasumuluzo k'otakozesezzaako.",
+        "changed": "Akasumuluzo kakyusiddwa",
+        "changedBody": "Ebyuma ebirala byasibiddwa okuvaamu.",
+        "title": "Kyusa akasumuluzo",
+        "description": "Ojja kusigala ng'oyingiddemu wano. Ebyuma ebirala bijja kuba nga bivuddeyo.",
+        "current": "Akasumuluzo akaliwo kati",
         "new": "Akasumuluzo akapya",
         "confirm": "Kakasa akasumuluzo akapya"
       },
       "tfa": {
-        "label": "Okukakasa okw'emirundi ebiri"
+        "mismatch": "Koodi eyo teyatuukana. Kebera essaawa ku ssimu yo era ogezeeko nate.",
+        "enabled": "Okukakasa okw'emirundi ebiri kuliwo",
+        "enabledBody": "Kakasa nti koodi zo ez'okuddamu ozitereka mu kifo eky'obukuumi.",
+        "disabled": "Okukakasa okw'emirundi ebiri kuziddwa wansi",
+        "title": "Teekawo okukakasa okw'emirundi ebiri",
+        "description": "Gatta Zuula ku app ya authenticator (Google Authenticator, Microsoft Authenticator, Authy), olwo oyingize ennamba ya digito 6 gy'ekulaga.",
+        "setupKey": "Okuteekawo ekkubo (kuyingize mu ngalo oba okusoma ennamba QR emirundi egimu nga kya bulamu)",
+        "code": "Koodi okuva mu pulogulaamu yo",
+        "demoHint": "Demo: ennamba yonna 6 okuggyako 000000.",
+        "turnOn": "Kozesa ku",
+        "label": "Okukakasa okw'emirundi ebiri",
+        "required": "Kyetagisa ku akawunti za {role} era bulijjo kibaako.",
+        "optional": "Saba ennamba okuva ku ssimu yo bw'oba ng'oyingira."
       },
       "securityTitle": "Ebyokwerinda",
-      "passwordLabel": "Akasumuluzo"
+      "securityDescription": "Kuumira akawunti yo era olabe w'oyingidde.",
+      "passwordLabel": "Akasumuluzo",
+      "passwordAge": "Ekyasembayo okukyusibwa emyezi 3 egiyise",
+      "devices": "Ebyuma ebikkiriziddwa okuyingira",
+      "signOutOthers": "Okuva mu balala bonna",
+      "signedOutOthers": "Okuggya ku byuma ebirala",
+      "thisDevice": "Ekikozesebwa kino",
+      "signOut": "Kukuba kufuluma",
+      "signedOutOf": "Okuva mu {device}",
+      "dataTitle": "Obubaka bwo",
+      "dataDescription": "Wansi w'etteeka erikwata ku bukuumi bw'amawulire n'obwannakyama, 2019 osobola okukoppa oba okusangula amawulire go ag'ekyama mu kiseera kyonna.",
+      "downloadTitle": "Koppa obubaka bwo",
+      "downloadBody": "Obubaka, okuwaayo, okupima n'okwogera nga fayiro ya JSON.",
+      "download": "Okutereka",
+      "downloading": "Obubaka bwo buli mu kuteekebwako",
+      "deleteTitle": "Sangula akawunti yo",
+      "deleteBody": "Kuggyawo ebikukwatako n'ebintu byo. Okupima kwo kusigala nga tekulabika. Ebintu ebyaweereddwa bikyusibwa okubeera nga tebirina linnya oluvannyuma lw'ekiseera ky'okukebera ekya 12-myezi.",
+      "deleteAccount": "Sangula akawunti",
+      "deleteConfirmTitle": "Okusangula akawunti yo?",
+      "deleteConfirmBody": "Kino tekisobola kukyusibwa. Wandiika <strong>DELETE</strong> okukakasa.",
+      "deleteConfirmLabel": "Wandiika DELETE okukakasa",
+      "deleted": "Akawunti esangiddwa",
+      "deletedBody": "Obubaka bwo obw'ekyama bujjiddwaamu."
     }
   },
   "Review": {
@@ -1144,29 +1192,156 @@
   },
   "About": {
     "metaTitle": "Ku bikwata ku",
+    "metaDescription": "Omulimu gwa Zuula, enkola, obwetwaze bw'abakulira n'ekyo FAQ.",
     "banner": {
-      "title": "Ku bikwata ku"
+      "eyebrow": "Ku Zuula",
+      "title": "Ku bikwata ku",
+      "description": "Omulimu gwaffe, enkola yaffe n'obwetwaze bwaffe mu by'amawulire."
     },
     "why": {
-      "cta": "Kebera okwemulugunya"
+      "eyebrow": "Lwaki Zuula",
+      "title": "Ezimbiddwa ku ngeri amawulire gye gatambula mu Uganda.",
+      "cta": "Kebera okwemulugunya",
+      "features": {
+        "sources": {
+          "title": "Ensibuko ez'obwesige",
+          "body": "Ebikwata ku nsonga zino byekenneenyezebwa okusinziira ku bitongole bya Uganda n'ebweru w'eggwanga awamu n'abakugu mu kukebera amazima."
+        },
+        "ai": {
+          "title": "Okuzuula ebirimu AI",
+          "body": "Ebipande AI-ebiwandiiko ebikoleddwa, ebifaananyi eby'obulimba, amaloboozi agatondebwawo n'okukyusa vidiyo."
+        },
+        "languages": {
+          "title": "Ennimi za Uganda",
+          "body": "Olungereza, Oluganda, Acholi, Runyankole ne Ateso."
+        }
+      }
+    },
+    "mission": {
+      "title": "Uganda erabira mu bingi ebikwata ku by'obugagga buli lunaku. Zuula abikebera nga tonnaabigabana.",
+      "body": "Zuula (ekikolebwa Uganda Fact-Guard) kye kifo ekikola okukebera amazima nga kikozesebwa AI-assisted, kyazimbibwa ku ngeri amawulire gy’atuuka wano — ku WhatsApp, mu group chats ne ku social media, emirundi mingi nga gisukka ku ngeri yonna ey’okukakasa amawulire. Weereza ekigambibwa ofune ensala esinzidde ku bujulizi, si kya kulowooza kwokka."
     },
     "methodology": {
-      "eyebrow": "Enkola y'okunoonyereza"
+      "eyebrow": "Enkola y'okunoonyereza",
+      "title": "Engeri gye tutuuka ku kusalawo",
+      "description": "Buli kukebera kulina emitendera ena gye gugoberera, ka kube nga kukolebwa kompyuta oba nga kugenda eri omuntu akwekenneenya.",
+      "steps": {
+        "submit": {
+          "title": "Oweereza okusaba kwo",
+          "body": "Koppa ebigambo, ogabane akakubo oba oteekemu ebifaananyi (okutuuka ku 50 MB). Ofuna okugoberera ID era osobola okulondoola okwekenneenya mu budde."
+        },
+        "check": {
+          "title": "Tukikebera",
+          "body": "Okwemulugunya kuno kukakasiddwa okusinziira ku nsibuko za Uganda ez'obwesigwa n'ebyo ebiva mu mawanga amalala, era ne kukebererwa obutabaamu bigambo bya AI, ebyokukozesa obubi n'okukyusa amaloboozi oba vidiyo."
+        },
+        "publish": {
+          "title": "Ekiragiro kifulumizibwa",
+          "body": "Olabira ddala ensalawo, obujulizi obugirina n'ensibuko ezikkiriziganya oba ezitakkiriziganya — si kya kuteekako bubeezi mannya."
+        },
+        "review": {
+          "title": "Abantu n'abakugu baffe batunuulira ensonga",
+          "body": "Abasomi bapima ensala. Abantu abangi bwe baba nga tebakkiriziganya, Omukugu akakasiddwa akebera omusango era asobola okugukakasa oba okuguggyako — olwo alipoota n’ewandiikibwako “Human Verified.”"
+        }
+      }
     },
     "independence": {
-      "eyebrow": "Obwetwaze mu by'amawulire"
+      "eyebrow": "Obwetwaze mu by'amawulire",
+      "title": "Amateeka ge tukwatako",
+      "description": "Okusalawo kwa Zuula tekutundibwa, era tekwakoma nga tewali ngeri ya kukusoomooza.",
+      "principles": {
+        "label": {
+          "title": "Tukola obubonero, tetusangula",
+          "body": "Zuula teyaggyangako kya muntu yenna. Tuteekawo okusalawo okw'obwetwaze n'obujulizi obukwatagana nakyo."
+        },
+        "rules": {
+          "title": "Buli kuteebereza kulina amateeka ge gamu",
+          "body": "Okubala okw'abantu, abamawulire n'abakugu kweyambisibwa mu kubala obwesige bw'abantu, nga kwesigama ku byafaayo — tewali kalulu ka muntu kakendeezebwa awatali nsonga."
+        },
+        "accountable": {
+          "title": "Abanoonyereza bavunaanyizibwa",
+          "body": "Okukyusa okw'ekikugu kwetaaga okuwandiika ensonga era ne kuteekebwa mu biwandiiko ebirondoolwa abakulira."
+        },
+        "sources": {
+          "title": "Ensibuko ziragiddwa, tezikwekeddwa",
+          "body": "Buli alipoota eyogera ku bujulizi obw'ekenneenyezebwa, osobola okukakasa endowooza yaffe."
+        }
+      }
+    },
+    "whatsapp": {
+      "eyebrow": "Kijja mu kiseera ekitali kya wala",
+      "title": "Kebera okwemulugunya okuva mu WhatsApp",
+      "description": "Tewali app, tewali data bundle ya browser — weereza obubaka ofune okusalawo mu kuteesa.",
+      "body": "Bot ya WhatsApp ne Telegram etegekeddwa okukola mu kitundu kya platform ekya API, olwo osobole okutwala obubaka butereevu eri Zuula nga bw'oyinza okukikola eri mikwano gyo. Teyakakasiddwa nnyo — kati, kozesa <link>Kakasa</link> ku mutimbagano.",
+      "badge": "Ekitegekeddwa"
+    },
+    "faq": {
+      "title": "Ebibuuzo ebitera okubuzibwa",
+      "items": {
+        "free": {
+          "q": "Zuula kyere okukozesebwa?",
+          "a": "Okukebera okwemulugunya n'okusoma mu Library kya bwereere eri buli omu. Akawunti z'abamawulire n'abakugu zeetaaga okukakasibwa, kubanga zirina obuzito bungi mu bubonero bw'ekitundu era ziyinza okwekenneenya emisango egirambiddwa."
+        },
+        "submit": {
+          "q": "Kiki kye nsobola okuwaayo?",
+          "a": "Ebiwandiiko (nga WhatsApp okugenda mu maaso), akakubo, ekitundu ekijjuvu, oba emikutu — ebifaananyi, amaloboozi n'ebifaananyi bya vidiyo okutuuka ku 50 MB."
+        },
+        "time": {
+          "q": "Okukebera kitwala bbanga ki?",
+          "a": "Okuwandiika kutera okutwala nga 10 obutikitiki. Eby'amawulire bisobola okutwala okutuuka ku ddakiika emu. Emisango egitwalibwa eri omukugu agikola giba n'ekiseera ekigereke eky'okugikolako."
+        },
+        "verdicts": {
+          "q": "Ebyasaliddwa bitegeeza ki?"
+        },
+        "disagree": {
+          "q": "Kiki kye nkola singa sikkiriziganya n'ekyava mu musango?",
+          "a": "Kiteekako obubonero. Obubonero okuva mu bantu, bannamawulire n’abakugu bugattibwa mu Community Confidence Score. Singa obubonero bw’ekisembebwa bukka wansi nga buvaamu obubonero obumala, kiba kyategekebwa omukugu akirabe era akakase oba akifuule ekirala."
+        },
+        "languages": {
+          "q": "Lulimi ki Zuula lw'awagira?",
+          "a": "Okukakasa kusobola okukolebwa mu Lungereza, Oluganda, Acholi, Runyankole ne Ateso. Enkola eno nayo eteekateeka okukyusa mu nnimi ezo; ekintu kyonna ekitali kikyusiddwa kirabika mu Lungereza."
+        },
+        "data": {
+          "q": "Obubaka bwange bukuumibwa butya?",
+          "a": "Wansi w'etteeka lya Uganda erya Data Protection and Privacy Act, 2019. Laba <link>Enkola y'Obutereevu</link> yaffe."
+        },
+        "who": {
+          "q": "Ani azimba era n'ateekamu ensimbi mu Zuula?",
+          "a": "Zuula (“Uganda Fact-Guard”) yakolebwa Centre for Intelligent Technologies ku Victoria University Kampala ng’ekikozesebwa mu by’enjigiriza n’okukubiriza abantu. Ebisalibwawo bikolebwa nga tewali muntu yenna oba omusasuuzi amanyi."
+        }
+      }
     },
     "contact": {
-      "eyebrow": "Okutuukirira"
+      "eyebrow": "Okutuukirira",
+      "title": "Tukwatagane",
+      "description": "Ebibuuzo ebikwata ku nsala, omukutu oba okukolera awamu.",
+      "general": {
+        "title": "Okubuuza okutwaliza awamu",
+        "body": "Emikutu, okukolera awamu n'ebibuuzo bya pulatifoomu."
+      },
+      "cit": {
+        "title": "Ekitongole ky'ebyempuliziganya eby'amagezi",
+        "cta": "API & okufuna obuyambi bw'omukulaakulanya"
+      }
     }
   },
   "Legal": {
+    "lastUpdated": "Ekyasembyeyo okukyusibwa {date}",
     "privacy": {
       "metaTitle": "Ebyama",
+      "metaDescription": "Engeri Zuula gy'ekungaanya, okukozesa n'okukuuma ebikwata ku ggwe.",
       "title": "Ebyama",
+      "description": "Engeri gye tukungaanyaamu, gye tukozesaamu n'engeri gye tukuumamu ebikukwatako.",
       "sections": {
         "overview": {
-          "title": "Okutunuulira mu bufunze"
+          "title": "Okutunuulira mu bufunze",
+          "body": "Enkola eno ennyonnyola kye Zuula ekikungaanya bw’oba okukebera okusaba, okunoonya mu Library oba okutandika akawunti, era n’engeri amawulire ago gye gakozesebwa ne bwe gakuumibwa wansi wa <strong>Etteeka ku Kukuumibwa kw'Obubaka n'Ebyama, 2019</strong> ya Uganda. Ekozesa ku mukutu gwa Zuula, era nga gutandise, bots za WhatsApp ne Telegram n’abakolagana ba API."
+        },
+        "collect": {
+          "title": "Obubaka bwe tukungaanya",
+          "items": {
+            "account": "<strong>Ebikwata ku akawunti</strong> — erinnya, e-mail oba ennamba y'essimu, n'omulimu (Owa lujjudde, Omunnamawulire, Omutendeke oba Omukulembeze).",
+            "submissions": "<strong>Okuwaayo</strong> — ekiwandiiko, akakwate oba emikutu gy'ebifaananyi by'osaba Zuula okukebera, n'okulondoola ID kwe kiba kiweereddwa."
+          }
         }
       }
     },

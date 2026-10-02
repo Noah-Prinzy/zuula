@@ -2959,3 +2959,509 @@
 {"lang":"teo","src":"Shown with your ratings and comments. Your email and phone are never public.","out":"Itodiaritai keda aipim kon keda akirokon. Mam email kon keda esimu kon eraasi luka itunga kere."}
 {"lang":"lg","src":"Shown with your ratings and comments. Your email and phone are never public.","out":"Kiragiddwa n'okulonda kwo n'ebigambo byo. E-mail yo ne ssimu yo tebiraga mu lujjudde."}
 {"lang":"teo","src":"Your details","out":"Akirokon"}
+{"lang":"lg","src":"Phone (for {0} alerts)","out":"Essimu (ku kulabula kwa {0})"}
+{"lang":"ach","src":"Phone (for {0} alerts)","out":"Cim (pi {0} me ciko dano)"}
+{"lang":"nyn","src":"Phone (for {0} alerts)","out":"Esimu (y'okurabura {0})"}
+{"lang":"ach","src":"Preferred language","out":"Leb ma imaro"}
+{"lang":"teo","src":"Phone (for {0} alerts)","out":"Esimu (kanu {0} aikwenyar)"}
+{"lang":"lg","src":"Preferred language","out":"Olulimi olw'okukozesa"}
+{"lang":"nyn","src":"Shown with your ratings and comments. Your email and phone are never public.","out":"Ekyorekirwe n'okuteebereza kwawe hamwe n'ebiteiso byawe. E-mayiro yaawe hamwe na esimu yaawe tibirikwija kuba ebya buri omwe."}
+{"lang":"nyn","src":"Preferred language","out":"Orurimi orurikukundwa"}
+{"lang":"teo","src":"Preferred language","out":"Angajep na ekotoi"}
+{"lang":"lg","src":"Used for the interface and for your alerts.","out":"Kikozesebwa mu kuyungibwa n'okulabula."}
+{"lang":"ach","src":"Used for the interface and for your alerts.","out":"Kitiyo kwede pi nyutu jami ki pi lok ma poyo wii."}
+{"lang":"nyn","src":"Used for the interface and for your alerts.","out":"Ekakoresibwa aha mubiri hamwe n'okurabura kwawe."}
+{"lang":"teo","src":"Used for the interface and for your alerts.","out":"Itosomatai kanu aineranara ka kanu aikwenyar."}
+{"lang":"lg","src":"District","out":"Disitulikiti"}
+{"lang":"ach","src":"District","out":"District"}
+{"lang":"nyn","src":"District","out":"Disiturikiti"}
+{"lang":"teo","src":"District","out":"Edisitrikt"}
+{"lang":"lg","src":"Helps us send you local alerts.","out":"Kituyamba okukusindikira obubaka obw'awaka."}
+{"lang":"ach","src":"Helps us send you local alerts.","out":"Konyo wa me cwali lok ma mako kabedo ni."}
+{"lang":"nyn","src":"Helps us send you local alerts.","out":"Nikutuhwera kukwohereza obutumwa bw'omukyanga."}
+{"lang":"nyn","src":"Enter your current password.","out":"Taahamu akasumuruzo kaawe aka hati."}
+{"lang":"lg","src":"Enter your current password.","out":"Yingizaamu akasumuluzo k'olina kati."}
+{"lang":"ach","src":"Enter your current password.","out":"Donyo i mung me donyo ni ma kombedi."}
+{"lang":"teo","src":"Helps us send you local alerts.","out":"Ingarakini sio aijukakin jo akiro nuikamunitos akwap."}
+{"lang":"teo","src":"Enter your current password.","out":"Kobu apapula kon naka aiyeyea."}
+{"lang":"lg","src":"Use at least {0} characters with letters, numbers and symbols.","out":"Kozesa waakiri {0} ennukuta ezirimu enamba n'obubonero."}
+{"lang":"ach","src":"Use at least {0} characters with letters, numbers and symbols.","out":"Tii ki nyig coc ma romo {0} ki nyig coc, namba ki lanyut."}
+{"lang":"nyn","src":"Use at least {0} characters with letters, numbers and symbols.","out":"Kozesa hakiri {0} abantu abaine enyuguta, enamba hamwe n'obubonero."}
+{"lang":"ach","src":"New passwords don't match.","out":"Nyig coc manyen pe rwate."}
+{"lang":"lg","src":"New passwords don't match.","out":"Obusumuluzo obupya tebusaanidde."}
+{"lang":"teo","src":"Use at least {0} characters with letters, numbers and symbols.","out":"Itwasam at least {0} characters keda inyukutan, inaabai keda aanyuneta."}
+{"lang":"nyn","src":"New passwords don't match.","out":"Obusumuruzo obusya tiburikuhikaana."}
+{"lang":"teo","src":"New passwords don't match.","out":"Mam ipaswadin luitetiak eputosi."}
+{"lang":"lg","src":"Choose a password you haven't used before.","out":"Londa akasumuluzo k'otakozesezzaako."}
+{"lang":"lg","src":"Password changed","out":"Akasumuluzo kakyusiddwa"}
+{"lang":"ach","src":"Choose a password you haven't used before.","out":"Yer mung me donyo ma pud pe itiyo kwede con."}
+{"lang":"nyn","src":"Choose a password you haven't used before.","out":"Toorana akasumuruzo okaba otakakozesizeho."}
+{"lang":"teo","src":"Choose a password you haven't used before.","out":"Koseu apaswadi namam ijo itosomata sek."}
+{"lang":"ach","src":"Password changed","out":"Password kiloko"}
+{"lang":"nyn","src":"Password changed","out":"Akahindura akasumuruzo"}
+{"lang":"teo","src":"Password changed","out":"Aponi ijulakinai password."}
+{"lang":"lg","src":"Other devices have been signed out.","out":"Ebyuma ebirala byasibiddwa okuvaamu."}
+{"lang":"ach","src":"Other devices have been signed out.","out":"Jami tic mukene dong ki kwanyo woko."}
+{"lang":"lg","src":"Change password","out":"Kyusa akasumuluzo"}
+{"lang":"nyn","src":"Other devices have been signed out.","out":"Ebyoma ebindi bitwirwe omu mikono."}
+{"lang":"teo","src":"Other devices have been signed out.","out":"Ejaasi acuman ace nuetolomunitai."}
+{"lang":"ach","src":"Change password","out":"Lok mung me donyo"}
+{"lang":"nyn","src":"Change password","out":"Hindura akasumuruzo"}
+{"lang":"teo","src":"Change password","out":"Ijulakin password"}
+{"lang":"ach","src":"You'll stay signed in here. Other devices will be signed out.","out":"Ibi bedo ki coc ma ki keto iye cingi kany. Jami tic mukene kibiketo gi woko."}
+{"lang":"nyn","src":"You'll stay signed in here. Other devices will be signed out.","out":"Noija kuguma ohandiikirwe aha. Ebyoma ebindi nibiija kuhandikwa aheeru."}
+{"lang":"lg","src":"You'll stay signed in here. Other devices will be signed out.","out":"Ojja kusigala ng'oyingiddemu wano. Ebyuma ebirala bijja kuba nga bivuddeyo."}
+{"lang":"teo","src":"You'll stay signed in here. Other devices will be signed out.","out":"Ibuni jo asalakin iwadikatai kane. Iboro ice lu itwasamaete ejaunos iwadikatai kinga."}
+{"lang":"lg","src":"Current password","out":"Akasumuluzo akaliwo kati"}
+{"lang":"ach","src":"Current password","out":"Mung me donyo ma kombedi"}
+{"lang":"nyn","src":"Current password","out":"Akasumuruzo akariho"}
+{"lang":"teo","src":"Current password","out":"Etapit password loakwana"}
+{"lang":"lg","src":"That code didn't match. Check the time on your phone and try again.","out":"Koodi eyo teyatuukana. Kebera essaawa ku ssimu yo era ogezeeko nate."}
+{"lang":"ach","src":"That code didn't match. Check the time on your phone and try again.","out":"Kod ne pe orwatte. Rot cawa i cim mamegi ki item doki."}
+{"lang":"nyn","src":"That code didn't match. Check the time on your phone and try again.","out":"Koodi egyo terakwatanisa. Kyebera obwire aha simu yaawe kandi ogyezeho ogaruke."}
+{"lang":"teo","src":"That code didn't match. Check the time on your phone and try again.","out":"Mam ekod ngol abu koinak. Koany apak kotoma osimu kon kosodi aitam bobo."}
+{"lang":"lg","src":"Two-factor authentication is on","out":"Okukakasa okw'emirundi ebiri kuliwo."}
+{"lang":"ach","src":"Two-factor authentication is on","out":"Ngiyo jami aryo tye ka tic"}
+{"lang":"nyn","src":"Two-factor authentication is on","out":"Okukakasa ebintu bibiri kuriho"}
+{"lang":"teo","src":"Two-factor authentication is on","out":"Ejai aanyanario naka akiro aarei"}
+{"lang":"teo","src":"Save your backup codes somewhere safe.","out":"Koinak ikodin kon luka aiyeyea aiboisit na eyuara."}
+{"lang":"ach","src":"Save your backup codes somewhere safe.","out":"Gwok namba me kopi ni kamo ma ber."}
+{"lang":"nyn","src":"Save your backup codes somewhere safe.","out":"Bika enamba zaawe ez'okugarukamu omu mwanya murungi."}
+{"lang":"lg","src":"Save your backup codes somewhere safe.","out":"Kakasa nti koodi zo ez'okuddamu ozitereka mu kifo eky'obukuumi."}
+{"lang":"ach","src":"Two-factor authentication is off","out":"Moko ni lok ada tye ki jami aryo peke"}
+{"lang":"nyn","src":"Two-factor authentication is off","out":"Okukakasa ebintu bibiri kuriho"}
+{"lang":"lg","src":"Two-factor authentication is off","out":"Okukakasa okw'emirundi ebiri kuziddwa wansi."}
+{"lang":"teo","src":"Two-factor authentication is off","out":"Ejai aanyanario naka iboro iarei."}
+{"lang":"ach","src":"Set up two-factor authentication","out":"Ket yoo aryo me moko ni itye"}
+{"lang":"lg","src":"Set up two-factor authentication","out":"Teekawo okukakasa okw'emirundi ebiri."}
+{"lang":"nyn","src":"Set up two-factor authentication","out":"Teekaho okukakasa ebintu bibiri"}
+{"lang":"teo","src":"Set up two-factor authentication","out":"Aitemonokin aanyanaret na iboro iarei"}
+{"lang":"ach","src":"Add {0} to an authenticator app ({1} Authenticator, Microsoft Authenticator, Authy), then enter the {2}-digit code it shows.","out":"Med {0} i app me authenticator ({1} Authenticator, Microsoft Authenticator, Authy), kadong iket {2}-digit code ma en nyutu."}
+{"lang":"lg","src":"Add {0} to an authenticator app ({1} Authenticator, Microsoft Authenticator, Authy), then enter the {2}-digit code it shows.","out":"Gatta {0} ku app ya authenticator ({1} Authenticator, Microsoft Authenticator, Authy), olwo oyingize ennamba ya digito {2} gy'ekulaga."}
+{"lang":"ach","src":"Setup key (enter it manually or scan the {0} code once live)","out":"Ket lagony (ket i cingi onyo kwany {0} code kace tye ka tic)"}
+{"lang":"teo","src":"Add {0} to an authenticator app ({1} Authenticator, Microsoft Authenticator, Authy), then enter the {2}-digit code it shows.","out":"Kiyatak {0} toma app lo itigogongitai ({1} Authenticator, Microsoft Authenticator, Authy), kosodi aijulakin enaaba loka {2} lo itodunit."}
+{"lang":"lg","src":"Setup key (enter it manually or scan the {0} code once live)","out":"Okuteekawo ekkubo (kuyingize mu ngalo oba okusoma ennamba {0} emirundi egimu nga kya bulamu)"}
+{"lang":"nyn","src":"Add {0} to an authenticator app ({1} Authenticator, Microsoft Authenticator, Authy), then enter the {2}-digit code it shows.","out":"Yongyera {0} aha app y'okukakasa ({1} Authenticator, Microsoft Authenticator, Authy), reero otaahemu koodi ya digito {2} ei erikworeka."}
+{"lang":"ach","src":"Code from your app","out":"Kod ma aa ki i app mamegi"}
+{"lang":"lg","src":"Code from your app","out":"Koodi okuva mu pulogulaamu yo"}
+{"lang":"nyn","src":"Setup key (enter it manually or scan the {0} code once live)","out":"Okutaho ekishumuruzo (kita omu butongore nainga oshwijume kode {0} obu erikuba eriho)"}
+{"lang":"teo","src":"Setup key (enter it manually or scan the {0} code once live)","out":"Aitemonokin ekisil (kijaik ngesi keda akan arai bo aipim kode {0} adiope bon)"}
+{"lang":"nyn","src":"Code from your app","out":"Koodi kuruga omu puroguraamu yaawe"}
+{"lang":"teo","src":"Code from your app","out":"Kode kotoma app kon"}
+{"lang":"teo","src":"Demo: any {0} digits except {1}.","out":"Demo: any {0} digits except {1}."}
+{"lang":"lg","src":"Demo: any {0} digits except {1}.","out":"Demo: ennamba yonna {0} okuggyako {1}."}
+{"lang":"nyn","src":"Demo: any {0} digits except {1}.","out":"Eky'okureeberaho: {0} digito ezitarikukira ahari {1}."}
+{"lang":"ach","src":"Demo: any {0} digits except {1}.","out":"Nyutu: {0} namba ma pe kwako {1}."}
+{"lang":"lg","src":"Turn on","out":"Kozesa ku"}
+{"lang":"nyn","src":"Turn on","out":"Kwata aha"}
+{"lang":"teo","src":"Demo: any {0} digits except {1}.","out":"Demo: any {0} digits except {1}."}
+{"lang":"ach","src":"Turn on","out":"Yab"}
+{"lang":"teo","src":"Turn on","out":"Kobu aiboisit"}
+{"lang":"teo","src":"Demo: any {0} digits except {1}.","out":"Demo: any {0} digits except {1}."}
+{"lang":"ach","src":"Required for {0} accounts and always on.","out":"Mite pi {0} akaunt ki bedo iye kare weng."}
+{"lang":"lg","src":"Required for {0} accounts and always on.","out":"Kyetagisa ku akawunti za {0} era bulijjo kibaako."}
+{"lang":"teo","src":"Required for {0} accounts and always on.","out":"Ekotoi kanu akaunts {0} ido duc ejai."}
+{"lang":"nyn","src":"Required for {0} accounts and always on.","out":"Erikwetengwa aha akawunti za {0} kandi buriijo eriho."}
+{"lang":"lg","src":"Ask for a code from your phone when you sign in.","out":"Saba ennamba okuva ku ssimu yo bw'oba ng'oyingira."}
+{"lang":"ach","src":"Ask for a code from your phone when you sign in.","out":"Peny pi namba ki i cimmi ka itye ka keto cingi iye."}
+{"lang":"nyn","src":"Ask for a code from your phone when you sign in.","out":"Shaba kode kuruga aha simu yaawe waaba noohandiika."}
+{"lang":"teo","src":"Ask for a code from your phone when you sign in.","out":"Kilip kode kanejai esimu kon neinerar ijo."}
+{"lang":"lg","src":"Protect your account and see where you're signed in.","out":"Kuumira akawunti yo era olabe w'oyingidde."}
+{"lang":"ach","src":"Protect your account and see where you're signed in.","out":"Gwok akaunt ni ki inen kama itye ka donyo iye."}
+{"lang":"nyn","src":"Protect your account and see where you're signed in.","out":"Rinda akaunti yaawe kandi oreebe ahu oyemereire."}
+{"lang":"teo","src":"Protect your account and see where you're signed in.","out":"Kotere aingadis naka ikapun kon kosodi awanyun ne alomar ijo."}
+{"lang":"ach","src":"Last changed {0} months ago","out":"Kiloko me agiki {0} dwe ma okato"}
+{"lang":"lg","src":"Last changed {0} months ago","out":"Ekyasembayo okukyusibwa emyezi {0} egiyise."}
+{"lang":"nyn","src":"Last changed {0} months ago","out":"Ekyahindwirwe emyezi {0} enyima"}
+{"lang":"nyn","src":"Signed-in devices","out":"Ebyoma ebirikukoresibwa"}
+{"lang":"lg","src":"Signed-in devices","out":"Ebyuma ebikkiriziddwa okuyingira"}
+{"lang":"teo","src":"Last changed {0} months ago","out":"Aponi ijulakinai sek ilapio {0} kau"}
+{"lang":"ach","src":"Signed-in devices","out":"Jami ma ki keto alama iye"}
+{"lang":"teo","src":"Signed-in devices","out":"Iboro lu iwadikatai"}
+{"lang":"lg","src":"Sign out of all others","out":"Okuva mu balala bonna."}
+{"lang":"nyn","src":"Sign out of all others","out":"Okuruga omu bandi boona"}
+{"lang":"ach","src":"Sign out of all others","out":"Kwanyo woko ki i kom jo mukene"}
+{"lang":"lg","src":"Signed out of other devices","out":"Okuggya ku byuma ebirala"}
+{"lang":"teo","src":"Sign out of all others","out":"Kogolok kotoma luce kere"}
+{"lang":"ach","src":"Signed out of other devices","out":"Kiketo cing me aa ki i nyonyo mukene"}
+{"lang":"nyn","src":"Signed out of other devices","out":"Okushohoza aha byoma ebindi"}
+{"lang":"teo","src":"Signed out of other devices","out":"Aponi koinakinai aiboisio ace"}
+{"lang":"lg","src":"This device","out":"Ekikozesebwa kino"}
+{"lang":"ach","src":"This device","out":"Diro man"}
+{"lang":"nyn","src":"This device","out":"Ekyoma eki"}
+{"lang":"lg","src":"Sign out","out":"Kukuba kufuluma"}
+{"lang":"teo","src":"This device","out":"Erai eswamae lo"}
+{"lang":"nyn","src":"Sign out","out":"Okuruga omu akawunti"}
+{"lang":"ach","src":"Sign out","out":"Kwanyo woko"}
+{"lang":"lg","src":"Signed out of {0}","out":"Okuva mu {0}"}
+{"lang":"teo","src":"Sign out","out":"Akiro nuka aitolomun"}
+{"lang":"ach","src":"Signed out of {0}","out":"Ki keto cing me aa ki {0}"}
+{"lang":"teo","src":"Signed out of {0}","out":"Aponi kicikakinai aiboisit naka {0}"}
+{"lang":"lg","src":"Your data","out":"Obubaka bwo"}
+{"lang":"nyn","src":"Your data","out":"Ebi waahandiika"}
+{"lang":"ach","src":"Your data","out":"Data ni"}
+{"lang":"nyn","src":"Signed out of {0}","out":"Okashazamu omuri {0}"}
+{"lang":"teo","src":"Your data","out":"Akirokon"}
+{"lang":"ach","src":"Under the Data Protection and Privacy Act, {0} you can download or delete your personal data at any time.","out":"I te cik me gwoko ngec ki mung, {0} itwero gamo onyo kwanyo ngec ma mako komi ikare mo keken."}
+{"lang":"lg","src":"Under the Data Protection and Privacy Act, {0} you can download or delete your personal data at any time.","out":"Okusinziira ku tteeka erikwata ku bukuumi bw'ebiwandiiko n'obutamanya, osobola okusunsula oba okusangula ebikukwatako mu budde bwonna."}
+{"lang":"lg","src":"Download your data","out":"Koppa obubaka bwo."}
+{"lang":"teo","src":"Under the Data Protection and Privacy Act, {0} you can download or delete your personal data at any time.","out":"Kotoma aitutuket naka ayuarite akiro keda aiyeyea, {0} ipedori jo alemun arai bo alemar akirokon apak adio."}
+{"lang":"ach","src":"Download your data","out":"Gam ngec ma imito"}
+{"lang":"lg","src":"Under the Data Protection and Privacy Act, {0} you can download or delete your personal data at any time.","out":"Wansi w'etteeka erikwata ku bukuumi bw'amawulire n'obwannakyama, {0} osobola okukoppa oba okusangula amawulire go ag'ekyama mu kiseera kyonna."}
+{"lang":"nyn","src":"Under the Data Protection and Privacy Act, {0} you can download or delete your personal data at any time.","out":"Omu kiragiro ky'okurinda ebihandiiko hamwe n'eky'obukwenda bw'omuntu, {0} noobaasa kwiha omu kompyuta nainga okushazamu ebihandiiko byawe obwire bwona."}
+{"lang":"nyn","src":"Download your data","out":"Okutunga obubaka bwawe"}
+{"lang":"teo","src":"Download your data","out":"Kotub aiboisit kon naka akiro"}
+{"lang":"lg","src":"Profile, submissions, ratings and comments as a {0} file.","out":"Obubaka, okuwaayo, okupima n'okwogera nga fayiro ya {0}."}
+{"lang":"lg","src":"Download","out":"Okutereka"}
+{"lang":"ach","src":"Profile, submissions, ratings and comments as a {0} file.","out":"Kwedo, miyo, rwom ki lok ma calo {0} pwail."}
+{"lang":"teo","src":"Profile, submissions, ratings and comments as a {0} file.","out":"Akiro, aijukar, adoketait keda alimuneta kwape {0} file."}
+{"lang":"nyn","src":"Profile, submissions, ratings and comments as a {0} file.","out":"Ebirikukwataho, okuheereza, okuteera obubonero hamwe n'ebiteekateeko nk'efayiro ya {0}."}
+{"lang":"ach","src":"Download","out":"Gam ki i intanet"}
+{"lang":"nyn","src":"Download","out":"Okutwara"}
+{"lang":"teo","src":"Download","out":"Aiduk"}
+{"lang":"ach","src":"Your data is downloading","out":"Data ni tye ka poto"}
+{"lang":"teo","src":"Your data is downloading","out":"Euta akirokon aitolomun."}
+{"lang":"nyn","src":"Your data is downloading","out":"Ebi waahandiika biriyo nibitambura"}
+{"lang":"lg","src":"Your data is downloading","out":"Obubaka bwo buli mu kuteekebwako."}
+{"lang":"ach","src":"Delete your account","out":"Jwayo akaunt ni"}
+{"lang":"nyn","src":"Delete your account","out":"Shazamu akawunti yaawe"}
+{"lang":"teo","src":"Delete your account","out":"Kotub akaunt kon"}
+{"lang":"lg","src":"Delete your account","out":"Sangula akawunti yo"}
+{"lang":"ach","src":"Removes your profile and personal data. Your ratings stay as anonymous counts. Submitted content is anonymised after the {0}-month audit period.","out":"Kwanyo nyingi ki ngec ma mako komi. Rwom megi bedo calo wel ma pe ngene. Jami ma kiketo iye cing gi ki loko nying gi inge kare me kwed me dwe {0}."}
+{"lang":"lg","src":"Removes your profile and personal data. Your ratings stay as anonymous counts. Submitted content is anonymised after the {0}-month audit period.","out":"Kuggyawo ebikukwatako n'ebintu byo. Okupima kwo kusigala nga tekulabika. Ebintu ebyaweereddwa bikyusibwa okubeera nga tebirina linnya oluvannyuma lw'ekiseera ky'okukebera ekya {0}-myezi."}
+{"lang":"teo","src":"Removes your profile and personal data. Your ratings stay as anonymous counts. Submitted content is anonymised after the {0}-month audit period.","out":"Etapit alemar akirokon keda akirokon nuka itunganan. Ejaasi aipim kon kwape aimar namam ejena. Akiro nu ijaikitai ejaasi toma amamus aijen akaulo naka apak naka aingic naka ilapio {0}."}
+{"lang":"nyn","src":"Removes your profile and personal data. Your ratings stay as anonymous counts. Submitted content is anonymised after the {0}-month audit period.","out":"Nikiiha ebirikukukwataho hamwe n'ebihandiiko byawe. Okuteebereza kwawe nikuguma nk'okubara okutarikumanywa. Ebirikuhayo nibihindurwa ebitarikumanywa bwanyima y'obwire bwa {0}-okwezi obw'okushwijuma."}
+{"lang":"lg","src":"Delete account","out":"Sangula akawunti"}
+{"lang":"ach","src":"Delete account","out":"Jwayo akaunt"}
+{"lang":"nyn","src":"Delete account","out":"Kwihaho akawunti"}
+{"lang":"teo","src":"Delete account","out":"Kotub akaunt"}
+{"lang":"lg","src":"Delete your account?","out":"Okusangula akawunti yo?"}
+{"lang":"ach","src":"Delete your account?","out":"Jwayo akaunt ni?"}
+{"lang":"teo","src":"Delete your account?","out":"Alemar akaunt kon?"}
+{"lang":"nyn","src":"Delete your account?","out":"Okushazamu akawunti yaawe?"}
+{"lang":"lg","src":"This can't be undone. Type {0} to confirm.","out":"Kino tekisobola kukyusibwa. Wandiika {0} okukakasa."}
+{"lang":"nyn","src":"This can't be undone. Type {0} to confirm.","out":"Eki tikirikubaasa kuhindurwa. Handiika {0} okakakasa."}
+{"lang":"ach","src":"This can't be undone. Type {0} to confirm.","out":"Man pe kitwero timo ne odoco. Ket {0} me moko ada."}
+{"lang":"ach","src":"Type {0} to confirm","out":"Co {0} me moko"}
+{"lang":"nyn","src":"Type {0} to confirm","out":"Handiika {0} okukakasa"}
+{"lang":"lg","src":"Type {0} to confirm","out":"Wandiika {0} okukakasa"}
+{"lang":"teo","src":"This can't be undone. Type {0} to confirm.","out":"Mam epedorio aijulakin ngun. Iwadika {0} kanu aitigogongor."}
+{"lang":"teo","src":"Type {0} to confirm","out":"Iwadika {0} kanu aitigogong"}
+{"lang":"nyn","src":"Account deleted","out":"Akawunti eshazirwe"}
+{"lang":"lg","src":"Account deleted","out":"Akawunti esangiddwa."}
+{"lang":"teo","src":"Account deleted","out":"Aponi kolemarai akaunt"}
+{"lang":"lg","src":"Your personal data has been removed.","out":"Obubaka bwo obw'ekyama bujjiddwaamu."}
+{"lang":"ach","src":"Your personal data has been removed.","out":"Kikwanyo ngec ma mako komi."}
+{"lang":"nyn","src":"Your personal data has been removed.","out":"Ebikukwataho byaiwe bihairweyo."}
+{"lang":"teo","src":"Your personal data has been removed.","out":"Alemar akirokon nuka aiyeyea."}
+{"lang":"ach","src":"Account deleted","out":"Kikwanyo akaunt woko"}
+{"lang":"nyn","src":"{0}'s mission, methodology, editorial independence and {1}.","out":"Omurimo gwa {0}, omuringo, obwetegyeki bw'okushohoza hamwe na {1}."}
+{"lang":"ach","src":"{0}'s mission, methodology, editorial independence and {1}.","out":"Miti ne, kit tic ne, bedo agonya ki {1}."}
+{"lang":"lg","src":"{0}'s mission, methodology, editorial independence and {1}.","out":"Omulimu gwa {0}, enkola, obwetwaze bw'abakulira n'ekyo {1}."}
+{"lang":"lg","src":"About {0}","out":"Ku {0}"}
+{"lang":"ach","src":"{0}'s mission, methodology, editorial independence and {1}.","out":"Miti ne, yoo me tic, bedo agonya ki {1}."}
+{"lang":"teo","src":"{0}'s mission, methodology, editorial independence and {1}.","out":"Erai alosikinet ke, epone loitolosere, aipugaikin bon naka ewadikan keda {1}."}
+{"lang":"ach","src":"About {0}","out":"I kom {0}"}
+{"lang":"nyn","src":"About {0}","out":"Ahaiguru ya {0}"}
+{"lang":"ach","src":"{0}'s mission, methodology, editorial independence and {1}.","out":"Ticgi, kit ticgi, bedo agonya pa lucoo lok angeya ki {1}."}
+{"lang":"teo","src":"{0}'s mission, methodology, editorial independence and {1}.","out":"{0} alosikinet, epone lo itolosere aswam, aipugaikin bon ka {1}."}
+{"lang":"teo","src":"About {0}","out":"Kanuikamunitos {0}"}
+{"lang":"ach","src":"Our mission, methodology and editorial independence.","out":"Miti wa, yoo me tic ki bedo agonya i lok ma kicoyo."}
+{"lang":"lg","src":"Our mission, methodology and editorial independence.","out":"Omulimu gwaffe, enkola yaffe n'obwetwaze bwaffe mu by'amawulire."}
+{"lang":"nyn","src":"Our mission, methodology and editorial independence.","out":"Omurimo gwaitu, omuringo gw'okukora hamwe n'obugabe bw'abanyamakuru."}
+{"lang":"teo","src":"Our mission, methodology and editorial independence.","out":"Aswam wok, epone lo itwasamatere ka aipugaikin bon."}
+{"lang":"ach","src":"Why {0}","out":"Pingo {0}"}
+{"lang":"lg","src":"Why {0}","out":"Lwaki {0}"}
+{"lang":"teo","src":"Why {0}","out":"Kanukinyo {0}"}
+{"lang":"nyn","src":"Why {0}","out":"Ahabw'enki {0}"}
+{"lang":"ach","src":"Built for the way news travels in Uganda.","out":"Kiyubu pi kit ma lok angeya woto kwede i Uganda."}
+{"lang":"teo","src":"Built for the way news travels in Uganda.","out":"Edukunitai kanu epone lo elosere iyemuto ko Uganda."}
+{"lang":"nyn","src":"Built for the way news travels in Uganda.","out":"Kikombekwa omu muringo amakuru garikutamburamu omuri Yuganda."}
+{"lang":"lg","src":"Built for the way news travels in Uganda.","out":"Ezimbiddwa ku ngeri amawulire gye gatambula mu Uganda."}
+{"lang":"lg","src":"Uganda","out":"Uganda"}
+{"lang":"ach","src":"Uganda","out":"Uganda"}
+{"lang":"nyn","src":"Uganda","out":"Uganda"}
+{"lang":"teo","src":"Uganda","out":"Uganda"}
+{"lang":"ach","src":"Trusted sources","out":"Kabedo ma genne"}
+{"lang":"lg","src":"Trusted sources","out":"Ensibuko ez'obwesige"}
+{"lang":"nyn","src":"Trusted sources","out":"Oburugo obwesigwa"}
+{"lang":"teo","src":"Trusted sources","out":"Iboro lu emunoi"}
+{"lang":"lg","src":"Claims are cross-referenced against Ugandan and international outlets and fact-checkers.","out":"Ebikwata ku nsonga zino byekenneenyezebwa okusinziira ku bitongole bya Uganda n'ebweru w'eggwanga awamu n'abakugu mu kukebera amazima."}
+{"lang":"lg","src":"{0} content detection","out":"Okuzuula ebirimu {0}"}
+{"lang":"teo","src":"Claims are cross-referenced against Ugandan and international outlets and fact-checkers.","out":"Ejaasi akiro ngun keda aiboisio nuka Uganda ka akwapin ace ka itunga lu inwakete abeit."}
+{"lang":"ach","src":"Claims are cross-referenced against Ugandan and international outlets and fact-checkers.","out":"Lok ma ki waco ni tye ada ki ngiyo ne ki dul me Uganda kacel ki lobo mukene ki jo ma gi ngiyo lok ada."}
+{"lang":"nyn","src":"Claims are cross-referenced against Ugandan and international outlets and fact-checkers.","out":"Ebirikugambwa nibishwijumwa kuruga omu Uganda hamwe n'ensi yoona kandi abarikushwijuma amazima."}
+{"lang":"teo","src":"{0} content detection","out":"{0} ajenunet naka akiro"}
+{"lang":"ach","src":"{0} content detection","out":"{0} nongo jami ma tye"}
+{"lang":"nyn","src":"{0} content detection","out":"{0} okushanga ebirikukwata aha bintu"}
+{"lang":"lg","src":"Flags {0}-generated text, deepfake images, synthetic audio and manipulated video.","out":"Ebipande {0}-ebiwandiiko ebikoleddwa, ebifaananyi eby'obulimba, amaloboozi agatondebwawo n'okukyusa vidiyo."}
+{"lang":"ach","src":"Flags {0}-generated text, deepfake images, synthetic audio and manipulated video.","out":"Cal ma ki yubu {0}-ma kiyubu ki coc, cal ma ki loko lok iye, dwan ma kiyubu ki vidio ma ki loko."}
+{"lang":"nyn","src":"Flags {0}-generated text, deepfake images, synthetic audio and manipulated video.","out":"Ebendera {0}-ebigambo ebirikukorwa, ebishushani by'okweshushaniriza, amahurire g'okweshushaniriza hamwe n'ebishushani by'okuhindura."}
+{"lang":"teo","src":"Flags {0}-generated text, deepfake images, synthetic audio and manipulated video.","out":"Aputosia nu emukule {0}-nu itolomunitai kotoma aiwadikaeta, aputosia nuka abeit, ikososinei luka aiswamaun keda ebidio loitemonokinitai."}
+{"lang":"lg","src":"Ugandan languages","out":"Ennimi za Uganda"}
+{"lang":"teo","src":"Ugandan languages","out":"Angajepisinei nuka Uganda"}
+{"lang":"nyn","src":"Ugandan languages","out":"Endimi za Uganda"}
+{"lang":"ach","src":"Ugandan languages","out":"Leb me Uganda"}
+{"lang":"teo","src":"English, Luganda, Acholi, Runyankole and Ateso.","out":"English, Luganda, Acholi, Runyankole keda Ateso."}
+{"lang":"ach","src":"English, Luganda, Acholi, Runyankole and Ateso.","out":"Lingala, Luganda, Acholi, Runyankole ki Ateso."}
+{"lang":"lg","src":"English, Luganda, Acholi, Runyankole and Ateso.","out":"Olungereza, Oluganda, Acholi, Runyankole ne Ateso."}
+{"lang":"nyn","src":"English, Luganda, Acholi, Runyankole and Ateso.","out":"Orungyereza, Oruganda, Acholi, Runyankole na Ateso."}
+{"lang":"ach","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"nyn","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"lg","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"teo","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"ach","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"nyn","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"lg","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"ach","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"nyn","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"teo","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"lg","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"teo","src":"Victoria University {0}","out":"Victoria University {0}"}
+{"lang":"ach","src":"Uganda sees a flood of forwarded claims every day. {0} checks them before you share.","out":"Uganda neno wel lok ma ki cwalo ne dano mapol nino ki nino. {0} ngiyo gi ma pud pe i nywako ne."}
+{"lang":"lg","src":"Uganda sees a flood of forwarded claims every day. {0} checks them before you share.","out":"Uganda erabira mu bingi ebikwata ku by'obugagga buli lunaku. {0} abikebera nga tonnaabigabana."}
+{"lang":"nyn","src":"Uganda sees a flood of forwarded claims every day. {0} checks them before you share.","out":"Uganda neereeba okushaba kw'okugumizamu buri izooba. {0} neekubanza kureeba otakagabaniise."}
+{"lang":"teo","src":"Uganda sees a flood of forwarded claims every day. {0} checks them before you share.","out":"Ejaasi Uganda keda aiyatakinio naka akiro nu ijukunitai kanginipaaran. {0} eanyanari kes eringa ijo imorikina."}
+{"lang":"ach","src":"{0} (branded from Uganda Fact-Guard) is an {1}-assisted fact-checking platform built for how news actually travels here — on {2}, in group chats and on social media, often faster than any newsroom can verify it. Submit a claim and get a verdict backed by evidence, not just an opinion.","out":"{0} (ma kiyubu ki Uganda Fact-Guard) obedo {1}-kony me ngiyo lok ada ma kiyubu pi kit ma lok angeya woto kwede kany — i {2}, i lok me gurup ki i kabedo me nywako lok, pol kare oyot loyo kit ma ot poko lok angeya mo keken twero moko ne. Mi lok ma iwaco ci inong tam ma jenge i kom caden, pe tam keken."}
+{"lang":"lg","src":"{0} (branded from Uganda Fact-Guard) is an {1}-assisted fact-checking platform built for how news actually travels here — on {2}, in group chats and on social media, often faster than any newsroom can verify it. Submit a claim and get a verdict backed by evidence, not just an opinion.","out":"{0} (ekikolebwa Uganda Fact-Guard) kye kifo ekikola okukebera amazima nga kikozesebwa {1}-assisted, kyazimbibwa ku ngeri amawulire gy’atuuka wano — ku {2}, mu group chats ne ku social media, emirundi mingi nga gisukka ku ngeri yonna ey’okukakasa amawulire. Weereza ekigambibwa ofune ensala esinzidde ku bujulizi, si kya kulowooza kwokka."}
+{"lang":"lg","src":"How we reach a verdict","out":"Engeri gye tutuuka ku kusalawo."}
+{"lang":"ach","src":"How we reach a verdict","out":"Kit ma wacobo kwede lok"}
+{"lang":"nyn","src":"{0} (branded from Uganda Fact-Guard) is an {1}-assisted fact-checking platform built for how news actually travels here — on {2}, in group chats and on social media, often faster than any newsroom can verify it. Submit a claim and get a verdict backed by evidence, not just an opinion.","out":"{0} (ekirikuruga omuri Uganda Fact-Guard) n'omukutu ogurikuhwera omu kushwijuma amazima ogwakozirwe ahabw'oku amakuru garikutambura aha — aha {2}, omu kuganiira kw'ebibinja hamwe n'aha mikutu ya boona, obwire obwingi ahonaaho kukira ekirooto ky'amakuru ekirikubaasa kugashwijuma. Taahya okugamba kandi otungye encwamu erikushagikwa obujurizi, kutari kuteekateeka kwonka."}
+{"lang":"nyn","src":"How we reach a verdict","out":"Oku turikuhika aha kusharamu"}
+{"lang":"teo","src":"How we reach a verdict","out":"Epone lo edolunia oni aomisioit."}
+{"lang":"teo","src":"{0} (branded from Uganda Fact-Guard) is an {1}-assisted fact-checking platform built for how news actually travels here — on {2}, in group chats and on social media, often faster than any newsroom can verify it. Submit a claim and get a verdict backed by evidence, not just an opinion.","out":"{0} (kotoma aiboisit naka Uganda Fact-Guard) erai {1}-ingarakinit aanyanario naka akiro nuikamunitos epone loelomunia iyemuto kane — ko {2}, kotoma aineranara naka egurupu keda elago, duc katipet adepar aiboisit adio naka iyemuto naepedori aitogogong ngun. Ijukak akirot kosodi adumun aomisioit naegogong keda aitogogongoret, mere aomisioit bon."}
+{"lang":"lg","src":"Every check follows the same four steps, whether it's automated or escalated to a human reviewer.","out":"Buli kukebera kulina emitendera ena gye gugoberera, ka kube nga kukolebwa kompyuta oba nga kugenda eri omuntu akwekenneenya."}
+{"lang":"nyn","src":"{0} (branded from Uganda Fact-Guard) is an {1}-assisted fact-checking platform built for how news actually travels here — on {2}, in group chats and on social media, often faster than any newsroom can verify it. Submit a claim and get a verdict backed by evidence, not just an opinion.","out":"{0} (ekirikuruga omuri Uganda Fact-Guard) n'omukutu ogurikuhwera abantu kushwijuma amazima ogwakozirwe ahabw'oku amakuru garikutambura aha — aha {2}, omu kuganiira kw'ebibinja hamwe na aha mikutu ya boona, obwire obwingi nigukira oku eishengyero ry'amakuru ririkubaasa kugashwijuma. Heereza ekigambirwe kandi otungye encwamu erikushagikwa obujurizi, kutari kuteekateeka kwonka."}
+{"lang":"ach","src":"Every check follows the same four steps, whether it's automated or escalated to a human reviewer.","out":"Pimo acel acel lubu yoo angwen ma rom, kadi bed ni ki tiyo kwede onyo ki cwalo ne bot ngat mo me ngiyo."}
+{"lang":"nyn","src":"Every check follows the same four steps, whether it's automated or escalated to a human reviewer.","out":"Buri kushwijuma nikukuratira emitendera ena, yaaba erikukorwa omu kyoma nari ekareetwa aha muntu orikugishwijuma."}
+{"lang":"teo","src":"Every check follows the same four steps, whether it's automated or escalated to a human reviewer.","out":"Aanyanario kangin etupakinit ainapeta aongon nueputosi, arai itolosio bon arai bo eyangaritai mama ejai loingicete."}
+{"lang":"lg","src":"You submit a claim","out":"Oweereza okusaba kwo."}
+{"lang":"ach","src":"You submit a claim","out":"I cwalo lok me kwac"}
+{"lang":"nyn","src":"You submit a claim","out":"Waheereza okushaba kwawe"}
+{"lang":"teo","src":"You submit a claim","out":"Iwadika akiro nuikamunitos aibucaret."}
+{"lang":"nyn","src":"{0} (branded from Uganda Fact-Guard) is an {1}-assisted fact-checking platform built for how news actually travels here — on {2}, in group chats and on social media, often faster than any newsroom can verify it. Submit a claim and get a verdict backed by evidence, not just an opinion.","out":"{0} (ekirikuruga omu Uganda Fact-Guard) n'omukutu gw'okushwijuma amazima ogurikuhwerwa {1}-ogwombekirwe ahabw'oku amakuru garikutambura aha — aha {2}, omu kuganiira kw'ebibinja hamwe n'aha mikutu ya boona, obwire obwingi garikukira okushwijuma kw'eishengyero ry'amakuru. Heereza ekigambirwe kandi otungye encwamu erikushagikwa obujurizi, kutari kuteekateeka kwonka."}
+{"lang":"ach","src":"Paste text, share a link or upload media (up to {0} {1}). You get a tracking {2} and can follow the analysis live.","out":"Ket coc, nywak ki yoo me kube onyo ket jami ma ineno (ma oo {0} {1}). Inongo namba me lubu kor {2} ki itwero lubu kwed ne kare ki kare."}
+{"lang":"nyn","src":"Paste text, share a link or upload media (up to {0} {1}). You get a tracking {2} and can follow the analysis live.","out":"Kwata ekihandiiko, ogabane akakwate nainga oteho eby'amahuriire (kuza kuhika ahari {0} {1}). Otwara okurondoora {2} kandi noobaasa kukuratira okushwijuma omu bwire obwo."}
+{"lang":"lg","src":"Paste text, share a link or upload media (up to {0} {1}). You get a tracking {2} and can follow the analysis live.","out":"Koppa ebigambo, ogabane akakubo oba oteekemu ebifaananyi (okutuuka ku {0} {1}). Ofuna okugoberera {2} era osobola okulondoola okwekenneenya mu budde."}
+{"lang":"lg","src":"We check it","out":"Tukikebera."}
+{"lang":"ach","src":"We check it","out":"Watye ka ngiyo ne"}
+{"lang":"nyn","src":"We check it","out":"Nitukyebera"}
+{"lang":"teo","src":"Paste text, share a link or upload media (up to {0} {1}). You get a tracking {2} and can follow the analysis live.","out":"Ibusakinit jo aipikakin akiro, aimor elink arai bo aipikakin akiro (kitoni {0} {1}). Idumuni jo aingic {2} ido ipedori atupakinit aingic ngin kotoma apak naejok."}
+{"lang":"teo","src":"We check it","out":"Iwadika sio ngun"}
+{"lang":"ach","src":"The claim is cross-referenced against trusted Ugandan and international sources, and screened for {0}-generated text, deepfakes and manipulated audio or video.","out":"Lok ne ki ngiyo i kom lok ma genne pa dano me Uganda ki lobo mawoko, ki ngiyo pi {0}-ma kiyubu ki coc, deepfakes ki audio onyo vidio ma ki yubo."}
+{"lang":"lg","src":"The claim is cross-referenced against trusted Ugandan and international sources, and screened for {0}-generated text, deepfakes and manipulated audio or video.","out":"Okwemulugunya kuno kukakasiddwa okusinziira ku nsibuko za Uganda ez'obwesigwa n'ebyo ebiva mu mawanga amalala, era ne kukebererwa obutabaamu bigambo bya {0}, ebyokukozesa obubi n'okukyusa amaloboozi oba vidiyo."}
+{"lang":"nyn","src":"The claim is cross-referenced against trusted Ugandan and international sources, and screened for {0}-generated text, deepfakes and manipulated audio or video.","out":"Eki barikugamba, nikigyeragyeranisibwa n'oburugo oburikwesigwa omu Uganda hamwe n'omu mahanga g'aheeru, kandi kikashwijumwa ahabw'ebihandiiko ebirikukorwa {0}, deepfakes hamwe n'okuhindura amahurire nainga vidiyo."}
+{"lang":"ach","src":"A verdict is published","out":"Kikatti ki ngolo kop"}
+{"lang":"lg","src":"A verdict is published","out":"Ekiragiro kifulumizibwa."}
+{"lang":"nyn","src":"A verdict is published","out":"Ebirugire omu kooti nibishohozibwa"}
+{"lang":"teo","src":"A verdict is published","out":"Aponi kitolomunai abongokinet."}
+{"lang":"teo","src":"The claim is cross-referenced against trusted Ugandan and international sources, and screened for {0}-generated text, deepfakes and manipulated audio or video.","out":"Erai akiro ngun nu itigogongoritai keda akiro nuka Uganda ka akwapin ace, ido aponi kongicunai kanu aiwadikaeta nuepedorete aitolomunio, akiro nuka abeit keda akiro nuka eporoto arai bo ebidio."}
+{"lang":"lg","src":"You see the verdict, the evidence behind it and which sources agree or disagree — never just a label.","out":"Olabira ddala ensalawo, obujulizi obugirina n'ensibuko ezikkiriziganya oba ezitakkiriziganya — si kya kuteekako bubeezi mannya."}
+{"lang":"ach","src":"You see the verdict, the evidence behind it and which sources agree or disagree — never just a label.","out":"Ineno kop ma ki ngolo, caden matye i ngeye ki yoo mene ma giyee onyo pe giyee — pe obedo alama keken."}
+{"lang":"lg","src":"The community and our reviewers weigh in","out":"Abantu n'abakugu baffe batunuulira ensonga."}
+{"lang":"teo","src":"You see the verdict, the evidence behind it and which sources agree or disagree — never just a label.","out":"Iwanyunit jo atubokinio, ajenanut na ejai kauke ido ngai bo ecamunitos arai mam ecamunitos — mam erai akirot bon."}
+{"lang":"teo","src":"The claim is cross-referenced against trusted Ugandan and international sources, and screened for {0}-generated text, deepfakes and manipulated audio or video.","out":"Erai akirot ngin naepol noi kotoma aanyanario naka Uganda keda akwapin ace, ido aponi itolosai kanu {0}-abu kitolomu akiro, deepfakes keda akiro nuikamunitos eporoto arai bo ebidio."}
+{"lang":"ach","src":"The community and our reviewers weigh in","out":"Lwak ki jo ma ngiyo lok gi miyo tam"}
+{"lang":"nyn","src":"You see the verdict, the evidence behind it and which sources agree or disagree — never just a label.","out":"Nooreeba ekyarugamu, obuhame oburi enyima yaakyo hamwe n'oburugo oburikwikirizana nainga obutarikwikirizana — tikirikukira kuba akabonero."}
+{"lang":"nyn","src":"The community and our reviewers weigh in","out":"Abantu hamwe n'abarikushwijuma nibagira eki barikugamba"}
+{"lang":"teo","src":"The community and our reviewers weigh in","out":"Ejaasi itunga keda lu ebeit aanyanar akiro."}
+{"lang":"lg","src":"Readers rate the verdict. If enough people disagree, an accredited Expert reviews the case and can confirm or override it — the report is then marked “Human Verified.”","out":"Abasomi bapima ensala. Abantu abangi bwe baba nga tebakkiriziganya, Omukugu akakasiddwa akebera omusango era asobola okugukakasa oba okuguggyako — olwo alipoota n’ewandiikibwako “Human Verified.”"}
+{"lang":"ach","src":"Readers rate the verdict. If enough people disagree, an accredited Expert reviews the case and can confirm or override it — the report is then marked “Human Verified.”","out":"Lukwan pimo tam ma kimoko. Ka dano mapol pe giyee, ladiro ma ki yee ni ngiyo lok ne dok twero moko onyo kwanyo woko — adwogi tic ne dong ki keto alama iye ni “Dano oyee.”"}
+{"lang":"lg","src":"Rules we hold ourselves to","out":"Amateeka ge tukwatako."}
+{"lang":"nyn","src":"Readers rate the verdict. If enough people disagree, an accredited Expert reviews the case and can confirm or override it — the report is then marked “Human Verified.”","out":"Abashomi nibagyeragyeranisa encwamu. Abantu baingi ku barikuba batarikwikirizana, omukugu ow'omugasho naashwijuma omushango kandi naabaasa kuhakana nari kuguhindura — ripoota neeba eteirweho akamanyiso ka \"Human Verified.\""}
+{"lang":"teo","src":"Readers rate the verdict. If enough people disagree, an accredited Expert reviews the case and can confirm or override it — the report is then marked “Human Verified.”","out":"Itunga lu esiomakete itodunitos epone lo etubere. Arai mam itunga luipu ecamunitos, epedori Epirioit lo ajenara airereor emusago ngol kosodi aitigogong arai bo alemar — aponi koinakinai eripoota ngol \"Human Verified.\""}
+{"lang":"ach","src":"Rules we hold ourselves to","out":"Cik ma wamako kenwa"}
+{"lang":"nyn","src":"Rules we hold ourselves to","out":"Ebiragiro ebi turikukuratira"}
+{"lang":"lg","src":"{0}'s verdicts aren't for sale, and they aren't final without a way to challenge them.","out":"Okusalawo kw'omulamuzi tekutundibwa, era tekwesigamiziddwa nga tewali ngeri ya kukukubaganyaako birowoozo."}
+{"lang":"ach","src":"{0}'s verdicts aren't for sale, and they aren't final without a way to challenge them.","out":"{0} pe cato ngolo kop, dok bene pe dong otyeko labongo yo me pyem iye."}
+{"lang":"teo","src":"Rules we hold ourselves to","out":"Ikisila lu itwasama oni kanu aitikitik"}
+{"lang":"nyn","src":"{0}'s verdicts aren't for sale, and they aren't final without a way to challenge them.","out":"Okusharamu kwa {0} tikurikuguzibwa, kandi tikurikuhendera hatariho omuringo gw'okukuhakanisa."}
+{"lang":"lg","src":"{0}'s verdicts aren't for sale, and they aren't final without a way to challenge them.","out":"Okusalawo kwa {0} tekutundibwa, era tekwakoma nga tewali ngeri ya kukusoomooza."}
+{"lang":"nyn","src":"We label, we don't delete","out":"Nituteekaho ebipande, titurikushazamu"}
+{"lang":"lg","src":"We label, we don't delete","out":"Tukola obubonero, tetusangula."}
+{"lang":"ach","src":"We label, we don't delete","out":"Wan wacoyo nying, pe wa jwayo"}
+{"lang":"teo","src":"{0}'s verdicts aren't for sale, and they aren't final without a way to challenge them.","out":"Mam epedorio agwelun aomisio nuka {0}, ido mam eraasi nu awasia arai emamei epone lo itepegere kes."}
+{"lang":"teo","src":"We label, we don't delete","out":"Iwadikaete oni, mam oni imudiarit."}
+{"lang":"ach","src":"{0} never removes anyone's post. We publish an independent verdict and evidence alongside it.","out":"{0} pe kwanyo coc pa ngat mo keken. Wa coyo lok ma ki ngolo ki caden kacel kwede."}
+{"lang":"lg","src":"{0} never removes anyone's post. We publish an independent verdict and evidence alongside it.","out":"{0} teyaggyangako kya muntu yenna. Tuteekawo okusalawo okw'obwetwaze n'obujulizi obukwatagana nakyo."}
+{"lang":"nyn","src":"{0} never removes anyone's post. We publish an independent verdict and evidence alongside it.","out":"{0} terikwihaho ekishushani ky'omuntu weena. Nitushohoza okusharamu kwetongoire hamwe n'obuhame oburikukwatanisa nakyo."}
+{"lang":"lg","src":"Every rating carries the same rules","out":"Buli kuteebereza kulina amateeka ge gamu."}
+{"lang":"ach","src":"Every rating carries the same rules","out":"Rwom me ngiyo jami weng tye ki cik marom"}
+{"lang":"teo","src":"{0} never removes anyone's post. We publish an independent verdict and evidence alongside it.","out":"{0} mam itolomuni akiro nuka itunganan. Iwadikakini sio aomisioit naejok keda aitogogongoret nepepe ka ngin."}
+{"lang":"nyn","src":"Every rating carries the same rules","out":"Buri kuteera obubonero nikukuratira ebiragiro bimwe"}
+{"lang":"teo","src":"Every rating carries the same rules","out":"Ejaasi aipim kere keda ikisila lueputosi."}
+{"lang":"lg","src":"Public, Journalist and Expert ratings feed the same Community Confidence Score, just weighted by track record — nobody's vote is discounted without a reason.","out":"Okubala okw'abantu, abamawulire n'abakugu kweyambisibwa mu kubala obwesige bw'abantu, nga kwesigama ku byafaayo — tewali kalulu ka muntu kakendeezebwa awatali nsonga."}
+{"lang":"ach","src":"Public, Journalist and Expert ratings feed the same Community Confidence Score, just weighted by track record — nobody's vote is discounted without a reason.","out":"Lwak, lucoo lok angeya ki ludiro ma gi miyo tam gi konyo me nongo rwom me gen pa lwak, ma ki keto iye pek malube ki rekod me tic — pe tye ngat mo ma bolo kwir ne ki kwero labongo tyen lok."}
+{"lang":"teo","src":"Public, Journalist and Expert ratings feed the same Community Confidence Score, just weighted by track record — nobody's vote is discounted without a reason.","out":"Erai aingito naka itunga, luka iyemuto keda luka ipirioitin lu eyaunitos aiyalama na itunga, kotupitete akiro nu iswamao — emamei aseo na mam ecamakitai komam ejai alosikinet."}
+{"lang":"nyn","src":"Public, Journalist and Expert ratings feed the same Community Confidence Score, just weighted by track record — nobody's vote is discounted without a reason.","out":"Abantu boona, abanyamakuru hamwe n'abakugu nibareeba aha kuguma kw'abantu omu byanga, ekirikworekwa obuhame bw'ebyafaayo — tihariho akaruuru ka muntu karikushazibwamu hatariho enshonga."}
+{"lang":"ach","src":"Reviewers are accountable","out":"Lungol tic gi tiyo ticgi"}
+{"lang":"lg","src":"Reviewers are accountable","out":"Abanoonyereza bavunaanyizibwa."}
+{"lang":"teo","src":"Reviewers are accountable","out":"Ebeit aanyanarak aitodun ebe ejokuna."}
+{"lang":"nyn","src":"Reviewers are accountable","out":"Abashwijumi nibajunanizibwa"}
+{"lang":"lg","src":"Expert overrides require a written justification and are recorded in an append-only audit log that Admins can inspect.","out":"Okukyusa okw'ekikugu kwetaaga okuwandiika ensonga era ne kuteekebwa mu biwandiiko ebirondoolwa abakulira."}
+{"lang":"ach","src":"Expert overrides require a written justification and are recorded in an append-only audit log that Admins can inspect.","out":"Ludiro ma gitye ki ngec me tic gi mito ni omyero kicoyo lok ma moko tam ne dok bene kicoyo i buk pa ludito ma twero ngiyo."}
+{"lang":"teo","src":"Expert overrides require a written justification and are recorded in an append-only audit log that Admins can inspect.","out":"Aitijenaret naepol ekoto aitetem akiro keda aiwadikaeta nuikamunitos akiro ngun nuepedorete eyaitok airereor."}
+{"lang":"lg","src":"Sources are shown, not hidden","out":"Ensibuko ziragiddwa, tezikwekeddwa."}
+{"lang":"nyn","src":"Expert overrides require a written justification and are recorded in an append-only audit log that Admins can inspect.","out":"Okuhindura okw'obukugu nikwetenga obuhame bw'okuhandiika kandi bukahandikwa omu kihandiiko ky'okushwijuma ekirikubaasa kureebwa abarikukurira."}
+{"lang":"nyn","src":"Sources are shown, not hidden","out":"Oburugo nibworekwa, tibukusherekwa"}
+{"lang":"ach","src":"Sources are shown, not hidden","out":"Kama oaa iye kinyutu, pe okanne"}
+{"lang":"teo","src":"Sources are shown, not hidden","out":"Itodunitai lu itolomunete, mere aingop."}
+{"lang":"lg","src":"Every report links the evidence it was checked against, so you can verify our reasoning yourself.","out":"Buli alipoota eyogera ku bujulizi obw'ekenneenyezebwa, osobola okukakasa endowooza yaffe."}
+{"lang":"ach","src":"Every report links the evidence it was checked against, so you can verify our reasoning yourself.","out":"Ripot weng kubu caden ma ki ngiyo, pi meno itwero moko tam wa in ikomi."}
+{"lang":"lg","src":"Coming soon","out":"Kijja mu kiseera ekitali kya wala."}
+{"lang":"teo","src":"Every report links the evidence it was checked against, so you can verify our reasoning yourself.","out":"Ejaasi aingadis ngin keda akiro nuikamunitos akiro nuetapit ngesi aanyanar, kanu ijo aanyun aomisio wok bon."}
+{"lang":"ach","src":"Coming soon","out":"Bino cok"}
+{"lang":"nyn","src":"Every report links the evidence it was checked against, so you can verify our reasoning yourself.","out":"Buri ripoota neegaita obuhame obu erikukyeberwa, n'ahabw'ekyo noobaasa kushwijuma okuteekateeka kwaitu iwe wenka."}
+{"lang":"nyn","src":"Coming soon","out":"Eriija omu bwire butari bwa hare"}
+{"lang":"teo","src":"Coming soon","out":"Ebeit abunere atipet"}
+{"lang":"ach","src":"Check a claim from {0}","out":"Ngi lok ma aa ki bot {0}"}
+{"lang":"nyn","src":"Check a claim from {0}","out":"Kyebera okushaba kuruga {0}"}
+{"lang":"teo","src":"Check a claim from {0}","out":"Koanyana aomisioit kama ejai {0}"}
+{"lang":"ach","src":"No app, no data bundle for a browser — forward the message and get a verdict back in the chat.","out":"Pe tye app, pe tye data bundle pi browser — cwalo kwena ki nongo adwogi ne i lok me coko tam."}
+{"lang":"lg","src":"No app, no data bundle for a browser — forward the message and get a verdict back in the chat.","out":"Tewali app, tewali data bundle ya browser — weereza obubaka ofune okusalawo mu kuteesa."}
+{"lang":"lg","src":"Check a claim from {0}","out":"Kebera okwemulugunya okuva mu {0}"}
+{"lang":"nyn","src":"No app, no data bundle for a browser — forward the message and get a verdict back in the chat.","out":"Tihariho app, tihariho data bundle ya browser — yongyerayo obutumwa kandi otungye ekyarugamu omu kugaaniira."}
+{"lang":"teo","src":"No app, no data bundle for a browser — forward the message and get a verdict back in the chat.","out":"Emamei app, emamei data bundle kanu aiboisit na elosere akiro — ijukakini akirot kosodi adumun abongokinet kotoma oiner."}
+{"lang":"ach","src":"A {0} and {1} bot is planned for the platform's {2} phase, so you'll be able to forward a message straight to {3} the way you already forward it to friends. It isn't live yet — for now, use {4} on the web.","out":"A {0} ki {1} bot kiyubu pi yub me {2} pa platform, dong ibi bedo ki kero me cwalo kwena atir bot {3} kit ma dong icwalo ne bot luremi. Pe tye ka tic kombedi — pi kombedi, ti ki {4} iwi yamo."}
+{"lang":"nyn","src":"A {0} and {1} bot is planned for the platform's {2} phase, so you'll be able to forward a message straight to {3} the way you already forward it to friends. It isn't live yet — for now, use {4} on the web.","out":"A {0} hamwe na {1} bot etebekanisiibwe aha kicweka kya {2}, n'ahabw'ekyo noija kuba noobaasa kwohereza obutumwa butunu ahari {3} nk'oku orikukikora aha banywani baawe. Tikiriho hati — obwahati, kozesa {4} aha web."}
+{"lang":"lg","src":"A {0} and {1} bot is planned for the platform's {2} phase, so you'll be able to forward a message straight to {3} the way you already forward it to friends. It isn't live yet — for now, use {4} on the web.","out":"Bot ya {0} ne {1} etegekeddwa okukola mu kitundu kya platform ekya {2}, olwo osobole okutwala obubaka butereevu eri {3} nga bw'oyinza okukikola eri mikwano gyo. Teyakakasiddwa nnyo — kati, kozesa {4} ku mutimbagano."}
+{"lang":"teo","src":"A {0} and {1} bot is planned for the platform's {2} phase, so you'll be able to forward a message straight to {3} the way you already forward it to friends. It isn't live yet — for now, use {4} on the web.","out":"Etemokinitai {0} keda {1} bot kanu atutubet naka {2}, aso ipedori ijo aijukar emesej atipet mama ejai {3} kwape ijukari jo ngun mama ejaasi ipaperokon. Mam erai loejok kopana — kanu kwana, itwasam {4} kotoma olago."}
+{"lang":"lg","src":"Planned","out":"Ekitegekeddwa"}
+{"lang":"teo","src":"Planned","out":"Itemonokinitai"}
+{"lang":"ach","src":"Planned","out":"Ma kiyubu"}
+{"lang":"nyn","src":"Planned","out":"Ekitebekanisiibwe"}
+{"lang":"ach","src":"Frequently asked questions","out":"Lapeny ma ki penyo kare ki kare"}
+{"lang":"lg","src":"Frequently asked questions","out":"Ebibuuzo ebitera okubuzibwa"}
+{"lang":"nyn","src":"Frequently asked questions","out":"Ebibuuzo ebirikukira kubuuzibwa"}
+{"lang":"lg","src":"Is {0} free to use?","out":"{0} kyere okukozesebwa?"}
+{"lang":"teo","src":"Frequently asked questions","out":"Aingiseta nu engisitai duc"}
+{"lang":"nyn","src":"Is {0} free to use?","out":"{0} neeshushana kukoresa?"}
+{"lang":"ach","src":"Is {0} free to use?","out":"{0} tye agonya me tic kwede?"}
+{"lang":"teo","src":"Is {0} free to use?","out":"Ejaasi kereka {0} loatitai aitwasam?"}
+{"lang":"lg","src":"Checking a claim and reading the Library is free for everyone. Journalist and Expert accounts need accreditation, since they carry more weight in the community score and can review flagged cases.","out":"Okukebera okwemulugunya n'okusoma mu Library kya bwereere eri buli omu. Akawunti z'abamawulire n'abakugu zeetaaga okukakasibwa, kubanga zirina obuzito bungi mu bubonero bw'ekitundu era ziyinza okwekenneenya emisango egirambiddwa."}
+{"lang":"ach","src":"Checking a claim and reading the Library is free for everyone. Journalist and Expert accounts need accreditation, since they carry more weight in the community score and can review flagged cases.","out":"Ngiyo lok ki kwano Library tye me nono pi dano weng. Journalist ki Expert accounts mito accreditation, pien gin gi tingo pek madit i community score dok twero ngiyo lok ma ki keto alama iye."}
+{"lang":"lg","src":"What can I submit?","out":"Kiki kye nsobola okuwaayo?"}
+{"lang":"nyn","src":"Checking a claim and reading the Library is free for everyone. Journalist and Expert accounts need accreditation, since they carry more weight in the community score and can review flagged cases.","out":"Okukyebera okushaba hamwe n'okushoma Library n'ekya busha ahari buri omwe. Akawunti z'abanyamakuru hamwe n'abakugu nizetenga okwikirizibwa, ahabw'okuba nizitwara oburemeezi bwingi omu bubonero bw'abantu kandi nizibaasa kushwijuma emishango erikwetengwa."}
+{"lang":"ach","src":"What can I submit?","out":"Atwero cwalo ngo?"}
+{"lang":"nyn","src":"What can I submit?","out":"Nimbaasa kuhayo ki?"}
+{"lang":"teo","src":"What can I submit?","out":"Inyoin bo apedori eong aijukar?"}
+{"lang":"teo","src":"Checking a claim and reading the Library is free for everyone. Journalist and Expert accounts need accreditation, since they carry more weight in the community score and can review flagged cases.","out":"Aanyanar akiro nu elimunitai ka aisiom eitabo loka Akiro erai lo atitai kanuka itunga kere. Akauntin nuka ewadikan keda epirioit ekotosi aitigogongoret, naarai ejaasi kesi keda apedor naepol noi kotoma aingito naka atutubet ido epedorete airereor imusagon lu itemokinitai."}
+{"lang":"lg","src":"Text (like a {0} forward), a link, a full article, or media — photos, voice notes and video up to {1} {2}.","out":"Ebiwandiiko (nga {0} okugenda mu maaso), akakubo, ekitundu ekijjuvu, oba emikutu — ebifaananyi, amaloboozi n'ebifaananyi bya vidiyo okutuuka ku {1} {2}."}
+{"lang":"ach","src":"Text (like a {0} forward), a link, a full article, or media — photos, voice notes and video up to {1} {2}.","out":"Text (calo {0} ma cito anyim), kubu, coc weng, onyo jami me mako lok — cal, dwon ki vidio ma oo {1} {2}."}
+{"lang":"ach","src":"How long does a check take?","out":"Pimo cente tero kare ma rom mene?"}
+{"lang":"lg","src":"How long does a check take?","out":"Okukebera kitwala bbanga ki?"}
+{"lang":"nyn","src":"Text (like a {0} forward), a link, a full article, or media — photos, voice notes and video up to {1} {2}.","out":"Ekihandiiko (nk'ekya {0} ekirikugyenda omu maisho), akakwate, ekihandiiko kyona, nainga eby'amahurire — ebishushani, obutumwa bw'eiraka hamwe n'obutambi kuhika aha {1} {2}."}
+{"lang":"nyn","src":"How long does a check take?","out":"Okukyebera nikutwara obwire burikwingana ki?"}
+{"lang":"teo","src":"Text (like a {0} forward), a link, a full article, or media — photos, voice notes and video up to {1} {2}.","out":"Akiro (kwape nat {0} alosit), arucokina, akiro kere, arai bo iboro — aputosia, aiwadikaeta nuka eporoto ka ebidio kitoni {1} {2}."}
+{"lang":"teo","src":"How long does a check take?","out":"Erai bo ai apak na eyangaikinor aanyanaret?"}
+{"lang":"ach","src":"Text usually takes about {0} seconds. Media can take up to a minute. Cases escalated to an Expert reviewer follow a review deadline instead.","out":"Lok ma kicoyo ipol kare tero cekon {0}. Media twero tero dakika acel. Lok ma ki cwalo bot ngat ma ngeyo lok me ngiyo ne lubu agiki me ngiyo ne me kakare."}
+{"lang":"lg","src":"Text usually takes about {0} seconds. Media can take up to a minute. Cases escalated to an Expert reviewer follow a review deadline instead.","out":"Okuwandiika kutera okutwala nga {0} obutikitiki. Eby'amawulire bisobola okutwala okutuuka ku ddakiika emu. Emisango egitwalibwa eri omukugu agikola giba n'ekiseera ekigereke eky'okugikolako."}
+{"lang":"lg","src":"What do the verdicts mean?","out":"Ebyasaliddwa bitegeeza ki?"}
+{"lang":"teo","src":"Text usually takes about {0} seconds. Media can take up to a minute. Cases escalated to an Expert reviewer follow a review deadline instead.","out":"Etapit duc akiro aijaikin nepetai {0} atikatikan. Epedorete imediam aijaikin kitoni idakikan ediope. Imusagon lu iyatakitai mama ejai loetapit aanyanar etupitos apak na aanyanario."}
+{"lang":"nyn","src":"Text usually takes about {0} seconds. Media can take up to a minute. Cases escalated to an Expert reviewer follow a review deadline instead.","out":"Ebihandiiko buriijo nibitwara obwire bwa {0} obutikitiki. Eby'amakuru nibibaasa kutwara kuhika aha dakiika emwe. Emishango erikuhindurwa kuza omu muntu orikumanya ebirikukiraho neekuratira obwire bw'okugarukamu omu mwanya gw'ekyo."}
+{"lang":"ach","src":"What do the verdicts mean?","out":"Adwoki me ngolo kop ni tye ki tyen lok ango?"}
+{"lang":"nyn","src":"What do the verdicts mean?","out":"Ebirikuruga omu kucwa orubanja nibimanyisa ki?"}
+{"lang":"teo","src":"What do the verdicts mean?","out":"Inyoin bo apolou naka atubokinio?"}
+{"lang":"lg","src":"What if I disagree with a verdict?","out":"Kiki kye nkola singa sikkiriziganya n'ekyava mu musango?"}
+{"lang":"ach","src":"What if I disagree with a verdict?","out":"Ka ce pe acwako kop ma ki ngolo?"}
+{"lang":"nyn","src":"What if I disagree with a verdict?","out":"Kandi shi ku ndaabe ntarikwikirizana n'encwamu?"}
+{"lang":"teo","src":"What if I disagree with a verdict?","out":"Ani bo arai mam eong acamanara keda atubokinio?"}
+{"lang":"lg","src":"Rate it. Ratings from the Public, Journalists and Experts are combined into a Community Confidence Score. If a verdict's score drops low enough with enough ratings, it's flagged for an Expert to review and confirm or override.","out":"Kiteekako obubonero. Obubonero okuva mu bantu, bannamawulire n’abakugu bugattibwa mu Community Confidence Score. Singa obubonero bw’ekisembebwa bukka wansi nga buvaamu obubonero obumala, kiba kyategekebwa omukugu akirabe era akakase oba akifuule ekirala."}
+{"lang":"lg","src":"Which languages does {0} support?","out":"Lulimi ki {0} lw'awagira?"}
+{"lang":"ach","src":"Rate it. Ratings from the Public, Journalists and Experts are combined into a Community Confidence Score. If a verdict's score drops low enough with enough ratings, it's flagged for an Expert to review and confirm or override.","out":"Ket rwom ne. Rwom ma aa ki bot lwak, lucoo lok angeya ki ludiro ki ribo gi i Community Confidence Score. Ka adwogi me ngolo kop opoto piny tutwal ki rwom ma oromo, ki keto alama pi ladiro me ngiyo ki moko onyo kwanyo woko."}
+{"lang":"ach","src":"Which languages does {0} support?","out":"Lok mene ma {0} cwako?"}
+{"lang":"nyn","src":"Rate it. Ratings from the Public, Journalists and Experts are combined into a Community Confidence Score. If a verdict's score drops low enough with enough ratings, it's flagged for an Expert to review and confirm or override.","out":"Kigabire obubonero. Obubonero kuruga omu bantu, abanyamakuru hamwe n'abakugu nibugaitwa hamwe omu bubonero bw'obwesigye bw'abantu. Obubonero bw'okusharamu ku burikukyendeera kuhika aha rurengo rw'ahansi n'obubonero oburikumara, nibuteebwaho akamanyiso k'omukugu kushwijuma kandi akakakasibwa nainga akahindura."}
+{"lang":"teo","src":"Rate it. Ratings from the Public, Journalists and Experts are combined into a Community Confidence Score. If a verdict's score drops low enough with enough ratings, it's flagged for an Expert to review and confirm or override.","out":"Kotub aitelekaarit. Aitelekaarit na elomunit kama ejaasi itunga, arotak iyemuto keda ipirioitin imorikikin toma Atukot Naka Amunokina. Arai ebuni aitelekaarit naka atubokin aibiror kwap noi keda aitelekaarit naepol, itodiaritai kanu ipirioitin airereor ka aitigogong arai bo aijulakin."}
+{"lang":"nyn","src":"Which languages does {0} support?","out":"Ni ndimi ki ezi {0} erikushagika?"}
+{"lang":"teo","src":"Which languages does {0} support?","out":"Inyoin bo angajepisinei iswamaenenei {0}?"}
+{"lang":"lg","src":"Claims can be checked in English, Luganda, Acholi, Runyankole and Ateso. The interface is being translated into those languages too; anything not yet translated appears in English.","out":"Okukakasa kusobola okukolebwa mu Lungereza, Oluganda, Acholi, Runyankole ne Ateso. Enkola eno nayo eteekateeka okukyusa mu nnimi ezo; ekintu kyonna ekitali kikyusiddwa kirabika mu Lungereza."}
+{"lang":"ach","src":"Claims can be checked in English, Luganda, Acholi, Runyankole and Ateso. The interface is being translated into those languages too; anything not yet translated appears in English.","out":"Kwac twero ngiyo i leb munu, Luganda, Acholi, Runyankole ki Ateso. Kabedo ne bene tye ka gonyo i leb magi bene; gin mo keken ma pud pe kigonyo nen i leb munu."}
+{"lang":"nyn","src":"Claims can be checked in English, Luganda, Acholi, Runyankole and Ateso. The interface is being translated into those languages too; anything not yet translated appears in English.","out":"Okushaba nikubaasa kushwijumwa omu Rungyereza, Oruganda, Acholi, Runyankole na Ateso. Ekishushani kiriyo nikituvunuurwa omu ndimi ezo nazo; ekintu kyona ekitakavunwirwe nikireebeka omu Rungyereza."}
+{"lang":"teo","src":"Claims can be checked in English, Luganda, Acholi, Runyankole and Ateso. The interface is being translated into those languages too; anything not yet translated appears in English.","out":"Epedorio aanyanar akiro ngun ko English, Luganda, Acholi, Runyankole keda Ateso. Euta aiboisit ngin aijulakinio toma angajepisinei ngun da; ibore yen mam ber ijulakinitai itodiaritai ko English."}
+{"lang":"lg","src":"How is my data protected?","out":"Obubaka bwange bukuumibwa butya?"}
+{"lang":"ach","src":"How is my data protected?","out":"Kigwoko ngec na nining?"}
+{"lang":"nyn","src":"How is my data protected?","out":"Ebyahandiikirwe byangye birinzirwe bita?"}
+{"lang":"teo","src":"How is my data protected?","out":"Epedori ai ayuarit akiroka?"}
+{"lang":"ach","src":"Under Uganda's Data Protection and Privacy Act, {0}. See our {1}.","out":"I te cik me Uganda's Data Protection and Privacy Act, {0}. Nen {1} wa."}
+{"lang":"lg","src":"Under Uganda's Data Protection and Privacy Act, {0}. See our {1}.","out":"Wansi w'etteeka lya Uganda erya Data Protection and Privacy Act, {0}. Laba {1} yaffe."}
+{"lang":"nyn","src":"Under Uganda's Data Protection and Privacy Act, {0}. See our {1}.","out":"Omu biragiro bya Uganda eby'okurinda ebihandiiko hamwe n'obuhangwa bw'abantu, {0}. Reeba {1} yaitu."}
+{"lang":"lg","src":"Who builds and funds {0}?","out":"Ani azimba era n'ateekamu ensimbi mu {0}?"}
+{"lang":"teo","src":"Under Uganda's Data Protection and Privacy Act, {0}. See our {1}.","out":"Kotoma aitutuket naka Uganda naka ayuarite akiro keda aiyeyea, {0}. Kosesen {1} wok."}
+{"lang":"ach","src":"Who builds and funds {0}?","out":"Anga ma yubu ki miyo cente me {0}?"}
+{"lang":"teo","src":"Who builds and funds {0}?","out":"Ingaibo iswamai ka aigang {0}?"}
+{"lang":"nyn","src":"Who builds and funds {0}?","out":"Noha orikwombeka kandi akata esente omuri {0}?"}
+{"lang":"lg","src":"{0} (“Uganda Fact-Guard”) is developed by the Centre for Intelligent Technologies at Victoria University Kampala as an academic and public-interest project. Verdicts are reached independently of any funder or advertiser.","out":"{0} (“Uganda Fact-Guard”) yakolebwa Centre for Intelligent Technologies ku Victoria University Kampala ng’ekikozesebwa mu by’enjigiriza n’okukubiriza abantu. Ebisalibwawo bikolebwa nga tewali muntu yenna oba omusasuuzi amanyi."}
+{"lang":"lg","src":"Get in touch","out":"Tukwatagane"}
+{"lang":"ach","src":"{0} (“Uganda Fact-Guard”) is developed by the Centre for Intelligent Technologies at Victoria University Kampala as an academic and public-interest project. Verdicts are reached independently of any funder or advertiser.","out":"{0} (“Uganda Fact-Guard”) kiyubu ki Centre for Intelligent Technologies i Victoria University Kampala macalo yub me kwan ki miti pa lwak. Ngolo kop ki nongo ne labongo jami mo keken ma miyo cente onyo lacat wil."}
+{"lang":"teo","src":"{0} (“Uganda Fact-Guard”) is developed by the Centre for Intelligent Technologies at Victoria University Kampala as an academic and public-interest project. Verdicts are reached independently of any funder or advertiser.","out":"{0} (“Uganda Fact-Guard”) nes etolomunitai ko Centre for Intelligent Technologies ko Victoria University Kampala kwape epurojekt loka asioman keda aiyalama naka itunga. Aponi kodumunai abongonokineta komamete agangat arai bo adumanar ikapun."}
+{"lang":"nyn","src":"{0} (“Uganda Fact-Guard”) is developed by the Centre for Intelligent Technologies at Victoria University Kampala as an academic and public-interest project. Verdicts are reached independently of any funder or advertiser.","out":"{0} (“Uganda Fact-Guard”) ekakorwa ekitongore kya Centre for Intelligent Technologies aha Victoria University Kampala nk'omurimo gw'eby'obwegyese hamwe n'okwenda kw'abantu boona. Okusharamu nikuhikwaho hatariho obuhwezi bw'omuntu weena orikugura nainga orikuranga."}
+{"lang":"ach","src":"Get in touch","out":"Nong lok"}
+{"lang":"nyn","src":"Get in touch","out":"Kwatanisa"}
+{"lang":"teo","src":"Get in touch","out":"Adolokin keda akiro"}
+{"lang":"ach","src":"Questions about a verdict, the platform or a partnership.","out":"Lapeny ma mako lok me ngolo kop, kabedo onyo ribbe."}
+{"lang":"teo","src":"Questions about a verdict, the platform or a partnership.","out":"Aingiseta nuikamunitos atubokinio, elago arai bo aiswamanara."}
+{"lang":"lg","src":"Questions about a verdict, the platform or a partnership.","out":"Ebibuuzo ebikwata ku nsala, omukutu oba okukolera awamu."}
+{"lang":"nyn","src":"Questions about a verdict, the platform or a partnership.","out":"Ebibuuzo ebirikukwata aha kusharamu, omukutu nainga okukwatanisa."}
+{"lang":"ach","src":"General enquiries","out":"Lapeny mapat-pat"}
+{"lang":"lg","src":"General enquiries","out":"Okubuuza okutwaliza awamu"}
+{"lang":"nyn","src":"General enquiries","out":"Okubuuza okwa boona"}
+{"lang":"teo","src":"General enquiries","out":"Aingiseta nuapolok"}
+{"lang":"lg","src":"Media, partnerships and platform questions.","out":"Emikutu, okukolera awamu n'ebibuuzo bya pulatifoomu."}
+{"lang":"nyn","src":"Media, partnerships and platform questions.","out":"Eby'amakuru, obukwatanisa hamwe n'ebibuuzo bya puroguraamu."}
+{"lang":"teo","src":"Media, partnerships and platform questions.","out":"Eipone lo itolomere, aiswamanara keda akiro nuka elago."}
+{"lang":"ach","src":"Media, partnerships and platform questions.","out":"Lok me poko lok angeya, ribbe ki lapeny me yoo me tic."}
+{"lang":"lg","src":"Centre for Intelligent Technologies","out":"Ekitongole ky'ebyempuliziganya eby'amagezi."}
+{"lang":"ach","src":"Centre for Intelligent Technologies","out":"Kabedo me diro manyen"}
+{"lang":"ach","src":"Victoria University, Kampala.","out":"Victoria University, Kampala"}
+{"lang":"lg","src":"Victoria University, Kampala.","out":"Victoria University, Kampala."}
+{"lang":"teo","src":"Centre for Intelligent Technologies","out":"Aiboisit na itolosere acoa naka etatai loakwana"}
+{"lang":"nyn","src":"Centre for Intelligent Technologies","out":"Ekitongore ky'obukugu bw'okuteekateeka"}
+{"lang":"nyn","src":"Victoria University, Kampala.","out":"Victoria University, Kampala."}
+{"lang":"teo","src":"Victoria University, Kampala.","out":"Eunibasite loka Victoria, Kampala."}
+{"lang":"lg","src":"Victoria University, Kampala.","out":"Victoria University, Kampala."}
+{"lang":"lg","src":"{0} & developer access","out":"{0} & okufuna obuyambi bw'omukulaakulanya"}
+{"lang":"nyn","src":"Victoria University, Kampala.","out":"Victoria University, Kampala"}
+{"lang":"ach","src":"{0} & developer access","out":"{0} & latic ma yubu"}
+{"lang":"nyn","src":"{0} & developer access","out":"{0} & okuhikwaho kw'abakozesa"}
+{"lang":"lg","src":"Victoria University, Kampala.","out":"Victoria University, Kampala."}
+{"lang":"ach","src":"Last updated {0}","out":"Ki loko ne me agiki {0}"}
+{"lang":"lg","src":"Last updated {0}","out":"Ekyasembyeyo okukyusibwa {0}"}
+{"lang":"teo","src":"{0} & developer access","out":"{0} & adumununio naka ediyak"}
+{"lang":"teo","src":"Last updated {0}","out":"Aponi itojokarai sek {0}"}
+{"lang":"nyn","src":"Last updated {0}","out":"Ekyahererukireyo kuhindurwa {0}"}
+{"lang":"lg","src":"How {0} collects, uses and protects your data.","out":"Engeri {0} gy'ekungaanya, okukozesa n'okukuuma ebikwata ku ggwe."}
+{"lang":"teo","src":"How {0} collects, uses and protects your data.","out":"Epone lo {0} atukonokin, aitwasam ka ayuarite akirokon."}
+{"lang":"ach","src":"How {0} collects, uses and protects your data.","out":"Kit ma {0} coko, tiyo ki gwoko ngec ma mako in."}
+{"lang":"nyn","src":"How {0} collects, uses and protects your data.","out":"Oku {0} erikurundaana, okukoresa n'okurinda ebihandiiko byawe."}
+{"lang":"lg","src":"How we collect, use and protect your data.","out":"Engeri gye tukungaanyaamu, gye tukozesaamu n'engeri gye tukuumamu ebikukwatako."}
+{"lang":"ach","src":"How we collect, use and protect your data.","out":"Kit ma wan wayubu, watiyo ki dok wagwoko kwede lok ma mako komi."}
+{"lang":"nyn","src":"How we collect, use and protect your data.","out":"Oku turikurundaana, okukoresa n'okurinda ebihandiiko byawe."}
+{"lang":"teo","src":"How we collect, use and protect your data.","out":"Epone lo idumunere, aitwasam ka ayuarite akirokon."}
+{"lang":"lg","src":"Data Protection and Privacy Act, {0}","out":"Etteeka erikwata ku kukuuma obubaka n'obwannakyewa"}
+{"lang":"ach","src":"Data Protection and Privacy Act, {0}","out":"Cik me gwoko ngec ki mung, {0}"}
+{"lang":"lg","src":"This policy explains what {0} collects when you check a claim, browse the Library or create an account, and how that information is used and protected under the {1} of Uganda. It applies to the {2} website and, once launched, the {3} and {4} bots and partner {5}.","out":"Enkola eno ennyonnyola kye {0} ekikungaanya bw’oba okukebera okusaba, okunoonya mu Library oba okutandika akawunti, era n’engeri amawulire ago gye gakozesebwa ne bwe gakuumibwa wansi wa {1} ya Uganda. Ekozesa ku mukutu gwa {2}, era nga gutandise, bots za {3} ne {4} n’abakolagana ba {5}."}
+{"lang":"lg","src":"Data Protection and Privacy Act, {0}","out":"Etteeka ku Kukuumibwa kw'Obubaka n'Ebyama, {0}"}
+{"lang":"nyn","src":"Data Protection and Privacy Act, {0}","out":"Ekiragiro ky'okurinda ebihandiiko hamwe n'obukwenda bw'omuntu, {0}"}
+{"lang":"ach","src":"This policy explains what {0} collects when you check a claim, browse the Library or create an account, and how that information is used and protected under the {1} of Uganda. It applies to the {2} website and, once launched, the {3} and {4} bots and partner {5}.","out":"Cik man tito ngo ma {0} coko ka ineno lok me cul, yeny i Library onyo cako akaunt, ki kit ma ngec meno kitiyo kwede ki gwoko ite cik me {1} me Uganda. Tiyo pi website me {2} ki, ka dong ocako tic, {3} ki {4} bots ki partner {5}."}
+{"lang":"teo","src":"Data Protection and Privacy Act, {0}","out":"Ekisil loka ayuarite akiro keda aiyeyea, {0}"}
+{"lang":"lg","src":"Information we collect","out":"Obubaka bwe tukungaanya"}
+{"lang":"ach","src":"Information we collect","out":"Ngec ma wa coko"}
+{"lang":"nyn","src":"This policy explains what {0} collects when you check a claim, browse the Library or create an account, and how that information is used and protected under the {1} of Uganda. It applies to the {2} website and, once launched, the {3} and {4} bots and partner {5}.","out":"Ekiragiro eki nikishoboorora eki {0} erikurundaana waaba nookyebera okushaba, orikurambura omu Library nainga okakora akawunti, kandi oku amakuru ago garikukoresibwa kandi gakakingwa ahansi y'ebiragiro bya {1} ebya Uganda. Nikikwata aha mukutu gwa {2} hamwe na, ku gurikuba gwatandikirweho, obutumwa bwa {3} na {4} hamwe na abanywani ba {5}."}
+{"lang":"nyn","src":"Information we collect","out":"Amakuru agu turikurundaana"}
+{"lang":"teo","src":"This policy explains what {0} collects when you check a claim, browse the Library or create an account, and how that information is used and protected under the {1} of Uganda. It applies to the {2} website and, once launched, the {3} and {4} bots and partner {5}.","out":"Itodunit ainapeta nu nuikamunitos {0} nu etukete ne inwakini jo aipup, alosit toma Olibra arai bo aitolomun akaunt, ido epone loitosomatai ka ayuarite akiro ngun kotoma okisila loka {1} loko Uganda. Itwasamao kanu elago loka {2} ido, akaulo na aitegeario, {3} keda {4} bots keda ipaupa {5}."}
+{"lang":"teo","src":"Information we collect","out":"Akiro nu idumununei sio"}
+{"lang":"ach","src":"Account details","out":"Lok matut i kom akaunt"}
+{"lang":"lg","src":"{0} — name, email or phone number, and role (Public, Journalist, Expert or Admin).","out":"{0} — erinnya, e-mail oba ennamba y'essimu, n'omulimu (Owa lujjudde, Omunnamawulire, Omutendeke oba Omukulembeze)."}
+{"lang":"lg","src":"Account details","out":"Ebikwata ku akawunti"}
+{"lang":"nyn","src":"Account details","out":"Ebirikukwata aha akawunti"}
+{"lang":"teo","src":"Account details","out":"Akiro nuikamunitos akaunt"}
+{"lang":"nyn","src":"{0} — name, email or phone number, and role (Public, Journalist, Expert or Admin).","out":"{0} — eiziina, email nainga enamba y'esimu, hamwe n'omurimo (Public, Omunyamakuru, Omukugu nainga Admin)."}
+{"lang":"ach","src":"{0} — name, email or phone number, and role (Public, Journalist, Expert or Admin).","out":"{0} — nying, email onyo nama cim, ki tic (Lwak, Lacoo lok angeya, Ngat ma tye ki ngec onyo latic)."}
+{"lang":"ach","src":"Submissions","out":"Coyo lok"}
+{"lang":"lg","src":"Submissions","out":"Okuwaayo"}
+{"lang":"teo","src":"{0} — name, email or phone number, and role (Public, Journalist, Expert or Admin).","out":"{0} — ekiror, email arai enaaba loka esimu, keda aswam (Public, Journalist, Expert arai Admin)."}
+{"lang":"lg","src":"{0} — the text, link or media you ask {1} to check, and the tracking {2} it's given.","out":"{0} — ekiwandiiko, akakwate oba emikutu gy'ebifaananyi by'osaba {1} okukebera, n'okulondoola {2} kwe kiba kiweereddwa."}
+{"lang":"ach","src":"{0} — the text, link or media you ask {1} to check, and the tracking {2} it's given.","out":"{0} — coc, kubu onyo jami ma in ipenyo {1} me ngiyo, ki lubu kor {2} ma kimiyo."}
+{"lang":"teo","src":"Submissions","out":"Aijukar akiro"}
+{"lang":"nyn","src":"{0} — the text, link or media you ask {1} to check, and the tracking {2} it's given.","out":"{0} — ekihandiiko, akakwate nainga emikutu ei orikushaba {1} kushwijuma, hamwe n'okukuratira {2} okurikuheebwa."}
+{"lang":"teo","src":"{0} — the text, link or media you ask {1} to check, and the tracking {2} it's given.","out":"{0} — akirot, arucokina arai bo aputosia nu ingisit ijo {1} awanyun, ido aitodunet {2} na einakinitai."}
