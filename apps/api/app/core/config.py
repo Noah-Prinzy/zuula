@@ -72,7 +72,10 @@ class AnalysisSettings(BaseSettings):
 
     model_config = SettingsConfigDict(extra="ignore")
 
-    analysis_provider: str = "stub"
+    # Empty (the default) = Groq when GROQ_API_KEY is set, the stub otherwise — same
+    # real-when-configured rule as LanguageSettings.language_provider; `stub`/`groq` pick one
+    # explicitly.
+    analysis_provider: str = ""
     analysis_provider_region: str = ""
     # Real step durations (app/worker/pipeline.py's STEP_SECONDS, matching
     # apps/web/lib/analysis.ts) are scaled by this factor — 1.0 for a realistic demo feel,
