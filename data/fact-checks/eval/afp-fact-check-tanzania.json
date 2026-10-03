@@ -1,0 +1,478 @@
+[
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/video-does-show-flooding-mozambique-back-2000",
+    "claim": "Video of floods in Mozambique after Cyclone Kenneth",
+    "verdict": "likely-false",
+    "summary": "This video does show flooding in Mozambique — but back in 2000",
+    "citations": [
+      {
+        "title": "This video does show flooding in Mozambique — but back in 2000",
+        "url": "https://factcheck.afp.com/video-does-show-flooding-mozambique-back-2000"
+      }
+    ],
+    "published_at": "2019-05-01",
+    "language": "English",
+    "category": "Weather",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/no-video-does-not-show-tanzanias-president-furious-national-football-team-over-their-afcon-defeat",
+    "claim": "Magufuli angry over Tanzania’s AFCON defeat to Senegal",
+    "verdict": "false",
+    "summary": "No, this video does not show Tanzania's president furious with the national football team over their AFCON defeat to Senegal",
+    "citations": [
+      {
+        "title": "No, this video does not show Tanzania's president furious with the national football team over their AFCON defeat to Senegal",
+        "url": "https://factcheck.afp.com/no-video-does-not-show-tanzanias-president-furious-national-football-team-over-their-afcon-defeat"
+      }
+    ],
+    "published_at": "2019-07-02",
+    "language": "English",
+    "category": "Politics",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/video-shows-oil-tanker-explosion-tanzania-not-foreigners-burned-death-south-africa",
+    "claim": "Foreigners burned to death in South Africa",
+    "verdict": "false",
+    "summary": "This video shows an oil tanker explosion in Tanzania, not foreigners ...",
+    "citations": [
+      {
+        "title": "This video shows an oil tanker explosion in Tanzania, not foreigners ...",
+        "url": "https://factcheck.afp.com/video-shows-oil-tanker-explosion-tanzania-not-foreigners-burned-death-south-africa"
+      }
+    ],
+    "published_at": "2019-09-13",
+    "language": "English",
+    "category": "Society",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/world-bank-did-not-praise-tanzanias-anti-coronavirus-policies",
+    "claim": "World Bank praises Tanzania's anti-coronavirus policies",
+    "verdict": "false",
+    "summary": "The World Bank did not praise Tanzania’s anti-coronavirus policies",
+    "citations": [
+      {
+        "title": "The World Bank did not praise Tanzania’s anti-coronavirus policies",
+        "url": "https://factcheck.afp.com/world-bank-did-not-praise-tanzanias-anti-coronavirus-policies"
+      }
+    ],
+    "published_at": "2020-04-21",
+    "language": "English",
+    "category": "Health",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/youtube-never-made-any-announcement-about-tanzanian-leaders-speech",
+    "claim": "YouTube said 600 million viewed Tanzanian president’s speech",
+    "verdict": "false",
+    "summary": "YouTube never made any announcement about Tanzanian leader’s speech",
+    "citations": [
+      {
+        "title": "YouTube never made any announcement about Tanzanian leader’s speech",
+        "url": "https://factcheck.afp.com/youtube-never-made-any-announcement-about-tanzanian-leaders-speech"
+      }
+    ],
+    "published_at": "2020-06-19",
+    "language": "English",
+    "category": "Politics",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/no-banning-order-issued-ending-use-face-masks-tanzania",
+    "claim": "Tanzania bans face masks?",
+    "verdict": "false",
+    "summary": "No banning order issued ending the use of face masks in Tanzania",
+    "citations": [
+      {
+        "title": "No banning order issued ending the use of face masks in Tanzania",
+        "url": "https://factcheck.afp.com/no-banning-order-issued-ending-use-face-masks-tanzania"
+      }
+    ],
+    "published_at": "2020-07-17",
+    "language": "English",
+    "category": "Society",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/world-health-organization-has-not-been-kicked-out-tanzania",
+    "claim": "Tanzania kicks out the WHO?",
+    "verdict": "false",
+    "summary": "The World Health Organization has not been kicked out of Tanzania",
+    "citations": [
+      {
+        "title": "The World Health Organization has not been kicked out of Tanzania",
+        "url": "https://factcheck.afp.com/world-health-organization-has-not-been-kicked-out-tanzania"
+      }
+    ],
+    "published_at": "2020-08-21",
+    "language": "English",
+    "category": "Health",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/videos-purporting-show-violence-during-recent-elections-zanzibar-are-old-and-unrelated",
+    "claim": "Video shows recent election violence in Zanzibar",
+    "verdict": "false",
+    "summary": "Videos purporting to show violence during recent elections in ...",
+    "citations": [
+      {
+        "title": "Videos purporting to show violence during recent elections in ...",
+        "url": "https://factcheck.afp.com/videos-purporting-show-violence-during-recent-elections-zanzibar-are-old-and-unrelated"
+      }
+    ],
+    "published_at": "2020-10-30",
+    "language": "English",
+    "category": "Elections",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/old-videos-circulate-tanzanias-president-public-following-unexplained-absence",
+    "claim": "Tanzanian President appears in public after rumours of ill-health",
+    "verdict": "false",
+    "summary": "Old videos circulate of Tanzania's president in public following ...",
+    "citations": [
+      {
+        "title": "Old videos circulate of Tanzania's president in public following ...",
+        "url": "https://factcheck.afp.com/old-videos-circulate-tanzanias-president-public-following-unexplained-absence"
+      }
+    ],
+    "published_at": "2021-03-18",
+    "language": "English",
+    "category": "Health",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/photo-does-not-show-tanzanias-deputy-leader-visiting-president-hospital-he-died",
+    "claim": "Image of Magufuli in hospital before he died",
+    "verdict": "false",
+    "summary": "Photo does not show Tanzania’s deputy leader visiting president in hospital before he died",
+    "citations": [
+      {
+        "title": "Photo does not show Tanzania’s deputy leader visiting president in hospital before he died",
+        "url": "https://factcheck.afp.com/photo-does-not-show-tanzanias-deputy-leader-visiting-president-hospital-he-died"
+      }
+    ],
+    "published_at": "2021-03-19",
+    "language": "English",
+    "category": "Health",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/facebook-posts-misleadingly-claim-only-one-politician-has-died-covid-19",
+    "claim": "Not a single politician has died of Covid-19 except Tanzanian President John Magufuli",
+    "verdict": "likely-false",
+    "summary": "Facebook posts misleadingly claim only one politician has died from Covid-19",
+    "citations": [
+      {
+        "title": "Facebook posts misleadingly claim only one politician has died from Covid-19",
+        "url": "https://factcheck.afp.com/facebook-posts-misleadingly-claim-only-one-politician-has-died-covid-19"
+      }
+    ],
+    "published_at": "2021-04-07",
+    "language": "English",
+    "category": "Health",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/date-no-tree-has-been-verified-be-6000-or-more-years-old",
+    "claim": "This tree in Tanzania is 6,000 years old",
+    "verdict": "false",
+    "summary": "To date, no tree has been verified to be 6,000 or more years old",
+    "citations": [
+      {
+        "title": "To date, no tree has been verified to be 6,000 or more years old",
+        "url": "https://factcheck.afp.com/date-no-tree-has-been-verified-be-6000-or-more-years-old"
+      }
+    ],
+    "published_at": "2021-04-08",
+    "language": "English",
+    "category": "Society",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/photo-shows-tanzanias-leader-memorial-service-not-gathering-co-wives",
+    "claim": "Tanzanian president and co-wives at a family meeting with their husband",
+    "verdict": "false",
+    "summary": "This photo shows Tanzania’s leader at a memorial service, not a gathering with co-wives",
+    "citations": [
+      {
+        "title": "This photo shows Tanzania’s leader at a memorial service, not a gathering with co-wives",
+        "url": "https://factcheck.afp.com/photo-shows-tanzanias-leader-memorial-service-not-gathering-co-wives"
+      }
+    ],
+    "published_at": "2021-04-14",
+    "language": "English",
+    "category": "Politics",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/photo-shows-tanzanian-member-parliament-meeting-retired-israeli-paratrooper",
+    "claim": "Photo shows Tanzania member of Parliament meeting Bill Gates",
+    "verdict": "false",
+    "summary": "This photo shows a Tanzanian member of parliament meeting a retired Israeli paratrooper",
+    "citations": [
+      {
+        "title": "This photo shows a Tanzanian member of parliament meeting a retired Israeli paratrooper",
+        "url": "https://factcheck.afp.com/photo-shows-tanzanian-member-parliament-meeting-retired-israeli-paratrooper"
+      }
+    ],
+    "published_at": "2021-04-29",
+    "language": "English",
+    "category": "Politics",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/video-clip-shows-cyclone-kenneth-mozambique-2019",
+    "claim": "Video shows Cyclone Jobo in Tanzania",
+    "verdict": "false",
+    "summary": "Video clip shows Cyclone Kenneth in Mozambique in 2019",
+    "citations": [
+      {
+        "title": "Video clip shows Cyclone Kenneth in Mozambique in 2019",
+        "url": "https://factcheck.afp.com/video-clip-shows-cyclone-kenneth-mozambique-2019"
+      }
+    ],
+    "published_at": "2021-06-04",
+    "language": "English",
+    "category": "Society",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.9MH7EC",
+    "claim": "Tanzanian singer Diamond Platnumz dies",
+    "verdict": "false",
+    "summary": "Facebook post falsely announces death of Tanzanian singer Diamond Platnumz",
+    "citations": [
+      {
+        "title": "Facebook post falsely announces death of Tanzanian singer Diamond Platnumz",
+        "url": "https://factcheck.afp.com/doc.afp.com.9MH7EC"
+      }
+    ],
+    "published_at": "2021-09-09",
+    "language": "English",
+    "category": "Society",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.33869Z2",
+    "claim": "Tanzania bans Swahili in secondary schools",
+    "verdict": "false",
+    "summary": "Tanzania has not banned Swahili in its secondary schools",
+    "citations": [
+      {
+        "title": "Tanzania has not banned Swahili in its secondary schools",
+        "url": "https://factcheck.afp.com/doc.afp.com.33869Z2"
+      }
+    ],
+    "published_at": "2023-01-31",
+    "language": "English",
+    "category": "Education",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.33YH27U",
+    "claim": "Tanzania will no longer use US dollar as reserve currency",
+    "verdict": "false",
+    "summary": "Post falsely claims Tanzania dumping US dollar for gold as reserve currency",
+    "citations": [
+      {
+        "title": "Post falsely claims Tanzania dumping US dollar for gold as reserve currency",
+        "url": "https://factcheck.afp.com/doc.afp.com.33YH27U"
+      }
+    ],
+    "published_at": "2023-10-18",
+    "language": "English",
+    "category": "Economy",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.346F68V",
+    "claim": "Photo shows rebel OLA leader returning to Ethiopia from Tanzania",
+    "verdict": "false",
+    "summary": "Post falsely claims photo shows rebel leader’s return to Ethiopia after failed peace talks",
+    "citations": [
+      {
+        "title": "Post falsely claims photo shows rebel leader’s return to Ethiopia after failed peace talks",
+        "url": "https://factcheck.afp.com/doc.afp.com.346F68V"
+      }
+    ],
+    "published_at": "2023-11-30",
+    "language": "English",
+    "category": "Society",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.34RD2YD",
+    "claim": "Video shows Cyclone Hidaya impacting Tanzania",
+    "verdict": "false",
+    "summary": "Compilation of disaster videos does not show Cyclone Hidaya hitting Tanzania",
+    "citations": [
+      {
+        "title": "Compilation of disaster videos does not show Cyclone Hidaya hitting Tanzania",
+        "url": "https://factcheck.afp.com/doc.afp.com.34RD2YD"
+      }
+    ],
+    "published_at": "2024-05-14",
+    "language": "English",
+    "category": "Weather",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.36N8879",
+    "claim": "Biden, Trump discuss US president’s Zanzibar retirement",
+    "verdict": "false",
+    "summary": "Altered videos falsely claim Joe Biden is retiring to Zanzibar",
+    "citations": [
+      {
+        "title": "Altered videos falsely claim Joe Biden is retiring to Zanzibar",
+        "url": "https://factcheck.afp.com/doc.afp.com.36N8879"
+      }
+    ],
+    "published_at": "2024-11-26",
+    "language": "English",
+    "category": "Politics",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.36X82Z8",
+    "claim": "Video of Tanzanian soldiers trapped in Goma",
+    "verdict": "false",
+    "summary": "Video shows Tanzanian truck drivers – not soldiers – stranded in DRC conflict zone",
+    "citations": [
+      {
+        "title": "Video shows Tanzanian truck drivers – not soldiers – stranded in DRC conflict zone",
+        "url": "https://factcheck.afp.com/doc.afp.com.36X82Z8"
+      }
+    ],
+    "published_at": "2025-02-05",
+    "language": "English",
+    "category": "Society",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.677X2G4",
+    "claim": "Image of Tanzanian president watching treason trial",
+    "verdict": "false",
+    "summary": "Doctored image falsely linked to Tanzanian treason case",
+    "citations": [
+      {
+        "title": "Doctored image falsely linked to Tanzanian treason case",
+        "url": "https://factcheck.afp.com/doc.afp.com.677X2G4"
+      }
+    ],
+    "published_at": "2025-07-21",
+    "language": "English",
+    "category": "Politics",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.7844963",
+    "claim": "Tanzanian president’s motorcade involved in accident",
+    "verdict": "false",
+    "summary": "Old accident video falsely linked to Tanzanian president’s campaign rally",
+    "citations": [
+      {
+        "title": "Old accident video falsely linked to Tanzanian president’s campaign rally",
+        "url": "https://factcheck.afp.com/doc.afp.com.7844963"
+      }
+    ],
+    "published_at": "2025-10-10",
+    "language": "English",
+    "category": "Politics",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.82UB9ZQ",
+    "claim": "Old and unrelated photos & videos misrepresent unrest during Tanzania’s general election",
+    "verdict": "false",
+    "summary": "Old and unrelated images misrepresent unrest during Tanzania’s general election",
+    "citations": [
+      {
+        "title": "Old and unrelated images misrepresent unrest during Tanzania’s general election",
+        "url": "https://factcheck.afp.com/doc.afp.com.82UB9ZQ"
+      }
+    ],
+    "published_at": "2025-11-04",
+    "language": "English",
+    "category": "Elections",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.83W43NR",
+    "claim": "Aftermath of Tanzanian election violence",
+    "verdict": "false",
+    "summary": "Gaza image and AI video falsely linked to post-election violence in Tanzania",
+    "citations": [
+      {
+        "title": "Gaza image and AI video falsely linked to post-election violence in Tanzania",
+        "url": "https://factcheck.afp.com/doc.afp.com.83W43NR"
+      }
+    ],
+    "published_at": "2025-11-13",
+    "language": "English",
+    "category": "Elections",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.83TH6WE",
+    "claim": "Tanzanian president flees after election",
+    "verdict": "false",
+    "summary": "Image of woman boarding helicopter is not Tanzania’s president fleeing election unrest",
+    "citations": [
+      {
+        "title": "Image of woman boarding helicopter is not Tanzania’s president fleeing election unrest",
+        "url": "https://factcheck.afp.com/doc.afp.com.83TH6WE"
+      }
+    ],
+    "published_at": "2025-11-13",
+    "language": "English",
+    "category": "Elections",
+    "country": "TZ"
+  },
+  {
+    "source_org": "AFP Fact Check",
+    "source_url": "https://factcheck.afp.com/doc.afp.com.B3AP8NQ",
+    "claim": "Botswana cuts electricity and closes borders to South Africa",
+    "verdict": "false",
+    "summary": "Botswana and Tanzania did not impose retaliatory measures on ...",
+    "citations": [
+      {
+        "title": "Botswana and Tanzania did not impose retaliatory measures on ...",
+        "url": "https://factcheck.afp.com/doc.afp.com.B3AP8NQ"
+      }
+    ],
+    "published_at": "2026-05-21",
+    "language": "English",
+    "category": "Society",
+    "country": "TZ"
+  }
+]
