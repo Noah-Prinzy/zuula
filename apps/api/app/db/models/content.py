@@ -115,6 +115,12 @@ class FactCheckReport(Base):
             postgresql_ops={"title": "gin_trgm_ops"},
         ),
         Index("ix_fact_check_reports_checked_at", text("checked_at DESC")),
+        Index(
+            "ix_fact_check_reports_embedding_hnsw",
+            "embedding",
+            postgresql_using="hnsw",
+            postgresql_ops={"embedding": "vector_cosine_ops"},
+        ),
     )
 
     id: Mapped[str] = mapped_column(Text, primary_key=True)  # fc-YYYY-NNNN
@@ -156,10 +162,11 @@ class FactCheckReport(Base):
     )
     status_changed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
-    # FR-SEARCH-03 related reports. No dimension yet: the embedding model is P4's choice
-    # (Noah, 23 Sep 2026), and P4's migration narrows this to vector(N) and adds the HNSW
-    # index. Until then similarity is an exact scan over the (small) table.
-    embedding: Mapped[list[float] | None] = mapped_column(Vector())
+    # FR-SEARCH-03 related reports, and the P4 dedupe check (app/providers/analysis.py's
+    # GroqAnalysisProvider): all-MiniLM-L6-v2 (app/providers/embedding.py), 384 dimensions.
+    # migrations/versions/0004_embedding_dimensions.py narrows this from the untyped
+    # vector P3 shipped and adds the HNSW index below.
+    embedding: Mapped[list[float] | None] = mapped_column(Vector(384))
     search_tsv: Mapped[str] = mapped_column(TSVECTOR, Computed(_SEARCH_TSV, persisted=True))
 
 

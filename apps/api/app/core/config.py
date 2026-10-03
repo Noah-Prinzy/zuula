@@ -64,8 +64,11 @@ class CelerySettings(BaseSettings):
 class AnalysisSettings(BaseSettings):
     """Sending submissions to a hosted LLM outside Uganda is an open §10.1 data-protection
     question (see the P2 brief and docs/adr/0001-api-architecture.md), so the provider and
-    its region must be switchable rather than hardcoded. P2 ships only `stub`; P4 adds real
-    providers behind the same app.providers.analysis.AnalysisProvider interface."""
+    its region must be switchable rather than hardcoded. P2 shipped only `stub`; P4 adds
+    `groq` (Groq's free-tier hosted Llama 3.3 70B, chosen over Claude purely on cost — see
+    the P4 brief) behind the same app.providers.analysis.AnalysisProvider interface. Groq's
+    inference is also hosted outside Uganda, so §10.1 is still open either way; this field
+    doesn't resolve it, it just keeps the choice a switch rather than a hardcoded default."""
 
     model_config = SettingsConfigDict(extra="ignore")
 
@@ -75,6 +78,48 @@ class AnalysisSettings(BaseSettings):
     # apps/web/lib/analysis.ts) are scaled by this factor — 1.0 for a realistic demo feel,
     # near-0 so pipeline tests don't spend ~10 real seconds per text submission.
     pipeline_step_scale: float = 1.0
+
+    # `groq` provider (app/providers/analysis.py's GroqAnalysisProvider): one chat completion
+    # per claim (Llama 3.3 70B, Groq's free tier) over the claim text and Tavily's search
+    # results — no agent loop, no Claude/Anthropic calls anywhere in this engine.
+    groq_api_key: str = ""
+    groq_model: str = "llama-3.3-70b-versatile"
+    # app/providers/transcription.py's GroqWhisperProvider — same key, Groq's hosted Whisper
+    # (free tier, 2,000 requests/day).
+    groq_whisper_model: str = "whisper-large-v3-turbo"
+    groq_api_url: str = "https://api.groq.com/openai/v1"
+    # TRANSCRIPTION_PROVIDER: independent of ANALYSIS_PROVIDER so either can be exercised on
+    # its own. Same empty/`stub`/`groq` convention as LANGUAGE_PROVIDER.
+    transcription_provider: str = ""
+    # app/providers/tavily.py — one web search per claim (free tier, 1,000 searches/month).
+    tavily_api_key: str = ""
+    tavily_api_url: str = "https://api.tavily.com"
+
+    # app/providers/embedding.py: local sentence-embedding model for the dedupe check
+    # (no API key, CPU-only). Defaults to `stub` — same real-when-configured spirit as the
+    # other providers, but gated on an explicit opt-in rather than a credential, since there's
+    # no key to gate on and the real model is a ~90MB download the test suite must never
+    # trigger. `ANALYSIS_PROVIDER=groq` in production should set this to
+    # `sentence-transformers`.
+    embedding_provider: str = "stub"
+    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    # Cosine distance (1 - cosine similarity) below which a new claim is treated as a
+    # near-duplicate of an existing report and reused instead of re-run through Tavily+Groq.
+    # 0.08 is roughly 92% cosine similarity on all-MiniLM-L6-v2 — tight enough that two
+    # different claims about the same event shouldn't collide, loose enough to catch the
+    # reworded/retranslated copies of the same viral claim that make repeats worth catching.
+    # Picked by inspection, not a tuned threshold; revisit once real traffic exists.
+    dedupe_max_cosine_distance: float = 0.08
+
+    # app/providers/ai_text_detector.py: in-process RoBERTa AI-generated-text classifier
+    # (CPU, no hosted endpoint). Same stub-by-default reasoning as embedding_provider.
+    ai_text_detector_provider: str = "stub"
+    ai_text_detector_model: str = "openai-community/roberta-base-openai-detector"
+
+    # Deepfake detection (image/video ai_signals) is explicitly out of scope for this engine:
+    # Reality Defender's free tier (50/month) doesn't cover it affordably, and the owner opted
+    # to skip it for v1 rather than half-build it. See AnalysisResult/ai_signals usage in
+    # app/providers/analysis.py.
 
 
 class LanguageSettings(BaseSettings):

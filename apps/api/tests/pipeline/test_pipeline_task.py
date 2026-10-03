@@ -2,8 +2,10 @@
 submission type, the failure path, the report it writes, and what it triggers."""
 
 import pytest
+import trafilatura
 from sqlalchemy import select
 
+from app.adapters.storage import StubObjectStorage
 from app.db import models as m
 from app.services.submissions import chat_fields, create_submission, validate_input
 from app.worker.pipeline import PIPELINES, run_pipeline
@@ -14,6 +16,15 @@ _INPUT = {
     "article": {"type": "article", "content": "An article body " * 5, "headline": "Headline"},
     "media": {"type": "media", "headline": "A photo"},
 }
+
+
+@pytest.fixture(autouse=True)
+def _mock_article_fetch(monkeypatch):
+    """The `fetch` step (app/providers/fetch.py) calls trafilatura, which makes a real HTTP
+    request. No test here talks to a real network: by default this fakes a successful
+    download+extraction; test_url_with_fail_in_it_fails overrides it with a failure."""
+    monkeypatch.setattr(trafilatura, "fetch_url", lambda url: "<html>fetched</html>")
+    monkeypatch.setattr(trafilatura, "extract", lambda html, **kwargs: "An extracted article.")
 
 
 async def _submit(db, body, **kwargs):
@@ -59,14 +70,59 @@ async def test_a_redelivered_task_does_not_run_twice(db):
     assert len(reports.all()) == 1
 
 
-async def test_url_with_fail_in_it_fails(db):
-    s = await _submit(db, {"type": "url", "url": "https://example.com/fail-demo"})
+async def test_an_unfetchable_url_fails(db, monkeypatch):
+    monkeypatch.setattr(trafilatura, "fetch_url", lambda url: None)
+    s = await _submit(db, {"type": "url", "url": "https://example.com/some-article"})
     await run_pipeline(db, s.tracking_id)
     await db.refresh(s)
     assert s.status == "failed"
     assert s.error["error"]["code"] == "invalid_content"
     # "received" ran to completion; "fetch" is where it fails, so it's never a done step.
     assert [step["step"] for step in s.steps] == ["received"]
+
+
+async def test_a_url_with_no_article_in_it_fails(db, monkeypatch):
+    monkeypatch.setattr(trafilatura, "extract", lambda html, **kwargs: None)
+    s = await _submit(db, {"type": "url", "url": "https://example.com/some-article"})
+    await run_pipeline(db, s.tracking_id)
+    await db.refresh(s)
+    assert s.status == "failed"
+    assert s.error["error"]["code"] == "invalid_content"
+
+
+# ---- Transcription (`transcribe` step, media submissions) ----
+
+
+async def test_audio_media_is_transcribed_before_claims(db):
+    key = "submissions/test-audio/original"
+    StubObjectStorage.OBJECTS[key] = (b"fake-audio-bytes", "audio/mpeg")
+    fields = {
+        **validate_input({"type": "media", "headline": "A voice note"}),
+        "media_object_key": key,
+        "media_content_type": "audio/mpeg",
+    }
+    s, _ = await create_submission(db, fields=fields, channel="web")
+    await db.commit()
+    await run_pipeline(db, s.tracking_id)
+
+    report = (
+        await db.scalars(
+            select(m.FactCheckReport).where(m.FactCheckReport.tracking_id == s.tracking_id)
+        )
+    ).one()
+    assert report.submitted_text.startswith("[stub-transcription audio/mpeg]")
+    assert report.content_type == "audio"
+
+
+async def test_image_media_is_never_sent_for_transcription(db):
+    s = await _submit(db, _INPUT["media"])
+    await run_pipeline(db, s.tracking_id)
+    report = (
+        await db.scalars(
+            select(m.FactCheckReport).where(m.FactCheckReport.tracking_id == s.tracking_id)
+        )
+    ).one()
+    assert report.submitted_text == ""
 
 
 async def test_signed_in_submitter_is_notified(db):
@@ -87,8 +143,8 @@ async def test_low_confidence_verdicts_open_a_review_case(db, monkeypatch):
 
     real = analysis.StubAnalysisProvider.analyze
 
-    def low_confidence(self, **kwargs):
-        result = real(self, **kwargs)
+    async def low_confidence(self, **kwargs):
+        result = await real(self, **kwargs)
         result.confidence = 42
         return result
 
@@ -122,11 +178,13 @@ class _Recording:
     def __init__(self):
         self.seen = {}
 
-    def analyze(self, *, content_type, text, language):
+    async def analyze(self, *, db, content_type, text, language):
         from app.providers.analysis import StubAnalysisProvider
 
         self.seen = {"text": text, "language": language}
-        return StubAnalysisProvider().analyze(content_type=content_type, text=text, language=language)
+        return await StubAnalysisProvider().analyze(
+            db=db, content_type=content_type, text=text, language=language
+        )
 
 
 async def test_ugandan_language_text_is_translated_in_and_explained_back(db, monkeypatch):

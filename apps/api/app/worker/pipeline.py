@@ -8,10 +8,12 @@ low-confidence review case if needed, and tells the submitter. The Celery task
 `run_submission_pipeline` is a thin wrapper running it on the worker's own connection.
 
 A media upload is read back from object storage and scanned by ClamAV in the "scan" step.
-The `language` step resolves the submission's language (app.providers.language, Sunbird AI),
-text in a Ugandan language is translated into English before `claims`, and the finished
-explanation is translated back (FR-EXPLAIN-05). Transcription and the verdict itself go
-through app.providers.analysis.AnalysisProvider (P4).
+A URL is fetched and its article text extracted in the "fetch" step
+(app.providers.fetch, P4); audio/video is transcribed in the "transcribe" step
+(app.providers.transcription, P4). The `language` step resolves the submission's language
+(app.providers.language, Sunbird AI), text in a Ugandan language is translated into English
+before `claims`, and the finished explanation is translated back (FR-EXPLAIN-05). The verdict
+itself goes through app.providers.analysis.AnalysisProvider (P4).
 """
 
 import asyncio
@@ -32,6 +34,7 @@ from app.core.config import get_analysis_settings, get_database_settings
 from app.db.ids import next_report_id
 from app.db.models import FactCheckReport, Submission
 from app.providers.analysis import AnalysisResult, get_analysis_provider
+from app.providers.fetch import FetchError, get_article_fetcher
 from app.providers.language import (
     OTHER,
     PIVOT_LANGUAGE,
@@ -41,6 +44,7 @@ from app.providers.language import (
     get_language_provider,
     resolve_submission_language,
 )
+from app.providers.transcription import TranscriptionError, get_transcription_provider
 from app.realtime import redis_client
 from app.realtime.submissions import publish_done, publish_failed, publish_step
 from app.services import escalation, notifications
@@ -83,14 +87,12 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
 
     scale = get_analysis_settings().pipeline_step_scale
     started = time.monotonic()
-    # The frontend's own demo failure path (submission-status.tsx): a URL containing "fail"
-    # can't be fetched. Real fetch failures replace this in P3 PR 5.
-    fail_at = "fetch" if s.type == "url" and "fail" in (s.url or "").lower() else None
 
     languages = get_language_provider()
     text = _analysis_text(s)
     # The submission's language code: the submitter's choice, or detected in the `language`
-    # step. Media has no `language` step (transcription is P4), so it keeps the choice or OTHER.
+    # step. Media has no `language` step, so it keeps the choice or OTHER even after
+    # transcription — Whisper doesn't tell `run_pipeline` what language it heard.
     lang = s.language if s.language in SUPPORTED_LANGUAGES else OTHER
     # What the claims/sources/ai steps read: the text, in English.
     pivot_text = text
@@ -108,8 +110,18 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
         failure = None
         if step == "scan" and s.media_object_key:
             failure = await _scan_upload(s)
-        elif step == fail_at:
-            failure = ("invalid_content", "Couldn't fetch that link.")
+        elif step == "fetch":
+            try:
+                text = await get_article_fetcher().fetch(url=s.url or "")
+                pivot_text = text
+            except FetchError as exc:
+                failure = ("invalid_content", str(exc))
+        elif step == "transcribe" and _is_spoken_media(s):
+            try:
+                text = await _transcribe_media(s)
+                pivot_text = text
+            except TranscriptionError as exc:
+                failure = ("invalid_content", str(exc))
 
         if failure is not None:
             code, message = failure
@@ -128,9 +140,20 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
         publish_step(r, tracking_id, {"step": step, "status": "done", "seconds": seconds})
 
     report_content_type = _report_content_type(s)
-    analysis = get_analysis_provider().analyze(
-        content_type=report_content_type, text=pivot_text, language=PIVOT_LANGUAGE
-    )
+    try:
+        analysis = await get_analysis_provider().analyze(
+            db=db, content_type=report_content_type, text=pivot_text, language=PIVOT_LANGUAGE
+        )
+    except Exception:  # noqa: BLE001 — Groq/Tavily down: fail closed, same as `_scan_upload`
+        logger.exception("Analysis failed for %s", s.tracking_id)
+        message = "We couldn't check that. Please try again."
+        s.status = "failed"
+        s.completed_at = datetime.now(UTC)
+        s.error = {"error": {"code": "server_error", "message": message}}
+        await db.commit()
+        publish_failed(r, tracking_id, await status_of(db, s))
+        await _reply_on_channel(s, message)
+        return
     # FR-EXPLAIN-05: the explanation comes back in the submission's own language.
     analysis = await _explain_in(analysis, lang, languages, tracking_id)
     now = datetime.now(UTC)
@@ -160,6 +183,7 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
         checked_at=now,
         processing_seconds=round(time.monotonic() - started, 2),
         community_status="standard",
+        embedding=analysis.embedding,
     )
     db.add(report)
     s.status = "completed"
@@ -264,6 +288,29 @@ async def _scan_upload(s: Submission) -> tuple[str, str] | None:
     await storage.delete(key=s.media_object_key)
     s.media_object_key = None
     return ("invalid_content", "That file failed our malware scan, so we didn't check it.")
+
+
+def _is_spoken_media(s: Submission) -> bool:
+    """Whether the `transcribe` step has anything to do. The "media" pipeline runs the same
+    steps for images, audio and video alike (apps/web/lib/analysis.ts's PIPELINES); an image
+    has no speech, so it passes through untouched rather than calling Whisper on it."""
+    return (s.media_content_type or "").partition("/")[0] in ("audio", "video")
+
+
+async def _transcribe_media(s: Submission) -> str:
+    """The `transcribe` step for audio/video: the uploaded bytes, through Whisper. Fails
+    closed — a submission that can't be transcribed has nothing for `claims`/`sources`/`ai`
+    to work with, so it isn't analysed."""
+    if not s.media_object_key:
+        raise TranscriptionError("That upload is no longer available to transcribe.")
+    try:
+        data = await get_object_storage().get(key=s.media_object_key)
+    except Exception as exc:  # noqa: BLE001 — storage down: fail closed, same as `_scan_upload`
+        logger.exception("Couldn't read upload %s to transcribe it", s.tracking_id)
+        raise TranscriptionError("We couldn't read that upload to transcribe it.") from exc
+    return await get_transcription_provider().transcribe(
+        audio=data, content_type=s.media_content_type or ""
+    )
 
 
 async def _reply_on_channel(s: Submission, text: str) -> None:

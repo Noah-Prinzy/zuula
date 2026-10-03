@@ -53,6 +53,23 @@ def _no_real_language_provider():
 
 
 @pytest.fixture(autouse=True, scope="session")
+def _no_real_analysis_provider():
+    """Same reasoning as `_no_real_language_provider`, for the P4 verdict engine: this
+    environment may carry real GROQ_API_KEY/TAVILY_API_KEY, which would switch
+    get_analysis_provider()/get_transcription_provider() to Groq/Tavily's live APIs. Tests
+    that exercise GroqAnalysisProvider mock HTTP with respx and configure their own keys."""
+    saved = {
+        name: os.environ.pop(name, None) for name in ("GROQ_API_KEY", "TAVILY_API_KEY")
+    }
+    get_analysis_settings.cache_clear()
+    yield
+    for name, value in saved.items():
+        if value is not None:
+            os.environ[name] = value
+    get_analysis_settings.cache_clear()
+
+
+@pytest.fixture(autouse=True, scope="session")
 def _fake_redis_and_eager_celery():
     fake_sync = fakeredis.FakeRedis(server=_fake_server, decode_responses=True)
     # One async client per event loop, all on the same FakeServer: an asyncio Redis client's
