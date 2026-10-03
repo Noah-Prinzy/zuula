@@ -757,19 +757,103 @@
     }
   },
   "Review": {
-    "history": {
-      "filters": {
-        "all": "Byona ({count})"
+    "reasons": {
+      "community-escalation": {
+        "label": "Okwongyera omu bantu",
+        "description": "Okukira ahansi ya 40% y'okushwijuma okurikuhingura 100 nikwikirizana n'encwamu (§9.2)."
+      },
+      "suspended": {
+        "label": "Okwemereza",
+        "description": "Ebitarikuhika ahari 20% by'okushwijuma okurikuhingura 200 nibikirizana. Ekyarugiremu kisherekirwe kuhisya obu kirashwijumwa."
+      },
+      "user-reports": {
+        "label": "Omukozesa naagamba",
+        "description": "Abashomi bakagamba aha buremeezi bw'encwamu egi."
+      },
+      "low-confidence": {
+        "label": "Okwikiriza okuri ahansi AI",
+        "description": "AI ekaba eri ahansi ya 60% y'obwesigye."
       }
     },
+    "sla": {
+      "overdue": "Okurenga aha bwire",
+      "due-soon": "Nikwija omu bwire butari bwa hare",
+      "on-track": "Aha muhanda",
+      "tooltip": "{status} · ahabw'okuba {time}",
+      "minutes": "{minutes} edakiika",
+      "left": "{time} esigaireyo",
+      "late": "{time} ekiri enyima"
+    },
+    "outcomes": {
+      "confirmed": "Kikahamibwa",
+      "overridden": "Okuhindurwa"
+    },
+    "highPriority": "Okwebembeza okwahaiguru",
+    "overview": {
+      "inQueue": "Omu runyiriri",
+      "unassignedCount": "{count} etarashazirwe",
+      "overdue": "Okurenga aha bwire",
+      "overdueHint": "Okurabira omu shaaha ya {hours}-shaaha SLA",
+      "dueSoon": "Nikiza kubaho omu shaaha 12",
+      "avgTurnaround": "Okugarukamu kwawe okwa buriijo",
+      "needsAttention": "Nikwetenga okureebererwa",
+      "fullQueue": "Orunyiriri rwona",
+      "assignedToYou": "Okuheebwa iwe",
+      "assignedTo": "Okuheebwa {name}",
+      "unassigned": "Otari kugabwa",
+      "byReason": "Ahabwenki emishango erikworekwa",
+      "recent": "Ebyo ebi waacwiremu obwahati",
+      "recentEmpty": "Eby'okusharamu ebi orikukora nibireebeka aha.",
+      "allDecisions": "Okusharamu kwona"
+    },
+    "history": {
+      "filterLabel": "Okusharamu kw'okuronda",
+      "filters": {
+        "all": "Byona ({count})",
+        "confirmed": "Okukakasibwa ({count})",
+        "overridden": "Okuhindurwa ({count})"
+      },
+      "emptyTitle": "Tihariho kusharamu",
+      "emptyBody": "Tihariho ekirikuhikaana n'akacweka aka.",
+      "changedTo": "ekahindurwa ku",
+      "turnaround": "Okugaruka {hours} h",
+      "overSla": "(ahaiguru ya SLA)"
+    },
     "queue": {
-      "review": "Okugarukamu"
+      "assigned": "Okuheebwa iwe",
+      "columns": {
+        "content": "Ebirimu",
+        "verdict": "AI okusharamu",
+        "assignee": "Omuguzi",
+        "action": "Ekikorwa"
+      },
+      "ratings": "{count, plural, one {# okuteebereza} other {# okushwijuma}}",
+      "you": "Noyenda kugamba ki?",
+      "assignToMe": "Mpereza omurimo",
+      "review": "Okugarukamu",
+      "searchPlaceholder": "Okuronda kurugirira aha mutwe, omushango ID nainga ekicweka…",
+      "searchLabel": "Ronda omu runyiriri",
+      "reason": "Enshonga",
+      "allReasons": "Enshonga zoona",
+      "scopeLabel": "Omurimo",
+      "scopes": {
+        "unassigned": "Otari kugabwa"
+      }
     },
     "case": {
       "submit": "Heereza"
     }
   },
   "Admin": {
+    "overview": {
+      "needsAttention": "Nikwetenga okureebererwa"
+    },
+    "audit": {
+      "columns": {
+        "action": "Ekikorwa"
+      },
+      "action": "Ekikorwa"
+    },
     "broadcasts": {
       "channels": {
         "In-app": "Omuri-app",
@@ -785,10 +869,14 @@
       "allTypes": "Emiringo yoona"
     },
     "users": {
+      "statuses": {
+        "suspended": "Okwemereza"
+      },
       "columns": {
         "status": "Embeera"
       },
-      "status": "Embeera"
+      "status": "Embeera",
+      "reason": "Enshonga"
     }
   },
   "Pages": {
@@ -887,12 +975,14 @@
         "description": "Ebitari ahansi ya 40% aha kuteebwaho okurikuhingura 100 nibiikirizana n'encwamu egi. Omushwijumi w'obukugu naija kukikyebera omu shaaha 48."
       },
       "suspended": {
+        "label": "Okwemereza",
         "title": "Eki yaashaziremu kikemerezibwa, barikurinda okushwijuma",
         "description": "Ekitari ahansi ya 20% aha kushwijuma okurikuhingura 200 nikikirizana. Ekyarugamu kisherekirwe kuruga omu kucondooza kuhisya obu omukugu yaakikyebera."
       }
     },
     "ccs": {
       "title": "Obwesigye bw'abantu omu kyanga",
+      "ratings": "{count, plural, one {# okuteebereza} other {# okushwijuma}}",
       "weighted": "ekyeyongyeriirwe omu murimo",
       "none": "Tihariho bipimo byona",
       "aria": "{accurate}% y'okuteebereza okurikworekwa, nikigira ngu kihikire, {inaccurate}% nikigira ngu tikihikire",
@@ -1338,17 +1428,120 @@
         "collect": {
           "title": "Amakuru agu turikurundaana",
           "items": {
-            "account": "<strong>Ebirikukwata aha akawunti</strong> — eiziina, email nainga enamba y'esimu, hamwe n'omurimo (Public, Omunyamakuru, Omukugu nainga Admin)."
+            "account": "<strong>Ebirikukwata aha akawunti</strong> — eiziina, email nainga enamba y'esimu, hamwe n'omurimo (Public, Omunyamakuru, Omukugu nainga Admin).",
+            "submissions": "<strong>Okuhayo</strong> — ekihandiiko, akakwate nainga emikutu ei orikushaba Zuula kushwijuma, hamwe n'okukuratira ID okurikuheebwa.",
+            "ratings": "<strong>Okushwijuma n'ebihandiiko</strong> — ebyarugamu by'okuteebereza, ebiteiso by'orikureka, hamwe n'ebirikworekwa ngu birikwetengwa okukuratirwa.",
+            "accreditation": "<strong>Ebihandiiko by'okwikiriza</strong> — ahabwa abanyamakuru hamwe n'abakugu, ebirikukwataho ebi orikuheereza kushwijumwa.",
+            "device": "<strong>Amakuru agarikukwata aha kyoma n'okugikoresa</strong> — empapura ezirambwirwe, omuringo gwa browser hamwe n'omwanya gw'okutandikiramu, okurinda obuheereza buri obukuumi kandi burikukora."
           }
+        },
+        "use": {
+          "title": "Oku turikukikoresa",
+          "items": {
+            "pipeline": "Okutambuza okushaba kurabira omu nkora yaitu y'okukyebera kandi tukworekye embeera yaakyo hamwe n'ekyarugamu.",
+            "ccs": "Okupima n'okugaita obubonero bw'abantu omu bubonero bw'obwesigye bw'ekyanga.",
+            "accreditation": "Okugarukamu okwikiriza abanyamakuru hamwe n'abakugu, n'okuhandiika encwamu z'abarikushwijuma omu kihandiiko ky'okushwijuma.",
+            "abuse": "Okumanya okukwatanisa nari okuhindura emirimo y'okuteera obubonero hamwe n'okurinda omukutu kuruga aha kushisha.",
+            "accuracy": "Okupima n'okutunguura obuhikire bw'ebirugamu omu bwire."
+          }
+        },
+        "aiSharing": {
+          "title": "AI okushwijuma hamwe n'ebitongore ebindi",
+          "body": "Okukyebera okushaba nikubaasa kutwariramu okwohereza ekihandiiko kyakyo, nainga okuhindura omu muringo gw'okuhurira nainga vidiyo yaakyo, omu byoma ebirikumanya kandi, ahabw'okugarura obujurizi, omu kitongore ekirikugabwa AI. Eby'amahurire ebi orikuta aha mukutu nibishwijumwa okureeba ngu tihariho obubi bwona bwe birikukorwaho.",
+          "review": "Ahabw'okuba abamwe aha barikukora ebi barabaasa kushwijuma ebihandiiko aheeru ya Uganda, turiyo nitugaruka kubugana oku ebihandiiko birikurabamu kurugiirira aha Data Protection and Privacy Act, 2019 batakabigire aheeru y'okwombeka ebihandiiko ebirikwetengwa. Ekicweka eki nikiija kuhindurwa obu okugaruka kubugana okwo kurahwa."
+        },
+        "dppa": {
+          "title": "Obugabe bwawe ahansi y'ekiragiro ky'okurinda ebihandiiko hamwe n'ebirikukwata aha bantu, 2019",
+          "intro": "Nk'omuntu orikukoresa ebihandiiko omu biragiro bya Uganda, oine obugabe bw'okukora ebi:",
+          "items": {
+            "access": "Okuhikwaho ebihandiiko byawe ebi turakukwatirweho.",
+            "correct": "Okutereeza ebihandiiko ebitahikire nari ebirikuburaho.",
+            "delete": "Okushaba okwihaho ebirikukwata aha akawunti yaawe, kurugiirira aha bujunaanizibwa bwaitu oburi ahansi.",
+            "object": "Okuhakanisa, nainga okushaba ngu tukyendeeze, okukora kw'omuringo gwona.",
+            "complain": "Waaba oine eki waakwenda kugamba, ogambe n'ekitongore ekirikujunanizibwa ahaby'amahurire omu Uganda (National Information Technology Authority-Uganda) ku oraabe nooteekateeka ngu tukozeseze kubi amahurire gaawe."
+          }
+        },
+        "retention": {
+          "title": "Nituguma tukikuumire kumara bwire ki?",
+          "body": "Ebyarugire omu kushwijuma hamwe n'obuhame bwabyo nibikora ekicweka ky'ebihandiiko by'abantu boona ebirikukyeberwa kandi biragumaho ebiro byona, nk'oku ebyafaayo by'amahurire birikukorwa. Ebirikukwata aha akawunti nibigumibwa obu akawunti yaaba eriho kandi kumara obwire bukye bwanyima y'ekyo, kuhwera omu kucondooza hamwe n'ebihandiiko by'okwikiriza ebirikwetengwa omu muringo gw'okushwijuma. Ebihandiiko ebirikushwijumwa oburogo nibigumibwa kumara obwire obu burikwetengwa kukora encwamu."
+        },
+        "cookies": {
+          "title": "Kuki hamwe n'okubiika kw'omwihanga",
+          "body": "Nitukoresa akakooki k'omurundi gw'okubanza okukugumya oteireho omukono, hamwe n'okubiika kw'omwihanga kwijuka ekishushani kyawe hamwe n'orurimi oru orikwenda aha kyoma eki. Titurikukoresa ebirikukurataho eby'okuranga eby'ekicweka kya kashatu."
+        },
+        "children": {
+          "title": "Obusingye bw'abaana",
+          "body": "Zuula ekateebwaho abarikukoresa abari aha myaka 18 hamwe n'okukiraho. Titurikushorooza amakuru g'abantu kuruga omu baana, kandi nitwija kushazamu goona agu turikumanya."
+        },
+        "changes": {
+          "title": "Empindahinduka omu kiragiro eki",
+          "body": "Nitwija kuhindura ebiro aha mutwe gw'orupapura obu enteekateeka egi erahinduka, kandi tushohore ebihindukire aha <home>omuka</home> batakakozire."
+        },
+        "contact": {
+          "title": "Okuhikaana n'okushaba kw'amakuru",
+          "body": "Email <email>privacy@zuula.ug</email> ahabw'ekibuuzo kyona ekirikukwata aha kiragiro eki nainga okugira obugabe bwawe ahansi y'ekiragiro ky'okurinda ebihandiiko hamwe n'obuhangwa bw'abantu, 2019. Reeba n'aha <terms>Ebikuratirwa omu kukoresa</terms>."
         }
       }
     },
     "terms": {
       "metaTitle": "Ebigambo",
+      "metaDescription": "Ebigambo ebirikukuratira okukoresa Zuula.",
       "title": "Ebigambo",
+      "description": "Ebigambo ebirikukuratira okukoresa Zuula.",
       "sections": {
+        "acceptance": {
+          "title": "Okwikiriza ebiragiro ebi",
+          "body": "Okukoresa Zuula — omukutu gwa intaneeti, kandi omu biro by'omumaisho WhatsApp/Telegram bots hamwe na banywani baawe API — noikiriza ebiragiro ebi. Ku oraabe otarikwikiriza, nyabura we otakoresa obuheereza."
+        },
+        "service": {
+          "title": "Zuula niki (kandi kitari)",
+          "body": "Zuula neekyebera ebirikugambwa, enkwatanisa hamwe n'eby'amakuru erikukoresa okumanya okw'okwetegyeka hamwe, ahu omushango gurikuhindurwa, okushwijuma kw'abantu kurabira omu bashwijumi abarikwikirizibwa. Encwamu neeyoreka okushwijuma kwaitu okurikukirayo oburungi okw'obujurizi oburiho obu kyashohoziibwe, kandi neebaasa kuhinduka obujurizi burungi bwaba buroho. Zuula n'ekyoma ky'okukyebera amazima, tikiri kya magezi g'ebiragiro, eby'obujanjabi nainga eby'esente, kandi encwamu terikubaasa kuba ekintu ky'okuhindura okusharamu kwawe."
+        },
+        "accounts": {
+          "title": "Akawunti hamwe n'emirimo",
+          "items": {
+            "roles": "Buri omwe naabaasa kwehandikisa nk'omukozesa wa gavumenti. Omurimo gw'omunyamakuru hamwe n'omukugu nigwetenga okwikirizibwa.",
+            "accurate": "Ha omu kuhandiika nainga okushaba akakongi k'okwikirizibwa, ha amakuru agahikire.",
+            "one": "Gira akaunti emwe ahari buri muntu, kandi oteere eby'okukoresa byawe omu kihama — noobaire nookora aha bikwatiraine n'akaunti yaawe.",
+            "twoFactor": "Okukakasa ebintu bibiri nikyetengwa aha akawunti ya Expert na Admin."
+          }
+        },
+        "submissions": {
+          "title": "Okuhayo kwawe",
+          "body": "Oine kuba oine obugabe bw'okugabana ekintu kyona eki orikuhayo kukyeberwa. Otahayo ebirikukwata aha biragiro, ebirikuhenda obusingye bw'omuntu ondiijo, nainga ebi otaine rusa rw'okugabana.",
+          "publish": "Ebyahairweyo nibishwijumwa okureeba ngu tihariho obukooko bw'okurwanisa omu by'obuhangwa bwa kompyuta bitakatandikire kushwijuma. Okuheereza hamwe n'ekirugamu Zuula nikibaasa kushohozibwa nk'ekicweka ky'ebihandiiko by'abantu boona ebirikukyebera amazima, omu muringo nigwo gumwe ogu ekitongore ky'amakuru kirikushohoza eki kirikukyebera amazima."
+        },
+        "ratings": {
+          "title": "Okushwijuma kw'abantu hamwe n'emigyenzo",
+          "body": "Okusharamu okushwijuma omu mazima, kurugirira aha buhame oburikworekwa. Okukwatanisa nainga okuhindura emirimo y'okushwijuma (nk'eky'okureeberaho, guruupu z'ebitabo ebirikushwijuma hamwe kugira ngu zishemeze obubonero bw'okusharamu) nikubaasa kureetera okushwijuma kwabyo kuhakanisibwa kandi n'ebitabo ebirikwejumbamu bikazibirwa. Noobaasa kuhababa ebirikukwata aha bintu nainga okushwijuma okurikureebeka nk'okwahindwirwe kuruga aha rupapura rw'ebihaburo."
+        },
+        "api": {
+          "title": "API hamwe n'okuhikwaho kw'omukozesa",
+          "body": "Abanyamakuru hamwe n'ebitabo by'obwebembezi nibibaasa kushaba ebishumuruzo bya API kuruga ahari <keys>Akawunti → API Ebishumuruzo</keys>. Okuhika aha banywani API nikukuratira obwingi bw'okushaba (obwahati {limit} okushaba/kishana) kandi ebishumuruzo bikwatiraine n'akawunti yaawe — otakabigabana. Reeba <dev>orupapura rw'omukozesa</dev> okumanya ebirikukiraho."
+        },
+        "ip": {
+          "title": "Ebintu by'obwengye",
+          "body": "Eiziina Zuula, akamanyiso hamwe n'omukutu biri ebya Centre for Intelligent Technologies, Victoria University Kampala. Nooyakiirwa kugabana, okuteera ekishushani hamwe n'okworeka ebirugire omu kushwijuma kwa Zuula n'okuranga hamwe n'akakwate kugaruka aha ripoota."
+        },
+        "disclaimer": {
+          "title": "Obuhikire hamwe n'obugarukiro bw'okujunanwa",
+          "body": "Nitushwijuma buri kihandiiko omu bwesigwa kandi tukashohoza obuhame oburi enyima ya buri kucwamu, kwonka titurikukakasa ngu okucwamu kwona tikurimu nshobi. Okurugiirira aha biragiro bya Uganda, Zuula hamwe na Victoria University CIT tibarikujunanizibwa ahabw'encwamu ezirikukorwa kurugiirira aha kucwamu."
+        },
+        "termination": {
+          "title": "Okwemereza hamwe n'okushazamu",
+          "body": "Nitubaasa kurekyeraaho nainga kukinga akawunti ahabw'okukoresa kubi, okuhindura obubonero, nainga okuhenda ebiragiro ebi. Noobaasa kukinga akawunti yaawe bwanyima y'obwire bwona kuruga omu ntebeekanisa za Akawunti."
+        },
+        "law": {
+          "title": "Ekiragiro ekirikwebembera",
+          "body": "Ebigambo ebi nibikuratira ebiragiro bya Uganda."
+        },
+        "changes": {
+          "title": "Empindahinduka omu bigambo ebi",
+          "body": "Nitubaasa kuhindura ebiragiro ebi nk'oku omukutu gurikukurakurana. Nitwija kuhindura ebiro ebiri ahaiguru twaba nitukikora; okugumizamu kukoresa Zuula bwanyima y'empindahinduka nikimanyisa ngu noikiriza ebiragiro ebihindwirwe."
+        },
         "contact": {
-          "title": "Okuhikaana"
+          "title": "Okuhikaana",
+          "body": "Ebibuuzo ebirikukwata aha bigambo ebi? Email <email>hello@zuula.ug</email>. Reeba n'ebigambo byaitu <privacy>Ekiragiro ky'obusherekye</privacy>."
         }
       }
     }

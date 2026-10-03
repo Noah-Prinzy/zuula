@@ -3465,3 +3465,503 @@
 {"lang":"teo","src":"Submissions","out":"Aijukar akiro"}
 {"lang":"nyn","src":"{0} — the text, link or media you ask {1} to check, and the tracking {2} it's given.","out":"{0} — ekihandiiko, akakwate nainga emikutu ei orikushaba {1} kushwijuma, hamwe n'okukuratira {2} okurikuheebwa."}
 {"lang":"teo","src":"{0} — the text, link or media you ask {1} to check, and the tracking {2} it's given.","out":"{0} — akirot, arucokina arai bo aputosia nu ingisit ijo {1} awanyun, ido aitodunet {2} na einakinitai."}
+{"lang":"nyn","src":"Submissions","out":"Okuhayo"}
+{"lang":"ach","src":"Ratings and reports","out":"Rwom ki adwogi tic"}
+{"lang":"lg","src":"Ratings and reports","out":"Okupima n'okulaga ebikoleddwa."}
+{"lang":"ach","src":"{0} — the verdicts you rate, comments you leave, and content you flag for moderation.","out":"{0} — lok ma imoko, tam ma iweko ki jami ma iketo pi ngiyo."}
+{"lang":"lg","src":"{0} — the verdicts you rate, comments you leave, and content you flag for moderation.","out":"{0} — ebisalibwawo by'oyisaamu ekitiibwa, okwogera kw'oleka, n'ebintu by'olaga nga byetaaga okukugirwa."}
+{"lang":"nyn","src":"Ratings and reports","out":"Okushwijuma n'ebihandiiko"}
+{"lang":"teo","src":"Ratings and reports","out":"Aitemonokineta keda iripootin"}
+{"lang":"nyn","src":"{0} — the verdicts you rate, comments you leave, and content you flag for moderation.","out":"{0} — ebyarugamu by'okuteebereza, ebiteiso by'orikureka, hamwe n'ebirikworekwa ngu birikwetengwa okukuratirwa."}
+{"lang":"teo","src":"{0} — the verdicts you rate, comments you leave, and content you flag for moderation.","out":"{0} — akiro nu itereikina keda, aineranara na ijaikit jo, ka akiro nu iwanyunit jo kanu aitikitik."}
+{"lang":"ach","src":"Accreditation documents","out":"Waraga me miyo twero"}
+{"lang":"ach","src":"{0} — for Journalist and Expert applications, the credentials you provide for review.","out":"{0} — pi Journalist ki Expert applications, jami ma imiyo me ngiyo."}
+{"lang":"lg","src":"Accreditation documents","out":"Ebiwandiiko ebikakasa."}
+{"lang":"lg","src":"{0} — for Journalist and Expert applications, the credentials you provide for review.","out":"{0} — ku pulogulaamu z'abannamawulire n'abakugu, ebikwata ku by'okwekenneenya."}
+{"lang":"nyn","src":"Accreditation documents","out":"Ebihandiiko by'okwikiriza"}
+{"lang":"nyn","src":"{0} — for Journalist and Expert applications, the credentials you provide for review.","out":"{0} — ahabwa abanyamakuru hamwe n'abakugu, ebirikukwataho ebi orikuheereza kushwijumwa."}
+{"lang":"teo","src":"Accreditation documents","out":"Apapulai nu itigogongoritai"}
+{"lang":"teo","src":"{0} — for Journalist and Expert applications, the credentials you provide for review.","out":"{0} — kanu itunga lu iwadikak keda lu epirioitin, ajenanut na ijaikinete yesi kanu airereor."}
+{"lang":"lg","src":"Device and usage information","out":"Obubaka obukwata ku kyuma n'enkozesa yaakyo"}
+{"lang":"ach","src":"Device and usage information","out":"Ngec ma mako kit ma kitiyo kwede"}
+{"lang":"lg","src":"{0} — pages visited, browser type and rough location, to keep the service secure and working.","out":"{0} — empapula ezikyaliddwa, ekika ky'ekyuma ekirondoola n'ekifo kye mulimu, okukuuma obuweereza nga buli bulungi era nga bukola."}
+{"lang":"ach","src":"{0} — pages visited, browser type and rough location, to keep the service secure and working.","out":"{0} — pot buk ma ki limo, kit me yeny ki kabedo ma cok, wek tic obed maber dok tiyo."}
+{"lang":"nyn","src":"Device and usage information","out":"Amakuru agarikukwata aha kyoma n'okugikoresa"}
+{"lang":"teo","src":"Device and usage information","out":"Akiro nuikamunitos eswamae ka aitwasam"}
+{"lang":"nyn","src":"{0} — pages visited, browser type and rough location, to keep the service secure and working.","out":"{0} — empapura ezirambwirwe, omuringo gwa browser hamwe n'omwanya gw'okutandikiramu, okurinda obuheereza buri obukuumi kandi burikukora."}
+{"lang":"ach","src":"How we use it","out":"Kit ma watimo kwede"}
+{"lang":"lg","src":"How we use it","out":"Engeri gye tukikozesaamu"}
+{"lang":"nyn","src":"How we use it","out":"Oku turikukikoresa"}
+{"lang":"teo","src":"{0} — pages visited, browser type and rough location, to keep the service secure and working.","out":"{0} — apapulai nu epejokinitai, epone loka aiboisit naka elago ka aiboisit naejai ijo, kanu aidar ejanakine lo eyuwara ido iswamai."}
+{"lang":"teo","src":"How we use it","out":"Epone loitosomata oni ngun"}
+{"lang":"ach","src":"To run the claim through our detection pipeline and show you its status and verdict.","out":"Me ngiyo lok ne ki i yoo me ngeyo ne wek onyuti kit ma tye kwede ki adwogi ne."}
+{"lang":"lg","src":"To run the claim through our detection pipeline and show you its status and verdict.","out":"Okukola okunoonyereza mu nkola yaffe ey'okuzuula n'okulaga embeera yaakyo n'ensala."}
+{"lang":"nyn","src":"To run the claim through our detection pipeline and show you its status and verdict.","out":"Okutambuza okushaba kurabira omu nkora yaitu y'okukyebera kandi tukworekye embeera yaakyo hamwe n'ekyarugamu."}
+{"lang":"teo","src":"To run the claim through our detection pipeline and show you its status and verdict.","out":"Aitemokin akiro ngun kotoma aiboisit wok naka awanyanario kosodi aitodiar ejauteneke keda atubokinio."}
+{"lang":"lg","src":"To weight and combine community ratings into a Community Confidence Score.","out":"Okupima n'okugatta obululu bw'abantu mu kigero ky'obwesige bw'ekitundu."}
+{"lang":"ach","src":"To weight and combine community ratings into a Community Confidence Score.","out":"Me nongo ki ribo rwom me kare pa lwak i kom dul moni ma tye ki gen."}
+{"lang":"nyn","src":"To weight and combine community ratings into a Community Confidence Score.","out":"Okupima n'okugaita obubonero bw'abantu omu bubonero bw'obwesigye bw'ekyanga."}
+{"lang":"teo","src":"To weight and combine community ratings into a Community Confidence Score.","out":"Aipim ka aimor aomisio nuka itunga kanu adumun Epoint Loka Amuno Naka Itunga."}
+{"lang":"lg","src":"To review Journalist and Expert accreditation, and to record reviewer decisions in an audit log.","out":"Okuddamu okwekenneenya abawandiisi n'abakugu, n'okuwandiika ebyasalibwawo mu kunoonyereza."}
+{"lang":"ach","src":"To review Journalist and Expert accreditation, and to record reviewer decisions in an audit log.","out":"Me neno kit ma lucoo lok angeya ki ludiro gi tiyo kwede, ki me coyo tam pa ngat ma ngiyo jami i coc me ngiyo tic."}
+{"lang":"nyn","src":"To review Journalist and Expert accreditation, and to record reviewer decisions in an audit log.","out":"Okugarukamu okwikiriza abanyamakuru hamwe n'abakugu, n'okuhandiika encwamu z'abarikushwijuma omu kihandiiko ky'okushwijuma."}
+{"lang":"teo","src":"To review Journalist and Expert accreditation, and to record reviewer decisions in an audit log.","out":"Aitogogong aijen naka itunga lu iwadikak keda ipirioitin, ka aiwadika aseununeta nuka itunga luitogogongitos kotoma akiro nu ebeit airereor."}
+{"lang":"lg","src":"To detect coordinated or manipulated rating activity and protect the platform from abuse.","out":"Okuzuula ebikolwa eby'okukwatagana oba okukyusa engeri gye balonzeemu n'okukuuma omukutu nga tegukozesebwa bubi."}
+{"lang":"nyn","src":"To detect coordinated or manipulated rating activity and protect the platform from abuse.","out":"Okumanya okukwatanisa nari okuhindura emirimo y'okuteera obubonero hamwe n'okurinda omukutu kuruga aha kushisha."}
+{"lang":"ach","src":"To detect coordinated or manipulated rating activity and protect the platform from abuse.","out":"Me niang tic ma ki yubu onyo kiyubo me miyo rwom ki gwoko kabedo ne ki i kom balo ne."}
+{"lang":"teo","src":"To detect coordinated or manipulated rating activity and protect the platform from abuse.","out":"Ajenun aswamisio nu imorikikina arai bo aitolitol aitemonokineta ka ayuarite elago kama ejaasi itunga luitolomete."}
+{"lang":"teo","src":"To measure and improve verdict accuracy over time.","out":"Aitemonokin ka aitojokar abeit naka etube kotoma apak."}
+{"lang":"lg","src":"To measure and improve verdict accuracy over time.","out":"Okupima n'okwongera ku butuufu bw'ebisaliddwaawo mu kiseera."}
+{"lang":"ach","src":"To measure and improve verdict accuracy over time.","out":"Me pimo ki yubu kit ma ngolo kop tye kakare kwede ikare me kare."}
+{"lang":"lg","src":"{0} analysis and third parties","out":"Okwekenneenya n'ebitongole ebyokusatu."}
+{"lang":"nyn","src":"To measure and improve verdict accuracy over time.","out":"Okupima n'okutunguura obuhikire bw'ebirugamu omu bwire."}
+{"lang":"ach","src":"{0} analysis and third parties","out":"{0} kwed ki dul me adek"}
+{"lang":"teo","src":"{0} analysis and third parties","out":"{0} aingic keda itunga luka iuniet"}
+{"lang":"lg","src":"{0} analysis and third parties","out":"Okwekaliriza n'abantu abalala."}
+{"lang":"nyn","src":"{0} analysis and third parties","out":"{0} okushwijuma hamwe n'ebitongore ebindi"}
+{"lang":"lg","src":"Checking a claim can involve sending its text, or a transcription of its audio or video, to automated detection models and, for evidence retrieval, to a hosted {0} provider. Media you upload is scanned for malware before it's processed.","out":"Okukebera okusaba kuyinza okubaamu okutuma obubaka bwakyo, oba okuwandiika ebyogerwa mu ddoboozi oba mu vidiyo, eri enkola ezikozesebwa okuzuula ebizibu era, okufuna obujulizi, eri omuwaayo wa {0} eyateekebwawo. Ebyamawulire by’oyingiza bisunsulwako ku malware nga tebinnatandika kukolebwako."}
+{"lang":"ach","src":"Checking a claim can involve sending its text, or a transcription of its audio or video, to automated detection models and, for evidence retrieval, to a hosted {0} provider. Media you upload is scanned for malware before it's processed.","out":"Ngiyo lok ma ki waco twero bedo iye cwalo coc ne, onyo coc me dwon ne onyo vidio ne, bot yoo me nongo jami ma kiyubu pire kene ki, pi nongo caden, bot {0} ma ki keto iye. Media ma iketo iye ki ngiyo pi malware ma peya ki tic kwede."}
+{"lang":"lg","src":"{0} analysis and third parties","out":"Okwekenneenya n'ebitongole ebyokusatu"}
+{"lang":"lg","src":"Because some of these providers may process data outside Uganda, we are reviewing this data flow against the Data Protection and Privacy Act, {0} before it is enabled outside the current mock-data build. This section will be updated once that review is complete.","out":"Kubanga abamu ku bano abawa obuweereza bayinza okukola data ebweru wa Uganda, tukyusa enkola eno ey’okutambuza data nga tugoberera Data Protection and Privacy Act, {0} nga tennaba kukolebwa ebweru w’ekizimbe ekikozesebwa mu kugezesa. Ekitundu kino kijja kuteekebwako obulungi nga okunoonyereza kumalirizza."}
+{"lang":"nyn","src":"Checking a claim can involve sending its text, or a transcription of its audio or video, to automated detection models and, for evidence retrieval, to a hosted {0} provider. Media you upload is scanned for malware before it's processed.","out":"Okukyebera okushaba nikubaasa kutwariramu okwohereza ekihandiiko kyakyo, nainga okuhindura omu muringo gw'okuhurira nainga vidiyo yaakyo, omu byoma ebirikumanya kandi, ahabw'okugarura obujurizi, omu kitongore ekirikugabwa {0}. Eby'amahurire ebi orikuta aha mukutu nibishwijumwa okureeba ngu tihariho obubi bwona bwe birikukorwaho."}
+{"lang":"teo","src":"Checking a claim can involve sending its text, or a transcription of its audio or video, to automated detection models and, for evidence retrieval, to a hosted {0} provider. Media you upload is scanned for malware before it's processed.","out":"Aanyanar akiro nu elimunitai epedori aimoriarit aijukar akiroke, arai bo aijulakin akiro nuka eporoto arai bo ebidio, mama ejai ainwakio na itolosere bon ido, kanu adumun aitogogongoret, mama ejai lo ijaikit {0} lo ijaikit. Aputosia nu ipikakini jo iswamao kanu ajenun iboro luarokok eringa mam itemonokinio."}
+{"lang":"ach","src":"Because some of these providers may process data outside Uganda, we are reviewing this data flow against the Data Protection and Privacy Act, {0} before it is enabled outside the current mock-data build. This section will be updated once that review is complete.","out":"Pien jami mogo ma miyo kony magi twero tic ki ngec woko me Uganda, watye ka ngiyo kit ma ngec woto kwede i kom cik me gwoko ngec ki lok ma mako dano, {0} mapud pe ki yabo woko me yubu ngec ma pe atir. But man kibiketo ngec manyen ka ngiyo ne otum."}
+{"lang":"lg","src":"Your rights under the Data Protection and Privacy Act, {0}","out":"Obuyinza bwo mu tteeka erikwata ku bukuumi bw'ebiwandiiko n'ebyama, {0}"}
+{"lang":"ach","src":"Your rights under the Data Protection and Privacy Act, {0}","out":"Twero ni ite cik me gwoko ngec ki mung, {0}"}
+{"lang":"nyn","src":"Because some of these providers may process data outside Uganda, we are reviewing this data flow against the Data Protection and Privacy Act, {0} before it is enabled outside the current mock-data build. This section will be updated once that review is complete.","out":"Ahabw'okuba abamwe aha barikukora ebi barabaasa kushwijuma ebihandiiko aheeru ya Uganda, turiyo nitugaruka kubugana oku ebihandiiko birikurabamu kurugiirira aha Data Protection and Privacy Act, {0} batakabigire aheeru y'okwombeka ebihandiiko ebirikwetengwa. Ekicweka eki nikiija kuhindurwa obu okugaruka kubugana okwo kurahwa."}
+{"lang":"teo","src":"Because some of these providers may process data outside Uganda, we are reviewing this data flow against the Data Protection and Privacy Act, {0} before it is enabled outside the current mock-data build. This section will be updated once that review is complete.","out":"Kanu ejaasi icie kotoma aijaanakinak lu epedorete aitemonokin akiro kinga nako Uganda, iuta sio airereor alosit na akiro nuikamunitos Data Protection and Privacy Act, {0} eringa itwasamao kinga naka aitemonokin akiro. Ebuni atutubet na aijulakin arai kedaun airereonor ngin."}
+{"lang":"nyn","src":"Your rights under the Data Protection and Privacy Act, {0}","out":"Obugabe bwawe ahansi y'ekiragiro ky'okurinda ebihandiiko hamwe n'ebirikukwata aha bantu, {0}"}
+{"lang":"teo","src":"Your rights under the Data Protection and Privacy Act, {0}","out":"Apedorosiokon kotoma aitutuket naka ayuwara ka aiyeyea, {0}"}
+{"lang":"lg","src":"As a data subject under Ugandan law, you have the right to:","out":"Ng'omuntu ow'enkomeredde wansi w'amateeka ga Uganda, olina eddembe lya:"}
+{"lang":"ach","src":"As a data subject under Ugandan law, you have the right to:","out":"Macalo ngat ma ki tiimo kwede tic i te cik me Uganda, itye ki twero me:"}
+{"lang":"nyn","src":"As a data subject under Ugandan law, you have the right to:","out":"Nk'omuntu orikukoresa ebihandiiko omu biragiro bya Uganda, oine obugabe bw'okukora ebi:"}
+{"lang":"teo","src":"As a data subject under Ugandan law, you have the right to:","out":"Kwape itunganan yen ejaas keda akiro kotoma okisila luko Uganda, ijaasi jo keda apedor naka:"}
+{"lang":"ach","src":"Access the personal data we hold about you.","out":"Nongo ngec ma mako in ki watye kwede."}
+{"lang":"lg","src":"Access the personal data we hold about you.","out":"Funa obubaka bwo ku lulwo kwe tulina."}
+{"lang":"nyn","src":"Access the personal data we hold about you.","out":"Okuhikwaho ebihandiiko byawe ebi turakukwatirweho."}
+{"lang":"lg","src":"Correct inaccurate or incomplete data.","out":"Okutereeza obubaka obukyamu oba obutali bwa kimalirizo."}
+{"lang":"teo","src":"Access the personal data we hold about you.","out":"Adumun akiro nuikamunitos jo."}
+{"lang":"ach","src":"Correct inaccurate or incomplete data.","out":"Yubu ngec ma pe tye kakare onyo ma pe otum."}
+{"lang":"teo","src":"Correct inaccurate or incomplete data.","out":"Aitemokin akiro numam ebeit arai mam edolit."}
+{"lang":"nyn","src":"Correct inaccurate or incomplete data.","out":"Okutereeza ebihandiiko ebitahikire nari ebirikuburaho."}
+{"lang":"ach","src":"Request deletion of your account data, subject to our retention obligations below.","out":"Kwayo me kwanyo ngec ma i account ni, ma lubu cik ma mako gwoko jami piny ma tye piny kany."}
+{"lang":"lg","src":"Request deletion of your account data, subject to our retention obligations below.","out":"Okusaba okusangulwa kw'ebikwata ku akawunti yo, nga bwetukkiriza okubikuuma wansi."}
+{"lang":"lg","src":"Object to, or ask us to restrict, certain processing.","out":"Okugaana, oba okutusaba okukugira, enkola ezimu."}
+{"lang":"nyn","src":"Request deletion of your account data, subject to our retention obligations below.","out":"Okushaba okwihaho ebirikukwata aha akawunti yaawe, kurugiirira aha bujunaanizibwa bwaitu oburi ahansi."}
+{"lang":"teo","src":"Request deletion of your account data, subject to our retention obligations below.","out":"Ilipit aitolomun akiro nuka akaunt kon, kotupitete aswamisio wok nuikamunitos akiro ngun."}
+{"lang":"ach","src":"Object to, or ask us to restrict, certain processing.","out":"Jami ma ki keto iye cwiny, onyo penyo wa me gengo, tic mogo."}
+{"lang":"teo","src":"Object to, or ask us to restrict, certain processing.","out":"Aitijenar, arai aingitun oni aitikitik, aswamisio ace."}
+{"lang":"nyn","src":"Object to, or ask us to restrict, certain processing.","out":"Okuhakanisa, nainga okushaba ngu tukyendeeze, okukora kw'omuringo gwona."}
+{"lang":"ach","src":"Lodge a complaint with Uganda's Personal Data Protection Office (National Information Technology Authority-Uganda) if you believe we've mishandled your data.","out":"Ket koko ni ki Uganda's Personal Data Protection Office (National Information Technology Authority-Uganda) ka itamo ni watiyo marac i kom ngec ma mako in."}
+{"lang":"lg","src":"Lodge a complaint with Uganda's Personal Data Protection Office (National Information Technology Authority-Uganda) if you believe we've mishandled your data.","out":"Bw'oba ng'olowooza nti tukozesezza bubi ebikukwatako, wandiika okwemulugunya kwo mu kitongole ekirabirira eby'okukuuma obubaka bw'abantu (National Information Technology Authority-Uganda)."}
+{"lang":"nyn","src":"Lodge a complaint with Uganda's Personal Data Protection Office (National Information Technology Authority-Uganda) if you believe we've mishandled your data.","out":"Waaba oine eki waakwenda kugamba, ogambe n'ekitongore ekirikujunanizibwa ahaby'amahurire omu Uganda (National Information Technology Authority-Uganda) ku oraabe nooteekateeka ngu tukozeseze kubi amahurire gaawe."}
+{"lang":"teo","src":"Lodge a complaint with Uganda's Personal Data Protection Office (National Information Technology Authority-Uganda) if you believe we've mishandled your data.","out":"Kotoma aiboisit naeyait akiro nuka itunga koUganda (National Information Technology Authority-Uganda) arai iwomit jo ebe mam sio iswamat ejok akirokon."}
+{"lang":"ach","src":"Contact & data requests","out":"Lok ki penyo pi ngec"}
+{"lang":"ach","src":"To exercise any of these rights, contact us using the details in {0} below.","out":"Me tic ki twero magi, kubbe kwedwa kun itiyo ki lok matut ma tye i {0} piny kany."}
+{"lang":"lg","src":"To exercise any of these rights, contact us using the details in {0} below.","out":"Okukozesa eddembe lino lyonna, tuwandiikire ng'okozesa ebiwandiiko ebiri mu {0} wansi."}
+{"lang":"lg","src":"Contact & data requests","out":"Okukwatagana n'okwetaaga ebikwata ku muntu."}
+{"lang":"nyn","src":"Contact & data requests","out":"Okuhikaana n'okushaba kw'amakuru"}
+{"lang":"nyn","src":"To exercise any of these rights, contact us using the details in {0} below.","out":"Okukoresa obugabe obu, twahurikize orikukoresa ebirikushangwa ahansi."}
+{"lang":"teo","src":"Contact & data requests","out":"Aingituneta nuka aineranara keda akiro"}
+{"lang":"lg","src":"How long we keep it","out":"Tugikuumira bbanga ki?"}
+{"lang":"teo","src":"To exercise any of these rights, contact us using the details in {0} below.","out":"Kanu aitwasam adio kotoma apedorosio nu, kodolok sio itwasamaete akiro nuejaasi toma {0} kwap."}
+{"lang":"nyn","src":"To exercise any of these rights, contact us using the details in {0} below.","out":"Okukoresa obugabe obu, twahurira orikukoresa ebirikushoboororwa ahansi."}
+{"lang":"ach","src":"How long we keep it","out":"Wabiketo ne pi kare ma rom mene"}
+{"lang":"nyn","src":"How long we keep it","out":"Nituguma tukikuumire kumara bwire ki?"}
+{"lang":"teo","src":"How long we keep it","out":"Iwadikaete oni apak naepol noi?"}
+{"lang":"nyn","src":"To exercise any of these rights, contact us using the details in {0} below.","out":"Okukoresa obugabe obu, twandikire orikukoresa ebirikushoboororwaho ahansi."}
+{"lang":"ach","src":"Published verdicts and their evidence form part of the public fact-check record and are kept indefinitely, in the same way a news archive is. Account details are kept while your account is active and for a limited period afterwards, to support audit and accreditation records required for the review process. Malware-scanned upload copies are retained only as long as needed to produce a verdict.","out":"Adwogi me ngolo kop ma kicoyo ki caden gi tye ikin rekod me ngiyo lok ada pa lwak dok ki gwoko pi kare malac, kit ma kigwoko kwede lok angeya macon. Lok matut me account ki gwoko ka account ni tye ka tic ki pi kare manok ingee ne, me konyo ngiyo ki neno ni jami ma mite pi yub me ngiyo lok tye kakare. Kopi me pwail ma ki ngiyo pi malware ki gwoko keken ka mite me nyutu adwogi me ngolo kop."}
+{"lang":"lg","src":"Cookies and local storage","out":"Kuki n'okutereka mu kitundu."}
+{"lang":"lg","src":"Published verdicts and their evidence form part of the public fact-check record and are kept indefinitely, in the same way a news archive is. Account details are kept while your account is active and for a limited period afterwards, to support audit and accreditation records required for the review process. Malware-scanned upload copies are retained only as long as needed to produce a verdict.","out":"Ebyasaliddwaamu n’obujulizi bwabyo bikola ku byafaayo eby’okukebera amazima era bikuumibwa obutaggwawo, nga bwe kiba ku byafaayo by’amawulire. Ebikwata ku akawunti bikuumibwa ng’akawunti yo ekyaaliwo era okumala ekiseera kitono oluvannyuma, okuyamba mu kukola okukebera n’okukakasa ebikwata ku nkola y’okwekenneenya. Obubaka obusunsuddwa obulimu malware bukwatibwa okutuusa lwe kyetaagisa okufulumya ebyasaliddwaamu."}
+{"lang":"ach","src":"Cookies and local storage","out":"Cookies ki gwoko jami ma i kabedo"}
+{"lang":"teo","src":"Cookies and local storage","out":"Cookies keda aingadao naiboisit"}
+{"lang":"nyn","src":"Cookies and local storage","out":"Kuki hamwe n'okubiika kw'omwihanga"}
+{"lang":"teo","src":"Published verdicts and their evidence form part of the public fact-check record and are kept indefinitely, in the same way a news archive is. Account details are kept while your account is active and for a limited period afterwards, to support audit and accreditation records required for the review process. Malware-scanned upload copies are retained only as long as needed to produce a verdict.","out":"Akiro nuetolomunitai keda aitogogongoret kec eraasi atutubet naka aiwadikaeta nuka aingic akiro nuka itunga ido idaritai ikar kere, kwape ka aiwadikaeta nuka iyemuto. Akiro nuikamunitos akaunt kes idaritai nejaatar akaunt kon iswamai ido kanu apak naedit akaulo, kanu aigang aiwadikaeta nuka aanyanario keda aitigogongio nu ekotoi kanu ainwakio. Akiro nuikamunitos malware-scanned upload kes idaritai bon arai ipudasi kanu aitolomun akiro nuetolomunitai."}
+{"lang":"nyn","src":"Published verdicts and their evidence form part of the public fact-check record and are kept indefinitely, in the same way a news archive is. Account details are kept while your account is active and for a limited period afterwards, to support audit and accreditation records required for the review process. Malware-scanned upload copies are retained only as long as needed to produce a verdict.","out":"Ebyarugire omu kushwijuma hamwe n'obuhame bwabyo nibikora ekicweka ky'ebihandiiko by'abantu boona ebirikukyeberwa kandi biragumaho ebiro byona, nk'oku ebyafaayo by'amahurire birikukorwa. Ebirikukwata aha akawunti nibigumibwa obu akawunti yaaba eriho kandi kumara obwire bukye bwanyima y'ekyo, kuhwera omu kucondooza hamwe n'ebihandiiko by'okwikiriza ebirikwetengwa omu muringo gw'okushwijuma. Ebihandiiko ebirikushwijumwa oburogo nibigumibwa kumara obwire obu burikwetengwa kukora encwamu."}
+{"lang":"ach","src":"We use a session cookie to keep you signed in, and local storage to remember your theme and language preference on this device. We don't use third-party advertising trackers.","out":"Watimo tic ki session cookie me gwoko in ma kicoyo iye, ki local storage me poo ikom theme ni ki yero leb ma imaro i kom nyonyo man. Pe watimo tic ki third-party advertising trackers."}
+{"lang":"lg","src":"We use a session cookie to keep you signed in, and local storage to remember your theme and language preference on this device. We don't use third-party advertising trackers.","out":"Tukozesa cookie ey'ekiseera okukuuma ng'oli mu kifo, n'okutereka okw'omu kitundu okujjukira ekifaananyi ky'olulimi lw'oyagala ku kyuma kino. Tetukozesa bintu bya bakolera abalala eby'okulanga."}
+{"lang":"ach","src":"Children's privacy","out":"Kwo pa lutino"}
+{"lang":"lg","src":"Children's privacy","out":"Obukuumi bw'abaana."}
+{"lang":"nyn","src":"Children's privacy","out":"Obusingye bw'abaana"}
+{"lang":"teo","src":"We use a session cookie to keep you signed in, and local storage to remember your theme and language preference on this device. We don't use third-party advertising trackers.","out":"Itosomai sio a session cookie kanu aidar jo iwadikatai, keda aiboisit naka aingadao kanu aiitun atutubet kon keda angajep na ikoto ijo kotoma acuma kana. Mam sio itosomai adoketait naiuniet naka aitodiar akiro."}
+{"lang":"nyn","src":"We use a session cookie to keep you signed in, and local storage to remember your theme and language preference on this device. We don't use third-party advertising trackers.","out":"Nitukoresa akakooki k'omurundi gw'okubanza okukugumya oteireho omukono, hamwe n'okubiika kw'omwihanga kwijuka ekishushani kyawe hamwe n'orurimi oru orikwenda aha kyoma eki. Titurikukoresa ebirikukurataho eby'okuranga eby'ekicweka kya kashatu."}
+{"lang":"teo","src":"Children's privacy","out":"Aiyeyea naka idwe"}
+{"lang":"ach","src":"{0} is intended for users aged {1} and over. We don't knowingly collect personal data from children, and will delete any we become aware of.","out":"{0} kiyubu pi jo ma tye ki mwaka {1} ki malo. Pe wa coko ngec me kom lutino, dok wabijwiko mo keken ma wanongo ni tye kwede."}
+{"lang":"lg","src":"{0} is intended for users aged {1} and over. We don't knowingly collect personal data from children, and will delete any we become aware of.","out":"{0} kigendereddwamu abakozesa abali wakati w'emyaka {1} n'okusingawo. Tetukuŋŋaanya bubaka bw'abantu ku baana, era tujja kusangula obubaka bwonna bwe tumanya."}
+{"lang":"nyn","src":"{0} is intended for users aged {1} and over. We don't knowingly collect personal data from children, and will delete any we become aware of.","out":"{0} ekateebwaho abarikukoresa abari aha myaka {1} hamwe n'okukiraho. Titurikushorooza amakuru g'abantu kuruga omu baana, kandi nitwija kushazamu goona agu turikumanya."}
+{"lang":"lg","src":"Changes to this policy","out":"Enkyukakyuka mu nkola eno"}
+{"lang":"ach","src":"Changes to this policy","out":"Lok ma ki loko i kom cik man"}
+{"lang":"teo","src":"Changes to this policy","out":"Aijulanakineta toma ainapeta nu."}
+{"lang":"lg","src":"homepage","out":"omuko ogusooka"}
+{"lang":"nyn","src":"Changes to this policy","out":"Empindahinduka omu kiragiro eki"}
+{"lang":"teo","src":"{0} is intended for users aged {1} and over. We don't knowingly collect personal data from children, and will delete any we become aware of.","out":"{0} erai loitemokinitai kanuka itunga luejaasi keda ikar {1} keda lu edeparitos. Mam sio imoriarit akiro nuka itunga luka idwe, ido ibuni sio alemar nu ejaasi oni keda ajenunet."}
+{"lang":"ach","src":"homepage","out":"pot buk me gang"}
+{"lang":"lg","src":"We'll update the date at the top of this page whenever this policy changes, and post material changes on the {0} before they take effect.","out":"Tujja kuteekako ennaku ku ntikko y'olupapula luno buli lw'anaaba nga etteeka lino likyusiddwa, era tujja kuteekako ebikwata ku nkyukakyuka mu {0} nga tebinnatandika kukola."}
+{"lang":"nyn","src":"homepage","out":"omuka"}
+{"lang":"teo","src":"homepage","out":"Esite loapolon"}
+{"lang":"nyn","src":"We'll update the date at the top of this page whenever this policy changes, and post material changes on the {0} before they take effect.","out":"Nitwija kuhindura ebiro aha mutwe gw'orupapura obu enteekateeka egi erahinduka, kandi tushohore ebihindukire aha {0} batakakozire."}
+{"lang":"lg","src":"Terms of use","out":"Ebiragiro by'okukozesa"}
+{"lang":"ach","src":"We'll update the date at the top of this page whenever this policy changes, and post material changes on the {0} before they take effect.","out":"Wabibedo ka loko nino ma tye i wi pot buk man kace cik man olokke, ki bene wabi keto aloka-loka matye i {0} ma pud peya gucako tic kwede."}
+{"lang":"teo","src":"We'll update the date at the top of this page whenever this policy changes, and post material changes on the {0} before they take effect.","out":"Ibusakinit sio aijulakin apaaran naejai kuju naka atutubet kana kangolisawa loejulakinor ainapeta nu, kosodi aipikakin akiro nuegelegela toma {0} eringa kes iswamaunos."}
+{"lang":"ach","src":"Terms of use","out":"Cik me tic"}
+{"lang":"lg","src":"Email {0} for any question about this policy or to exercise your rights under the Data Protection and Privacy Act, {1}. See also our {2}.","out":"Email {0} ku kibuuzo kyonna ekikwata ku nkola eno oba okukozesa eddembe lyo mu Data Protection and Privacy Act, {1}. Laba ne {2}."}
+{"lang":"nyn","src":"Terms of use","out":"Ebikuratirwa omu kukoresa"}
+{"lang":"teo","src":"Terms of use","out":"Akiro nu itwasamaere"}
+{"lang":"lg","src":"The terms that govern using {0}.","out":"Ebigambo ebikwata ku kukozesa {0}."}
+{"lang":"ach","src":"Email {0} for any question about this policy or to exercise your rights under the Data Protection and Privacy Act, {1}. See also our {2}.","out":"Email {0} pi lapeny mo keken ma mako cik man onyo me tic ki twero ni ite cik me gwoko ngec ki lok ma pe ingeyo, {1}. Nen bene {2} wa."}
+{"lang":"ach","src":"The terms that govern using {0}.","out":"Nyig lok ma doro tic ki {0}."}
+{"lang":"nyn","src":"Email {0} for any question about this policy or to exercise your rights under the Data Protection and Privacy Act, {1}. See also our {2}.","out":"Email {0} ahabw'ekibuuzo kyona ekirikukwata aha kiragiro eki nainga okugira obugabe bwawe ahansi y'ekiragiro ky'okurinda ebihandiiko hamwe n'obuhangwa bw'abantu, {1}. Reeba n'aha {2}."}
+{"lang":"teo","src":"Email {0} for any question about this policy or to exercise your rights under the Data Protection and Privacy Act, {1}. See also our {2}.","out":"Kotoma aijukar email {0} kanu aingiset adio kere nuikamunitos ainapeta nu arai bo aitodolikin apedorosiokon kotoma Data Protection and Privacy Act, {1}. Kosesen bobo {2}."}
+{"lang":"ach","src":"Acceptance of these terms","out":"Ye lok magi"}
+{"lang":"lg","src":"Acceptance of these terms","out":"Okukkiriza ebikwata ku mateeka gano"}
+{"lang":"nyn","src":"The terms that govern using {0}.","out":"Ebigambo ebirikukuratira okukoresa {0}."}
+{"lang":"teo","src":"The terms that govern using {0}.","out":"Akiro nu itwasamaete {0}."}
+{"lang":"nyn","src":"Acceptance of these terms","out":"Okwikiriza ebiragiro ebi"}
+{"lang":"teo","src":"Acceptance of these terms","out":"Acamun akiro nu"}
+{"lang":"lg","src":"By using {0} — the website, and in future the {1}/{2} bots and partner {3} — you agree to these terms. If you don't agree, please don't use the service.","out":"Ng'okozesa {0} — omukutu gwa yintaneeti, era mu biseera eby'omu maaso {1}/{2} bots ne banne {3} — okkiriza ebiragiro bino. Bw'oba nga tokkiriza, nkusaba oleme kukozesa buweereza buno."}
+{"lang":"lg","src":"What {0} is (and isn't)","out":"Kiki {0} ky'ekyo (era nga tekiri)"}
+{"lang":"ach","src":"By using {0} — the website, and in future the {1}/{2} bots and partner {3} — you agree to these terms. If you don't agree, please don't use the service.","out":"Ki tic ki {0} — website, ki i anyim {1}/{2} bots ki partner {3} — icwako cik magi. Ka pe icwako, tim ber pe itii ki tic ne."}
+{"lang":"teo","src":"By using {0} — the website, and in future the {1}/{2} bots and partner {3} — you agree to these terms. If you don't agree, please don't use the service.","out":"Kotoma aitwasam {0} — elago, ido kotoma oingaren {1}/{2} bots keda ipaupa {3} — icamunit jo akiro nu. Arai mam ijo icamunit, kilipit mam itwasam ejanakine ngol."}
+{"lang":"nyn","src":"By using {0} — the website, and in future the {1}/{2} bots and partner {3} — you agree to these terms. If you don't agree, please don't use the service.","out":"Okukoresa {0} — omukutu gwa intaneeti, kandi omu biro by'omumaisho {1}/{2} bots hamwe na banywani baawe {3} — noikiriza ebiragiro ebi. Ku oraabe otarikwikiriza, nyabura we otakoresa obuheereza."}
+{"lang":"ach","src":"What {0} is (and isn't)","out":"{0} tye ngo (ki pe obedo)"}
+{"lang":"nyn","src":"What {0} is (and isn't)","out":"{0} niki (kandi kitari)"}
+{"lang":"teo","src":"What {0} is (and isn't)","out":"Inyoin bo {0} erai (ka mam erai)"}
+{"lang":"lg","src":"{0} checks claims, links and media using automated detection and, where a case is escalated, human review by accredited reviewers. A verdict reflects our best assessment of the evidence available when it was published, and can change if better evidence emerges. {1} is a fact-checking tool, not legal, medical or financial advice, and a verdict is not a substitute for your own judgement.","out":"{0} ekukebera ebiragiro, obukwatagana n’ebyamawulire nga ekozesa okuzuula okw’obutereevu era, singa ensonga etwalibwa waggulu, abantu abakakasiddwa bwe balaba. Ekisalibwako kye kiraga engeri gye tukkirizaamu obujulizi obuliwo mu kiseera we kyasindikibwa, era kisobola okukyuka singa obujulizi obulungi buvaayo. {1} kye kikozesebwa okukebera amazima, si magezi ga mateeka, by’obulamu oba by’enfuna, era ekisalibwako tekisikiriza ku nsalawo yo."}
+{"lang":"ach","src":"{0} checks claims, links and media using automated detection and, where a case is escalated, human review by accredited reviewers. A verdict reflects our best assessment of the evidence available when it was published, and can change if better evidence emerges. {1} is a fact-checking tool, not legal, medical or financial advice, and a verdict is not a substitute for your own judgement.","out":"{0} ngiyo lok ma ki waco, kubu ki jami me poko ngec kun tiyo ki yoo me nongo lok ma ki keto iye cing, ki ka lok mo odoko tek, dano ma ki moko ni gi twero ngiyo ne. Ngolo kop nyutu kit ma wan oneno kwede caden ma tye ikare ma kicoyo ne, dok twero loke ka caden maber obino. {1} obedo gin me ngiyo lok ada, pe obedo tam me cik, yot kom onyo lim, ki ngolo kop pe obedo gin ma leyo ka wang tam ma megi."}
+{"lang":"nyn","src":"{0} checks claims, links and media using automated detection and, where a case is escalated, human review by accredited reviewers. A verdict reflects our best assessment of the evidence available when it was published, and can change if better evidence emerges. {1} is a fact-checking tool, not legal, medical or financial advice, and a verdict is not a substitute for your own judgement.","out":"{0} neekyebera ebirikugambwa, enkwatanisa hamwe n'eby'amakuru erikukoresa okumanya okw'okwetegyeka hamwe, ahu omushango gurikuhindurwa, okushwijuma kw'abantu kurabira omu bashwijumi abarikwikirizibwa. Encwamu neeyoreka okushwijuma kwaitu okurikukirayo oburungi okw'obujurizi oburiho obu kyashohoziibwe, kandi neebaasa kuhinduka obujurizi burungi bwaba buroho. {1} n'ekyoma ky'okukyebera amazima, tikiri kya magezi g'ebiragiro, eby'obujanjabi nainga eby'esente, kandi encwamu terikubaasa kuba ekintu ky'okuhindura okusharamu kwawe."}
+{"lang":"lg","src":"Accounts and roles","out":"Akawunti n'ebifo."}
+{"lang":"ach","src":"Accounts and roles","out":"Kwan ki tic"}
+{"lang":"teo","src":"Accounts and roles","out":"Akaunts keda aswamisinei"}
+{"lang":"nyn","src":"Accounts and roles","out":"Akawunti hamwe n'emirimo"}
+{"lang":"lg","src":"Anyone can sign up as a Public user. Journalist and Expert roles require accreditation.","out":"Buli omu asobola okwewandiisa ng'omuntu wa bulijjo. Okubeera munnamawulire oba omukugu kyetaaga okufuna olukusa."}
+{"lang":"ach","src":"Anyone can sign up as a Public user. Journalist and Expert roles require accreditation.","out":"Ngat mo keken twero coyo nyinge me bedo latic pa lwak. Tic pa lucoo lok angeya ki ludiro mito niang i komgi."}
+{"lang":"teo","src":"{0} checks claims, links and media using automated detection and, where a case is escalated, human review by accredited reviewers. A verdict reflects our best assessment of the evidence available when it was published, and can change if better evidence emerges. {1} is a fact-checking tool, not legal, medical or financial advice, and a verdict is not a substitute for your own judgement.","out":"{0} inwakini akiro, arucokina keda iyemuto itwasamaete ajenunet naka acuma ido, ne eyatakinor emusago, airereonor naka itunga kanejaas itunga luecamunitai. Akirot naepol itodunit aanyanaret wok najokan kakere naka aitogogongoret naejai neitolomunere, ido epedori aijulakin arai etakanuni aitogogongoret najokan. {1} erai ibore yenitemonokinete abeit, mere aicoreta nuka ikisila, amukian arai ikapun, ido mam akirot naepol erai aiboisit naka aseununeta kon."}
+{"lang":"nyn","src":"Anyone can sign up as a Public user. Journalist and Expert roles require accreditation.","out":"Buri omwe naabaasa kwehandikisa nk'omukozesa wa gavumenti. Omurimo gw'omunyamakuru hamwe n'omukugu nigwetenga okwikirizibwa."}
+{"lang":"teo","src":"Anyone can sign up as a Public user. Journalist and Expert roles require accreditation.","out":"Epedori itunganan kere aiwadikaun kwape itunganan yen itunga. Aswamisinei nuka arotak iyemuto keda ipirioitin ekotosi aitigogongoret."}
+{"lang":"lg","src":"Give accurate information when you sign up or apply for accreditation.","out":"Waayo obubaka obutuufu bw'oba ng'oyingira mu kibiina oba nga weewandiisa okufuna olukusa."}
+{"lang":"ach","src":"Give accurate information when you sign up or apply for accreditation.","out":"Mi ngec matir ka itye ka coyo nyingi onyo penyo pi twero me tic."}
+{"lang":"nyn","src":"Give accurate information when you sign up or apply for accreditation.","out":"Ha omu kuhandiika nainga okushaba akakongi k'okwikirizibwa, ha amakuru agahikire."}
+{"lang":"teo","src":"Give accurate information when you sign up or apply for accreditation.","out":"Koinak akiro nu abeit ne iwadikauna arai bo ne ilipia aanyunet."}
+{"lang":"lg","src":"Keep one account per person, and keep your credentials confidential — you're responsible for activity under your account.","out":"Buli muntu abeere n'akawunti emu, era ebyama byo obikuume nga bya kyama — ggwe avunaanyizibwa ku bikolebwa mu akawunti yo."}
+{"lang":"ach","src":"Keep one account per person, and keep your credentials confidential — you're responsible for activity under your account.","out":"Gwok akaunt acel pi ngat acel, ki gwok ngec me donyo ni i mung — itye ki twero pi tic ma tye i te akaunt ni."}
+{"lang":"nyn","src":"Keep one account per person, and keep your credentials confidential — you're responsible for activity under your account.","out":"Gira akaunti emwe ahari buri muntu, kandi oteere eby'okukoresa byawe omu kihama — noobaire nookora aha bikwatiraine n'akaunti yaawe."}
+{"lang":"teo","src":"Keep one account per person, and keep your credentials confidential — you're responsible for activity under your account.","out":"Kotoma aingadis naka ikapun, itunganan kangin ejaasi keda akaunt adiope bon ido ibusakinit jo ajaut keda akiro nuikamunitos akaunt kon."}
+{"lang":"lg","src":"Two-factor authentication is required for Expert and Admin accounts.","out":"Okukakasa okw'emirundi ebiri kwetaagisa ku akawunti za Expert ne Admin."}
+{"lang":"nyn","src":"Two-factor authentication is required for Expert and Admin accounts.","out":"Okukakasa ebintu bibiri nikyetengwa aha akawunti ya Expert na Admin."}
+{"lang":"ach","src":"Two-factor authentication is required for Expert and Admin accounts.","out":"Mito ni ngat moni obed ki jami aryo ma nyutu ni en aye tye ka tic ki akaunt me Expert ki Admin."}
+{"lang":"teo","src":"Two-factor authentication is required for Expert and Admin accounts.","out":"Ekotoi aitogogongio naka akiro aarei kanu akaunts nuka Expert keda Admin."}
+{"lang":"lg","src":"Your submissions","out":"Okuwaayo kwo."}
+{"lang":"nyn","src":"Your submissions","out":"Okuhayo kwawe"}
+{"lang":"teo","src":"Your submissions","out":"Aijukak kon"}
+{"lang":"ach","src":"Your submissions","out":"Miyo lok ma itye kwede"}
+{"lang":"ach","src":"You must have the right to share whatever you submit for checking. Don't submit content that's illegal, that violates someone else's privacy, or that you don't have permission to share.","out":"Omyero ibed ki twero me nywako gin mo keken ma iketo pi ngiyo. Pe iket jami ma tye i cik, ma balo kwo pa ngat mukene, onyo ma pe itye ki twero me nywako."}
+{"lang":"lg","src":"You must have the right to share whatever you submit for checking. Don't submit content that's illegal, that violates someone else's privacy, or that you don't have permission to share.","out":"Olina okuba n'obuyinza okugabana kyonna ky'otwala okukebera. Tokkiriza kutwala bintu ebimenya amateeka, ebyonoona obukuumi bw'omuntu omulala, oba by'otalina lukusa kugabana."}
+{"lang":"lg","src":"Uploaded files are scanned for malware before analysis. A submission and the verdict {0} reaches on it may be published as part of the public fact-check record, in the same way a newsroom publishes what it fact-checks.","out":"Ebyokutereka ebikozesebwa bisooka okukeberwa obulwadde nga tebinnakolebwako. Okuwaayo n'ekyavaamu {0} kiyinza okuteekebwako mu byafaayo by'okukakasa eby'amazima, ng'omukutu gw'amawulire bwe gufulumya bye gwekebedde."}
+{"lang":"nyn","src":"Uploaded files are scanned for malware before analysis. A submission and the verdict {0} reaches on it may be published as part of the public fact-check record, in the same way a newsroom publishes what it fact-checks.","out":"Ebyahairweyo nibishwijumwa okureeba ngu tihariho obukooko bw'okurwanisa omu by'obuhangwa bwa kompyuta bitakatandikire kushwijuma. Okuheereza hamwe n'ekirugamu {0} nikibaasa kushohozibwa nk'ekicweka ky'ebihandiiko by'abantu boona ebirikukyebera amazima, omu muringo nigwo gumwe ogu ekitongore ky'amakuru kirikushohoza eki kirikukyebera amazima."}
+{"lang":"teo","src":"Uploaded files are scanned for malware before analysis. A submission and the verdict {0} reaches on it may be published as part of the public fact-check record, in the same way a newsroom publishes what it fact-checks.","out":"Ejaasi ifayil lu iyatakinio keda aanyanario naka malware eringa aingic. Aijukar ka atubokin {0} loedolit epedori alimor kwape ediope kotoma aiwadikaeta nuka aanyanario naka akiro, kwape nat epone loitolomunere iyemuto nu itolomete akiro nu aanyanarete."}
+{"lang":"lg","src":"Community ratings and conduct","out":"Okupima kw'abantu n'enneeyisa yaabwe."}
+{"lang":"ach","src":"Community ratings and conduct","out":"Rwom me kwo pa lwak ki kit gi"}
+{"lang":"nyn","src":"Community ratings and conduct","out":"Okushwijuma kw'abantu hamwe n'emigyenzo"}
+{"lang":"teo","src":"Community ratings and conduct","out":"Aitemonokineta nuka itunga keda iponesio."}
+{"lang":"lg","src":"Rate verdicts honestly, based on the evidence shown. Coordinated or manipulated rating activity (for example, groups of accounts rating together to push a verdict's score) can have its ratings discounted and the accounts involved suspended. You can report content or ratings that look manipulated from the report page.","out":"Kola ku by’okusalawo mu bwesigwa, nga weesigama ku bujulizi obulaga. Okukolagana oba okukyusa eby’okusalawo (nga ebibiina by’ebikadde bikolera wamu okusindika ekisaliddwa) kisobola okuleetera okusalawo kwabwe okugobererwa era n’ebikadde ebikwatibwako ne bisimbibwa. Osobola okutegeeza ku bintu oba okusalawo okulabika nga kwekyusiddwa okuva ku lupapula lw’ebyokutegeeza."}
+{"lang":"ach","src":"Rate verdicts honestly, based on the evidence shown. Coordinated or manipulated rating activity (for example, groups of accounts rating together to push a verdict's score) can have its ratings discounted and the accounts involved suspended. You can report content or ratings that look manipulated from the report page.","out":"Nen lok ma ki ngolo i komgi ki ada, kun jenge i kom caden ma kinyutu. Tic me ribo onyo loko rwom me tic (me lapore, gurup pa akaunt ma miyo rwom kacel me cwalo adwogi me ngolo kop) twero weko rwom gi ki kwanyo woko ki akaunt ma tye iye ki juku tic gi. Itwero miyo ripot i kom gin ma tye onyo rwom ma nen calo kiloko ne ki i pot buk me ripot."}
+{"lang":"nyn","src":"Rate verdicts honestly, based on the evidence shown. Coordinated or manipulated rating activity (for example, groups of accounts rating together to push a verdict's score) can have its ratings discounted and the accounts involved suspended. You can report content or ratings that look manipulated from the report page.","out":"Okusharamu okushwijuma omu mazima, kurugirira aha buhame oburikworekwa. Okukwatanisa nainga okuhindura emirimo y'okushwijuma (nk'eky'okureeberaho, guruupu z'ebitabo ebirikushwijuma hamwe kugira ngu zishemeze obubonero bw'okusharamu) nikubaasa kureetera okushwijuma kwabyo kuhakanisibwa kandi n'ebitabo ebirikwejumbamu bikazibirwa. Noobaasa kuhababa ebirikukwata aha bintu nainga okushwijuma okurikureebeka nk'okwahindwirwe kuruga aha rupapura rw'ebihaburo."}
+{"lang":"teo","src":"Rate verdicts honestly, based on the evidence shown. Coordinated or manipulated rating activity (for example, groups of accounts rating together to push a verdict's score) can have its ratings discounted and the accounts involved suspended. You can report content or ratings that look manipulated from the report page.","out":"Kotema akiro nuka aomisio keda abeit, kotupitete aitodunet na itodiaritai. Aswamisioit na aimar arai bo aijulakin (kwape awanyunet, igurupun luka akauntin aimar nepepe kanu aitopolor adoketait naka aomisio) epedori aitidisiar ainapeta kec kosodi aikisar akauntin nu ajaasi toma. Ipedori jo alimor akiro arai bo aimar na esubit bala ejulakinitai kotoma atutubet naka alimoret."}
+{"lang":"lg","src":"{0} and developer access","out":"{0} n'okufuna okutuuka ku bakola pulogulaamu."}
+{"lang":"ach","src":"{0} and developer access","out":"{0} ki yoo me donyo pa luyub"}
+{"lang":"teo","src":"You must have the right to share whatever you submit for checking. Don't submit content that's illegal, that violates someone else's privacy, or that you don't have permission to share.","out":"Ibusakinit jo ajaut keda apedor naka aimor ibore kere yen ijaikit jo kanu aanyanario. Sirikijaik akiro numam ekisil ecamakinit, nu itolitolete aiyeyea naka icie itunganan, arai bo numam ijaasi jo keda acamakinet naka aimor."}
+{"lang":"nyn","src":"You must have the right to share whatever you submit for checking. Don't submit content that's illegal, that violates someone else's privacy, or that you don't have permission to share.","out":"Oine kuba oine obugabe bw'okugabana ekintu kyona eki orikuhayo kukyeberwa. Otahayo ebirikukwata aha biragiro, ebirikuhenda obusingye bw'omuntu ondiijo, nainga ebi otaine rusa rw'okugabana."}
+{"lang":"ach","src":"Uploaded files are scanned for malware before analysis. A submission and the verdict {0} reaches on it may be published as part of the public fact-check record, in the same way a newsroom publishes what it fact-checks.","out":"Kiketo pwail ma ki ngiyo pi malware ma peya ki ngiyo. Miyo gin mo ki adwogi ne {0} oo iye twero bedo ni ki bi coyo macalo but rekod me ngiyo lok ada pa lwak, kit ma ot poko lok angeya coyo kwede ngo ma gi ngiyo lok ada iye."}
+{"lang":"nyn","src":"{0} and developer access","out":"{0} hamwe n'okuhikwaho kw'omukozesa"}
+{"lang":"teo","src":"{0} and developer access","out":"{0} keda adumununeta nuka etolomak"}
+{"lang":"lg","src":"developer page","out":"Olupapula lw'abakola pulogulamu"}
+{"lang":"lg","src":"Account → {0} Keys","out":"Akawunta → {0} Ebisumuluzo"}
+{"lang":"lg","src":"Journalist and Admin accounts can request {0} keys from {1}. Partner {2} access is rate limited (currently {3} requests/hour) and keys are tied to your account — don't share them. See the {4} for details.","out":"Abawandiisi n'abakozesa akawunti basobola okusaba ebisumuluzo {0} okuva ku {1}. Okufuna kwa Partner {2} kusaliddwa ku bungi bw'okukozesa (kati {3} okusaba/essaawa) era ebisumuluzo bikwatagana n'akawunti yo — tobyawulamu. Laba {4} okumanya ebisingawo."}
+{"lang":"ach","src":"Account → {0} Keys","out":"Account → {0} Keys"}
+{"lang":"ach","src":"developer page","out":"Pot buk pa luyub"}
+{"lang":"nyn","src":"Account → {0} Keys","out":"Akawunti → {0} Ebishumuruzo"}
+{"lang":"nyn","src":"developer page","out":"orupapura rw'omukozesa"}
+{"lang":"ach","src":"Journalist and Admin accounts can request {0} keys from {1}. Partner {2} access is rate limited (currently {3} requests/hour) and keys are tied to your account — don't share them. See the {4} for details.","out":"Lacoo lok angeya ki akaunt me Admin twero penyo pi {0} keys ki bot {1}. Partner {2} access tye ki rate limited (kombedi {3} requests/hour) ki keys tye ki kubbe ki akaunt ni — pe ipokgi. Nen {4} pi ngec matut."}
+{"lang":"ach","src":"Account → {0} Keys","out":"Account → {0} Keys"}
+{"lang":"teo","src":"Account → {0} Keys","out":"Akaunt → {0} Ipuak luka akiro"}
+{"lang":"teo","src":"developer page","out":"Atutubet naka etolomak"}
+{"lang":"ach","src":"Account → {0} Keys","out":"Account → {0} Keys"}
+{"lang":"nyn","src":"Journalist and Admin accounts can request {0} keys from {1}. Partner {2} access is rate limited (currently {3} requests/hour) and keys are tied to your account — don't share them. See the {4} for details.","out":"Abanyamakuru hamwe n'ebitabo by'obwebembezi nibibaasa kushaba ebishumuruzo bya {0} kuruga ahari {1}. Okuhika aha banywani {2} nikukuratira obwingi bw'okushaba (obwahati {3} okushaba/kishana) kandi ebishumuruzo bikwatiraine n'akawunti yaawe — otakabigabana. Reeba {4} okumanya ebirikukiraho."}
+{"lang":"ach","src":"Intellectual property","out":"Jami ma kiyubu ki ryeko"}
+{"lang":"lg","src":"Intellectual property","out":"Obwannannyini ku bintu eby'amagezi."}
+{"lang":"nyn","src":"Intellectual property","out":"Ebintu by'obwengye"}
+{"lang":"teo","src":"Journalist and Admin accounts can request {0} keys from {1}. Partner {2} access is rate limited (currently {3} requests/hour) and keys are tied to your account — don't share them. See the {4} for details.","out":"Epedorete arotak iyemuto keda akaunts nuka eyaitok ailip {0} keys kanejai {1}. Aitodolikinio naka Partner {2} ejai aitikitik (kwana {3} ailipasinei/hour) ido ejaasi ikisila toma akaunt kon — mam imorata kes. Kosesen {4} kanu akiro nuipu."}
+{"lang":"teo","src":"Intellectual property","out":"Iboro luka acoa"}
+{"lang":"ach","src":"The {0} name, mark and interface belong to the Centre for Intelligent Technologies, Victoria University Kampala. You're welcome to share, screenshot and cite {1}'s published verdicts with attribution and a link back to the report.","out":"Nying {0}, alama ki nyim tye pa Centre for Intelligent Technologies, Victoria University Kampala. Itwero bedo ki yom cwiny me nywako, mako cal ki miyo ngec i kom {1} ma kicoyo lok ma kimoko ki keto nying ki kubu ne cen i adwogi tic."}
+{"lang":"teo","src":"The {0} name, mark and interface belong to the Centre for Intelligent Technologies, Victoria University Kampala. You're welcome to share, screenshot and cite {1}'s published verdicts with attribution and a link back to the report.","out":"Ekiror {0}, aanyunet keda aiboisit naka aineranara eraasi luka Centre for Intelligent Technologies, Victoria University Kampala. Ijaunitai jo aimor, aikamun aputosia ka aitodun akiro nuetolomunitai keda aiboisit naeyangaritai keda arucokina toma oripoota."}
+{"lang":"nyn","src":"The {0} name, mark and interface belong to the Centre for Intelligent Technologies, Victoria University Kampala. You're welcome to share, screenshot and cite {1}'s published verdicts with attribution and a link back to the report.","out":"Eiziina {0}, akamanyiso hamwe n'omukutu biri ebya Centre for Intelligent Technologies, Victoria University Kampala. Nooyakiirwa kugabana, okuteera ekishushani hamwe n'okworeka ebirugire omu kushwijuma kwa {1} n'okuranga hamwe n'akakwate kugaruka aha ripoota."}
+{"lang":"ach","src":"Accuracy and limitation of liability","out":"Bedo kakare ki kama twero me culu tye iye"}
+{"lang":"lg","src":"Accuracy and limitation of liability","out":"Obutuufu n'okukugira ku buvunaanyizibwa."}
+{"lang":"nyn","src":"Accuracy and limitation of liability","out":"Obuhikire hamwe n'obugarukiro bw'okujunanwa"}
+{"lang":"teo","src":"Accuracy and limitation of liability","out":"Abeit keda aitikitik ikapun lu itwasamatere."}
+{"lang":"teo","src":"The {0} name, mark and interface belong to the Centre for Intelligent Technologies, Victoria University Kampala. You're welcome to share, screenshot and cite {1}'s published verdicts with attribution and a link back to the report.","out":"Ekiror loka {0}, aanyunet keda akiro nuka elago eraasi luka Centre for Intelligent Technologies, Victoria University Kampala. Ijaikitai jo aimor, aitodunet keda aiwadik akiro nuka {1} nuewadikatai keda aijaikin akiro keda arucokina naka abongun toma oripoota."}
+{"lang":"ach","src":"We check every claim in good faith and publish the evidence behind each verdict, but we don't guarantee any verdict is error-free. To the extent permitted by the laws of Uganda, {0} and Victoria University {1} aren't liable for decisions made in reliance on a verdict.","out":"Waneno lok weng ma kiwaco ki gen maber dok wa coyo caden ma tye ingee ngolo kop acel acel, ento pe wa miyo cikke ni ngolo kop mo keken pe tye ki bal. Kit ma cik me Uganda yee kwede, {0} ki Victoria University {1} pe gitye ki twero pi tam ma kimoko kun jenge i kom ngolo kop."}
+{"lang":"lg","src":"We check every claim in good faith and publish the evidence behind each verdict, but we don't guarantee any verdict is error-free. To the extent permitted by the laws of Uganda, {0} and Victoria University {1} aren't liable for decisions made in reliance on a verdict.","out":"Tukebera buli ky’okwogera mu bwesigwa era tukuba obujulizi obuli emabega wa buli kusalawo, naye tetukakasa nti ekisaliddwa tekirina nsobi. Okusinziira ku mateeka ga Uganda, {0} ne Victoria University {1} teba na buvunaanyizibwa ku byasaliddwa nga basinzidde ku kusalawo."}
+{"lang":"nyn","src":"We check every claim in good faith and publish the evidence behind each verdict, but we don't guarantee any verdict is error-free. To the extent permitted by the laws of Uganda, {0} and Victoria University {1} aren't liable for decisions made in reliance on a verdict.","out":"Nitushwijuma buri kihandiiko omu bwesigwa kandi tukashohoza obuhame oburi enyima ya buri kucwamu, kwonka titurikukakasa ngu okucwamu kwona tikurimu nshobi. Okurugiirira aha biragiro bya Uganda, {0} hamwe na Victoria University {1} tibarikujunanizibwa ahabw'encwamu ezirikukorwa kurugiirira aha kucwamu."}
+{"lang":"lg","src":"Suspension and termination","out":"Okusibira n'okukomya."}
+{"lang":"ach","src":"Suspension and termination","out":"Juko tic ki tyeko tic"}
+{"lang":"nyn","src":"Suspension and termination","out":"Okwemereza hamwe n'okushazamu"}
+{"lang":"teo","src":"Suspension and termination","out":"Aitobwoun ka aitanang"}
+{"lang":"lg","src":"The {0} name, mark and interface belong to the Centre for Intelligent Technologies, Victoria University Kampala. You're welcome to share, screenshot and cite {1}'s published verdicts with attribution and a link back to the report.","out":"Erinnya {0}, akabonero n’ekifo bya Centre for Intelligent Technologies, Victoria University Kampala. Oyinza okugabana, okukuba ekifaananyi n’okwogera ku nsalawo ya {1} nga oyongerako erinnya n’akakadde akaddayo ku lipooti."}
+{"lang":"teo","src":"We check every claim in good faith and publish the evidence behind each verdict, but we don't guarantee any verdict is error-free. To the extent permitted by the laws of Uganda, {0} and Victoria University {1} aren't liable for decisions made in reliance on a verdict.","out":"Iwanyanari sio akiro kere nu elimunitai kotoma aiyuun naejok kosodete aitodiar ajenanut na ejai kau naka atubokineta, konye mam sio ijaikini aitigogongoret ebe emamei aibucaret kotoma atubokineta. Kotoma adoketait naecamakinitai ikisila luko Uganda, {0} keda Victoria University {1} mam epedoritos aitolitol aseununeta nu itolomunitai kotupitete atubokineta."}
+{"lang":"ach","src":"We may suspend or close an account for abuse, manipulated ratings, or breaking these terms. You can close your own account at any time from Account settings.","out":"Watwero juko onyo loro akaunt pi nywaro tic kwede, rwom ma ki loko, onyo turu cik magi. Itwero loro akaunt mamegi ikare mo keken ki i yub me Account settings."}
+{"lang":"lg","src":"We may suspend or close an account for abuse, manipulated ratings, or breaking these terms. You can close your own account at any time from Account settings.","out":"Tuyinza okusazaamu oba okuggala akawunti olw'okukozesa bubi, okukyusa ebipimo, oba okumenya amateeka gano. Osobola okuggala akawunti yo ku ssaawa yonna okuva mu nteekateeka za Account settings."}
+{"lang":"lg","src":"Governing law","out":"Etteeka erifuga"}
+{"lang":"teo","src":"We may suspend or close an account for abuse, manipulated ratings, or breaking these terms. You can close your own account at any time from Account settings.","out":"Ipedori sio aiyap arai agolokin akaunt kanu aitwasam erono, aijulakin adoketait naka akiro, arai bo aibil ikisila lu. Ipedori jo agolokin akaunt kon apak kere kotoma aiboisio nuka akaunt."}
+{"lang":"nyn","src":"We may suspend or close an account for abuse, manipulated ratings, or breaking these terms. You can close your own account at any time from Account settings.","out":"Nitubaasa kurekyeraaho nainga kukinga akawunti ahabw'okukoresa kubi, okuhindura obubonero, nainga okuhenda ebiragiro ebi. Noobaasa kukinga akawunti yaawe bwanyima y'obwire bwona kuruga omu ntebeekanisa za Akawunti."}
+{"lang":"ach","src":"Governing law","out":"Cik ma doro"}
+{"lang":"nyn","src":"Governing law","out":"Ekiragiro ekirikwebembera"}
+{"lang":"teo","src":"Governing law","out":"Ekisil lo eyait"}
+{"lang":"lg","src":"These terms are governed by the laws of the Republic of Uganda.","out":"Ebigambo bino bikulemberwa amateeka ga Uganda."}
+{"lang":"ach","src":"These terms are governed by the laws of the Republic of Uganda.","out":"Cik me lobo Uganda aye doro lok magi."}
+{"lang":"teo","src":"These terms are governed by the laws of the Republic of Uganda.","out":"Ejaasi akiro nu keda ikisila luka akwap nako Uganda."}
+{"lang":"nyn","src":"These terms are governed by the laws of the Republic of Uganda.","out":"Ebigambo ebi nibikuratira ebiragiro bya Uganda."}
+{"lang":"lg","src":"Changes to these terms","out":"Enkyukakyuka ku bigambo bino"}
+{"lang":"teo","src":"Changes to these terms","out":"Aijulanakineta toma akiro nu"}
+{"lang":"nyn","src":"Changes to these terms","out":"Empindahinduka omu bigambo ebi"}
+{"lang":"ach","src":"Changes to these terms","out":"Lok ma ki loko i kom cik magi"}
+{"lang":"lg","src":"We may update these terms as the platform develops. We'll update the date above when we do; continuing to use {0} after a change means you accept the updated terms.","out":"Tuyinza okukyusa mu mateeka gano nga pulatifoomu egenda mu maaso. Tujja kukyusa olunaku oluli waggulu bwe tukikola; okweyongera okukozesa {0} oluvannyuma lw’okukyusa kitegeeza nti okkiriza amateeka agakyusiddwa."}
+{"lang":"ach","src":"We may update these terms as the platform develops. We'll update the date above when we do; continuing to use {0} after a change means you accept the updated terms.","out":"Watwero nwoyo lok magi ka yub ne tye ka dongo. Wabino nwoyo nino ma malo ka watimo; mede ki tic ki {0} ingee aloka-loka nyutu ni iyee cik manyen."}
+{"lang":"teo","src":"We may update these terms as the platform develops. We'll update the date above when we do; continuing to use {0} after a change means you accept the updated terms.","out":"Ipedori oni aijulakin akiro nu kwape eyatakinor esitesen. Ibusakinit oni aijulakin apaaran naejai kuju neitodiar oni; ainyikokin aitwasam {0} akaulo naka aijulakin apolouke ebe icamunit jo akiro nuitetiak."}
+{"lang":"lg","src":"Questions about these terms? Email {0}. See also our {1}.","out":"Ebibuuzo ku bigambo bino? Email {0}. Laba ne {1} yaffe."}
+{"lang":"nyn","src":"We may update these terms as the platform develops. We'll update the date above when we do; continuing to use {0} after a change means you accept the updated terms.","out":"Nitubaasa kuhindura ebiragiro ebi nk'oku omukutu gurikukurakurana. Nitwija kuhindura ebiro ebiri ahaiguru twaba nitukikora; okugumizamu kukoresa {0} bwanyima y'empindahinduka nikimanyisa ngu noikiriza ebiragiro ebihindwirwe."}
+{"lang":"ach","src":"Questions about these terms? Email {0}. See also our {1}.","out":"Lapeny i kom lok magi? Cwal email bot {0}. Nen bene {1} wa."}
+{"lang":"nyn","src":"Questions about these terms? Email {0}. See also our {1}.","out":"Ebibuuzo ebirikukwata aha bigambo ebi? Email {0}. Reeba n'ebigambo byaitu {1}."}
+{"lang":"teo","src":"Questions about these terms? Email {0}. See also our {1}.","out":"Aingiseta nuikamunitos akiro nu? Email {0}. Koany da {1} wok."}
+{"lang":"ach","src":"Community escalation","out":"Medo rwom me kuc"}
+{"lang":"lg","src":"Community escalation","out":"Okukulaakulanya ekitundu."}
+{"lang":"nyn","src":"Community escalation","out":"Okwongyera omu bantu"}
+{"lang":"teo","src":"Community escalation","out":"Aiyatakinio naka itunga"}
+{"lang":"ach","src":"Fewer than {0}% of over {1} ratings agree with the verdict (§{2}).","out":"Ma pe romo {0}% pa rwom ma kato {1} oyee ki kop me ngolo kop (§{2})."}
+{"lang":"lg","src":"Fewer than {0}% of over {1} ratings agree with the verdict (§{2}).","out":"Abantu abali wansi wa {0}% ku bululu obusukka mu {1} bakkiriziganya n'ensala (§{2})."}
+{"lang":"nyn","src":"Fewer than {0}% of over {1} ratings agree with the verdict (§{2}).","out":"Okukira ahansi ya {0}% y'okushwijuma okurikuhingura {1} nikwikirizana n'encwamu (§{2})."}
+{"lang":"teo","src":"Fewer than {0}% of over {1} ratings agree with the verdict (§{2}).","out":"Ikidioko adepar {0}% kotoma aiboisio nuka {1} acamanara keda atubokinio (§{2})."}
+{"lang":"lg","src":"Suspended","out":"Okusazibwamu"}
+{"lang":"ach","src":"Suspended","out":"Kijuko tic"}
+{"lang":"nyn","src":"Suspended","out":"Okwemereza"}
+{"lang":"teo","src":"Suspended","out":"Aponi kisibwounai"}
+{"lang":"nyn","src":"Fewer than {0}% of over {1} ratings agree. The verdict is hidden until reviewed.","out":"Ebitarikuhika ahari {0}% by'okushwijuma okurikuhingura {1} nibikirizana. Ekyarugiremu kisherekirwe kuhisya obu kirashwijumwa."}
+{"lang":"lg","src":"User reports","out":"Abakozesa bawa alipoota."}
+{"lang":"ach","src":"Fewer than {0}% of over {1} ratings agree. The verdict is hidden until reviewed.","out":"Ma pe romo {0}% pa rwom ma kato {1} oyee. Ngolo kop tye ma okanne wang ma ki ngiyo ne."}
+{"lang":"lg","src":"Fewer than {0}% of over {1} ratings agree. The verdict is hidden until reviewed.","out":"Ebitundu ebiri wansi wa {0}% ku bintu ebisukka mu {1} ebyaweebwa obubonero bikkiriziganya. Ekyasalibwawo kikkiriziddwa okutuusa nga kyetegerezeddwa."}
+{"lang":"ach","src":"User reports","out":"Latic miyo ripot"}
+{"lang":"teo","src":"Fewer than {0}% of over {1} ratings agree. The verdict is hidden until reviewed.","out":"Ikidioko adepar {0}% kotoma aiboisio nuka {1} nu ecamunitos. Ejaasi atubokinio toma aiyeyea kitoni ne airereorere."}
+{"lang":"teo","src":"User reports","out":"Eripoota loka itunganan"}
+{"lang":"ach","src":"Readers reported a problem with this verdict.","out":"Lukwan guwaco ni peko tye ki lok man ma kimoko."}
+{"lang":"nyn","src":"User reports","out":"Omukozesa naagamba"}
+{"lang":"nyn","src":"Readers reported a problem with this verdict.","out":"Abashomi bakagamba aha buremeezi bw'encwamu egi."}
+{"lang":"lg","src":"Readers reported a problem with this verdict.","out":"Abasomi baalaga ekizibu ku nsala y'omusango guno."}
+{"lang":"lg","src":"Low {0} confidence","out":"Obwesige obutono {0}"}
+{"lang":"teo","src":"Readers reported a problem with this verdict.","out":"Apotu asiomak kotema ebe ejai ationis keda etube lo."}
+{"lang":"nyn","src":"Low {0} confidence","out":"Okwikiriza okuri ahansi {0}"}
+{"lang":"ach","src":"Low {0} confidence","out":"Geno ma piny {0}"}
+{"lang":"teo","src":"Low {0} confidence","out":"Aitogogongoret naedit {0}"}
+{"lang":"ach","src":"The {0} was less than {1}% confident.","out":"{0} onongo pe tye ki gen ma romo {1}%"}
+{"lang":"teo","src":"The {0} was less than {1}% confident.","out":"Arai {0} mam ajeni ejok adepar {1}%"}
+{"lang":"lg","src":"The {0} was less than {1}% confident.","out":"{0} yali nga teyeekakasa kwenkana {1}%."}
+{"lang":"nyn","src":"The {0} was less than {1}% confident.","out":"{0} ekaba eri ahansi ya {1}% y'obwesigye."}
+{"lang":"lg","src":"Overdue","out":"Ekisusse ekiseera."}
+{"lang":"teo","src":"Overdue","out":"Ipu noi"}
+{"lang":"ach","src":"Overdue","out":"Ma okato kare"}
+{"lang":"nyn","src":"Overdue","out":"Okurenga aha bwire"}
+{"lang":"lg","src":"Due soon","out":"Kijja kubaawo mu bbanga ttono."}
+{"lang":"ach","src":"Due soon","out":"Bicako cok"}
+{"lang":"nyn","src":"Due soon","out":"Nikwija omu bwire butari bwa hare"}
+{"lang":"lg","src":"On track","out":"Ku mulamwa"}
+{"lang":"teo","src":"Due soon","out":"Ebeit aitemokin atipet"}
+{"lang":"ach","src":"On track","out":"I yo"}
+{"lang":"nyn","src":"On track","out":"Aha muhanda"}
+{"lang":"ach","src":"{0} · due {1}","out":"{0} · omyero {1}"}
+{"lang":"teo","src":"On track","out":"Ejai toma orot"}
+{"lang":"nyn","src":"{0} · due {1}","out":"{0} · ahabw'okuba {1}"}
+{"lang":"lg","src":"{0} · due {1}","out":"{0} · olina okukola {1}"}
+{"lang":"lg","src":"{0} min","out":"{0} edakiika"}
+{"lang":"nyn","src":"{0} min","out":"{0} edakiika"}
+{"lang":"teo","src":"{0} · due {1}","out":"{0} · ebeit {1}"}
+{"lang":"ach","src":"{0} min","out":"{0} dakika"}
+{"lang":"teo","src":"{0} min","out":"{0} idakikan"}
+{"lang":"lg","src":"{0} h {1} min","out":"{0} ddakiika {1}"}
+{"lang":"ach","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"ach","src":"{0} left","out":"{0} odong cen"}
+{"lang":"lg","src":"{0} left","out":"{0} asigaddeyo"}
+{"lang":"nyn","src":"{0} left","out":"{0} esigaireyo"}
+{"lang":"teo","src":"{0} left","out":"{0} elosi"}
+{"lang":"lg","src":"{0} overdue","out":"{0} ekiseera kiyiseeko"}
+{"lang":"teo","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"nyn","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"ach","src":"{0} overdue","out":"{0} ma okato kare"}
+{"lang":"nyn","src":"{0} overdue","out":"{0} ekiri enyima"}
+{"lang":"lg","src":"Confirmed","out":"Kikakasiddwa"}
+{"lang":"ach","src":"Confirmed","out":"Ki moko"}
+{"lang":"nyn","src":"Confirmed","out":"Kikahamibwa"}
+{"lang":"teo","src":"Confirmed","out":"Aitigogongoritai"}
+{"lang":"lg","src":"Overridden","out":"Okusikirizibwa."}
+{"lang":"teo","src":"{0} overdue","out":"{0} kojaasi keda apak naepol noi"}
+{"lang":"ach","src":"Overridden","out":"Ma ki loyo woko"}
+{"lang":"nyn","src":"Overridden","out":"Okuhindurwa"}
+{"lang":"teo","src":"Overridden","out":"Aponi itolomunai"}
+{"lang":"nyn","src":"High priority","out":"Okwebembeza okwahaiguru"}
+{"lang":"teo","src":"High priority","out":"Eipud loepol noi"}
+{"lang":"lg","src":"High priority","out":"Ekikulu ennyo"}
+{"lang":"lg","src":"In the queue","out":"Mu layini"}
+{"lang":"ach","src":"High priority","out":"Tic ma pire tek"}
+{"lang":"teo","src":"In the queue","out":"Kotoma orot loka alosit."}
+{"lang":"ach","src":"In the queue","out":"I lain me kare"}
+{"lang":"nyn","src":"In the queue","out":"Omu runyiriri"}
+{"lang":"lg","src":"{0} unassigned","out":"{0} tekirina kye kikola"}
+{"lang":"ach","src":"{0} unassigned","out":"{0} pe ki miyo"}
+{"lang":"nyn","src":"{0} unassigned","out":"{0} etarashazirwe"}
+{"lang":"teo","src":"{0} unassigned","out":"{0} mam ejaasi keda atukot"}
+{"lang":"ach","src":"Past the {0}-hour {1}","out":"Kato cawa {0}-cawa {1}"}
+{"lang":"nyn","src":"Past the {0}-hour {1}","out":"Okurabira omu shaaha ya {0}"}
+{"lang":"teo","src":"Past the {0}-hour {1}","out":"Kotubor {0}-esawa {1}"}
+{"lang":"lg","src":"Due in {0} hours","out":"Kigenda kubaawo mu ssaawa {0}."}
+{"lang":"ach","src":"Due in {0} hours","out":"Tye me timo i {0} cawa"}
+{"lang":"nyn","src":"Due in {0} hours","out":"Nikiza kubaho omu shaaha {0}"}
+{"lang":"nyn","src":"Past the {0}-hour {1}","out":"Okurabira omu shaaha ya {0}-shaaha {1}"}
+{"lang":"teo","src":"Due in {0} hours","out":"Ebeit aitolomun kotoma osawan {0}"}
+{"lang":"lg","src":"Your average turnaround","out":"Okutambuza kwa bulijjo kwo."}
+{"lang":"ach","src":"Your average turnaround","out":"Kare ma itimo kwede tic"}
+{"lang":"lg","src":"{0} decision so far","out":"{0} okusalawo kati."}
+{"lang":"nyn","src":"Your average turnaround","out":"Okugarukamu kwawe okwa buriijo"}
+{"lang":"teo","src":"Your average turnaround","out":"Erai aijulakin kon naepol noi."}
+{"lang":"lg","src":"Past the {0}-hour {1}","out":"Okuyita mu ssaawa {0}-saaawa {1}"}
+{"lang":"lg","src":"{0} decisions so far","out":"Okusalawo okutuuka kati"}
+{"lang":"ach","src":"{0} decision so far","out":"{0} peya gumoko tam"}
+{"lang":"ach","src":"{0} decisions so far","out":"{0} tam ma dong otimme"}
+{"lang":"nyn","src":"{0} decision so far","out":"Okusharamu okwabaireho"}
+{"lang":"nyn","src":"{0} decisions so far","out":"{0} encwamu kuhisya hati"}
+{"lang":"lg","src":"{0} decisions so far","out":"Okusalawo okutuuka kati"}
+{"lang":"teo","src":"{0} decision so far","out":"{0} mam ber aponi ocamunai"}
+{"lang":"nyn","src":"{0} decision so far","out":"Okusharamu okwabaireho"}
+{"lang":"lg","src":"{0} decisions so far","out":"{0} okusalawo okutuuka kati"}
+{"lang":"teo","src":"{0} decisions so far","out":"{0} aseununeta kopana"}
+{"lang":"lg","src":"Needs attention","out":"Ekyetaaga okufaako."}
+{"lang":"nyn","src":"{0} decision so far","out":"Okusharamu okwabaireho obwahati"}
+{"lang":"ach","src":"Needs attention","out":"Miti me neno"}
+{"lang":"nyn","src":"Needs attention","out":"Nikwetenga okureebererwa"}
+{"lang":"ach","src":"Full queue","out":"Dano ducu gitye i lain"}
+{"lang":"teo","src":"Needs attention","out":"Ekoto aanyanario"}
+{"lang":"lg","src":"Full queue","out":"Olunyiriri olujjudde"}
+{"lang":"ach","src":"Assigned to you","out":"Kicwalo boti"}
+{"lang":"lg","src":"Assigned to you","out":"Kikwasiddwa gy'oli"}
+{"lang":"nyn","src":"Full queue","out":"Orunyiriri rwona"}
+{"lang":"teo","src":"Full queue","out":"Ejai aiboisit naepol noi"}
+{"lang":"nyn","src":"Assigned to you","out":"Okuheebwa iwe"}
+{"lang":"lg","src":"Assigned to {0}","out":"Yateekeddwa ku {0}"}
+{"lang":"teo","src":"Assigned to you","out":"Ijaikitai jo"}
+{"lang":"ach","src":"Assigned to {0}","out":"Kicwalo i {0}"}
+{"lang":"nyn","src":"Assigned to {0}","out":"Okuheebwa {0}"}
+{"lang":"teo","src":"Assigned to {0}","out":"Aponi koinakinai {0}"}
+{"lang":"ach","src":"Unassigned","out":"Pe ki miyo tic"}
+{"lang":"lg","src":"Unassigned","out":"Tewali gwe yawa."}
+{"lang":"nyn","src":"Unassigned","out":"Otari kugabwa"}
+{"lang":"teo","src":"Unassigned","out":"Mam ijaikitai"}
+{"lang":"ach","src":"Why cases are flagged","out":"Pingo lok ma ki keto alama iye"}
+{"lang":"lg","src":"Why cases are flagged","out":"Lwaki emisango giteekebwako ebirango?"}
+{"lang":"teo","src":"Why cases are flagged","out":"Kanukinyo ejaasi imusagon lu itegearitai"}
+{"lang":"nyn","src":"Why cases are flagged","out":"Ahabwenki emishango erikworekwa"}
+{"lang":"lg","src":"Your recent decisions","out":"Okusalawo kwo okw'akaseera akatono"}
+{"lang":"ach","src":"Your recent decisions","out":"Moko tam ma itimo cokcok-ki"}
+{"lang":"nyn","src":"Your recent decisions","out":"Ebyo ebi waacwiremu obwahati"}
+{"lang":"teo","src":"Your recent decisions","out":"Aseununeta kon nu atuboros"}
+{"lang":"lg","src":"Decisions you make appear here.","out":"Ebyo by'osalawo birabikira wano."}
+{"lang":"ach","src":"Decisions you make appear here.","out":"Moko tam ma imoko nen kany."}
+{"lang":"nyn","src":"Decisions you make appear here.","out":"Eby'okusharamu ebi orikukora nibireebeka aha."}
+{"lang":"teo","src":"Decisions you make appear here.","out":"Aseununeta nu iswama ijo itodiaritai kane."}
+{"lang":"lg","src":"All decisions","out":"Okusalawo kwonna"}
+{"lang":"ach","src":"All decisions","out":"Moko tam weng"}
+{"lang":"nyn","src":"All decisions","out":"Okusharamu kwona"}
+{"lang":"teo","src":"All decisions","out":"Aseununeta kere"}
+{"lang":"ach","src":"Filter decisions","out":"Moko tam ma ki yubu"}
+{"lang":"nyn","src":"Filter decisions","out":"Okusharamu kw'okuronda"}
+{"lang":"lg","src":"Filter decisions","out":"Okusalawo kw'okuziyiza."}
+{"lang":"teo","src":"Filter decisions","out":"Aseununeta nuka aingic"}
+{"lang":"lg","src":"Confirmed ({0})","out":"Kikakasiddwa ({0})"}
+{"lang":"nyn","src":"Confirmed ({0})","out":"Okukakasibwa ({0})"}
+{"lang":"teo","src":"Confirmed ({0})","out":"Itigogongitai ({0})"}
+{"lang":"lg","src":"Overridden ({0})","out":"Okukirizibwa ({0})"}
+{"lang":"ach","src":"Confirmed ({0})","out":"Ki moko ({0})"}
+{"lang":"ach","src":"Overridden ({0})","out":"Ma ki loyo woko ({0})"}
+{"lang":"nyn","src":"Overridden ({0})","out":"Okuhindurwa ({0})"}
+{"lang":"lg","src":"No decisions","out":"Tewali kusalawo."}
+{"lang":"teo","src":"Overridden ({0})","out":"Aponi itelekarai ({0})"}
+{"lang":"ach","src":"No decisions","out":"Pe tye tam mo"}
+{"lang":"teo","src":"No decisions","out":"Emamei aseununeta"}
+{"lang":"nyn","src":"No decisions","out":"Tihariho kusharamu"}
+{"lang":"lg","src":"Nothing matches this filter.","out":"Tewali kintu kyonna ekikwatagana n'ekisenge kino."}
+{"lang":"ach","src":"Nothing matches this filter.","out":"Pe tye gin mo ma rwate ki filter man."}
+{"lang":"nyn","src":"Nothing matches this filter.","out":"Tihariho ekirikuhikaana n'akacweka aka."}
+{"lang":"teo","src":"Nothing matches this filter.","out":"Emamei ibore loetupitos aiboisit na."}
+{"lang":"teo","src":"changed to","out":"abu kijulakin araun"}
+{"lang":"ach","src":"changed to","out":"olokke odoko"}
+{"lang":"ach","src":"Turnaround {0} h","out":"Lokke {0} h"}
+{"lang":"lg","src":"Turnaround {0} h","out":"Okukyusa {0} h"}
+{"lang":"nyn","src":"changed to","out":"ekahindurwa ku"}
+{"lang":"teo","src":"Turnaround {0} h","out":"Aijulakin {0} h"}
+{"lang":"nyn","src":"Turnaround {0} h","out":"Okugaruka {0} h"}
+{"lang":"lg","src":"changed to","out":"kyakyusiddwa ku"}
+{"lang":"lg","src":"(over {0})","out":"(okuva ku {0})"}
+{"lang":"ach","src":"(over {0})","out":"(over {0})"}
+{"lang":"nyn","src":"(over {0})","out":"(ahaiguru ya {0})"}
+{"lang":"teo","src":"(over {0})","out":"(over {0})"}
+{"lang":"lg","src":"Content","out":"Ebiri mu mboozi"}
+{"lang":"ach","src":"Content","out":"Jami ma tye iye"}
+{"lang":"ach","src":"{0} verdict","out":"{0} ngolo kop"}
+{"lang":"nyn","src":"Content","out":"Ebirimu"}
+{"lang":"teo","src":"Content","out":"Akiro nuikamunitos"}
+{"lang":"lg","src":"{0} verdict","out":"{0} okusalawo"}
+{"lang":"lg","src":"Assignee","out":"Oyo eyaweebwa omulimu."}
+{"lang":"nyn","src":"{0} verdict","out":"{0} okusharamu"}
+{"lang":"ach","src":"Assignee","out":"Ngat ma ki miyo tic"}
+{"lang":"teo","src":"{0} verdict","out":"{0} aomisioit"}
+{"lang":"nyn","src":"Assignee","out":"Omuguzi"}
+{"lang":"teo","src":"Assignee","out":"Itunganan yen ijaikitai"}
+{"lang":"ach","src":"Action","out":"Tim"}
+{"lang":"lg","src":"Action","out":"Ekikolwa"}
+{"lang":"nyn","src":"Action","out":"Ekikorwa"}
+{"lang":"teo","src":"Action","out":"Aswamisioit"}
+{"lang":"lg","src":"{0} rating","out":"Okuteebereza kwa {0}"}
+{"lang":"lg","src":"{0} ratings","out":"{0} obubonero"}
+{"lang":"ach","src":"{0} rating","out":"{0} rwom"}
+{"lang":"ach","src":"{0} ratings","out":"{0} rwom me miyo tam"}
+{"lang":"nyn","src":"{0} rating","out":"{0} okuteebereza"}
+{"lang":"lg","src":"You","out":"Ggwe"}
+{"lang":"teo","src":"{0} ratings","out":"{0} aitemonokineta"}
+{"lang":"nyn","src":"{0} ratings","out":"{0} okushwijuma"}
+{"lang":"teo","src":"{0} rating","out":"{0} adoketait"}
+{"lang":"ach","src":"You","out":"In"}
+{"lang":"nyn","src":"You","out":"Noyenda kugamba ki?"}
+{"lang":"teo","src":"You","out":"Ibusakinit jo aijaikin akiro nuikamunitos akirot naejok."}
+{"lang":"ach","src":"Assign to me","out":"Miya tic"}
+{"lang":"lg","src":"Assign to me","out":"Mpa omulimu."}
+{"lang":"nyn","src":"Assign to me","out":"Mpereza omurimo"}
+{"lang":"teo","src":"You","out":"Ijo"}
+{"lang":"teo","src":"Assign to me","out":"Koinak eong"}
+{"lang":"lg","src":"Search by title, case {0} or category…","out":"Noonya ng'okozesa omutwe, omusango {0} oba ekibinja…"}
+{"lang":"nyn","src":"Search by title, case {0} or category…","out":"Okuronda kurugirira aha mutwe, omushango {0} nainga ekicweka…"}
+{"lang":"ach","src":"Search by title, case {0} or category…","out":"Yeny ma lubu wi lok, kop {0} onyo dul…"}
+{"lang":"lg","src":"Search the queue","out":"Noonya mu layini."}
+{"lang":"ach","src":"Search the queue","out":"Yeny lain"}
+{"lang":"teo","src":"Search by title, case {0} or category…","out":"Aingic kotoma apapula, emusago {0} arai atutubet…"}
+{"lang":"teo","src":"Search the queue","out":"Koomoom aiboisit naejai."}
+{"lang":"lg","src":"Reason","out":"Ensonga"}
+{"lang":"ach","src":"Reason","out":"Tyen lok"}
+{"lang":"nyn","src":"Reason","out":"Enshonga"}
+{"lang":"nyn","src":"Search the queue","out":"Ronda omu runyiriri"}
+{"lang":"teo","src":"Reason","out":"Aomisioit"}
+{"lang":"lg","src":"All reasons","out":"Ensonga zonna"}
+{"lang":"nyn","src":"All reasons","out":"Enshonga zoona"}
+{"lang":"lg","src":"Assignment","out":"Omulimu ogw'okukola."}
+{"lang":"teo","src":"All reasons","out":"Akiro kere"}
+{"lang":"ach","src":"All reasons","out":"Tyen lok weng"}
+{"lang":"ach","src":"Assignment","out":"Tic"}
+{"lang":"teo","src":"Assignment","out":"Aswam"}
+{"lang":"nyn","src":"Assignment","out":"Omurimo"}
+{"lang":"ach","src":"All","out":"Ducu"}
+{"lang":"lg","src":"All","out":"Byonna"}

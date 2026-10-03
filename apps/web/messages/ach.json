@@ -728,19 +728,104 @@
     }
   },
   "Review": {
-    "history": {
-      "filters": {
-        "all": "Ducu ({count})"
+    "reasons": {
+      "community-escalation": {
+        "label": "Medo rwom me kuc",
+        "description": "Ma pe romo 40% pa rwom ma kato 100 oyee ki kop me ngolo kop (§9.2)."
+      },
+      "suspended": {
+        "label": "Kijuko tic",
+        "description": "Ma pe romo 20% pa rwom ma kato 200 oyee. Ngolo kop tye ma okanne wang ma ki ngiyo ne."
+      },
+      "user-reports": {
+        "label": "Latic miyo ripot",
+        "description": "Lukwan guwaco ni peko tye ki lok man ma kimoko."
+      },
+      "low-confidence": {
+        "label": "Geno ma piny AI",
+        "description": "AI onongo pe tye ki gen ma romo 60%"
       }
     },
+    "sla": {
+      "overdue": "Ma okato kare",
+      "due-soon": "Bicako cok",
+      "on-track": "I yo",
+      "tooltip": "{status} · omyero {time}",
+      "minutes": "{minutes} dakika",
+      "left": "{time} odong cen",
+      "late": "{time} ma okato kare"
+    },
+    "outcomes": {
+      "confirmed": "Ki moko",
+      "overridden": "Ma ki loyo woko"
+    },
+    "highPriority": "Tic ma pire tek",
+    "overview": {
+      "inQueue": "I lain me kare",
+      "unassignedCount": "{count} pe ki miyo",
+      "overdue": "Ma okato kare",
+      "overdueHint": "Kato cawa {hours}-cawa SLA",
+      "dueSoon": "Tye me timo i 12 cawa",
+      "avgTurnaround": "Kare ma itimo kwede tic",
+      "decisionsSoFar": "{count, plural, one {# peya gumoko tam} other {# tam ma dong otimme}}",
+      "needsAttention": "Miti me neno",
+      "fullQueue": "Dano ducu gitye i lain",
+      "assignedToYou": "Kicwalo boti",
+      "assignedTo": "Kicwalo i {name}",
+      "unassigned": "Pe ki miyo tic",
+      "byReason": "Pingo lok ma ki keto alama iye",
+      "recent": "Moko tam ma itimo cokcok-ki",
+      "recentEmpty": "Moko tam ma imoko nen kany.",
+      "allDecisions": "Moko tam weng"
+    },
+    "history": {
+      "filterLabel": "Moko tam ma ki yubu",
+      "filters": {
+        "all": "Ducu ({count})",
+        "confirmed": "Ki moko ({count})",
+        "overridden": "Ma ki loyo woko ({count})"
+      },
+      "emptyTitle": "Pe tye tam mo",
+      "emptyBody": "Pe tye gin mo ma rwate ki filter man.",
+      "changedTo": "olokke odoko",
+      "turnaround": "Lokke {hours} h"
+    },
     "queue": {
-      "review": "Ngiyo"
+      "assigned": "Kicwalo boti",
+      "columns": {
+        "content": "Jami ma tye iye",
+        "verdict": "AI ngolo kop",
+        "assignee": "Ngat ma ki miyo tic",
+        "action": "Tim"
+      },
+      "ratings": "{count, plural, one {# rwom} other {# rwom me miyo tam}}",
+      "you": "In",
+      "assignToMe": "Miya tic",
+      "review": "Ngiyo",
+      "searchPlaceholder": "Yeny ma lubu wi lok, kop ID onyo dul…",
+      "searchLabel": "Yeny lain",
+      "reason": "Tyen lok",
+      "allReasons": "Tyen lok weng",
+      "scopeLabel": "Tic",
+      "scopes": {
+        "all": "Ducu",
+        "unassigned": "Pe ki miyo tic"
+      }
     },
     "case": {
       "submit": "Cwal"
     }
   },
   "Admin": {
+    "overview": {
+      "needsAttention": "Miti me neno"
+    },
+    "audit": {
+      "columns": {
+        "action": "Tim"
+      },
+      "action": "Tim"
+    },
     "broadcasts": {
       "channels": {
         "In-app": "I-app"
@@ -755,10 +840,14 @@
       "allTypes": "Kit weng"
     },
     "users": {
+      "statuses": {
+        "suspended": "Kijuko tic"
+      },
       "columns": {
         "status": "Rwom"
       },
-      "status": "Rwom"
+      "status": "Rwom",
+      "reason": "Tyen lok"
     }
   },
   "Pages": {
@@ -857,12 +946,14 @@
         "description": "Ma pe romo 40% pa rwom ma kato 100 oyee ki ngolo kop man. Ngat ma ngiyo lok pa ludiro obi ngiyo ne i 48 cawa."
       },
       "suspended": {
+        "label": "Kijuko tic",
         "title": "Pido ne kicoro woko pi ngiyo lok",
         "description": "Ma pe romo 20% pa rwom ma kato 200 oyee. Ngolo kop tye ma okanne ki i yeny wang ma ladiro mo ongiyo ne."
       }
     },
     "ccs": {
       "title": "Rwom me gen pa lwak",
+      "ratings": "{count, plural, one {# rwom} other {# rwom me miyo tam}}",
       "weighted": "ma ki pimo ki tic",
       "none": "Pe tye rwom mo keken",
       "aria": "{accurate}% me rwom ma ki keto iye pek waco ni tye kakare, {inaccurate}% waco ni pe tye kakare",
@@ -1307,17 +1398,119 @@
           "title": "Ngec ma wa coko",
           "items": {
             "account": "<strong>Lok matut i kom akaunt</strong> — nying, email onyo nama cim, ki tic (Lwak, Lacoo lok angeya, Ngat ma tye ki ngec onyo latic).",
-            "submissions": "<strong>Coyo lok</strong> — coc, kubu onyo jami ma in ipenyo Zuula me ngiyo, ki lubu kor ID ma kimiyo."
+            "submissions": "<strong>Coyo lok</strong> — coc, kubu onyo jami ma in ipenyo Zuula me ngiyo, ki lubu kor ID ma kimiyo.",
+            "ratings": "<strong>Rwom ki adwogi tic</strong> — lok ma imoko, tam ma iweko ki jami ma iketo pi ngiyo.",
+            "accreditation": "<strong>Waraga me miyo twero</strong> — pi Journalist ki Expert applications, jami ma imiyo me ngiyo.",
+            "device": "<strong>Ngec ma mako kit ma kitiyo kwede</strong> — pot buk ma ki limo, kit me yeny ki kabedo ma cok, wek tic obed maber dok tiyo."
           }
+        },
+        "use": {
+          "title": "Kit ma watimo kwede",
+          "items": {
+            "pipeline": "Me ngiyo lok ne ki i yoo me ngeyo ne wek onyuti kit ma tye kwede ki adwogi ne.",
+            "ccs": "Me nongo ki ribo rwom me kare pa lwak i kom dul moni ma tye ki gen.",
+            "accreditation": "Me neno kit ma lucoo lok angeya ki ludiro gi tiyo kwede, ki me coyo tam pa ngat ma ngiyo jami i coc me ngiyo tic.",
+            "abuse": "Me niang tic ma ki yubu onyo kiyubo me miyo rwom ki gwoko kabedo ne ki i kom balo ne.",
+            "accuracy": "Me pimo ki yubu kit ma ngolo kop tye kakare kwede ikare me kare."
+          }
+        },
+        "aiSharing": {
+          "title": "AI kwed ki dul me adek",
+          "body": "Ngiyo lok ma ki waco twero bedo iye cwalo coc ne, onyo coc me dwon ne onyo vidio ne, bot yoo me nongo jami ma kiyubu pire kene ki, pi nongo caden, bot AI ma ki keto iye. Media ma iketo iye ki ngiyo pi malware ma peya ki tic kwede.",
+          "review": "Pien jami mogo ma miyo kony magi twero tic ki ngec woko me Uganda, watye ka ngiyo kit ma ngec woto kwede i kom cik me gwoko ngec ki lok ma mako dano, 2019 mapud pe ki yabo woko me yubu ngec ma pe atir. But man kibiketo ngec manyen ka ngiyo ne otum."
+        },
+        "dppa": {
+          "title": "Twero ni ite cik me gwoko ngec ki mung, 2019",
+          "intro": "Macalo ngat ma ki tiimo kwede tic i te cik me Uganda, itye ki twero me:",
+          "items": {
+            "access": "Nongo ngec ma mako in ki watye kwede.",
+            "correct": "Yubu ngec ma pe tye kakare onyo ma pe otum.",
+            "delete": "Kwayo me kwanyo ngec ma i account ni, ma lubu cik ma mako gwoko jami piny ma tye piny kany.",
+            "object": "Jami ma ki keto iye cwiny, onyo penyo wa me gengo, tic mogo.",
+            "complain": "Ket koko ni ki Uganda's Personal Data Protection Office (National Information Technology Authority-Uganda) ka itamo ni watiyo marac i kom ngec ma mako in."
+          },
+          "outro": "Me tic ki twero magi, kubbe kwedwa kun itiyo ki lok matut ma tye i <contact>Lok ki penyo pi ngec</contact> piny kany."
+        },
+        "retention": {
+          "title": "Wabiketo ne pi kare ma rom mene",
+          "body": "Adwogi me ngolo kop ma kicoyo ki caden gi tye ikin rekod me ngiyo lok ada pa lwak dok ki gwoko pi kare malac, kit ma kigwoko kwede lok angeya macon. Lok matut me account ki gwoko ka account ni tye ka tic ki pi kare manok ingee ne, me konyo ngiyo ki neno ni jami ma mite pi yub me ngiyo lok tye kakare. Kopi me pwail ma ki ngiyo pi malware ki gwoko keken ka mite me nyutu adwogi me ngolo kop."
+        },
+        "cookies": {
+          "title": "Cookies ki gwoko jami ma i kabedo",
+          "body": "Watimo tic ki session cookie me gwoko in ma kicoyo iye, ki local storage me poo ikom theme ni ki yero leb ma imaro i kom nyonyo man. Pe watimo tic ki third-party advertising trackers."
+        },
+        "children": {
+          "title": "Kwo pa lutino",
+          "body": "Zuula kiyubu pi jo ma tye ki mwaka 18 ki malo. Pe wa coko ngec me kom lutino, dok wabijwiko mo keken ma wanongo ni tye kwede."
+        },
+        "changes": {
+          "title": "Lok ma ki loko i kom cik man",
+          "body": "Wabibedo ka loko nino ma tye i wi pot buk man kace cik man olokke, ki bene wabi keto aloka-loka matye i <home>pot buk me gang</home> ma pud peya gucako tic kwede."
+        },
+        "contact": {
+          "title": "Lok ki penyo pi ngec",
+          "body": "Email <email>privacy@zuula.ug</email> pi lapeny mo keken ma mako cik man onyo me tic ki twero ni ite cik me gwoko ngec ki lok ma pe ingeyo, 2019. Nen bene <terms>Cik me tic</terms> wa."
         }
       }
     },
     "terms": {
       "metaTitle": "Lok ma mako",
+      "metaDescription": "Nyig lok ma doro tic ki Zuula.",
       "title": "Lok ma mako",
+      "description": "Nyig lok ma doro tic ki Zuula.",
       "sections": {
+        "acceptance": {
+          "title": "Ye lok magi",
+          "body": "Ki tic ki Zuula — website, ki i anyim WhatsApp/Telegram bots ki partner API — icwako cik magi. Ka pe icwako, tim ber pe itii ki tic ne."
+        },
+        "service": {
+          "title": "Zuula tye ngo (ki pe obedo)",
+          "body": "Zuula ngiyo lok ma ki waco, kubu ki jami me poko ngec kun tiyo ki yoo me nongo lok ma ki keto iye cing, ki ka lok mo odoko tek, dano ma ki moko ni gi twero ngiyo ne. Ngolo kop nyutu kit ma wan oneno kwede caden ma tye ikare ma kicoyo ne, dok twero loke ka caden maber obino. Zuula obedo gin me ngiyo lok ada, pe obedo tam me cik, yot kom onyo lim, ki ngolo kop pe obedo gin ma leyo ka wang tam ma megi."
+        },
+        "accounts": {
+          "title": "Kwan ki tic",
+          "items": {
+            "roles": "Ngat mo keken twero coyo nyinge me bedo latic pa lwak. Tic pa lucoo lok angeya ki ludiro mito niang i komgi.",
+            "accurate": "Mi ngec matir ka itye ka coyo nyingi onyo penyo pi twero me tic.",
+            "one": "Gwok akaunt acel pi ngat acel, ki gwok ngec me donyo ni i mung — itye ki twero pi tic ma tye i te akaunt ni.",
+            "twoFactor": "Mito ni ngat moni obed ki jami aryo ma nyutu ni en aye tye ka tic ki akaunt me Expert ki Admin."
+          }
+        },
+        "submissions": {
+          "title": "Miyo lok ma itye kwede",
+          "body": "Omyero ibed ki twero me nywako gin mo keken ma iketo pi ngiyo. Pe iket jami ma tye i cik, ma balo kwo pa ngat mukene, onyo ma pe itye ki twero me nywako.",
+          "publish": "Kiketo pwail ma ki ngiyo pi malware ma peya ki ngiyo. Miyo gin mo ki adwogi ne Zuula oo iye twero bedo ni ki bi coyo macalo but rekod me ngiyo lok ada pa lwak, kit ma ot poko lok angeya coyo kwede ngo ma gi ngiyo lok ada iye."
+        },
+        "ratings": {
+          "title": "Rwom me kwo pa lwak ki kit gi",
+          "body": "Nen lok ma ki ngolo i komgi ki ada, kun jenge i kom caden ma kinyutu. Tic me ribo onyo loko rwom me tic (me lapore, gurup pa akaunt ma miyo rwom kacel me cwalo adwogi me ngolo kop) twero weko rwom gi ki kwanyo woko ki akaunt ma tye iye ki juku tic gi. Itwero miyo ripot i kom gin ma tye onyo rwom ma nen calo kiloko ne ki i pot buk me ripot."
+        },
+        "api": {
+          "title": "API ki yoo me donyo pa luyub"
+        },
+        "ip": {
+          "title": "Jami ma kiyubu ki ryeko",
+          "body": "Nying Zuula, alama ki nyim tye pa Centre for Intelligent Technologies, Victoria University Kampala. Itwero bedo ki yom cwiny me nywako, mako cal ki miyo ngec i kom Zuula ma kicoyo lok ma kimoko ki keto nying ki kubu ne cen i adwogi tic."
+        },
+        "disclaimer": {
+          "title": "Bedo kakare ki kama twero me culu tye iye",
+          "body": "Waneno lok weng ma kiwaco ki gen maber dok wa coyo caden ma tye ingee ngolo kop acel acel, ento pe wa miyo cikke ni ngolo kop mo keken pe tye ki bal. Kit ma cik me Uganda yee kwede, Zuula ki Victoria University CIT pe gitye ki twero pi tam ma kimoko kun jenge i kom ngolo kop."
+        },
+        "termination": {
+          "title": "Juko tic ki tyeko tic",
+          "body": "Watwero juko onyo loro akaunt pi nywaro tic kwede, rwom ma ki loko, onyo turu cik magi. Itwero loro akaunt mamegi ikare mo keken ki i yub me Account settings."
+        },
+        "law": {
+          "title": "Cik ma doro",
+          "body": "Cik me lobo Uganda aye doro lok magi."
+        },
+        "changes": {
+          "title": "Lok ma ki loko i kom cik magi",
+          "body": "Watwero nwoyo lok magi ka yub ne tye ka dongo. Wabino nwoyo nino ma malo ka watimo; mede ki tic ki Zuula ingee aloka-loka nyutu ni iyee cik manyen."
+        },
         "contact": {
-          "title": "Kube"
+          "title": "Kube",
+          "body": "Lapeny i kom lok magi? Cwal email bot <email>hello@zuula.ug</email>. Nen bene <privacy>Cik me mung</privacy> wa."
         }
       }
     }

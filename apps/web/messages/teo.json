@@ -755,19 +755,103 @@
     }
   },
   "Review": {
-    "history": {
-      "filters": {
-        "all": "Kere ({count})"
+    "reasons": {
+      "community-escalation": {
+        "label": "Aiyatakinio naka itunga",
+        "description": "Ikidioko adepar 40% kotoma aiboisio nuka 100 acamanara keda atubokinio (§9.2)."
+      },
+      "suspended": {
+        "label": "Aponi kisibwounai",
+        "description": "Ikidioko adepar 20% kotoma aiboisio nuka 200 nu ecamunitos. Ejaasi atubokinio toma aiyeyea kitoni ne airereorere."
+      },
+      "user-reports": {
+        "label": "Eripoota loka itunganan",
+        "description": "Apotu asiomak kotema ebe ejai ationis keda etube lo."
+      },
+      "low-confidence": {
+        "label": "Aitogogongoret naedit AI",
+        "description": "Arai AI mam ajeni ejok adepar 60%"
       }
     },
+    "sla": {
+      "overdue": "Ipu noi",
+      "due-soon": "Ebeit aitemokin atipet",
+      "on-track": "Ejai toma orot",
+      "tooltip": "{status} · ebeit {time}",
+      "minutes": "{minutes} idakikan",
+      "left": "{time} elosi",
+      "late": "{time} kojaasi keda apak naepol noi"
+    },
+    "outcomes": {
+      "confirmed": "Aitigogongoritai",
+      "overridden": "Aponi itolomunai"
+    },
+    "highPriority": "Eipud loepol noi",
+    "overview": {
+      "inQueue": "Kotoma orot loka alosit",
+      "unassignedCount": "{count} mam ejaasi keda atukot",
+      "overdue": "Ipu noi",
+      "overdueHint": "Kotubor {hours}-esawa SLA",
+      "dueSoon": "Ebeit aitolomun kotoma osawan 12",
+      "avgTurnaround": "Erai aijulakin kon naepol noi",
+      "decisionsSoFar": "{count, plural, one {# mam ber aponi ocamunai} other {# aseununeta kopana}}",
+      "needsAttention": "Ekoto aanyanario",
+      "fullQueue": "Ejai aiboisit naepol noi",
+      "assignedToYou": "Ijaikitai jo",
+      "assignedTo": "Aponi koinakinai {name}",
+      "unassigned": "Mam ijaikitai",
+      "byReason": "Kanukinyo ejaasi imusagon lu itegearitai",
+      "recent": "Aseununeta kon nu atuboros",
+      "recentEmpty": "Aseununeta nu iswama ijo itodiaritai kane.",
+      "allDecisions": "Aseununeta kere"
+    },
+    "history": {
+      "filterLabel": "Aseununeta nuka aingic",
+      "filters": {
+        "all": "Kere ({count})",
+        "confirmed": "Itigogongitai ({count})",
+        "overridden": "Aponi itelekarai ({count})"
+      },
+      "emptyTitle": "Emamei aseununeta",
+      "emptyBody": "Emamei ibore loetupitos aiboisit na.",
+      "changedTo": "abu kijulakin araun",
+      "turnaround": "Aijulakin {hours} h"
+    },
     "queue": {
-      "review": "Aingic bobo"
+      "assigned": "Ijaikitai jo",
+      "columns": {
+        "content": "Akiro nuikamunitos",
+        "verdict": "AI aomisioit",
+        "assignee": "Itunganan yen ijaikitai",
+        "action": "Aswamisioit"
+      },
+      "ratings": "{count, plural, one {# adoketait} other {# aitemonokineta}}",
+      "you": "Ijo",
+      "assignToMe": "Koinak eong",
+      "review": "Aingic bobo",
+      "searchPlaceholder": "Aingic kotoma apapula, emusago ID arai atutubet…",
+      "searchLabel": "Koomoom aiboisit naejai",
+      "reason": "Aomisioit",
+      "allReasons": "Akiro kere",
+      "scopeLabel": "Aswam",
+      "scopes": {
+        "unassigned": "Mam ijaikitai"
+      }
     },
     "case": {
       "submit": "Ijukak"
     }
   },
   "Admin": {
+    "overview": {
+      "needsAttention": "Ekoto aanyanario"
+    },
+    "audit": {
+      "columns": {
+        "action": "Aswamisioit"
+      },
+      "action": "Aswamisioit"
+    },
     "broadcasts": {
       "channels": {
         "Email": "E-mail"
@@ -782,10 +866,14 @@
       "allTypes": "Ipu luka iponesio"
     },
     "users": {
+      "statuses": {
+        "suspended": "Aponi kisibwounai"
+      },
       "columns": {
         "status": "Adoketait"
       },
-      "status": "Adoketait"
+      "status": "Adoketait",
+      "reason": "Aomisioit"
     }
   },
   "Pages": {
@@ -883,12 +971,14 @@
         "description": "Ikidioko adepar 40% kotoma aipimio naka 100 acamanara keda atubokinio kana. Ebuni Expert Reviewer aanyun ngun kotoma osawan 48."
       },
       "suspended": {
+        "label": "Aponi kisibwounai",
         "title": "Aponi ikisarai etube kitoni airereor",
         "description": "Ikidioko adepar 20% naka aiboisio nuedeparete 200 nu ecamunitos. Ejaasi atubokinio toma aingic kitoni ne airereoror epirioit."
       }
     },
     "ccs": {
       "title": "Etapit loka amunokina naka itunga",
+      "ratings": "{count, plural, one {# adoketait} other {# aitemonokineta}}",
       "weighted": "etiai lo itegelikina kotoma aswam",
       "none": "Emamei aanyanaret kopana",
       "aria": "{accurate}% kotoma aipimeta nu ebeit ebakasi ebe ejokuna, {inaccurate}% ebakasi ebe mam ejokuna",
@@ -1331,17 +1421,120 @@
           "title": "Akiro nu idumununei sio",
           "items": {
             "account": "<strong>Akiro nuikamunitos akaunt</strong> — ekiror, email arai enaaba loka esimu, keda aswam (Public, Journalist, Expert arai Admin).",
-            "submissions": "<strong>Aijukar akiro</strong> — akirot, arucokina arai bo aputosia nu ingisit ijo Zuula awanyun, ido aitodunet ID na einakinitai."
+            "submissions": "<strong>Aijukar akiro</strong> — akirot, arucokina arai bo aputosia nu ingisit ijo Zuula awanyun, ido aitodunet ID na einakinitai.",
+            "ratings": "<strong>Aitemonokineta keda iripootin</strong> — akiro nu itereikina keda, aineranara na ijaikit jo, ka akiro nu iwanyunit jo kanu aitikitik.",
+            "accreditation": "<strong>Apapulai nu itigogongoritai</strong> — kanu itunga lu iwadikak keda lu epirioitin, ajenanut na ijaikinete yesi kanu airereor.",
+            "device": "<strong>Akiro nuikamunitos eswamae ka aitwasam</strong> — apapulai nu epejokinitai, epone loka aiboisit naka elago ka aiboisit naejai ijo, kanu aidar ejanakine lo eyuwara ido iswamai."
           }
+        },
+        "use": {
+          "title": "Epone loitosomata oni ngun",
+          "items": {
+            "pipeline": "Aitemokin akiro ngun kotoma aiboisit wok naka awanyanario kosodi aitodiar ejauteneke keda atubokinio.",
+            "ccs": "Aipim ka aimor aomisio nuka itunga kanu adumun Epoint Loka Amuno Naka Itunga.",
+            "accreditation": "Aitogogong aijen naka itunga lu iwadikak keda ipirioitin, ka aiwadika aseununeta nuka itunga luitogogongitos kotoma akiro nu ebeit airereor.",
+            "abuse": "Ajenun aswamisio nu imorikikina arai bo aitolitol aitemonokineta ka ayuarite elago kama ejaasi itunga luitolomete.",
+            "accuracy": "Aitemonokin ka aitojokar abeit naka etube kotoma apak."
+          }
+        },
+        "aiSharing": {
+          "title": "AI aingic keda itunga luka iuniet",
+          "body": "Aanyanar akiro nu elimunitai epedori aimoriarit aijukar akiroke, arai bo aijulakin akiro nuka eporoto arai bo ebidio, mama ejai ainwakio na itolosere bon ido, kanu adumun aitogogongoret, mama ejai lo ijaikit AI lo ijaikit. Aputosia nu ipikakini jo iswamao kanu ajenun iboro luarokok eringa mam itemonokinio.",
+          "review": "Kanu ejaasi icie kotoma aijaanakinak lu epedorete aitemonokin akiro kinga nako Uganda, iuta sio airereor alosit na akiro nuikamunitos Data Protection and Privacy Act, 2019 eringa itwasamao kinga naka aitemonokin akiro. Ebuni atutubet na aijulakin arai kedaun airereonor ngin."
+        },
+        "dppa": {
+          "title": "Apedorosiokon kotoma aitutuket naka ayuwara ka aiyeyea, 2019",
+          "intro": "Kwape itunganan yen ejaas keda akiro kotoma okisila luko Uganda, ijaasi jo keda apedor naka:",
+          "items": {
+            "access": "Adumun akiro nuikamunitos jo.",
+            "correct": "Aitemokin akiro numam ebeit arai mam edolit.",
+            "delete": "Ilipit aitolomun akiro nuka akaunt kon, kotupitete aswamisio wok nuikamunitos akiro ngun.",
+            "object": "Aitijenar, arai aingitun oni aitikitik, aswamisio ace.",
+            "complain": "Kotoma aiboisit naeyait akiro nuka itunga koUganda (National Information Technology Authority-Uganda) arai iwomit jo ebe mam sio iswamat ejok akirokon."
+          },
+          "outro": "Kanu aitwasam adio kotoma apedorosio nu, kodolok sio itwasamaete akiro nuejaasi toma <contact>Aingituneta nuka aineranara keda akiro</contact> kwap."
+        },
+        "retention": {
+          "title": "Iwadikaete oni apak naepol noi?",
+          "body": "Akiro nuetolomunitai keda aitogogongoret kec eraasi atutubet naka aiwadikaeta nuka aingic akiro nuka itunga ido idaritai ikar kere, kwape ka aiwadikaeta nuka iyemuto. Akiro nuikamunitos akaunt kes idaritai nejaatar akaunt kon iswamai ido kanu apak naedit akaulo, kanu aigang aiwadikaeta nuka aanyanario keda aitigogongio nu ekotoi kanu ainwakio. Akiro nuikamunitos malware-scanned upload kes idaritai bon arai ipudasi kanu aitolomun akiro nuetolomunitai."
+        },
+        "cookies": {
+          "title": "Cookies keda aingadao naiboisit",
+          "body": "Itosomai sio a session cookie kanu aidar jo iwadikatai, keda aiboisit naka aingadao kanu aiitun atutubet kon keda angajep na ikoto ijo kotoma acuma kana. Mam sio itosomai adoketait naiuniet naka aitodiar akiro."
+        },
+        "children": {
+          "title": "Aiyeyea naka idwe",
+          "body": "Zuula erai loitemokinitai kanuka itunga luejaasi keda ikar 18 keda lu edeparitos. Mam sio imoriarit akiro nuka itunga luka idwe, ido ibuni sio alemar nu ejaasi oni keda ajenunet."
+        },
+        "changes": {
+          "title": "Aijulanakineta toma ainapeta nu",
+          "body": "Ibusakinit sio aijulakin apaaran naejai kuju naka atutubet kana kangolisawa loejulakinor ainapeta nu, kosodi aipikakin akiro nuegelegela toma <home>Esite loapolon</home> eringa kes iswamaunos."
+        },
+        "contact": {
+          "title": "Aingituneta nuka aineranara keda akiro",
+          "body": "Kotoma aijukar email <email>privacy@zuula.ug</email> kanu aingiset adio kere nuikamunitos ainapeta nu arai bo aitodolikin apedorosiokon kotoma Data Protection and Privacy Act, 2019. Kosesen bobo <terms>Akiro nu itwasamaere</terms>."
         }
       }
     },
     "terms": {
       "metaTitle": "Atutubena",
+      "metaDescription": "Akiro nu itwasamaete Zuula.",
       "title": "Atutubena",
+      "description": "Akiro nu itwasamaete Zuula.",
       "sections": {
+        "acceptance": {
+          "title": "Acamun akiro nu",
+          "body": "Kotoma aitwasam Zuula — elago, ido kotoma oingaren WhatsApp/Telegram bots keda ipaupa API — icamunit jo akiro nu. Arai mam ijo icamunit, kilipit mam itwasam ejanakine ngol."
+        },
+        "service": {
+          "title": "Inyoin bo Zuula erai (ka mam erai)",
+          "body": "Zuula inwakini akiro, arucokina keda iyemuto itwasamaete ajenunet naka acuma ido, ne eyatakinor emusago, airereonor naka itunga kanejaas itunga luecamunitai. Akirot naepol itodunit aanyanaret wok najokan kakere naka aitogogongoret naejai neitolomunere, ido epedori aijulakin arai etakanuni aitogogongoret najokan. Zuula erai ibore yenitemonokinete abeit, mere aicoreta nuka ikisila, amukian arai ikapun, ido mam akirot naepol erai aiboisit naka aseununeta kon."
+        },
+        "accounts": {
+          "title": "Akaunts keda aswamisinei",
+          "items": {
+            "roles": "Epedori itunganan kere aiwadikaun kwape itunganan yen itunga. Aswamisinei nuka arotak iyemuto keda ipirioitin ekotosi aitigogongoret.",
+            "accurate": "Koinak akiro nu abeit ne iwadikauna arai bo ne ilipia aanyunet.",
+            "one": "Kotoma aingadis naka ikapun, itunganan kangin ejaasi keda akaunt adiope bon ido ibusakinit jo ajaut keda akiro nuikamunitos akaunt kon.",
+            "twoFactor": "Ekotoi aitogogongio naka akiro aarei kanu akaunts nuka Expert keda Admin."
+          }
+        },
+        "submissions": {
+          "title": "Aijukak kon",
+          "body": "Ibusakinit jo ajaut keda apedor naka aimor ibore kere yen ijaikit jo kanu aanyanario. Sirikijaik akiro numam ekisil ecamakinit, nu itolitolete aiyeyea naka icie itunganan, arai bo numam ijaasi jo keda acamakinet naka aimor.",
+          "publish": "Ejaasi ifayil lu iyatakinio keda aanyanario naka malware eringa aingic. Aijukar ka atubokin Zuula loedolit epedori alimor kwape ediope kotoma aiwadikaeta nuka aanyanario naka akiro, kwape nat epone loitolomunere iyemuto nu itolomete akiro nu aanyanarete."
+        },
+        "ratings": {
+          "title": "Aitemonokineta nuka itunga keda iponesio",
+          "body": "Kotema akiro nuka aomisio keda abeit, kotupitete aitodunet na itodiaritai. Aswamisioit na aimar arai bo aijulakin (kwape awanyunet, igurupun luka akauntin aimar nepepe kanu aitopolor adoketait naka aomisio) epedori aitidisiar ainapeta kec kosodi aikisar akauntin nu ajaasi toma. Ipedori jo alimor akiro arai bo aimar na esubit bala ejulakinitai kotoma atutubet naka alimoret."
+        },
+        "api": {
+          "title": "API keda adumununeta nuka etolomak",
+          "body": "Epedorete arotak iyemuto keda akaunts nuka eyaitok ailip API keys kanejai <keys>Akaunt → API Ipuak luka akiro</keys>. Aitodolikinio naka Partner API ejai aitikitik (kwana {limit} ailipasinei/hour) ido ejaasi ikisila toma akaunt kon — mam imorata kes. Kosesen <dev>Atutubet naka etolomak</dev> kanu akiro nuipu."
+        },
+        "ip": {
+          "title": "Iboro luka acoa",
+          "body": "Ekiror loka Zuula, aanyunet keda akiro nuka elago eraasi luka Centre for Intelligent Technologies, Victoria University Kampala. Ijaikitai jo aimor, aitodunet keda aiwadik akiro nuka Zuula nuewadikatai keda aijaikin akiro keda arucokina naka abongun toma oripoota."
+        },
+        "disclaimer": {
+          "title": "Abeit keda aitikitik ikapun lu itwasamatere",
+          "body": "Iwanyanari sio akiro kere nu elimunitai kotoma aiyuun naejok kosodete aitodiar ajenanut na ejai kau naka atubokineta, konye mam sio ijaikini aitigogongoret ebe emamei aibucaret kotoma atubokineta. Kotoma adoketait naecamakinitai ikisila luko Uganda, Zuula keda Victoria University CIT mam epedoritos aitolitol aseununeta nu itolomunitai kotupitete atubokineta."
+        },
+        "termination": {
+          "title": "Aitobwoun ka aitanang",
+          "body": "Ipedori sio aiyap arai agolokin akaunt kanu aitwasam erono, aijulakin adoketait naka akiro, arai bo aibil ikisila lu. Ipedori jo agolokin akaunt kon apak kere kotoma aiboisio nuka akaunt."
+        },
+        "law": {
+          "title": "Ekisil lo eyait",
+          "body": "Ejaasi akiro nu keda ikisila luka akwap nako Uganda."
+        },
+        "changes": {
+          "title": "Aijulanakineta toma akiro nu",
+          "body": "Ipedori oni aijulakin akiro nu kwape eyatakinor esitesen. Ibusakinit oni aijulakin apaaran naejai kuju neitodiar oni; ainyikokin aitwasam Zuula akaulo naka aijulakin apolouke ebe icamunit jo akiro nuitetiak."
+        },
         "contact": {
-          "title": "Kontak"
+          "title": "Kontak",
+          "body": "Aingiseta nuikamunitos akiro nu? Email <email>hello@zuula.ug</email>. Koany da <privacy>Aicoreta nuka Aiyeyea</privacy> wok."
         }
       }
     }
