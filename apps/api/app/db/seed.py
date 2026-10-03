@@ -8,10 +8,15 @@ creates a pool of clearly-labelled sample raters (`seed-p001`, `…@seed.zuula.i
 casts exactly as many votes as each sample report's counts, after the named votes the sample
 data does carry (rating comments, Amina's rating history). The seeded scores therefore come
 out identical to the sample data's own scores — tests/db/test_seed.py checks that.
+
+`python -m app.db.seed --real` (or `SEED_REAL_DATA=1`) additionally loads real, human-verified
+fact-checks from `data/fact-checks/seed/*.json` (app/db/real_data.py) alongside the fictional
+sample reports, rather than instead of them.
 """
 
 import asyncio
 import hashlib
+import os
 import secrets
 import sys
 from datetime import UTC, datetime, timedelta
@@ -22,6 +27,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core import rules
 from app.db import models as m
+from app.db.real_data import load_real_reports
 from app.db.sample_data import account as stub_account
 from app.db.sample_data import admin as stub_admin
 from app.db.sample_data import notifications as stub_notifications
@@ -85,18 +91,35 @@ def _dedupe_tracking_ids(reports: list[FactCheckReportSchema]) -> dict[str, str]
     return result
 
 
-async def seed(session: AsyncSession) -> None:
-    users_by_name = await _seed_users(session)
-    tracking_ids = _dedupe_tracking_ids(SAMPLE_REPORTS)
-    await _seed_submissions_and_reports(session, users_by_name, tracking_ids)
-    await _seed_ratings(session, users_by_name)
+def _include_real_data() -> bool:
+    return "--real" in sys.argv[1:] or os.environ.get("SEED_REAL_DATA") == "1"
+
+
+async def seed(session: AsyncSession, *, include_real: bool | None = None) -> None:
+    """`include_real` loads `data/fact-checks/seed/*.json` (real, human-verified fact-checks)
+    alongside the fictional SAMPLE_REPORTS, instead of replacing them: local dev and the test
+    suite still get the rich fictional examples (ratings, annotations, a human review case)
+    that exercise every feature, plus real content for a fuller library. Defaults to the
+    `--real` CLI flag / `SEED_REAL_DATA=1` env var so callers that don't ask for it (the test
+    suite's `seed(session)`) keep today's fictional-only behaviour."""
+    reports = (
+        [*SAMPLE_REPORTS, *load_real_reports()]
+        if (include_real if include_real is not None else _include_real_data())
+        else SAMPLE_REPORTS
+    )
+    users_by_name = await _seed_users(session, reports)
+    tracking_ids = _dedupe_tracking_ids(reports)
+    await _seed_submissions_and_reports(session, users_by_name, tracking_ids, reports)
+    await _seed_ratings(session, users_by_name, reports)
     await _seed_review(session, users_by_name)
     await _seed_admin(session, users_by_name)
     await _seed_account(session)
     await session.flush()
 
 
-async def _seed_users(session: AsyncSession) -> dict[str, str]:
+async def _seed_users(
+    session: AsyncSession, reports: list[FactCheckReportSchema]
+) -> dict[str, str]:
     rows = []
     password_hash = hash_password(SAMPLE_PASSWORD)  # one bcrypt run, shared: sample data only
     for u in stub_admin.SAMPLE_USERS:
@@ -116,11 +139,12 @@ async def _seed_users(session: AsyncSession) -> dict[str, str]:
             }
         )
 
-    # Enough sample raters of each role to cast every sample report's votes.
+    # Enough sample raters of each role to cast every report's votes (real reports seed with
+    # none, so they never raise these maximums).
     needed = {
         role: max(
             getattr(r.community.accurate, role) + getattr(r.community.inaccurate, role)
-            for r in SAMPLE_REPORTS
+            for r in reports
         )
         for role in RATER_ROLES
     }
@@ -142,12 +166,15 @@ async def _seed_users(session: AsyncSession) -> dict[str, str]:
 
 
 async def _seed_submissions_and_reports(
-    session: AsyncSession, users_by_name: dict[str, str], tracking_ids: dict[str, str]
+    session: AsyncSession,
+    users_by_name: dict[str, str],
+    tracking_ids: dict[str, str],
+    all_reports: list[FactCheckReportSchema],
 ) -> None:
     owned = {s.tracking_id: s for s in stub_account.SAMPLE_SUBMISSIONS}
     submissions, reports, annotations = [], [], []
 
-    for r in SAMPLE_REPORTS:
+    for r in all_reports:
         tid = tracking_ids[r.id]
         sub_type = _SUBMISSION_TYPE[r.content_type]
         mine = owned.get(r.tracking_id) if tid == r.tracking_id else None
@@ -209,7 +236,7 @@ async def _seed_submissions_and_reports(
             )
 
     # Submissions with no report: the sample "failed" one in Amina's history.
-    report_tids = {r.tracking_id for r in SAMPLE_REPORTS}
+    report_tids = {r.tracking_id for r in all_reports}
     for s in stub_account.SAMPLE_SUBMISSIONS:
         if s.tracking_id in report_tids:
             continue
@@ -238,6 +265,9 @@ async def _seed_submissions_and_reports(
     if annotations:
         await session.execute(insert(m.ExpertAnnotation), annotations)
 
+    # Real reports use a separate "fc-real-*" id namespace, not this "fc-<year>-<n>" sequence
+    # (app.worker.pipeline generates the next one for new submissions) — only SAMPLE_REPORTS'
+    # own numbers belong in it.
     numbers = [int(r.id.rsplit("-", 1)[1]) for r in SAMPLE_REPORTS]
     await session.execute(
         text("SELECT setval('fact_check_report_number_seq', :n)"), {"n": max(numbers)}
@@ -255,9 +285,11 @@ def _citation_host(r: FactCheckReportSchema) -> str | None:
     return _host(r.citations[0].url) if r.citations else None
 
 
-async def _seed_ratings(session: AsyncSession, users_by_name: dict[str, str]) -> None:
+async def _seed_ratings(
+    session: AsyncSession, users_by_name: dict[str, str], all_reports: list[FactCheckReportSchema]
+) -> None:
     ratings, comments = [], []
-    for r in SAMPLE_REPORTS:
+    for r in all_reports:
         votes: dict[str, tuple[str, str, datetime]] = {}  # user_id -> (vote, rater_role, at)
 
         for c in r.community.comments:
@@ -587,7 +619,7 @@ async def _main() -> int:
         await seed(session)
         await session.commit()
     await get_engine().dispose()
-    print("Seeded sample data.")
+    print(f"Seeded sample data{' plus real fact-checks' if _include_real_data() else ''}.")
     return 0
 
 

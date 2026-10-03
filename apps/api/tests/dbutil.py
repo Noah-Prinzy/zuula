@@ -46,9 +46,9 @@ async def recreate_database(url: str) -> None:
     await admin.dispose()
 
 
-async def seed_database(url: str) -> None:
+async def seed_database(url: str, *, include_real: bool = False) -> None:
     engine = create_async_engine(url, poolclass=NullPool)
     async with AsyncSession(engine) as session:
-        await seed(session)
+        await seed(session, include_real=include_real)
         await session.commit()
     await engine.dispose()

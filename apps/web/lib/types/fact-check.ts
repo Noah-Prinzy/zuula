@@ -85,10 +85,26 @@ export type RatingComment = {
   createdAt: string
 }
 
+// Mirrors lib/community.ts's CommunityScore (duplicated, not imported, to keep this file
+// dependency-free — lib/community.ts already imports types from here).
+export type PrecomputedCommunityScore = {
+  ccs: number | null
+  weightedAccurate: number
+  weightedInaccurate: number
+  accurateCount: number
+  inaccurateCount: number
+  total: number
+  status: "verified" | "standard" | "questioned" | "escalated" | "suspended"
+}
+
 export type CommunityRating = {
   accurate: RatingCounts
   inaccurate: RatingCounts
   comments: RatingComment[]
+  /** Present only for reports sourced from the real API, whose score is computed server-side
+   * from per-role counts this type doesn't carry — lib/community.ts's communityScore() returns
+   * this as-is instead of recomputing it from `accurate`/`inaccurate` when it's set. */
+  score?: PrecomputedCommunityScore
 }
 
 export type FactCheckReport = {
