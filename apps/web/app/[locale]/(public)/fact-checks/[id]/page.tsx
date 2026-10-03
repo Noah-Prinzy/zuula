@@ -19,17 +19,64 @@ import { ReportActionBar } from "@/components/verdict/report-action-bar"
 import { VerdictSummary } from "@/components/verdict/verdict-summary"
 import { WhatIsTrueCard } from "@/components/verdict/what-is-true-card"
 import { communityScore } from "@/lib/community"
+import {
+  factChecksApiConfigured,
+  fetchAllReportsForLibrary,
+  fetchFullReport,
+  fetchRelated,
+} from "@/lib/fact-checks-api"
 import { relatedReports } from "@/lib/library"
 import { getSampleReport, SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
+import type { FactCheckReport } from "@/lib/types/fact-check"
 
 type Props = { params: Promise<{ id: string }> }
 
-export function generateStaticParams() {
-  return SAMPLE_REPORTS.map((r) => ({ id: r.id }))
+// Real data when the API is configured, the sample report otherwise or if the id isn't a real
+// one (404s and network errors both fall back, same "demo when unconfigured" pattern as the
+// rest of these pages) — getSampleReport() never fails, so this always resolves to a report or
+// null, never throws.
+async function loadReport(id: string): Promise<FactCheckReport | null> {
+  if (factChecksApiConfigured()) {
+    try {
+      const report = await fetchFullReport(id)
+      if (report) return report
+    } catch {
+      // Fall through to the sample report below.
+    }
+  }
+  return getSampleReport(id) ?? null
+}
+
+async function loadRelated(id: string, report: FactCheckReport): Promise<FactCheckReport[]> {
+  if (factChecksApiConfigured()) {
+    try {
+      return await fetchRelated(id, 3)
+    } catch {
+      // Fall through to the sample-data relation below.
+    }
+  }
+  return relatedReports(SAMPLE_REPORTS, report, 3)
+}
+
+// The [locale] layout sets dynamicParams = false (only 5 known locales should ever match), and
+// Next computes that per route as the AND of every segment's own setting — a descendant can't
+// override an ancestor's false back to true. So a real id has to come out of this function
+// too, or it 404s like any other unlisted id, same as it would under the sample-only set.
+export async function generateStaticParams() {
+  const ids = SAMPLE_REPORTS.map((r) => r.id)
+  if (factChecksApiConfigured()) {
+    try {
+      const { reports } = await fetchAllReportsForLibrary()
+      ids.push(...reports.map((r) => r.id))
+    } catch {
+      // Build/dev without a reachable API: the sample ids are still enough to render.
+    }
+  }
+  return ids.map((id) => ({ id }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const report = getSampleReport((await params).id)
+  const report = await loadReport((await params).id)
   const t = await getTranslations("Report")
   if (!report) return { title: t("metaFallback") }
   const tv = await getTranslations("Verdicts.labels")
@@ -64,10 +111,11 @@ function Section({
 }
 
 export default async function ReportPage({ params }: Props) {
-  const report = getSampleReport((await params).id)
+  const id = (await params).id
+  const report = await loadReport(id)
   if (!report) notFound()
   const community = communityScore(report.community)
-  const related = relatedReports(SAMPLE_REPORTS, report, 3)
+  const related = await loadRelated(id, report)
   const t = await getTranslations("Related")
   const tr = await getTranslations("Report")
   const tc = await getTranslations("Common")
@@ -84,13 +132,15 @@ export default async function ReportPage({ params }: Props) {
         </Button>
       </div>
 
-      <Alert className="enter">
-        <RiFlaskLine aria-hidden />
-        <AlertTitle>{tc("sampleReportTitle")}</AlertTitle>
-        <AlertDescription>
-          {tc("sampleReportBody")}
-        </AlertDescription>
-      </Alert>
+      {!report.id.startsWith("fc-real-") && (
+        <Alert className="enter">
+          <RiFlaskLine aria-hidden />
+          <AlertTitle>{tc("sampleReportTitle")}</AlertTitle>
+          <AlertDescription>
+            {tc("sampleReportBody")}
+          </AlertDescription>
+        </Alert>
+      )}
 
       <VerdictSummary report={report} className="enter [--d:1]" />
       <CommunityStatusBanner status={community.status} className="enter [--d:2]" />

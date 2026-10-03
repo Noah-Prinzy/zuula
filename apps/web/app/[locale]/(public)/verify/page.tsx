@@ -14,8 +14,23 @@ import { PageHero, PageSheet } from "@/components/decor/page-sheet"
 import { Leaderboard } from "@/components/home/leaderboard"
 import { SubmissionComposer } from "@/components/submission/submission-composer"
 import { TrackingLookup } from "@/components/submission/tracking-lookup"
+import { factChecksApiConfigured, fetchHomeFeed } from "@/lib/fact-checks-api"
 import { leaderboard } from "@/lib/library"
 import { SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
+
+// Real data when the API is configured, the sample leaderboard otherwise or if the fetch
+// fails (home-feed computes the same FR-RATE-10 ranking server-side as lib/library.ts's
+// leaderboard() does locally).
+async function loadLeaderboard() {
+  if (factChecksApiConfigured()) {
+    try {
+      return (await fetchHomeFeed()).leaderboard
+    } catch {
+      // Fall through to the sample leaderboard below.
+    }
+  }
+  return leaderboard(SAMPLE_REPORTS, 5)
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Verify")
@@ -34,6 +49,7 @@ const TYPES = [
 
 export default async function VerifyPage() {
   const t = await getTranslations("Verify")
+  const leaders = await loadLeaderboard()
   return (
     <>
     <PageHero title={t("title")} description={t("description")} />
@@ -101,7 +117,7 @@ export default async function VerifyPage() {
       </div>
     </div>
     </PageSheet>
-    <Leaderboard leaders={leaderboard(SAMPLE_REPORTS, 5)} />
+    <Leaderboard leaders={leaders} />
     </>
   )
 }

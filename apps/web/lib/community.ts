@@ -46,7 +46,10 @@ function weighted(c: RatingCounts) {
 }
 
 // FR-RATE-03 / §9.1: CCS = weighted likes / (weighted likes + weighted dislikes) × 100.
-export function communityScore(rating: Pick<CommunityRating, "accurate" | "inaccurate">): CommunityScore {
+export function communityScore(
+  rating: Pick<CommunityRating, "accurate" | "inaccurate" | "score">
+): CommunityScore {
+  if (rating.score) return rating.score
   const wa = weighted(rating.accurate)
   const wi = weighted(rating.inaccurate)
   const accurateCount = sum(rating.accurate)
