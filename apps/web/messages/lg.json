@@ -763,19 +763,106 @@
     }
   },
   "Review": {
-    "history": {
-      "filters": {
-        "all": "Byonna ({count})"
+    "reasons": {
+      "community-escalation": {
+        "label": "Okukulaakulanya ekitundu",
+        "description": "Abantu abali wansi wa 40% ku bululu obusukka mu 100 bakkiriziganya n'ensala (§9.2)."
+      },
+      "suspended": {
+        "label": "Okusazibwamu",
+        "description": "Ebitundu ebiri wansi wa 20% ku bintu ebisukka mu 200 ebyaweebwa obubonero bikkiriziganya. Ekyasalibwawo kikkiriziddwa okutuusa nga kyetegerezeddwa."
+      },
+      "user-reports": {
+        "label": "Abakozesa bawa alipoota",
+        "description": "Abasomi baalaga ekizibu ku nsala y'omusango guno."
+      },
+      "low-confidence": {
+        "label": "Obwesige obutono AI",
+        "description": "AI yali nga teyeekakasa kwenkana 60%."
       }
     },
+    "sla": {
+      "overdue": "Ekisusse ekiseera",
+      "due-soon": "Kijja kubaawo mu bbanga ttono",
+      "on-track": "Ku mulamwa",
+      "tooltip": "{status} · olina okukola {time}",
+      "minutes": "{minutes} edakiika",
+      "hoursMinutes": "{hours} ddakiika {minutes}",
+      "left": "{time} asigaddeyo",
+      "late": "{time} ekiseera kiyiseeko"
+    },
+    "outcomes": {
+      "confirmed": "Kikakasiddwa",
+      "overridden": "Okusikirizibwa"
+    },
+    "highPriority": "Ekikulu ennyo",
+    "overview": {
+      "inQueue": "Mu layini",
+      "unassignedCount": "{count} tekirina kye kikola",
+      "overdue": "Ekisusse ekiseera",
+      "overdueHint": "Okuyita mu ssaawa {hours}-saaawa SLA",
+      "dueSoon": "Kigenda kubaawo mu ssaawa 12",
+      "avgTurnaround": "Okutambuza kwa bulijjo kwo",
+      "decisionsSoFar": "{count, plural, one {# okusalawo kati} other {# okusalawo okutuuka kati}}",
+      "needsAttention": "Ekyetaaga okufaako",
+      "fullQueue": "Olunyiriri olujjudde",
+      "assignedToYou": "Kikwasiddwa gy'oli",
+      "assignedTo": "Yateekeddwa ku {name}",
+      "unassigned": "Tewali gwe yawa",
+      "byReason": "Lwaki emisango giteekebwako ebirango?",
+      "recent": "Okusalawo kwo okw'akaseera akatono",
+      "recentEmpty": "Ebyo by'osalawo birabikira wano.",
+      "allDecisions": "Okusalawo kwonna"
+    },
+    "history": {
+      "filterLabel": "Okusalawo kw'okuziyiza",
+      "filters": {
+        "all": "Byonna ({count})",
+        "confirmed": "Kikakasiddwa ({count})",
+        "overridden": "Okukirizibwa ({count})"
+      },
+      "emptyTitle": "Tewali kusalawo",
+      "emptyBody": "Tewali kintu kyonna ekikwatagana n'ekisenge kino.",
+      "changedTo": "kyakyusiddwa ku",
+      "turnaround": "Okukyusa {hours} h",
+      "overSla": "(okuva ku SLA)"
+    },
     "queue": {
-      "review": "Okuddamu okwekenneenya"
+      "assigned": "Kikwasiddwa gy'oli",
+      "columns": {
+        "content": "Ebiri mu mboozi",
+        "verdict": "AI okusalawo",
+        "assignee": "Oyo eyaweebwa omulimu",
+        "action": "Ekikolwa"
+      },
+      "ratings": "{count, plural, one {Okuteebereza kwa #} other {# obubonero}}",
+      "you": "Ggwe",
+      "assignToMe": "Mpa omulimu",
+      "review": "Okuddamu okwekenneenya",
+      "searchPlaceholder": "Noonya ng'okozesa omutwe, omusango ID oba ekibinja…",
+      "searchLabel": "Noonya mu layini",
+      "reason": "Ensonga",
+      "allReasons": "Ensonga zonna",
+      "scopeLabel": "Omulimu ogw'okukola",
+      "scopes": {
+        "all": "Byonna",
+        "unassigned": "Tewali gwe yawa"
+      }
     },
     "case": {
       "submit": "Waayo"
     }
   },
   "Admin": {
+    "overview": {
+      "needsAttention": "Ekyetaaga okufaako"
+    },
+    "audit": {
+      "columns": {
+        "action": "Ekikolwa"
+      },
+      "action": "Ekikolwa"
+    },
     "broadcasts": {
       "channels": {
         "In-app": "Mu-app",
@@ -791,10 +878,14 @@
       "allTypes": "Ebika byonna"
     },
     "users": {
+      "statuses": {
+        "suspended": "Okusazibwamu"
+      },
       "columns": {
         "status": "Embeera"
       },
-      "status": "Embeera"
+      "status": "Embeera",
+      "reason": "Ensonga"
     }
   },
   "Pages": {
@@ -890,12 +981,14 @@
         "description": "Ebitundu bitono okusinga 40% ku 100 okupima okukkiriziganya n'ensala eno. Omwekenneenya Omukugu ajja kukikebera mu ssaawa 48."
       },
       "suspended": {
+        "label": "Okusazibwamu",
         "title": "Ensala eyimiriziddwa nga bwe balindirira okwekenneenya",
         "description": "Ebitundu ebiri wansi wa 20% ku bululu obusukka mu 200 bye bikkiriziganya. Ekyasaliddwawo tekirabika mu kunoonya okutuusa nga omukugu akikebedde."
       }
     },
     "ccs": {
       "title": "Obubonero bw'Obwesige mu Kitundu",
+      "ratings": "{count, plural, one {Okuteebereza kwa #} other {# obubonero}}",
       "weighted": "ng'osinziira ku kifo",
       "none": "Tewali ratings zonna zikoleddwa",
       "aria": "Ebitundu {accurate}% ku bipimo ebibaliddwa bigamba nti bituufu, {inaccurate}% bigamba nti si bituufu",
@@ -1340,17 +1433,119 @@
           "title": "Obubaka bwe tukungaanya",
           "items": {
             "account": "<strong>Ebikwata ku akawunti</strong> — erinnya, e-mail oba ennamba y'essimu, n'omulimu (Owa lujjudde, Omunnamawulire, Omutendeke oba Omukulembeze).",
-            "submissions": "<strong>Okuwaayo</strong> — ekiwandiiko, akakwate oba emikutu gy'ebifaananyi by'osaba Zuula okukebera, n'okulondoola ID kwe kiba kiweereddwa."
+            "submissions": "<strong>Okuwaayo</strong> — ekiwandiiko, akakwate oba emikutu gy'ebifaananyi by'osaba Zuula okukebera, n'okulondoola ID kwe kiba kiweereddwa.",
+            "ratings": "<strong>Okupima n'okulaga ebikoleddwa</strong> — ebisalibwawo by'oyisaamu ekitiibwa, okwogera kw'oleka, n'ebintu by'olaga nga byetaaga okukugirwa.",
+            "accreditation": "<strong>Ebiwandiiko ebikakasa</strong> — ku pulogulaamu z'abannamawulire n'abakugu, ebikwata ku by'okwekenneenya.",
+            "device": "<strong>Obubaka obukwata ku kyuma n'enkozesa yaakyo</strong> — empapula ezikyaliddwa, ekika ky'ekyuma ekirondoola n'ekifo kye mulimu, okukuuma obuweereza nga buli bulungi era nga bukola."
           }
+        },
+        "use": {
+          "title": "Engeri gye tukikozesaamu",
+          "items": {
+            "pipeline": "Okukola okunoonyereza mu nkola yaffe ey'okuzuula n'okulaga embeera yaakyo n'ensala.",
+            "ccs": "Okupima n'okugatta obululu bw'abantu mu kigero ky'obwesige bw'ekitundu.",
+            "accreditation": "Okuddamu okwekenneenya abawandiisi n'abakugu, n'okuwandiika ebyasalibwawo mu kunoonyereza.",
+            "abuse": "Okuzuula ebikolwa eby'okukwatagana oba okukyusa engeri gye balonzeemu n'okukuuma omukutu nga tegukozesebwa bubi.",
+            "accuracy": "Okupima n'okwongera ku butuufu bw'ebisaliddwaawo mu kiseera."
+          }
+        },
+        "aiSharing": {
+          "body": "Okukebera okusaba kuyinza okubaamu okutuma obubaka bwakyo, oba okuwandiika ebyogerwa mu ddoboozi oba mu vidiyo, eri enkola ezikozesebwa okuzuula ebizibu era, okufuna obujulizi, eri omuwaayo wa AI eyateekebwawo. Ebyamawulire by’oyingiza bisunsulwako ku malware nga tebinnatandika kukolebwako.",
+          "review": "Kubanga abamu ku bano abawa obuweereza bayinza okukola data ebweru wa Uganda, tukyusa enkola eno ey’okutambuza data nga tugoberera Data Protection and Privacy Act, 2019 nga tennaba kukolebwa ebweru w’ekizimbe ekikozesebwa mu kugezesa. Ekitundu kino kijja kuteekebwako obulungi nga okunoonyereza kumalirizza."
+        },
+        "dppa": {
+          "title": "Obuyinza bwo mu tteeka erikwata ku bukuumi bw'ebiwandiiko n'ebyama, 2019",
+          "intro": "Ng'omuntu ow'enkomeredde wansi w'amateeka ga Uganda, olina eddembe lya:",
+          "items": {
+            "access": "Funa obubaka bwo ku lulwo kwe tulina.",
+            "correct": "Okutereeza obubaka obukyamu oba obutali bwa kimalirizo.",
+            "delete": "Okusaba okusangulwa kw'ebikwata ku akawunti yo, nga bwetukkiriza okubikuuma wansi.",
+            "object": "Okugaana, oba okutusaba okukugira, enkola ezimu.",
+            "complain": "Bw'oba ng'olowooza nti tukozesezza bubi ebikukwatako, wandiika okwemulugunya kwo mu kitongole ekirabirira eby'okukuuma obubaka bw'abantu (National Information Technology Authority-Uganda)."
+          },
+          "outro": "Okukozesa eddembe lino lyonna, tuwandiikire ng'okozesa ebiwandiiko ebiri mu <contact>Okukwatagana n'okwetaaga ebikwata ku muntu</contact> wansi."
+        },
+        "retention": {
+          "title": "Tugikuumira bbanga ki?",
+          "body": "Ebyasaliddwaamu n’obujulizi bwabyo bikola ku byafaayo eby’okukebera amazima era bikuumibwa obutaggwawo, nga bwe kiba ku byafaayo by’amawulire. Ebikwata ku akawunti bikuumibwa ng’akawunti yo ekyaaliwo era okumala ekiseera kitono oluvannyuma, okuyamba mu kukola okukebera n’okukakasa ebikwata ku nkola y’okwekenneenya. Obubaka obusunsuddwa obulimu malware bukwatibwa okutuusa lwe kyetaagisa okufulumya ebyasaliddwaamu."
+        },
+        "cookies": {
+          "title": "Kuki n'okutereka mu kitundu",
+          "body": "Tukozesa cookie ey'ekiseera okukuuma ng'oli mu kifo, n'okutereka okw'omu kitundu okujjukira ekifaananyi ky'olulimi lw'oyagala ku kyuma kino. Tetukozesa bintu bya bakolera abalala eby'okulanga."
+        },
+        "children": {
+          "title": "Obukuumi bw'abaana",
+          "body": "Zuula kigendereddwamu abakozesa abali wakati w'emyaka 18 n'okusingawo. Tetukuŋŋaanya bubaka bw'abantu ku baana, era tujja kusangula obubaka bwonna bwe tumanya."
+        },
+        "changes": {
+          "title": "Enkyukakyuka mu nkola eno",
+          "body": "Tujja kuteekako ennaku ku ntikko y'olupapula luno buli lw'anaaba nga etteeka lino likyusiddwa, era tujja kuteekako ebikwata ku nkyukakyuka mu <home>omuko ogusooka</home> nga tebinnatandika kukola."
+        },
+        "contact": {
+          "title": "Okukwatagana n'okwetaaga ebikwata ku muntu",
+          "body": "Email <email>privacy@zuula.ug</email> ku kibuuzo kyonna ekikwata ku nkola eno oba okukozesa eddembe lyo mu Data Protection and Privacy Act, 2019. Laba ne <terms>Ebiragiro by'okukozesa</terms>."
         }
       }
     },
     "terms": {
       "metaTitle": "Emigambo",
+      "metaDescription": "Ebigambo ebikwata ku kukozesa Zuula.",
       "title": "Emigambo",
+      "description": "Ebigambo ebikwata ku kukozesa Zuula.",
       "sections": {
+        "acceptance": {
+          "title": "Okukkiriza ebikwata ku mateeka gano",
+          "body": "Ng'okozesa Zuula — omukutu gwa yintaneeti, era mu biseera eby'omu maaso WhatsApp/Telegram bots ne banne API — okkiriza ebiragiro bino. Bw'oba nga tokkiriza, nkusaba oleme kukozesa buweereza buno."
+        },
+        "service": {
+          "title": "Kiki Zuula ky'ekyo (era nga tekiri)",
+          "body": "Zuula ekukebera ebiragiro, obukwatagana n’ebyamawulire nga ekozesa okuzuula okw’obutereevu era, singa ensonga etwalibwa waggulu, abantu abakakasiddwa bwe balaba. Ekisalibwako kye kiraga engeri gye tukkirizaamu obujulizi obuliwo mu kiseera we kyasindikibwa, era kisobola okukyuka singa obujulizi obulungi buvaayo. Zuula kye kikozesebwa okukebera amazima, si magezi ga mateeka, by’obulamu oba by’enfuna, era ekisalibwako tekisikiriza ku nsalawo yo."
+        },
+        "accounts": {
+          "title": "Akawunti n'ebifo",
+          "items": {
+            "roles": "Buli omu asobola okwewandiisa ng'omuntu wa bulijjo. Okubeera munnamawulire oba omukugu kyetaaga okufuna olukusa.",
+            "accurate": "Waayo obubaka obutuufu bw'oba ng'oyingira mu kibiina oba nga weewandiisa okufuna olukusa.",
+            "one": "Buli muntu abeere n'akawunti emu, era ebyama byo obikuume nga bya kyama — ggwe avunaanyizibwa ku bikolebwa mu akawunti yo.",
+            "twoFactor": "Okukakasa okw'emirundi ebiri kwetaagisa ku akawunti za Expert ne Admin."
+          }
+        },
+        "submissions": {
+          "title": "Okuwaayo kwo",
+          "body": "Olina okuba n'obuyinza okugabana kyonna ky'otwala okukebera. Tokkiriza kutwala bintu ebimenya amateeka, ebyonoona obukuumi bw'omuntu omulala, oba by'otalina lukusa kugabana.",
+          "publish": "Ebyokutereka ebikozesebwa bisooka okukeberwa obulwadde nga tebinnakolebwako. Okuwaayo n'ekyavaamu Zuula kiyinza okuteekebwako mu byafaayo by'okukakasa eby'amazima, ng'omukutu gw'amawulire bwe gufulumya bye gwekebedde."
+        },
+        "ratings": {
+          "title": "Okupima kw'abantu n'enneeyisa yaabwe",
+          "body": "Kola ku by’okusalawo mu bwesigwa, nga weesigama ku bujulizi obulaga. Okukolagana oba okukyusa eby’okusalawo (nga ebibiina by’ebikadde bikolera wamu okusindika ekisaliddwa) kisobola okuleetera okusalawo kwabwe okugobererwa era n’ebikadde ebikwatibwako ne bisimbibwa. Osobola okutegeeza ku bintu oba okusalawo okulabika nga kwekyusiddwa okuva ku lupapula lw’ebyokutegeeza."
+        },
+        "api": {
+          "title": "API n'okufuna okutuuka ku bakola pulogulaamu",
+          "body": "Abawandiisi n'abakozesa akawunti basobola okusaba ebisumuluzo API okuva ku <keys>Akawunta → API Ebisumuluzo</keys>. Okufuna kwa Partner API kusaliddwa ku bungi bw'okukozesa (kati {limit} okusaba/essaawa) era ebisumuluzo bikwatagana n'akawunti yo — tobyawulamu. Laba <dev>Olupapula lw'abakola pulogulamu</dev> okumanya ebisingawo."
+        },
+        "ip": {
+          "title": "Obwannannyini ku bintu eby'amagezi",
+          "body": "Erinnya Zuula, akabonero n’ekifo bya Centre for Intelligent Technologies, Victoria University Kampala. Oyinza okugabana, okukuba ekifaananyi n’okwogera ku nsalawo ya Zuula nga oyongerako erinnya n’akakadde akaddayo ku lipooti."
+        },
+        "disclaimer": {
+          "title": "Obutuufu n'okukugira ku buvunaanyizibwa",
+          "body": "Tukebera buli ky’okwogera mu bwesigwa era tukuba obujulizi obuli emabega wa buli kusalawo, naye tetukakasa nti ekisaliddwa tekirina nsobi. Okusinziira ku mateeka ga Uganda, Zuula ne Victoria University CIT teba na buvunaanyizibwa ku byasaliddwa nga basinzidde ku kusalawo."
+        },
+        "termination": {
+          "title": "Okusibira n'okukomya",
+          "body": "Tuyinza okusazaamu oba okuggala akawunti olw'okukozesa bubi, okukyusa ebipimo, oba okumenya amateeka gano. Osobola okuggala akawunti yo ku ssaawa yonna okuva mu nteekateeka za Account settings."
+        },
+        "law": {
+          "title": "Etteeka erifuga",
+          "body": "Ebigambo bino bikulemberwa amateeka ga Uganda."
+        },
+        "changes": {
+          "title": "Enkyukakyuka ku bigambo bino",
+          "body": "Tuyinza okukyusa mu mateeka gano nga pulatifoomu egenda mu maaso. Tujja kukyusa olunaku oluli waggulu bwe tukikola; okweyongera okukozesa Zuula oluvannyuma lw’okukyusa kitegeeza nti okkiriza amateeka agakyusiddwa."
+        },
         "contact": {
-          "title": "Okutuukirira"
+          "title": "Okutuukirira",
+          "body": "Ebibuuzo ku bigambo bino? Email <email>hello@zuula.ug</email>. Laba ne <privacy>Enkola y'Obutereevu</privacy> yaffe."
         }
       }
     }
