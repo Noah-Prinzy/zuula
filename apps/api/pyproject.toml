@@ -22,6 +22,16 @@ dependencies = [
   "httpx>=0.27",
   "boto3>=1.35",
   "aiosmtplib>=3.0",
+  # P4 verdict engine (app/providers/): Groq and Tavily are plain httpx calls (no vendor SDK,
+  # same convention as every adapter above), but the three local models need their own
+  # packages. trafilatura is the `fetch` step's article extraction (self-hosted, no key).
+  # sentence-transformers is the dedupe check's embedding model (all-MiniLM-L6-v2, CPU).
+  # transformers is the AI-text detector (RoBERTa, CPU). Both default to a stub
+  # (EMBEDDING_PROVIDER/AI_TEXT_DETECTOR_PROVIDER=stub) so routine dev/CI never downloads
+  # either model; torch itself comes in transitively via sentence-transformers.
+  "trafilatura>=1.12",
+  "sentence-transformers>=3.0",
+  "transformers>=4.44",
 ]
 
 [project.optional-dependencies]

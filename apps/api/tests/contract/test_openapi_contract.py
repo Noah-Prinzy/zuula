@@ -11,6 +11,7 @@ import re
 from urllib.parse import parse_qs, urlparse
 
 import pytest
+import trafilatura
 from starlette.testclient import TestClient
 
 from app.adapters import email
@@ -274,12 +275,15 @@ class TestSubmissions:
         assert "event: done" in r.text
         assert r.text.count("event: step") == 6  # text pipeline: received/language/claims/sources/ai/report
 
-    def test_url_with_fail_in_it_fails(self, core_client):
+    def test_an_unfetchable_url_fails(self, core_client, monkeypatch):
+        # The `fetch` step (app/providers/fetch.py) calls trafilatura, which makes a real HTTP
+        # request. No test here talks to a real network.
+        monkeypatch.setattr(trafilatura, "fetch_url", lambda url: None)
         created = core_client.post(
             "/api/v1/submissions",
             json={
                 "type": "url",
-                "url": "https://example.com/fail-demo",
+                "url": "https://example.com/some-article",
                 "captchaToken": "stub-token",
             },
         ).json()

@@ -4,18 +4,21 @@ from app.core import config
 from app.providers.analysis import StubAnalysisProvider, get_analysis_provider
 
 
-def test_stub_provider_is_deterministic():
+async def test_stub_provider_is_deterministic(db):
     provider = StubAnalysisProvider()
-    a = provider.analyze(content_type="text", text="some claim", language="English")
-    b = provider.analyze(content_type="text", text="some claim", language="English")
+    a = await provider.analyze(db=db, content_type="text", text="some claim", language="English")
+    b = await provider.analyze(db=db, content_type="text", text="some claim", language="English")
     assert (a.title, a.verdict, a.confidence) == (b.title, b.verdict, b.confidence)
 
 
-def test_stub_provider_varies_by_input():
+async def test_stub_provider_varies_by_input(db):
     provider = StubAnalysisProvider()
-    a = provider.analyze(content_type="text", text="claim one", language="English")
-    b = provider.analyze(
-        content_type="text", text="a totally different claim entirely", language="English"
+    a = await provider.analyze(db=db, content_type="text", text="claim one", language="English")
+    b = await provider.analyze(
+        db=db,
+        content_type="text",
+        text="a totally different claim entirely",
+        language="English",
     )
     assert (a.title, a.verdict) != (b.title, b.verdict)
 

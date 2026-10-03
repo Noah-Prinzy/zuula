@@ -7,8 +7,11 @@ with a Celery worker and Redis. The design decisions are in two ADRs:
 interfaces) and [`0002`](../../docs/adr/0002-p3-backend-and-database.md) (P3: the database,
 auth, scoring, admin and the real integrations).
 
-**What isn't real yet:** the AI verdict. `app/providers/analysis.py`'s stub returns one of the
-sample reports' analyses for every submission; P4 replaces it behind the same interface.
+**P4 (the AI verdict engine):** `app/providers/analysis.py`'s `GroqAnalysisProvider` is real
+when `GROQ_API_KEY`/`TAVILY_API_KEY` are set (`StubAnalysisProvider` otherwise, unchanged from
+P2): a pgvector dedupe check, one Tavily search and one Groq Llama 3.3 70B call per claim, plus
+a local RoBERTa AI-text-detector signal — no Claude/Anthropic calls, no agent loop. See
+"Verdict engine" below. Deepfake detection (image/video) is out of scope for v1.
 
 ## Run it
 
@@ -117,8 +120,9 @@ PostgreSQL 16 + pgvector through async SQLAlchemy 2.0 on asyncpg, with Alembic m
   and security event writes a row in the same transaction (`app/services/audit.py`).
 - **Search** uses PostgreSQL full-text search with the `simple` configuration (no stemmer
   exists for Luganda, Acholi, Runyankole or Ateso) plus trigram matching on titles.
-  `fact_check_reports.embedding` (pgvector, untyped until P4 picks a model) powers related
-  reports where it's filled in.
+  `fact_check_reports.embedding` (pgvector, 384 dimensions, all-MiniLM-L6-v2, HNSW/cosine —
+  migrations/versions/0004_embedding_dimensions.py) powers related reports and the P4 dedupe
+  check where it's filled in.
 - **Sample data** lives in `app/db/sample_data/` (transliterated from
   `apps/web/lib/mock/*.ts`); `python -m app.db.seed` loads it. The sample reports only carry
   aggregate rating counts, so the seed casts individual votes from labelled sample raters
@@ -199,9 +203,37 @@ includes Sunbird's HTTP 429 (about 50 requests a minute, and a daily quota of ro
 requests per key), which is logged as a rate-limit/quota failure. See
 [ADR 0003](../../docs/adr/0003-language-provider.md).
 
-The hosted AI provider (`ANALYSIS_PROVIDER`, `ANALYSIS_PROVIDER_REGION`) is P4's, and stays
-switchable because sending submissions to a model hosted outside Uganda is an open
-data-protection question (ADR 0001).
+The hosted AI provider (`ANALYSIS_PROVIDER`, `ANALYSIS_PROVIDER_REGION`) stays switchable
+because sending submissions to a model hosted outside Uganda is an open data-protection
+question (ADR 0001) — Groq's hosted inference doesn't resolve that either way.
+
+### Verdict engine (P4)
+
+`app/providers/analysis.py`'s `GroqAnalysisProvider.analyze()`, per claim:
+
+1. **Dedupe**: embeds the claim locally (`app/providers/embedding.py`, all-MiniLM-L6-v2 via
+   sentence-transformers, CPU, no key) and looks for a close pgvector cosine-distance match in
+   `fact_check_reports.embedding` (≤ `DEDUPE_MAX_COSINE_DISTANCE`, default 0.08). A match is
+   reused outright — no Tavily search, no Groq call — which is what keeps a viral claim from
+   costing anything the second time it's submitted.
+2. Otherwise, one Tavily web search (`app/providers/tavily.py`, free tier) for evidence, then
+   one Groq chat completion (`GROQ_MODEL`, Llama 3.3 70B free tier) over the claim and that
+   evidence, asked to return the verdict/claims/citations/summary shape in a single JSON
+   response — not an agent loop.
+3. For text content, an in-process AI-generated-text signal
+   (`app/providers/ai_text_detector.py`, a small RoBERTa classifier via `transformers`, CPU, no
+   key) is appended to `ai_signals`. Deepfake detection (image/video) is explicitly out of
+   scope for v1 — see that module's docstring.
+
+`app/providers/transcription.py`'s `GroqWhisperProvider` does the same for the `transcribe`
+step (audio/video), and `app/providers/fetch.py`'s `TrafilaturaArticleFetcher` does real
+article extraction for the `fetch` step (URL submissions) — both self-contained, no shared
+base class, same as every provider above.
+
+`EMBEDDING_PROVIDER`/`AI_TEXT_DETECTOR_PROVIDER` default to `stub` even when
+`ANALYSIS_PROVIDER=groq`: unlike Groq/Tavily, there's no credential to gate the real model on,
+and the real one is a model download dev/CI must never trigger by default. Set both to
+`sentence-transformers`/`roberta` for the real local models.
 
 ## Layout
 
@@ -220,8 +252,10 @@ app/
   webhooks/          Inbound WhatsApp/Telegram webhooks
   adapters/          The integrations: one interface, a real implementation and a dev stub
                      each; readiness.py picks between them and guards production
-  providers/         AnalysisProvider (the pipeline's AI step; a stub until P4) and
-                     LanguageProvider (Sunbird AI detection and translation)
+  providers/         AnalysisProvider (the verdict engine: Groq+Tavily, real when
+                     GROQ_API_KEY/TAVILY_API_KEY are set), LanguageProvider (Sunbird AI
+                     detection and translation), plus fetch/transcription/embedding/
+                     ai_text_detector, each with its own real-or-stub switch
   realtime/          Redis clients and submission pub/sub
   worker/            Celery app, the pipeline, messaging, admin tasks, dispatch
 migrations/          Alembic (async env)
