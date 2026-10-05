@@ -809,11 +809,47 @@
       "scopeLabel": "Tic",
       "scopes": {
         "all": "Ducu",
+        "mine": "Mama",
         "unassigned": "Pe ki miyo tic"
-      }
+      },
+      "summary": "{sort, select, ccs {{count, plural, one {# lok ma ki ngolo · ki yubu malube ki rwom me kabedo} other {# lok ma otimme · ki yubu malube ki rwom me kabedo}}} other {{count, plural, one {# lok ma ki ngolo · kiyubu malube ki cawa ma odong} other {# lok ma otime · ki yubu malube ki kare ma odong}}}}",
+      "emptyTitle": "Pe tye gin mo me ngiyo",
+      "emptyBody": "Pe tye lok mo ma rwate ki gin ma ki yero."
     },
     "case": {
-      "submit": "Cwal"
+      "communitySignals": "Lanyut pa lwak",
+      "accurate": "Kwene",
+      "inaccurate": "Pe tye kakare",
+      "yourDecision": "Moko tam ma itimo",
+      "confirmOption": "Moko tam pa AI",
+      "overrideOption": "Lok ma ki ngolo",
+      "chooseCorrect": "Yer gin matir",
+      "correctVerdict": "Ngolo kop matir",
+      "errors": {
+        "verdict": "Yer kop matye kakare.",
+        "overrideShort": "Tit kit ma ki ngolo kwede iye gin mo i nyig coc ma romo {min}.",
+        "confirmShort": "Med tyen lok macek (ma romo {min} nyig coc)."
+      },
+      "confirmedToast": "Adwoki me ngolo kop omoko",
+      "overriddenToast": "Adwoki ne ki loko woko",
+      "loggedAs": "{caseId} · ki coyo i te {name}. Ripot kombedi nyutu ni “Human Verified”.",
+      "yourName": "nyingi",
+      "justification": "Tyen lok",
+      "required": "(mite)",
+      "justificationPlaceholder": "Caden ango ma in i ngiyo? Anga ma in iloko kwede?",
+      "justificationHint": "Iye ma iye. Kigwoko i log me ngiyo tic ki nyingi ki cawa ne.",
+      "publicNote": "Ngec pi lukwan (ma mite)",
+      "publicNotePlaceholder": "Medo lok ma mako lok eni macalo tam pa ladiro.",
+      "showOnReport": "Nyut i adwogi tic pa lwak",
+      "submitDecision": "Mi tam ma ki moko",
+      "backToQueue": "Dok cen i lain",
+      "confirmTitle": "I moko tam man?",
+      "overrideTitle": "I loko tam man?",
+      "confirmBody": "Lok ma ki coyo ni nongo lanyut me Human Verified. Moko tam ma itimo tye ki wel 5× i Community Confidence Score dok ki coyo ne i gin ma ki ngiyo.",
+      "submit": "Cwal",
+      "publicReport": "Lok ma kicoyo pi lwak",
+      "aiFindings": "AI adwogi me kwed",
+      "auditNote": "Moko tam weng ki coyo ne ki ngat ma neno, cawa ki tyen lok me moko tam (FR-REVIEW-03)."
     }
   },
   "Admin": {
@@ -821,6 +857,12 @@
       "needsAttention": "Miti me neno"
     },
     "audit": {
+      "actions": {
+        "verdict": {
+          "override": "Adwoki ne ki loko woko",
+          "confirm": "Adwoki me ngolo kop omoko"
+        }
+      },
       "columns": {
         "action": "Tim"
       },
@@ -963,6 +1005,8 @@
     "panel": {
       "question": "Ngolo kop man tye kakare?",
       "group": "Pim kit ma ngolo kop man tye kwede",
+      "accurate": "Kwene",
+      "inaccurate": "Pe tye kakare",
       "signIn": "Dony iye",
       "signInRest": "me miyo rwom me ngolo kop man. Rwom konyo me pwonyo Zuula odoco.",
       "youRated": "I miyo rwom man <strong>{vote, select, accurate {ma tye kakare} other {pe tye kakare}}</strong>. Itwero loko ne ikare mo keken.",
@@ -987,7 +1031,9 @@
       "filter": "Yer lok ma ki waco",
       "all": "Ducu ({count})",
       "accurate": "Maber tutwal ({count})",
-      "inaccurate": "Pe tye kakare ({count})"
+      "inaccurate": "Pe tye kakare ({count})",
+      "voteAccurate": "Kwene",
+      "voteInaccurate": "Pe tye kakare"
     }
   },
   "Auth": {
@@ -1185,19 +1231,148 @@
     "globalDescription": "Gin mo ocwalo bal ikare me loading app. Tem doki, ki ka pud mede ki timme, dwog cen i dakika manok."
   },
   "Developers": {
+    "metaDescription": "Cwal lok ma mako gin moni me ngiyo ki dok ikwan Zuula lok ada ki i jami tic me lok angeya ma megi.",
+    "scopeBadge": "Kabedo: {scope}",
+    "banner": {
+      "eyebrow": "Luyub",
+      "description": "Mi lok ma ki ngiyo me niang ka ada ki dok i kwano lok matye ki caden ki jami tic me poko lok angeya."
+    },
     "toc": {
+      "label": "I pot buk man",
       "overview": "Neno weng",
-      "search": "Yeny lok ada me moko"
+      "authentication": "Ngiyo lok ada",
+      "rateLimits": "Kigeng me wel",
+      "submit": "Cwal cente",
+      "status": "Nong adwogi",
+      "search": "Yeny lok ada me moko",
+      "factCheck": "Ngiyo lok ada",
+      "errors": "Bal",
+      "report": "Nong lok ada",
+      "access": "Nong yoo"
+    },
+    "preview": {
+      "title": "Neno, ma ki twero loko wang ma v1",
+      "body": "Man obedo neno macon me API pi lucoo lok angeya ki lurem. Pe twero lwongo ne kombedi: backend cwalo i Phase 2, ki agiki, kabedo ki lageng twero loke mapud peya kit ma 1."
     },
     "overview": {
-      "title": "Neno weng"
+      "title": "Neno weng",
+      "body": "Zuula API miyo ki lucoo lok angeya ma ki yee ki dul mapat-pat ma ribe kwedgi ngec marom ma tiyo i kom zuula.ug. Pimo ne woto kene:",
+      "step1": "Cwal lok ma i <code>POST /v1/checks</code>. Inongo yoo me lubu ID cutcut.",
+      "step2": "Yer <code>GET /v1/checks/[trackingId]</code> wang ma tic otum.",
+      "step3": "Kwan kop ma ki ngolo, rwom me gen, kit ma kitye ka tito kwede ki lok ma ki nyutu ki i adwogi ne.",
+      "formatLabel": "Kit",
+      "format": "JSON iwi HTTPS (UTF-8). Kare me tic tye ISO 8601 i UTC."
+    },
+    "auth": {
+      "title": "Ngiyo lok ada",
+      "body": "Kwayo weng mito API key i <code>Authorization</code> header. Lucoo lok angeya ma ki moko ni gi tye ki twero me tic ki ludito tic twero cako ki juku key i <link>Account → API donyo</link>. Key cakke ki <code>zl_live_</code> dok kinyuto ne tyen acel keken.",
+      "headerLabel": "Kwayo wiye",
+      "scopes": {
+        "submit": "Cwal lok, kubu, coc ki jami me nyutu pi ngiyo.",
+        "read": "Kwan adwogi me kwed ki yeny lok ada ma kicoyo."
+      },
+      "serverOnlyTitle": "Gwok lagony i kom server ni",
+      "serverOnly": "Pe iket API key i web page, mobile app onyo public repository. Goo API ki i kom server ni me juku key mo keken ma twero bedo ni okato woko."
+    },
+    "rate": {
+      "title": "Kigeng me wel",
+      "body": "Lanyut acel acel twero yubu {limit} kwac i cawa acel. Lagam acel acel nyutu kony ma odong. Ka ikato iye, API lagam <code>429 Too Many Requests</code>: kur pi wel cekon i <code>Retry-After</code> mapwod pe itemo doki.",
+      "headers": {
+        "limit": "Kwayo ma ki yee pi cawa acel pi lagony man.",
+        "remaining": "Kwayo ma ki weko i cawa matye kombedi.",
+        "reset": "Ka kare me tic ocako, macalo Unix timestamp i cekon.",
+        "retryAfter": "Cwalo ki 429 lagam: cekon me kuru ma pwod pe itemo odoco."
+      }
     },
     "table": {
       "field": "Nying",
+      "description": "Tito",
       "required": "Mite"
     },
+    "common": {
+      "requestBody": "Kwac me kom",
+      "queryParameters": "Lok ma ki penyo",
+      "example": "Lanyut"
+    },
+    "code": {
+      "copy": "Kop",
+      "copied": "Kikobo",
+      "response": "Lagam · {status}",
+      "responseHeaders": "Winye me wiye"
+    },
+    "submit": {
+      "title": "Cwal cente",
+      "body": "Cwal jami acel pi moko ada. Tii ki JSON pi coc, kubbe ki coc ma kiyubu, ki <code>multipart/form-data</code> pi pwail me media. Lagam oo cutcut ki lubu kor ID; ngiyo ne kikome tero cekon ma romo 10 pi coc ki cok ki dakika acel pi media.",
+      "fields": {
+        "type": "Gin ma itye ka cwalo: <code>text</code>, <code>url</code>, <code>article</code> onyo <code>media</code>.",
+        "content": "Lok me ngiyo. Tye ki {textMax} kit ma kicoyo kwede pi coc, {articleMax} pi coc me lok angeya. Mite pi coc ki lok angeya.",
+        "url": "Lok me http onyo https ma ocung pi lok angeya onyo pot buk me kakube. Mite pi url.",
+        "file": "Cal, dwon onyo vidio, oo {size}. JPEG, PNG, WebP, GIF, MP3, M4A, WAV, OGG, AAC, MP4, MOV, WebM onyo 3GP. Mite pi media.",
+        "headline": "Wi lok ma ki yero, oo i {max} kit ma tye kwede.",
+        "language": "Leb me coc: <code>en</code>, <code>lg</code>, <code>ach</code>, <code>nyn</code>, <code>teo</code>, onyo <code>auto</code> me nongo ne (ma kiyubu)."
+      }
+    },
+    "status": {
+      "title": "Nong adwogi",
+      "body": "Dwoko kit ma ki ngiyo kwede. Ka rwom ne tye <code>completed</code>, kabedo me <code>result</code> tye ki gin ma ki ngiyo maber tutwal. Nying me lubu kor jami nen calo <code>ZL-7K3P-Q9</code>.",
+      "statesCaption": "Ngiyo lok",
+      "states": {
+        "queued": "Kicwalo ki tye ka kuru me ngiyo.",
+        "processing": "Gitye ka ngiyo lok ma ki waco ni tye ada kun nongo gitiyo ki yoo me tic ma genne ki AI-detection models.",
+        "completed": "Otum. Adwogi ne tye iye.",
+        "failed": "Pimo ne pe kitwero tyeko ne. Kabedo me bal tito pingo."
+      }
+    },
     "search": {
-      "title": "Yeny lok ada me moko"
+      "title": "Yeny lok ada me moko",
+      "body": "Yeny i ot gwoko buk pa lwak me lok ada ma ki ngiyo. Adwogi ne ki keto malube ki Community Confidence Score ki kare ma okato, ki ngolo kop ma ki juku pi ngiyo ne ki weko woko.",
+      "params": {
+        "q": "Lok ma omyero ki neni i wiye, lok macek ki coc ma ki ngiyo.",
+        "verdict": "Yer kit ma ngolo kop: <code>authentic</code>, <code>likely-false</code>, <code>false</code>, <code>ai-generated</code> onyo <code>unverifiable</code>.",
+        "category": "Yer lok ma mako lok, calo yot kom onyo yer.",
+        "language": "Yer leb ma jami ma ki ngiyo tye iye.",
+        "dates": "Pimo ma kiyubu i nino onyo ingee, ki i nino onyo ma peya, nino magi (YYYY-MM-DD).",
+        "page": "Namba me pot buk, cakke ki 1.",
+        "perPage": "Adwogi me pot buk acel, cako ki 1 me oo 50. Miti 20."
+      }
+    },
+    "factCheck": {
+      "title": "Ngiyo lok ada",
+      "body": "Kwed ma kityeko ki adwogi me yenyo jami nyutu kit man. Array twero bedo nono; kabedo twero bedo ni kimedo ma peya v1 ento pe ki kwanyo woko.",
+      "fields": {
+        "id": "ID ma bedo pi kare malac me lok ada ma ki yubu.",
+        "trackingId": "Lok me lubu ID odwogo ikare ma kicwalo jami.",
+        "verdict": "Acel me <code>authentic</code>, <code>likely-false</code>, <code>false</code>, <code>ai-generated</code> onyo <code>unverifiable</code>.",
+        "confidence": "Zuula tye ki gen ma rom mene i kom ngolo kop, cako ki 0 me oo 100.",
+        "summary": "Tito lok ma niang iye yot me ngolo kop.",
+        "findings": "Lok ma macek i kom ngo ma pe atir ki ngo ma ada.",
+        "claims": "Lok ma ki nongo i coc, ki kit ma kicoyo kwede, ngiyo lok, tyen lok ki lok ma cwako ne.",
+        "citations": "Kama kitiyo kwede, ki nying, wi lok, kubu, nino me coyo ki tam: <code>supports</code>, <code>contradicts</code> onyo <code>context</code>.",
+        "aiSignals": "Ngiyo pi AI-ma kiyubu onyo jami ma ki loko, acel acel tye ki makci, rwom me tic ki yoo me tic.",
+        "community": "Wel ma ki kwano ki i kom lwak, lucoo lok angeya ki ludiro.",
+        "humanReview": "Kare ma ladiro mo omoko nyo oloyo ngolo kop, ki tyen lok mege.",
+        "checkedAt": "Ka ngiyo ne otum."
+      }
+    },
+    "errors": {
+      "title": "Bal",
+      "body": "Bal tiyo ki rwom me HTTP ma kiyubu maber ki kom JSON ki macin ma twero kwano <code>code</code> ki dano ma twero kwano <code>message</code>.",
+      "codes": {
+        "bad_request": "Kwayo ne tye ma pe kiyubu maber onyo gin ma mite orweny.",
+        "unauthorized": "Lanyut me API orwenyo, pe tiyo onyo ki kwanyo woko.",
+        "forbidden": "Lacungu ne pe tye ki twero ma mite pi agiki man.",
+        "not_found": "Pe tye ngiyo onyo ngiyo lok ada mo ma tye ki ID.",
+        "file_too_large": "Lok ma ki lwongo ni media file dit loyo 50 MB.",
+        "unsupported_media": "Kit me pwail eni pe ki yee.",
+        "invalid_content": "Lok ne cek tutwal, bor tutwal onyo pe obedo kakube matye atir.",
+        "rate_limited": "Lagony otiyo ki kare ne me tic. Kur pi nwoyo ingee cekon mogo."
+      }
+    },
+    "report": {
+      "title": "Nong lok ada"
+    },
+    "access": {
+      "title": "Nong yoo"
     }
   },
   "Related": {

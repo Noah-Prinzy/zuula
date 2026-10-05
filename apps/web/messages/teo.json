@@ -835,11 +835,49 @@
       "allReasons": "Akiro kere",
       "scopeLabel": "Aswam",
       "scopes": {
+        "all": "Kere",
+        "mine": "Mama",
         "unassigned": "Mam ijaikitai"
-      }
+      },
+      "summary": "{sort, select, ccs {{count, plural, one {# emusago · etuboritai kotupitete apointan nuka atutubet} other {# imusagon · etiakatiakai kotoma aiboisio nuka itunga}}} other {{count, plural, one {# emusago · etiakatiakatai kotupitete apak naideuna} other {# imusagon · etiakatiakaete kotoma apak naideuna}}}}",
+      "emptyTitle": "Emamei ibore yenibusakinit airereor",
+      "emptyBody": "Emamei imusagon lu eputosi keda aiboisio nu."
     },
     "case": {
-      "submit": "Ijukak"
+      "communitySignals": "Aanyuneta nuka itunga",
+      "rater": "Aiboisit naejok",
+      "accurate": "Naedolit",
+      "inaccurate": "Mam ejokuna",
+      "yourDecision": "Aseunet kon",
+      "confirmOption": "Kitogogong aomisioit naka AI",
+      "overrideOption": "Aitemokin aomisioit naka atubokino",
+      "chooseCorrect": "Oseu lo abeit",
+      "correctVerdict": "Abeit na aomisioit",
+      "errors": {
+        "verdict": "Koseu aomisioit naedolit.",
+        "overrideShort": "Kitetem aijulakinio kotoma atutubena nuikidioko {min}.",
+        "confirmShort": "Kiyatak akirot naedit (keda {min} itunga)."
+      },
+      "confirmedToast": "Aitogogongio naka atubokinio",
+      "overriddenToast": "Aponi ijulakinai atubokinio",
+      "loggedAs": "{caseId} · iwadikatai kotoma {name}. Ejaasi kwana eripoota keda “Human Verified”.",
+      "yourName": "ekiror kon",
+      "justification": "Aitogogongio",
+      "required": "(ekotoi)",
+      "justificationPlaceholder": "Inyoin bo ajenanut na abu jo koany? Ingai bo abu jo kolimok?",
+      "justificationHint": "Na kotoma. Idaritai toma aiwadikaeta nuka aingic keda ekiror kon keda apak.",
+      "publicNote": "Akirot kanu asiomak (naepedorio)",
+      "publicNotePlaceholder": "Eyangauni akiro nuikamunitos eripoota kwape aitetemio naka epirioit.",
+      "showOnReport": "Kitodu kotoma aripoota naka itunga",
+      "submitDecision": "Ijuka aseunet",
+      "backToQueue": "Abongun toma aiboisit naka aibwo",
+      "confirmTitle": "Itigogong aomisioit na?",
+      "overrideTitle": "Aijulakin etube lo?",
+      "confirmBody": "Edumununei eripoota aanyunet naka itunga lu itigogongoritai. Epedori aseunetekon aitodun 5× kotoma Atukot Naka Amuno ido iwadikatai toma aiwadikaeta nuka aingic.",
+      "submit": "Ijukak",
+      "publicReport": "Aripoota naka itunga kere",
+      "aiFindings": "AI ajenuneta",
+      "auditNote": "Aseunet kere iwadikatai keda aanyanaret, apak ka aitogogongio (FR-REVIEW-03)."
     }
   },
   "Admin": {
@@ -847,6 +885,12 @@
       "needsAttention": "Ekoto aanyanario"
     },
     "audit": {
+      "actions": {
+        "verdict": {
+          "override": "Aponi ijulakinai atubokinio",
+          "confirm": "Aitogogongio naka atubokinio"
+        }
+      },
       "columns": {
         "action": "Aswamisioit"
       },
@@ -988,6 +1032,8 @@
     "panel": {
       "question": "Erai kereka atubokinio na na abeit?",
       "group": "Kotub aomisioit na",
+      "accurate": "Naedolit",
+      "inaccurate": "Mam ejokuna",
       "signIn": "Kobu toma",
       "signInRest": "kanu aitemokin atubokinio na. Inaabai ingarakinete aituutoonor Zuula.",
       "youRated": "Ibwaikinit jo <strong>{vote, select, accurate {na abeit} other {mam erai abeit}}</strong> lo. Ipedori jo aijulakin ngun adio apak kere.",
@@ -1012,7 +1058,9 @@
       "filter": "Aitub aineranara",
       "all": "Kere ({count})",
       "accurate": "Naedolit ({count})",
-      "inaccurate": "Mam ejokuna ({count})"
+      "inaccurate": "Mam ejokuna ({count})",
+      "voteAccurate": "Naedolit",
+      "voteInaccurate": "Mam ejokuna"
     }
   },
   "Auth": {
@@ -1210,19 +1258,147 @@
     "globalDescription": "Ajai ibore yen abu kotubor kotoma aipikakin app. Kotam bobo, ido arai inyikokini iswamaun, kobongu bobo kotoma idakikan idis."
   },
   "Developers": {
+    "metaDescription": "Iwadika akiro kanu aitogogong ka aisiom Zuula aingic naka abeit kotoma aswamisinei kon nuka iyemuto.",
+    "scopeBadge": "Aiboisit: {scope}",
+    "banner": {
+      "eyebrow": "Itunga luitemonokinete",
+      "description": "Ipedori ijo aijukar akiro kanu awanyanario kosodi asiom nuikamunitos akiro nuka abeit kotoma aiboisit kon naka iyemuto."
+    },
     "toc": {
+      "label": "Kotoma atutubet kana",
       "overview": "Aiwanyanario",
-      "search": "Aingic akiro nu aanyanario"
+      "authentication": "Aitogogongio",
+      "rateLimits": "Aitikitik ikapun",
+      "submit": "Ijukakini aanyanaret",
+      "status": "Adumun akiro",
+      "search": "Aingic akiro nu aanyanario",
+      "factCheck": "Aingic akiro nuka abeit",
+      "errors": "Aibucanareta",
+      "report": "Adumun aanyanario naka akiro",
+      "access": "Adumun adolokin"
+    },
+    "preview": {
+      "title": "Aanyunet, ejai aijulakinio kitoni v1",
+      "body": "Erai lo aanyunet nasodit naka API kanuka arotak iyemuto keda ipaupa. Mam epedorio ainomakin eringa: ejaasi backend toma Atutubet 2, ido akiro, aiboisio keda ikisila epedorete aijulakin eringa epone loka 1."
     },
     "overview": {
-      "title": "Aiwanyanario"
+      "title": "Aiwanyanario",
+      "body": "Zuula API einakini arotak iyemuto lu ecamunitai keda iriongeta luejaasi keda apedor naepol noi naka aitogogongio naka zuula.ug. Epedorete aanyanario aswam kotoma apak naegelegela:",
+      "step1": "Ijukak akiro mama ejai <code>POST /v1/checks</code>. Idumuni jo aanyanaret ID katipet.",
+      "step2": "Aseun <code>GET /v1/checks/[trackingId]</code> kitoni ne angetakinor adoketait.",
+      "step3": "Kosiom akiro nu etubokinio, amunokina na ikapun, aitetem ka aiwadikaeta kotoma akiro nuelomunitos.",
+      "formatLabel": "Eipone lo itolosere",
+      "format": "JSON kotoma HTTPS (UTF-8). Eraasi apakio nuka aitolot ISO 8601 kotoma UTC."
+    },
+    "auth": {
+      "title": "Aitogogongio",
+      "body": "Ekoto aingiset kere API key kotoma <code>Authorization</code> header. Epedorete arotak iyemuto lu itigogongoritai keda eyaitok aitolomun ka alemar ikisila ko <link>Akaunt → API adumunun</link>. Egeunos ikisila keda <code>zl_live_</code> ido itodiaritai irwan idiope bon.",
+      "headerLabel": "Akirot naingitunet",
+      "scopes": {
+        "submit": "Kijukak akiro, ikoruo, akiro keda aputosia kanu airereor.",
+        "read": "Kosiom akiro nu aanyanaret kosodi aimo akiro nuka abeit."
+      },
+      "serverOnlyTitle": "Koinak akiro toma osava kon",
+      "serverOnly": "Sirikibwa API key toma aweb page, mobile app arai bo public repository. Inom API kotoma osava kon kosodi alemar key kere loepedori aitodiar."
+    },
+    "rate": {
+      "title": "Aitikitik ikapun",
+      "body": "Epedori akirot ngin aitolomun {limit} ailipasinei kangol esawa. Kangin abongokinet itodunit ikapun luideuna. Arai kilelebikin ijo, ebongonokinete API abongonokineta <code>429 Too Many Requests</code>: idarak sekondin luka <code>Retry-After</code> eringa iuta aitam bobo.",
+      "headers": {
+        "limit": "Ecamakinitai ailipasinei kotoma osawa kanuka ekisil lo.",
+        "remaining": "Aingiseta nu apotu kesi kojalakisi kotoma osawa kalo.",
+        "reset": "Neiteteunor ekapun, kwape Unix timestamp kotoma atikatikan.",
+        "retryAfter": "Ijukunitai keda 429 abongokineta: atikatikan nuka aidar eringa bobo aitam."
+      }
     },
     "table": {
       "field": "Ekiror",
+      "description": "Aitetemio",
       "required": "Ekotoi"
     },
+    "common": {
+      "requestBody": "Aiboisit na ailip",
+      "queryParameters": "Akiro nu ingisitai",
+      "example": "Aanyunet"
+    },
+    "code": {
+      "copy": "Aitodun",
+      "copied": "Aponi kopedorai",
+      "response": "Abongokinet · {status}",
+      "responseHeaders": "Aiboisio nuka abongokinet"
+    },
+    "submit": {
+      "title": "Ijukakini aanyanaret",
+      "body": "Ijukak ibore idiope kanu aanyunet. Itwasam JSON kanu akiro, arucokina keda akiro, ido <code>multipart/form-data</code> kanu akiro nuka elago. Ebuni abongokinet adolun katipet keda aitodunet ID; aanyanar bon eyangaikini nepetai 10 atikatikan kanu akiro keda kitoni edakika ediope kanu akiro nuka elago.",
+      "fields": {
+        "type": "Ibore yen ijukari ijo: <code>text</code>, <code>url</code>, <code>article</code> arai bo <code>media</code>.",
+        "content": "Akirot na ekoto aanyun. Kitoni {textMax} akiro kanu akirot, {articleMax} kanu akiro nuka akiro. Ekotoi kanu akirot keda akiro.",
+        "url": "Aikamanario naepol noi naka http arai bo https mama ejai akiro nuka iyemuto arai bo ewebusait. Ekotoi kanu url.",
+        "file": "Aputo, aijukaret naka eporoto arai bo ebidio, kitoni {size}. JPEG, PNG, WebP, GIF, MP3, M4A, WAV, OGG, AAC, MP4, MOV, WebM arai bo 3GP. Ekotoi kanu akiro nuka iyemuto.",
+        "headline": "Akirot naepol noi naka akiro, kitoni {max} itunga.",
+        "language": "Angajep naka akiro: <code>en</code>, <code>lg</code>, <code>ach</code>, <code>nyn</code>, <code>teo</code>, arai bo <code>auto</code> kanu ajenun ngin (nges loedit)."
+      }
+    },
+    "status": {
+      "title": "Adumun akiro",
+      "body": "Inyakuni ejautene loka aanyanaret. Nejaatar ejautene erai <code>completed</code>, ejaasi akiro nuka <code>result</code> keda akiro kere nuka aanyanaret. Esubit bala enaaba loka aitodun akiro kwape <code>ZL-7K3P-Q9</code>.",
+      "statesCaption": "Koanyanaar akwapin",
+      "states": {
+        "queued": "Adumunitai ido idarit aingic.",
+        "processing": "Euta aanyanario naka akiro ngun keda atukona nuemuno ka AI-detection models.",
+        "completed": "Angetakin. Imoriaritai akiro nuelomunitos.",
+        "failed": "Mam epedorio angetakin aanyanaret. Ebala aiboisit naka aibucaret kanukinyo."
+      }
+    },
     "search": {
-      "title": "Aingic akiro nu aanyanario"
+      "title": "Aingic akiro nu aanyanario",
+      "body": "Koomoom aiboisit naka itunga naejaasi keda akiro nuikamunitos akiro nukabeit. Ejaasi akiro ngun keda adoketait naepol noi kotoma Aitogogongoret Naka Itunga keda apak, ido akiro nuemamete aomisio nuepedorete airereor kes mam imarunitai.",
+      "params": {
+        "q": "Akiro nu ekotoi aanyun kotoma apapulai, akiro nuikamunitos akiro keda akiro nu iwanyunitai.",
+        "verdict": "Aitemonokin kotoma atubokinio: <code>authentic</code>, <code>likely-false</code>, <code>false</code>, <code>ai-generated</code> arai bo <code>unverifiable</code>.",
+        "category": "Kotub kotoma akirot, kwape nat angaleu arai bo aseo.",
+        "language": "Kotoma aiboisit na angajep naka akiro nu iwanyunitai.",
+        "dates": "Aanyanaret na iswamao kotoma arai akaulo naka, ido kotoma arai eringa, apaarasia nu (YYYY-MM-DD).",
+        "page": "Enaba loka atutubet, ageun ko 1.",
+        "perPage": "Akiro nuka atutubet, anyoun kotoma 1 kitoni 50. Aitemonokineta 20."
+      }
+    },
+    "factCheck": {
+      "title": "Aingic akiro nuka abeit",
+      "body": "Aponi kitemokinai aanyanario ka akiro nuka aimo kes ejaasi keda epone lo. Epedorete ikiroria ajaut emamei idiobore; epedorio aiyatakin akiro eringa v1 konye mam elemarere.",
+      "fields": {
+        "id": "Erai ID loepol noi loka aanyanario naka akiro.",
+        "trackingId": "Abu aingic ID kobongok neyangaunere akiro.",
+        "verdict": "Idiope kotoma <code>authentic</code>, <code>likely-false</code>, <code>false</code>, <code>ai-generated</code> arai bo <code>unverifiable</code>.",
+        "confidence": "Ejaasi Zuula keda amuno naepol noi kotoma atubokinio, anyoun ko 0 kitoni 100.",
+        "summary": "Aitetem akiro nuka atubokinio.",
+        "findings": "Akiro nuikidioko nuikamunitos iboro lumam eraasi abeit keda luabeit.",
+        "claims": "Akiro nu edumunitai kotoma akirot, keda aiboisio nuka itunga, aingic, akirot na eyangauni ka aitoduneta nuigangitos ngun.",
+        "citations": "Iboro lu itwasamat, keda ekiror, apapula, arucokina, apaaran naka aitolomun ka epone loejai: <code>supports</code>, <code>contradicts</code> arai bo <code>context</code>.",
+        "aiSignals": "Aanyanario kanu AI loitolomunitai arai bo loitemonokinitai, kangin keda apointan, atutubet naepol noi keda epone.",
+        "community": "Aitemonokineta nu abeit ka numam abeit kanu aanyanario naka itunga, arotak iyemuto keda ipirioitin.",
+        "humanReview": "Ejai ne itigogongoritor epirioit arai bo aitepeg atubokineta, keda aitijenaretakec.",
+        "checkedAt": "Ne angetakinor aanyanario."
+      }
+    },
+    "errors": {
+      "title": "Aibucanareta",
+      "body": "Ejaasi aibucanareta keda ikodin luka HTTP ka akuan naka JSON naepedorio aitwasam <code>code</code> ido epedorio itunganan aitwasam <code>message</code>.",
+      "codes": {
+        "bad_request": "Erai ailip ngin na mam itemokinitai arai bo emamei aiboisit na ekotoi.",
+        "unauthorized": "Emamei API key, mam ejokuna arai bo aponi kolemarai.",
+        "forbidden": "Emamei ekisil lo epedori aitodun akiro nu ekotoi.",
+        "not_found": "Emamei aanyanario arai bo aanyanario naka abeit naejai ID.",
+        "file_too_large": "Epolokinit akiro ngun adepar 50 MB.",
+        "unsupported_media": "Mam epone loka akiro eyangaritai.",
+        "invalid_content": "Epatana akiro ngun, elangir noi arai mam erai aiboisit naejok."
+      }
+    },
+    "report": {
+      "title": "Adumun aanyanario naka akiro"
+    },
+    "access": {
+      "title": "Adumun adolokin"
     }
   },
   "Related": {

@@ -846,11 +846,48 @@
       "scopeLabel": "Omulimu ogw'okukola",
       "scopes": {
         "all": "Byonna",
+        "mine": "Mukazi wange",
         "unassigned": "Tewali gwe yawa"
-      }
+      },
+      "summary": "{sort, select, ccs {{count, plural, one {# omusango · ogutegekeddwa okusinziira ku bubonero bw'ekitundu} other {# emisango · etegekeddwa okusinziira ku bubonero bw'ekitundu}}} other {{count, plural, one {# omusango · ogutegekeddwa okusinziira ku budde obusigaddeyo} other {# emisango · eterekebwa mu kiseera ekisigaddeyo}}}}",
+      "emptyTitle": "Tewali kya kuddamu",
+      "emptyBody": "Tewali musango gwenkana n'ebikozesebwa bino."
     },
     "case": {
-      "submit": "Waayo"
+      "communitySignals": "Obubonero bw'ekitundu",
+      "rater": "Rater kye ki?",
+      "accurate": "Ekituufu",
+      "inaccurate": "Ekitali kituufu",
+      "yourDecision": "Okusalawo kwo",
+      "confirmOption": "Kakasa ensala ya AI",
+      "overrideOption": "Kyuusa ekisaliddwa",
+      "chooseCorrect": "Londa ekituufu",
+      "correctVerdict": "Okusalawo okutuufu",
+      "errors": {
+        "verdict": "Londa ekiragiro ekituufu.",
+        "overrideShort": "Nnyonnyola okusazaamu mu bbaluwa eziri waakiri {min}.",
+        "confirmShort": "Yongerako ensonga entono (waakiri {min} abantu)."
+      },
+      "confirmedToast": "Okusalawo kwe kukakasiddwa",
+      "overriddenToast": "Okusalawo kuggiddwamu",
+      "loggedAs": "{caseId} · yateekeddwa wansi wa {name}. Alipoota kati eraga “Human Verified”.",
+      "yourName": "erinnya lyo",
+      "justification": "Okukakasa",
+      "required": "(Kyetagisa)",
+      "justificationPlaceholder": "Obujulizi ki bwe wekebedde? Ani gwe wategeezezza?",
+      "justificationHint": "Munda. Ekiterekebwa mu logi y'okwekenneenya n'erinnya lyo n'obudde.",
+      "publicNote": "Obubaka eri abasomi (obw'ekyeyagalire)",
+      "publicNotePlaceholder": "Ayongerako obubaka mu alipoota ng'ekiwandiiko ky'omukugu.",
+      "showOnReport": "Laga ku alipoota ya lujjudde",
+      "submitDecision": "Waayo okusalawo",
+      "backToQueue": "Ddamu okugenda mu layini",
+      "confirmTitle": "Okakasa ekiragiro kino?",
+      "overrideTitle": "Okusazaamu ensala eno?",
+      "confirmBody": "Alipoota efuna akabonero ka Human Verified. Okusalawo kwo kubalirwa 5× mu Community Confidence Score era ne kuteekebwa mu byafaayo eby'okwekenneenya.",
+      "submit": "Waayo",
+      "publicReport": "Alipoota ya lujjudde",
+      "aiFindings": "AI ebizuuliddwa",
+      "auditNote": "Buli kusalawo kuwandiikibwa ne muweereza, ekiseera n'ensonga (FR-REVIEW-03)."
     }
   },
   "Admin": {
@@ -858,6 +895,12 @@
       "needsAttention": "Ekyetaaga okufaako"
     },
     "audit": {
+      "actions": {
+        "verdict": {
+          "override": "Okusalawo kuggiddwamu",
+          "confirm": "Okusalawo kwe kukakasiddwa"
+        }
+      },
       "columns": {
         "action": "Ekikolwa"
       },
@@ -998,6 +1041,8 @@
     "panel": {
       "question": "Ensala eno ntuufu?",
       "group": "Waayo obubonero ku nsala eno",
+      "accurate": "Ekituufu",
+      "inaccurate": "Ekitali kituufu",
       "signIn": "Yingira",
       "signInRest": "Okupima ensala eno. Okupima kuyamba mu kuddamu okutendeka Zuula.",
       "youRated": "Wateeka <strong>{vote, select, accurate {ekituufu} other {ekitali kituufu}}</strong> ku kino. Osobola okukyusa ekiseera kyonna.",
@@ -1022,7 +1067,9 @@
       "filter": "Sengejja ebirowoozo",
       "all": "Byonna ({count})",
       "accurate": "Entuufu ({count})",
-      "inaccurate": "Ekitatuukiridde ({count})"
+      "inaccurate": "Ekitatuukiridde ({count})",
+      "voteAccurate": "Ekituufu",
+      "voteInaccurate": "Ekitali kituufu"
     }
   },
   "Auth": {
@@ -1222,19 +1269,148 @@
     "globalDescription": "Waliwo ekintu ekyagenze obubi ng'osika app. Gezaako nate, era singa kiba nga kyeyongera okubaawo, komawo oluvannyuma lw'eddakiika ntono."
   },
   "Developers": {
+    "metaDescription": "Waayo ebintu okukakasibwa era osome Zuula okukebera amazima okuva mu bintu byo eby'amawulire.",
+    "scopeBadge": "Obunene: {scope}",
+    "banner": {
+      "eyebrow": "Abakola pulogulaamu",
+      "description": "Waayo ebintu by'oyagala okukakasa era osome ku kukebera amazima okuva mu bintu byo eby'amawulire."
+    },
     "toc": {
+      "label": "Ku lupapula luno",
       "overview": "Okutunuulira mu bufunze",
-      "search": "Noonya okukebera amazima"
+      "authentication": "Okukakasa obutuufu",
+      "rateLimits": "Obukomo ku sipiidi",
+      "submit": "Waayo ceeke",
+      "status": "Funa ekivaamu",
+      "search": "Noonya okukebera amazima",
+      "factCheck": "Ekintu ekikebera amazima",
+      "errors": "Ensobi",
+      "report": "Funa okukebera amazima",
+      "access": "Funa obusobozi"
+    },
+    "preview": {
+      "title": "Okulaba, okusinziira ku nkyukakyuka okutuusa v1",
+      "body": "Kino kye kyokulabirako ekisooka ku API eri bannamawulire n'abakolagana. Tekinnaba kusobola kukozesebwa: enkola ey'emabega etandika mu mutendera 2, era ebikozesebwa, ebifo n'ebikomo biyinza okukyuka nga tennatuuka ku mulembe 1."
     },
     "overview": {
-      "title": "Okutunuulira mu bufunze"
+      "title": "Okutunuulira mu bufunze",
+      "body": "Zuula API awa bannamawulire abakakasiddwa n'ebitongole ebikwatagana okukakasa kwekumu okuwa amaanyi zuula.ug. Okukebera kukolebwa mu kiseera ekimu:",
+      "step1": "Sindika obubaka ku <code>POST /v1/checks</code>. Ofuna okugoberera ID amangu ddala.",
+      "step2": "Okulonda <code>GET /v1/checks/[trackingId]</code> okutuusa ng'omutindo guwedde.",
+      "step3": "Soma okusalawo, obukakafu bw'okubala, ennyinnyonnyola n'obujulizi okuva mu byavudde mu kunoonyereza.",
+      "formatLabel": "Enkola",
+      "format": "JSON ku HTTPS (UTF-8). Ebiseera bya ISO 8601 mu UTC."
+    },
+    "auth": {
+      "title": "Okukakasa obutuufu",
+      "body": "Buli kye weetaaga kyetaaga API key mu <code>Authorization</code> header. Bannamawulire abakakasiddwa n'abakulembeze basobola okutondawo n'okuggyako keys mu <link>Akawunti → API okufuna</link>. Keys zitandika ne <code>zl_live_</code> era ziragibwa omulundi gumu gwokka.",
+      "headerLabel": "Omutwe gw'okusaba",
+      "scopes": {
+        "submit": "Sindika obubaka, emikutu, ebitundu n'ebifaananyi okukakasa.",
+        "read": "Soma ebiva mu kukebera era onoonyereze ku bintu ebyakakasibwa."
+      },
+      "serverOnlyTitle": "Kuumira ebisumuluzo ku sseva yo",
+      "serverOnly": "Toteeka key API mu web page, app y'omutimbagano oba ekitereke ky'abantu bonna. Kuba API okuva ku server yo era oggyewo key yonna eyandiba nga yayitamu."
+    },
+    "rate": {
+      "title": "Obukomo ku sipiidi",
+      "body": "Buli key esobola okukola {limit} okusaba buli ssaawa. Buli kuddamu kulaga obungi bw'ekirabo ky'olina. Bw'osukka ku kikomo, API ekyusa <code>429 Too Many Requests</code>: linda okumala obutikitiki mu <code>Retry-After</code> nga tonaddamu.",
+      "headers": {
+        "limit": "Okusaba okukkirizibwa buli ssaawa ku kiyungo kino.",
+        "remaining": "Okusaba okwasigalira mu ssaawa eno.",
+        "reset": "Bwe kiba nga okusasula kuddamu, ng'ekiseera ekya Unix mu sikonda.",
+        "retryAfter": "Ekitundu ekyo kyaweerezebwa n'okuddamu 429: obutikitiki okuwummulako nga tonaddamu."
+      }
     },
     "table": {
       "field": "Erinnya",
+      "description": "Okunnyonnyola",
       "required": "Kyetaagisa"
     },
+    "common": {
+      "requestBody": "Omutwe gw'okukkiriza",
+      "queryParameters": "Ebikozesebwa mu kunoonyereza",
+      "example": "Ekyokulabirako"
+    },
+    "code": {
+      "copy": "Koppa",
+      "copied": "Koppiddwa",
+      "response": "Okuddamu · {status}",
+      "responseHeaders": "Omutwe gw'okuddamu"
+    },
+    "submit": {
+      "title": "Waayo ceeke",
+      "body": "Sindika ekintu kimu okukakasa. Kozesa JSON ku bigambo, emikutu n'ebiwandiiko, ne <code>multipart/form-data</code> ku fayiro z'amawulire. Ekyokuddamu kijja amangu nga kirimu okulondoola ID; okukebera kennyini kutwala obutikitiki nga 10 ku bigambo era okutuuka ku ddakiika emu ku mawulire.",
+      "fields": {
+        "type": "Kye weereza: <code>text</code>, <code>url</code>, <code>article</code> oba <code>media</code>.",
+        "content": "Ebyawandiikibwa okukebera. Okutuuka ku {textMax} empandiika y'ebiwandiiko, {articleMax} ku kya katabo. Kyetaagisa ku biwandiiko n'ekitabo.",
+        "url": "Linki ya http oba https ejjuvu eri ku mawulire oba olupapula lw'omutimbagano. Kyetaagisa okukozesa mu url.",
+        "file": "Ekifaananyi, eddoboozi oba vidiyo, okutuuka ku {size}. JPEG, PNG, WebP, GIF, MP3, M4A, WAV, OGG, AAC, MP4, MOV, WebM oba 3GP. Kyetaagisa mu by'amawulire.",
+        "headline": "Omutwe gw'ekitundu ogw'okulondako, okutuuka ku bbaluwa {max}.",
+        "language": "Olulimi lw'ebirimu: <code>en</code>, <code>lg</code>, <code>ach</code>, <code>nyn</code>, <code>teo</code>, oba <code>auto</code> okukizuula (ekyokubonerako)."
+      }
+    },
+    "status": {
+      "title": "Funa ekivaamu",
+      "body": "Kiddamu embeera ya check. Bwe kiba nti status eri <code>completed</code>, ekifo <code>result</code> kirimu ekintu kyonna eky'okukebera. Ebikozesebwa mu kulondoola byefaanana nga <code>ZL-7K3P-Q9</code>.",
+      "statesCaption": "Kebera embeera",
+      "states": {
+        "queued": "Kifuniddwa era nga kirindirira okwekenneenyezebwa.",
+        "processing": "Okukakasa kugenda kukolebwa okusinziira ku nsibuko ezitegeerekeka n'ebikozesebwa ebizuula AI.",
+        "completed": "Kiwedde. Ebyavaamu byateekebwa mu kifo.",
+        "failed": "Okukebera tekwasobola kumalirizibwa. Ekifo ky'ensobi kinnyonnyola ensonga lwaki."
+      }
+    },
     "search": {
-      "title": "Noonya okukebera amazima"
+      "title": "Noonya okukebera amazima",
+      "body": "Noonya mu tterekero ly'ebitabo ebya gavumenti ebikwata ku kukebera amazima agamaze okukakasibwa. Ebivaamu byateekebwako olukalala nga bisinziira ku Community Confidence Score n'obuwereza, era ebisaliddwaawo ne bikuumibwa okuddamu okwekenneenyezebwa tebiriiko.",
+      "params": {
+        "q": "Ebigambo by'olina okunoonya mu mitwe, ebikunizo n'ebiwandiiko ebikebeddwa.",
+        "verdict": "Okusengejja okusinziira ku nsala: <code>authentic</code>, <code>likely-false</code>, <code>false</code>, <code>ai-generated</code> oba <code>unverifiable</code>.",
+        "category": "Okusunsula okusinziira ku mutwe, nga eby'obulamu oba okulonda.",
+        "language": "Okusengejja okusinziira ku lulimi lw'ebintu ebikakasiddwa.",
+        "dates": "Okukebera kwokka okukolebwa ku oba oluvannyuma, ne ku oba nga tekunnabaawo, ennaku zino (YYYY-MM-DD).",
+        "page": "Omuwendo gw'empapula, nga gutandikira ku 1.",
+        "perPage": "Ebyavaamu ku lupapula, okuva 1 okutuuka 50. Ekyokulabirako 20."
+      }
+    },
+    "factCheck": {
+      "title": "Ekintu ekikebera amazima",
+      "body": "Okukebera okumaliriziddwa n'ebyavudde mu kunoonyereza birina enkula eno. Ebikunizo biyinza obutabaamu; ebitundu biyinza okwongerwako nga tebinnatuuka ku v1 naye tebiyinza kuggyibwawo.",
+      "fields": {
+        "id": "Ekya bulijjo ID eky'okukebera amazima agaafulumizibwa.",
+        "trackingId": "Okulondoola ID kwaddamu nga ebirimu byaweereddwayo.",
+        "verdict": "Ekimu ku <code>authentic</code>, <code>likely-false</code>, <code>false</code>, <code>ai-generated</code> oba <code>unverifiable</code>.",
+        "confidence": "Zuula akakasa atya mu kusalawo, okuva ku 0 okutuuka ku 100.",
+        "summary": "Okunnyonnyola okwangu ku nsala y'omusango.",
+        "findings": "Okwogera mu bumpimpi ku ekyo ekitali kituufu n'ekyo ekiri ekituufu.",
+        "claims": "Okwemulugunya okusangiddwa mu biwandiiko, n'ebifo by'ennukuta, okwekenneenya, ensonga n'obujulizi obukikakasa.",
+        "citations": "Ensibuko ezikozeseddwa, nga zirina erinnya, omutwe, akakwate, ennaku z'okuzifulumya n'ekifo: <code>supports</code>, <code>contradicts</code> oba <code>context</code>.",
+        "aiSignals": "Okukebera ku AI eby'okukola oba okukyusa ebirimu, buli kimu nga kirina obubonero, omuwendo n'enkola.",
+        "community": "Okubala okutuufu n'okutali kutuufu okuva mu bantu, bannamawulire n'abakugu.",
+        "humanReview": "Kubaawo nga omukugu akakasizza oba okuwakanya ensala, n'ensonga ze.",
+        "checkedAt": "Bwe kiba nga okukebera kuwedde."
+      }
+    },
+    "errors": {
+      "title": "Ensobi",
+      "body": "Ensobi zikozesa enkola eya bulijjo HTTP status codes ne JSON body n'ekyuma ekisomeka <code>code</code> n'omuntu asoma <code>message</code>.",
+      "codes": {
+        "bad_request": "Okusaba kwo tekukoleddwa bulungi oba waliwo ekifo ekyetaagisa ekibulamu.",
+        "unauthorized": "Ekisumuluzo API kibuze, tekikola oba kyaggyiddwako.",
+        "forbidden": "Ekisumuluzo tekirina kye kisobola kukola ku nkomerero eno.",
+        "not_found": "Tewali kukebera oba okukakasa ebintu ebyo ID.",
+        "file_too_large": "Ebyokukozesa mu mawulire binene okusinga 50 MB.",
+        "unsupported_media": "Ekika ky'omuwendo tekikkirizibwa.",
+        "invalid_content": "Ebiri mu mawulire bitono nnyo, biwanvu nnyo oba si kya kikwatagana.",
+        "rate_limited": "Ekkalaamu ekozesezza ekiragiro kyayo eky'essaawa. Linda okuddamu oluvannyuma lw'obutikitiki."
+      }
+    },
+    "report": {
+      "title": "Funa okukebera amazima"
+    },
+    "access": {
+      "title": "Funa obusobozi"
     }
   },
   "Related": {

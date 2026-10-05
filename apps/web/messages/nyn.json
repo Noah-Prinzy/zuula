@@ -837,11 +837,48 @@
       "allReasons": "Enshonga zoona",
       "scopeLabel": "Omurimo",
       "scopes": {
+        "all": "Byona",
+        "mine": "Maama",
         "unassigned": "Otari kugabwa"
-      }
+      },
+      "summary": "{sort, select, ccs {{count, plural, one {# omushango · kashoroirwe kurugirira aha bubonero bw'abantu} other {# emishango · erikuteebwamu kurugirira aha bubonero bw'ekyanga}}} other {{count, plural, one {# omushango · kashoroirwe obwire obusigaire} other {# emishango · esoroirwe kurugirira aha bwire obusigaire}}}}",
+      "emptyTitle": "Tihariho ky'okugarukamu",
+      "emptyBody": "Tihariho mishango erikuhikaana n'ebishushani ebi."
     },
     "case": {
-      "submit": "Heereza"
+      "communitySignals": "Obubonero bw'ekyanga",
+      "accurate": "Okuhikire",
+      "inaccurate": "Ekitahikire",
+      "yourDecision": "Okusharamu kwawe",
+      "confirmOption": "Kakasa ekicweka kya AI",
+      "overrideOption": "Okuhindura ekyashazirwemu",
+      "chooseCorrect": "Toorana ekihikire",
+      "correctVerdict": "Okusharamu okuhikire",
+      "errors": {
+        "verdict": "Toorana okusharamu okuhikire.",
+        "overrideShort": "Shoboorora okuhindura omu nyuguta ezirikuhika ahakiri {min}.",
+        "confirmShort": "Oyongyeremu enshonga nkye (haakiri {min} abantu)."
+      },
+      "confirmedToast": "Okusharamu kugumizemu",
+      "overriddenToast": "Okusharamu kukahindurwa",
+      "loggedAs": "{caseId} · akahandiikwa ahansi ya {name}. Ripoota hati neeyoreka “Human Verified”.",
+      "yourName": "Eiziina ryawe",
+      "justification": "Okuhikiiriza",
+      "required": "(ekirikwetengwa)",
+      "justificationPlaceholder": "Ni buhame ki obu waashwijuma? Noha ou waahikireho?",
+      "justificationHint": "Omunda. Ebiikirwe omu kihandiiko ky'okushwijuma n'eiziina ryawe hamwe n'eshaaha.",
+      "publicNote": "Ekihandiiko ky'abashomi (ekirikubaasa kuba eky'okwenda)",
+      "publicNotePlaceholder": "Okwongyera aha ripoota nk'ekihandiiko ky'omukugu.",
+      "showOnReport": "Yoreka aha ripoota y'abantu boona",
+      "submitDecision": "Oheereze okusharamu",
+      "backToQueue": "Okugaruka omu runyiriri",
+      "confirmTitle": "Okakakasa encwamu egi?",
+      "overrideTitle": "Okwihaho okusharaho oku?",
+      "confirmBody": "Ripoota neetunga akabonero k'okukakasibwa kw'abantu. Encwamu yaawe neekora 5× omu Community Confidence Score kandi neehandiikwa omu muhanda gw'okushwijuma.",
+      "submit": "Heereza",
+      "publicReport": "Ripoota ya gavumenti",
+      "aiFindings": "AI ebyarugiremu",
+      "auditNote": "Buri kusharamu nikihandiikwa n'omureeberezi, obwire hamwe n'enshonga (FR-REVIEW-03)."
     }
   },
   "Admin": {
@@ -849,6 +886,12 @@
       "needsAttention": "Nikwetenga okureebererwa"
     },
     "audit": {
+      "actions": {
+        "verdict": {
+          "override": "Okusharamu kukahindurwa",
+          "confirm": "Okusharamu kugumizemu"
+        }
+      },
       "columns": {
         "action": "Ekikorwa"
       },
@@ -992,6 +1035,8 @@
     "panel": {
       "question": "Eki kusharaho kihikire?",
       "group": "Pima encwamu egi",
+      "accurate": "Okuhikire",
+      "inaccurate": "Ekitahikire",
       "signIn": "Yingira",
       "signInRest": "okusharamu encwamu egi. Okusharamu nikuhwera kutendeka Zuula.",
       "youRated": "Okateera eki <strong>{vote, select, accurate {ehikire} other {ekitari kihikire}}</strong>. Noobaasa kukihindura eshaaha yoona.",
@@ -1016,7 +1061,9 @@
       "filter": "Sefeera eby'okugarukamu",
       "all": "Byona ({count})",
       "accurate": "Ehikire ({count})",
-      "inaccurate": "Ekitahikire ({count})"
+      "inaccurate": "Ekitahikire ({count})",
+      "voteAccurate": "Okuhikire",
+      "voteInaccurate": "Ekitahikire"
     }
   },
   "Auth": {
@@ -1215,19 +1262,148 @@
     "globalDescription": "Hariho ekintu ekyagwire kubi obu yaabaire neetwara app. Gyezaho ogaruke, kandi kyaba nikigumizamu kubaho, garuka omu bwire bw'edakiika nkye."
   },
   "Developers": {
+    "metaDescription": "Oheereze ebirikukwata aha kushwijuma kandi oshome Zuula okuhamya amakuru kuruga omu byoma byawe eby'amakuru.",
+    "scopeBadge": "Obuhango: {scope}",
+    "banner": {
+      "eyebrow": "Abakozesa",
+      "description": "Waheereze ebirikukwataho okushwijumwa kandi oshome eby'amazima kuruga omu by'okukoresa byawe."
+    },
     "toc": {
+      "label": "Aha rupapura oru",
       "overview": "Okureeba hamwe",
-      "search": "Ronda ebirikukyebera amazima"
+      "authentication": "Okuhamya",
+      "rateLimits": "Obukwakurizo bw'okushashura",
+      "submit": "Heereza ceeke",
+      "status": "Tunga ekirugiremu",
+      "search": "Ronda ebirikukyebera amazima",
+      "factCheck": "Okukyebera amazima",
+      "errors": "Enshobi",
+      "report": "Funa okukyebera amazima",
+      "access": "Okutunga obushoboorozi"
+    },
+    "preview": {
+      "title": "Okureeba, okurugiirira aha kuhinduka kuhisya v1",
+      "body": "Eki n'okureeba okw'ahonaaho aha API y'abanyamakuru hamwe na banywani. Tikirikubaasa kwetwa hati: enyima neetwara omu kicweka 2, kandi endagiriro, ebishushani hamwe n'ebikomo nibibaasa kuhinduka otakahikire aha muringo 1."
     },
     "overview": {
-      "title": "Okureeba hamwe"
+      "title": "Okureeba hamwe",
+      "body": "Zuula API neeha abanyamakuru abarikwikirizibwa hamwe n'ebitongore ebirikukwatanisa okuhamya kumwe okurikureeta amaani ga zuula.ug. Okukyebera nikugyenda omu maisho:",
+      "step1": "Oheereze ebirikukwata aha <code>POST /v1/checks</code>. Orikutunga okurondoora ID ahonaaho.",
+      "step2": "Poll <code>GET /v1/checks/[trackingId]</code> kuhisya obu embeera yaahwa.",
+      "step3": "Shoma okusharamu, obwesigye bw'obubonero, okushoborora hamwe n'okworekwa kuruga omu birugiremu.",
+      "formatLabel": "Omuringo",
+      "format": "JSON ahari HTTPS (UTF-8). Obwire bw'okukora ni ISO 8601 omuri UTC."
+    },
+    "auth": {
+      "title": "Okuhamya",
+      "body": "Buri kushaba nikwetenga ekishumuruzo API omu mutwe gwa <code>Authorization</code>. Abanyamakuru abahamibwa hamwe n'abebembezi barabaasa kutandikaho kandi bakashazamu ebishumuruzo omuri <link>Akawunti → API okuhikwaho</link>. Ebishumuruzo nibitandika na <code>zl_live_</code> kandi nibyorekwa omurundi gumwe.",
+      "headerLabel": "Omutwe gw'okushaba",
+      "scopes": {
+        "submit": "Oheereze obutumwa, emikura, ebihandiiko hamwe n'ebirikworekwa okushwijumwa.",
+        "read": "Shoma ebirugire omu kushwijuma kandi osherure ebyahandiikirwe."
+      },
+      "serverOnlyTitle": "Guma oine ebishumuruzo aha seva yaawe",
+      "serverOnly": "Otakata API key omu rupapura rwa web, app y'esimu nainga eibikiro ry'abantu boona. Teera esimu aha API kuruga aha seva yaawe kandi oihemu key yoona erikubaasa kuba yaashukire."
+    },
+    "rate": {
+      "title": "Obukwakurizo bw'okushashura",
+      "body": "Buri kishumuruzo nikibaasa kukora {limit} okushaba buri shaaha. Buri kugarukamu nikugamba aha buremeezi bwawe obusigaireho. Ku oraakikoresa, API neegira <code>429 Too Many Requests</code>: rinda omubare gw'obutikitiki omuri <code>Retry-After</code> otakagarukiremu.",
+      "headers": {
+        "limit": "Okushaba okurikwikirizibwa buri shaaha aha kishumuruzo eki.",
+        "remaining": "Okushaba okusigaire omu shaaha eriho.",
+        "reset": "Obu obuhwezi burikugaruka, nk'obwire bwa Unix omu sikonda.",
+        "retryAfter": "Ekoohereza n'ebigarukwamu bya 429: obutikitiki bw'okurinda otakagarukiremu."
+      }
     },
     "table": {
       "field": "Eiziina",
+      "description": "Okushoborora",
       "required": "Ekirikwetengwa"
     },
+    "common": {
+      "requestBody": "Omubiri gw'okushaba",
+      "queryParameters": "Ebirikukwata aha kushaba",
+      "example": "Eky'okureeberaho"
+    },
+    "code": {
+      "copy": "Kopu",
+      "copied": "Kopire",
+      "response": "Okugarukamu · {status}",
+      "responseHeaders": "Emitwe y'okugarukamu"
+    },
+    "submit": {
+      "title": "Heereza ceeke",
+      "body": "Oheereze ekintu kimwe kugira ngu kikakasibwe. Kozesa JSON aha bihandiiko, emikono hamwe n'ebihandiiko, na <code>multipart/form-data</code> aha fayiro z'eby'amakuru. Ekyarugamu nikihika ahonaaho n'okukuratirwa ID; okukyebera kwonka nikutwara obwire bwa 10 obw'obutikitiki bw'ebihandiiko hamwe n'obwire oburikuhika aha dakiika y'eby'amakuru.",
+      "fields": {
+        "type": "Eki orikwohereza: <code>text</code>, <code>url</code>, <code>article</code> nainga <code>media</code>.",
+        "content": "Ekihandiiko ky'okukyebera. Okuhika aha {textMax} enyuguta z'ekihandiiko, {articleMax} ahabw'ekihandiiko. Nikyetengwa ahabw'ebihandiiko hamwe n'ekihandiiko.",
+        "url": "Ekikwatireine na http nainga https ekirikugyenda aha kihandiiko ky'amahurire nainga orupapura rwa web. Nikyetengwa ahabwa url.",
+        "file": "Ekishushani, ekiraka nainga vidiyo, kuhika ahari {size}. JPEG, PNG, WebP, GIF, MP3, M4A, WAV, OGG, AAC, MP4, MOV, WebM nainga 3GP. Nikyetengwa ahabw'ebirikukwata aha by'amakuru.",
+        "headline": "Omutwe gw'ekicweka ogurikubaasa kutooranwa, ogurikuhika aha bunene bwa {max} obubonero.",
+        "language": "Orurimi rw'ebirikukwataho: <code>en</code>, <code>lg</code>, <code>ach</code>, <code>nyn</code>, <code>teo</code>, nainga <code>auto</code> kugira ngu rukimanye (ekyabuzima)."
+      }
+    },
+    "status": {
+      "title": "Tunga ekirugiremu",
+      "body": "Nigaruka omu mbeera ya cheki. Obu embeera eri <code>completed</code>, ekishushani kya <code>result</code> nikikwata aha kintu kyona ekirikukyeberwa. Ebihandiiko by'okurondoora nibireebeka nka <code>ZL-7K3P-Q9</code>.",
+      "statesCaption": "Kyebera embeera",
+      "states": {
+        "queued": "Kikahika kandi kirinzire kukyeberwa.",
+        "processing": "Ebirikugambwa biriyo nibigyezibwa kurabira omu burugo oburikuheebwa ekitiinisa hamwe na AI-okumanya emiringo.",
+        "completed": "Kihwaire. Ebyarugamu biri omu.",
+        "failed": "Okukyebera tikurabaasize kuhwa. Ekishushani ky'enshobi nikishoboorora ahabwenki."
+      }
+    },
     "search": {
-      "title": "Ronda ebirikukyebera amazima"
+      "title": "Ronda ebirikukyebera amazima",
+      "body": "Ronda omu ibiikiro ry'ebitabo erya gavumenti eririmu ebihikire ebirikuhamibwa. Ebirikurugamu nibiteebwaho kurugirira aha kumanya kw'abantu hamwe n'obwire obu birikumara, kandi ebirikuheebwa ebyarugamu bikasigara bitarikushwijumwa.",
+      "params": {
+        "q": "Ebigambo by'okureeberaho omu mitwe, okushoborora hamwe n'ebihandiiko ebirikukyeberwa.",
+        "verdict": "Okushoroora kurugirira aha kucwa omushango: <code>authentic</code>, <code>likely-false</code>, <code>false</code>, <code>ai-generated</code> nainga <code>unverifiable</code>.",
+        "category": "Okushoroora kurugirira aha mutwe, nk'oburwaire nainga oburuuru.",
+        "language": "Kushwijuma orurimi rw'ebintu ebikyeberwa.",
+        "dates": "Okukyebera okwakozirwe ahari nainga bwanyima, kandi ahari nainga batakahikire, ebiro ebi (YYYY-MM-DD).",
+        "page": "Omubare gwa orupapura, ogurikutandikira ahari 1.",
+        "perPage": "Ebirugiremu aha rupapura, kuruga 1 kuhika 50. Eky'okureeberaho 20."
+      }
+    },
+    "factCheck": {
+      "title": "Okukyebera amazima",
+      "body": "Okukyebera okuhwaire hamwe n'ebirugire omu kushwijuma biine enkora egi. Ebirikuteerana nibibaasa kuba biri busha; ebicweka nibibaasa kwongyerwaho batakahikize v1 kwonka tibarikubaasa kubiihamu.",
+      "fields": {
+        "id": "Eby'obutwire ID by'okukyebera amazima agarikushohozibwa.",
+        "trackingId": "Okurondoora ID kukagaruka obu ebirikukwataho byahairweyo.",
+        "verdict": "Kimwe ahari <code>authentic</code>, <code>likely-false</code>, <code>false</code>, <code>ai-generated</code> nainga <code>unverifiable</code>.",
+        "confidence": "Oku Zuula erikwesiga omushango, kuruga ahari 0 kuhika ahari 100.",
+        "summary": "Okushoborora okw'omutaano omu rurimi rw'abantu boona.",
+        "findings": "Ebigambo bikye ebirikworeka ekitahikire n'ekihikire.",
+        "claims": "Ebyagambirwe omu kihandiiko, n'obubonero bw'abakozesa, okushwijuma, enshonga hamwe n'ebirikugamba aha kintu ekirikukishagika.",
+        "citations": "Oburugo obukozesiibwe, hamwe n'eiziina, omutwe, akakwate, ebiro by'okushohoza hamwe n'omwanya: <code>supports</code>, <code>contradicts</code> nainga <code>context</code>.",
+        "aiSignals": "Okukyebera okurikureetwa AI nainga ebirikuhindurwamu, buri kimwe kiine obubonero, omuhendo gw'okusharamu hamwe n'enkora.",
+        "community": "Okubara okuhikire n'okutahikire kuruga omu bantu, abanyamakuru hamwe n'abakugu.",
+        "humanReview": "Okureeba omukugu yaahamya nainga yasingura okusharaho, n'okuhakana kwe.",
+        "checkedAt": "Ku okukyebera kwahwaire."
+      }
+    },
+    "errors": {
+      "title": "Enshobi",
+      "body": "Enshobi nizikoresa obubonero bwa HTTP hamwe n'omubiri gwa JSON ogurikushoma ekyoma <code>code</code> hamwe n'ogurikushoma omuntu <code>message</code>.",
+      "codes": {
+        "bad_request": "Okushaba kwiine oburemeezi nainga ekicweka ky'okushaba tikiriho.",
+        "unauthorized": "Ekishumuruzo API tikiriho, tikihikire nainga kikwihirwe.",
+        "forbidden": "Ekishumuruzo tikirikukora aha nshonga ei endiimu erikwenda.",
+        "not_found": "Tihariho okukyebera nainga okukyebera amazima okurikworeka ID.",
+        "file_too_large": "Ekihandiiko ky'empurizana nikikira 50 MB.",
+        "unsupported_media": "Ekika ky'efayiro tikirikwikirizibwa.",
+        "invalid_content": "Ebirimu ni bikye munonga, bihango munonga nainga tibiri akakwate kahikire.",
+        "rate_limited": "Ekishumuruzo kikakoresa obwire bwakyo obw'okukora. Rinda obwire bwa sekendi kugaruka kugyezaho."
+      }
+    },
+    "report": {
+      "title": "Funa okukyebera amazima"
+    },
+    "access": {
+      "title": "Okutunga obushoboorozi"
     }
   },
   "Related": {
