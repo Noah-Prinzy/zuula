@@ -91,6 +91,14 @@
     "expert": "Lakwed ma ladiro",
     "admin": "Lador tic"
   },
+  "Demo": {
+    "barLabel": "Neno tic ma tye anyim",
+    "viewAs": "Lanyut: neno calo",
+    "signedOut": "Kiketo cing",
+    "previewAs": "Nen calo",
+    "previewNote": "Pe ki keto cing iye. Neno jami ma tye tiyo ki ngec me labol dok pe miyo yoo mo keken.",
+    "demoNote": "Nyutu lanyut me donyo: ngec ma kiyubu, pe tye gin mo ma kicwalo bot lapok tic."
+  },
   "Theme": {
     "change": "Lok kit ma nen kwede",
     "light": "Lero",
@@ -853,42 +861,301 @@
     }
   },
   "Admin": {
+    "loggedInAudit": "Kicoyo i gin ma ki ngiyo",
+    "table": {
+      "emptyTitle": "Pe tye gin mo kany",
+      "emptyBody": "Pe tye lain mo ma rwate ki jami me yubu."
+    },
     "overview": {
-      "needsAttention": "Miti me neno"
+      "kpis": {
+        "f1": "Ngiyo coc F1",
+        "deepfake": "Rwom me tic pa deepfake",
+        "mau": "Lutic ma tiyo dwe ki dwe",
+        "latency": "Kare me ngolo kop",
+        "ratings": "Rwom ma lubu ngolo kop",
+        "turnaround": "Ladiro me loko jami",
+        "partners": "API luwot",
+        "languages": "Leb ma kicwako"
+      },
+      "onTarget": "I kom yub",
+      "belowTarget": "Piny pa gin ma kiyubu",
+      "target": "{direction, select, min {{status} · target ≥ {value}} other {{status} · miti ≤ {value}}}",
+      "checksTitle": "Pimo nino ki nino",
+      "checksTotal": "{count} i nino 14 ma okato",
+      "checksLabel": "Pimo",
+      "showTable": "Nyut calo meja",
+      "date": "Nino",
+      "mixTitle": "Ngolo kop i dwe man",
+      "mixTotal": "{count} ngolo kop",
+      "healthTitle": "Yot kom pa yub",
+      "needsAttention": "Miti me neno",
+      "targetsTitle": "Miti me mwaka acel",
+      "targetsMet": "{met} me {total} i kom gin ma ki keto"
     },
     "audit": {
       "actions": {
         "verdict": {
           "override": "Adwoki ne ki loko woko",
           "confirm": "Adwoki me ngolo kop omoko"
+        },
+        "user": {
+          "role_change": "Tic olokke",
+          "suspend": "Latic ma ki juku tic",
+          "reinstate": "Latic ma ki dwoko cen"
+        },
+        "source": {
+          "add": "Kiketo yoo me nongo",
+          "deactivate": "Kikwanyo woko"
+        },
+        "broadcast": {
+          "send": "Kicwalo lok angeya"
+        },
+        "settings": {
+          "update": "Kikobo kit ma jami tye kwede"
+        },
+        "moderation": {
+          "remove": "Jami ma tye iye ki kwanyo woko"
         }
       },
       "columns": {
-        "action": "Tim"
+        "time": "Cawa",
+        "actor": "Latuk filim",
+        "action": "Tim",
+        "target": "Miti ki lok matut"
       },
-      "action": "Tim"
+      "searchPlaceholder": "Yeny jami ma ki keto iye cwiny ki lok matut…",
+      "searchLabel": "Yeny rekod me ngiyo tic",
+      "actor": "Latuk filim",
+      "everyone": "Dano weng",
+      "action": "Tim",
+      "allActions": "Tim weng",
+      "exported": "{count, plural, one {Kicwalo woko # gin ma ki keto iye} other {Kicwalo woko # jami}}",
+      "exportCsv": "Cato jami ma woko CSV",
+      "summary": "{count, plural, one {# gin ma kiketo. Coc ne tye ki medo keken: coc ne pe kitwero yubu onyo jwayo, ma kwako ki bot ludito tic.} other {# coc. Coc ne obedo me medo keken: coc pe kitwero yubu onyo kwanyo, ma iye tye iye ki ludito tic.}}",
+      "emptyTitle": "Pe tye gin mo"
     },
     "broadcasts": {
       "channels": {
-        "In-app": "I-app"
+        "In-app": "I-app",
+        "Push": "Diro"
       },
-      "administrator": "Lador tic"
+      "audiences": {
+        "everyone": "Dano weng",
+        "northern": "But lobo ma kumalo",
+        "eastern": "But lobo ma tung kunyango",
+        "western": "But lobo ma tung kupoto ceng",
+        "health": "Lulub kor yot kom",
+        "elections": "Lulub kor yer"
+      },
+      "errors": {
+        "title": "Co coc ma mako wiye (ma tye ki nyig coc 8 onyo makato).",
+        "message": "Tit ngo ma pe tye ada ki ngo me atima (ma romo 30 kit ma kicoyo kwede).",
+        "channels": "Yer dul mo acel."
+      },
+      "administrator": "Lador tic",
+      "sent": "Kicwalo lok angeya",
+      "sentSummary": "{count} dano · {channels}",
+      "composeTitle": "Lok manyen me konyo dano",
+      "composeDescription": "Pi ngec ma pe atir ma tye ka nya oyot. Kicwalo bot dano weng ma i kin jo ma tye, kadi bed ni gin gitye ki yub me ciko dano.",
+      "reviewAndSend": "Ngiyo ki cwalo",
+      "headline": "Wi lok",
+      "headlinePlaceholder": "e.g. Lok me ciko dano: kubbe ma pe atir",
+      "message": "Kwena",
+      "messagePlaceholder": "Gin ma pe atir, gin ma tye ada ki gin ma dano omyero gutim.",
+      "messageCount": "{count}/{max} · rwatte i SMS aryo",
+      "linkReport": "Kube me moko lok ada (ma kiyero)",
+      "none": "Pe tye",
+      "audience": "Lutela",
+      "audienceEstimate": "Dano ma romo {count}.",
+      "severity": "Rac pa peko",
+      "severities": {
+        "critical": "Pire tek"
+      },
+      "severityHigh": "High: me ngeyo",
+      "severityCritical": "Miti: mi ngec ki keto cal ma lac i pot buk weng",
+      "channelsLegend": "Yoo me kobo",
+      "preview": "Nen kong",
+      "previewTitle": "Wi lok ma i keto",
+      "previewBody": "Kwena ni nen kany.",
+      "confirmTitle": "Cwalo bot dano {count}?",
+      "confirmBody": "{audience} · {channels} · {severity}. Lok ma ki cwalo iwi yamo pe kitwero dwoko cen ka SMS ki cwalo kwena okato woko.",
+      "send": "Cwal lok angeya",
+      "sentTitle": "Cwalo lok angeya",
+      "reached": "{audience} · {channels} · oo i {count}",
+      "opened": " · oyabo {percent}%"
+    },
+    "moderation": {
+      "doneBody": "Jami manyen nen kany ka gi oo.",
+      "resolvedBody": "Kicoyo i gin ma ki ngiyo",
+      "recalculatedBody": "Wel ma ki kwano odoco. Ki keto i yoo me ngiyo lok.",
+      "noReports": "Pe tye adwogi tic mo ma oyabe",
+      "readers": "{count, plural, one {# lakwan} other {# lukwan}}",
+      "sendToReview": "Cwal me ngiyo",
+      "sentToReview": "Cwalo bot ladiro me ngiyo",
+      "dismiss": "Kwany woko",
+      "dismissed": "Ripot ma ki kwero woko",
+      "removeComment": "Kwany lok ma ki waco",
+      "commentRemoved": "Kikwanyo lok ma kiwaco",
+      "noManipulation": "Pe tye tic mo me rwom ma byek tye iye",
+      "likelyCoordinated": "{percent}% nen calo ki ribo",
+      "burst": "{direction, select, accurate {{count} “ma tye kakare” ma ki keto i {window}} other {{count} “ma pe tye kakare” rwom me {window}}}",
+      "discount": "Rwom me wel ma ki dwoko piny",
+      "discounted": "{count} rwom me wel ma ki dwoko piny",
+      "suspendAccounts": "Juko tic ki account",
+      "suspended": "Kijuko tic ki rwom me nongo cente odok piny",
+      "notManipulation": "Pe obedo tic ki diro",
+      "genuine": "Ki keto macalo gin ma ada",
+      "reportsTab": "Lok ma ki coyo ({count})",
+      "manipulationTab": "Loko rwom me tic ({count})"
+    },
+    "settings": {
+      "errors": {
+        "suspended": "Ceiling ma ki juku tic kwede omyero obed piny pa ceiling me medo rwom.",
+        "escalated": "Rwom me medo wel omyero obed piny loyo rwom ma “gipenye”.",
+        "inverted": "“Lapeny” ma ki penyo tye ka lokke.",
+        "verified": "“Lapeny” ma ki keto iye tam omyero ogik piny me Community Verified.",
+        "ratings": "Rwom me rwate matidi omyero omede: ma ki penyo ≤ ma ki medo rwom me tic iye ≤ ma ki juku."
+      },
+      "unsaved": "{count, plural, one {# aloka loka ma pe ki gwoko} other {# aloka-loka ma pe ki gwoko}}",
+      "specDefaults": "Cik me bedo ki kare",
+      "save": "Gwoko kit ma kiyubu kwede",
+      "thresholdsTitle": "Rwom me medo rwom",
+      "thresholdsDescription": "Ka rwom me kabedo oloko kit ma ngolo kop tye kwede (§9.2). Tiyo i kom rwom manyen cutcut.",
+      "verifiedAt": "Lwak oyee ni tye ada onyo malo",
+      "questionedFrom": "“Lapeny” ki i",
+      "questionedTo": "“Gipenyo” nio wa",
+      "withMoreThan": "ki makato",
+      "ratings": "rating",
+      "escalateAt": "Cwal bot ngat ma ladiro me ngiyo lok i rwom ma piny",
+      "suspendAt": "Juku ngolo kop i rwom ma onyo piny",
+      "weightsTitle": "Pim me pek",
+      "weightsDescription": "Tic acel acel tye ki wel ma rom mene i Community Confidence Score (§9.1).",
+      "operationsTitle": "Tic",
+      "operationsDescription": "Ngiyo kare me agiki, API lageng ki yoo me pwonye odoco (§9.3).",
+      "sla": "Ngiyo pa ladiro SLA",
+      "hours": "cawa",
+      "slaHint": "Kit: 48 cawa.",
+      "rateLimit": "Rwom me API ma pe ki keto",
+      "perHour": "req / cawa",
+      "rateHint": "Pi lagony. Spec: 100.",
+      "retraining": "Pwonyo ki yoo manyen",
+      "weekly": "I cabit ki cabit (spec)",
+      "monthly": "Dwe ki dwe",
+      "minCcs": "Ngec me pwonye ma aa ki CCS malo",
+      "minCcsHint": "Lok ma ki yee iye keken aye doko lanyut me pwonye. Spec: 85%.",
+      "confirmTitle": "{count, plural, one {Gwoko # aloka-loka?} other {Gwok # aloka-loka?}}",
+      "confirmBody": "Magi tiyo i kom kabedo weng dok ki coyo gi i coc me ngiyo lok.",
+      "saved": "Kicwalo yub ma kigwoko"
     },
     "sources": {
       "types": {
-        "media": "Ot poko lok angeya"
+        "media": "Ot poko lok angeya",
+        "government": "Gamente",
+        "fact-checker": "Lamii lok ada",
+        "academic": "Kwan"
       },
+      "errors": {
+        "name": "Dony i nying ma aa ki iye.",
+        "domain": "Ket domain calo monitor.co.ug"
+      },
+      "addTitle": "Medo ka ma genne",
+      "dialogDescription": "Lok ma ki waco ni tye ka ngiyo lok ki jami ducu matye.",
       "name": "Nying",
-      "allTypes": "Kit weng"
+      "type": "Kit",
+      "languages": "Leb",
+      "languagesHint": "Ma ki poko ki comma.",
+      "tier": "Rwom me gen",
+      "tiers": {
+        "1": "Tier 1: primary, pek madit loyo",
+        "2": "Tier 2: cukul me cinia ma oywek",
+        "3": "Tier 3: lok ma orumu keken"
+      },
+      "addSource": "Medo lok ma aa ki iye",
+      "columns": {
+        "source": "Kama oaa ki iye",
+        "type": "Kit",
+        "languages": "Leb",
+        "crawl": "Kwanyo me agiki",
+        "actions": "Tim"
+      },
+      "inactive": "Pe tiyo",
+      "failing": "Poto",
+      "actionsFor": "Tic pi {name}",
+      "edit": "Yubu",
+      "recrawl": "Lok ma kicwalo kombedi",
+      "recrawlQueued": "Nwoyo kwanyo {name} ki keto i lain",
+      "deactivate": "Juko tic",
+      "reactivate": "Cako tic",
+      "deactivated": "{name} pe tiyo",
+      "reactivated": "{name} ocako tic odoco",
+      "active": "Kama jami aa ki iye",
+      "activeCount": "{active} / {target} gin ma ki keto iye cwiny",
+      "activeLabel": "{active} me {target} kama aa ki iye",
+      "targetNote": "Lok ma ki loko mito ni {target} Uganda ki lobo mapat-pat ma aa ki iye (FR-DETECT-06).",
+      "crawlsFailing": "Crawls pe tye katimo maber",
+      "searchPlaceholder": "Yeny ki nying onyo domain…",
+      "searchLabel": "Yeny lok ma aa ki iye",
+      "allTypes": "Kit weng",
+      "updated": "{name} ki ngeyo",
+      "added": "{name} ki medo"
+    },
+    "trends": {
+      "checksLabel": "Pimo",
+      "chartTitle": "Pimo dwe ki dwe",
+      "downloaded": "CSV okato ki i intanet",
+      "exportAll": "Cwal woko jami weng calo CSV",
+      "soFar": "{latest} pi kare man: {latestCount} ngiyo. {previous}: {previousCount}.",
+      "monthlyTitle": "Ripot me dwe ki dwe",
+      "columns": {
+        "month": "Dwe",
+        "checks": "Pimo",
+        "false": "Goba onyo nen calo goba",
+        "ai": "AI-ma kiyubu",
+        "topics": "Lok ma pigi tego",
+        "time": "Cawa ma rom",
+        "export": "Cato jami woko"
+      },
+      "monthDownloaded": "{month} okato ki i intanet",
+      "pdfNote": "PDF miyo ripot ki cal ma nyutu jami ki lok me tam pi luwote ma kiyubu ki tic me miyo ripot (Phase 3)."
     },
     "users": {
       "statuses": {
-        "suspended": "Kijuko tic"
+        "active": "Tye ka tic",
+        "suspended": "Kijuko tic",
+        "pending": "Ma pud pe ki yee"
       },
       "columns": {
-        "status": "Rwom"
+        "user": "Latic",
+        "role": "Tic",
+        "status": "Rwom",
+        "ratings": "Rwom",
+        "lastActive": "Ma pud tye ka tic",
+        "actions": "Tim"
       },
+      "joined": "oribbe ki {date}",
+      "actionsFor": "Tic pi {name}",
+      "approve": "Ye ni ki mi twero",
+      "approved": "{name} dong tye lacoo lok angeya ma ki moko",
+      "changeRole": "Lok tic",
+      "reactivate": "Cako tic",
+      "reactivated": "{name} ocako tic odoco",
+      "suspend": "Juko tic",
+      "roleChanged": "{name} dong tye {role}",
+      "suspendedToast": "{name} kiryemo woko",
+      "suspendedBody": "Rwom gi dong pe kwanne. Kicoyo i yoo me ngiyo lok.",
+      "searchPlaceholder": "Yeny ki nying onyo email…",
+      "searchLabel": "Yeny joo ma tiyo kwede",
+      "role": "Tic",
+      "allRoles": "Tic weng",
       "status": "Rwom",
+      "allStatuses": "Rwom weng",
+      "summary": "{shown} pa {total} lutic · {pending} tye ka kuru moko ticgi · {suspended} ki juku ticgi",
+      "roleTitle": "Me {name} {role}?",
+      "suspendTitle": "Juko {name}?",
+      "roleTfa": "Gibimito keto yoo me moko ni ngat moni tye ki gin aryo ma mite me donyo i kakube.",
+      "roleNow": "Yoo me donyo gi lokke oyot-oyot.",
+      "suspendBody": "Pe gitwero keto cinggi, ki rwom megi juku kwano i kom makato.",
+      "reasonPlaceholder": "Tyen lok (ma kicoyo i rekod me ngiyo tic)",
       "reason": "Tyen lok"
     }
   },
@@ -1286,6 +1553,7 @@
     },
     "table": {
       "field": "Nying",
+      "type": "Kit",
       "description": "Tito",
       "required": "Mite"
     },
@@ -1365,14 +1633,20 @@
         "file_too_large": "Lok ma ki lwongo ni media file dit loyo 50 MB.",
         "unsupported_media": "Kit me pwail eni pe ki yee.",
         "invalid_content": "Lok ne cek tutwal, bor tutwal onyo pe obedo kakube matye atir.",
-        "rate_limited": "Lagony otiyo ki kare ne me tic. Kur pi nwoyo ingee cekon mogo."
+        "rate_limited": "Lagony otiyo ki kare ne me tic. Kur pi nwoyo ingee cekon mogo.",
+        "server_error": "Gin mo otime marac i tenge wa. Tem doki lacen."
       }
     },
     "report": {
-      "title": "Nong lok ada"
+      "title": "Nong lok ada",
+      "body": "Dwoko lok ada acel ma kicoyo ki ID: ngec marom ma tye i kom lwak <link>pot buk me adwogi tic</link>, ma kwako ngolo kop, gen, kit ma kicoyo kwede, lok ma kicoyo ki rwom me lwak."
+    },
+    "webhooks": {
+      "body": "Kiyubu kacel ki API wek pe i bed ki yub me penyo: lwongo cen bot lapok tic mamegi ka adwogi me ngiyo tye atera. But dul man kibipong kace cwalo webhook ki yubu i Phase 2. Bots me Zuula i <link>WhatsApp ki Telegram</link> tye ka yubu gi i kom gedo marom."
     },
     "access": {
-      "title": "Nong yoo"
+      "title": "Nong yoo",
+      "body": "Lucoo lok angeya ma ki moko ki ludito tic twero cweyo lagony tin i <keys>Account → API donyo</keys>; obi cako tic ka API ocako tic i Phase 2. Pi ribbe pa ot lok angeya onyo rwom me kigeng madit, cwali email <email>hello@zuula.ug</email>. Tic ki API nyutu ni iyee <terms>API lok</terms>."
     }
   },
   "Related": {

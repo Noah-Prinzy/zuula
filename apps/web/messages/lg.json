@@ -91,6 +91,14 @@
     "expert": "Omwekenneenya Omukugu",
     "admin": "Omukulembeze"
   },
+  "Demo": {
+    "barLabel": "Okulaba omulimu",
+    "viewAs": "Demo: okulaba nga",
+    "signedOut": "Okufuluma",
+    "previewAs": "Okulaba nga bwe kinaaba",
+    "previewNote": "Tewali kya kuwandiikibwa. Okulaba okusooka kukozesa obubaka obutonotono era tekukkiriza kufuna buyinza.",
+    "demoNote": "Okulaga obubonero: ebyokulabirako, tewali kintu kyonna kitwalibwa ku sseva."
+  },
   "Theme": {
     "change": "Kyusa theme",
     "light": "Ekitangaala",
@@ -891,43 +899,307 @@
     }
   },
   "Admin": {
+    "loggedInAudit": "Yateekeddwa mu kunoonyereza ku byafaayo.",
+    "table": {
+      "emptyTitle": "Tewali kintu wano",
+      "emptyBody": "Tewali layini zikwatagana na bino ebisunsulwamu."
+    },
     "overview": {
-      "needsAttention": "Ekyetaaga okufaako"
+      "kpis": {
+        "f1": "Okuzuula ebigambo F1",
+        "deepfake": "Obutuufu bwa deepfake",
+        "mau": "Abakozesa abaliwo buli mwezi",
+        "latency": "Ekiseera ky'okusalawo ku bigambo",
+        "ratings": "Okupima okusinziira ku nsala",
+        "turnaround": "Okukyusa okw'ekikugu",
+        "partners": "API bannamikago",
+        "languages": "Ennimi ezisobola okuwagirwa"
+      },
+      "onTarget": "Ku kigendererwa",
+      "belowTarget": "Wansi w'ekigendererwa",
+      "target": "{direction, select, min {{status} · ekigendererwa ≥ {value}} other {{status} · ekigendererwa ≤ {value}}}",
+      "checksTitle": "Okukebera buli lunaku",
+      "checksTotal": "{count} mu nnaku 14 eziyise",
+      "checksLabel": "Okukebera",
+      "showTable": "Laga nga olukalala",
+      "date": "Olunaku",
+      "mixTitle": "Okusalawo mu mwezi guno",
+      "mixTotal": "{count} ensala",
+      "healthTitle": "Obulamu bw'enkola",
+      "needsAttention": "Ekyetaaga okufaako",
+      "targetsTitle": "Ebiruubirirwa by'omwaka ogusooka",
+      "targetsMet": "{met} ku {total} ku kigendererwa"
     },
     "audit": {
       "actions": {
         "verdict": {
           "override": "Okusalawo kuggiddwamu",
           "confirm": "Okusalawo kwe kukakasiddwa"
+        },
+        "user": {
+          "role_change": "Omugaso gukyusiddwa",
+          "suspend": "Omukozesa yasaziddwamu",
+          "reinstate": "Omukozesa azzeemu okuddamu"
+        },
+        "source": {
+          "add": "Ensibuko eyongerwako",
+          "deactivate": "Ensibuko etabuddwamu"
+        },
+        "broadcast": {
+          "send": "Okusindika obubaka ku mpewo"
+        },
+        "settings": {
+          "update": "Okuteekateeka kikyusiddwa"
+        },
+        "moderation": {
+          "remove": "Ebirimu biggyiddwamu"
         }
       },
       "columns": {
-        "action": "Ekikolwa"
+        "time": "Ebiseera",
+        "actor": "Omuzannyi w'ebifaananyi",
+        "action": "Ekikolwa",
+        "target": "Ekigendererwa n'ebikwata ku nsonga"
       },
-      "action": "Ekikolwa"
+      "searchPlaceholder": "Noonya ebigendererwa n'ebirala…",
+      "searchLabel": "Noonya mu logi ya okubalirira",
+      "actor": "Omuzannyi w'ebifaananyi",
+      "everyone": "Buli omu",
+      "action": "Ekikolwa",
+      "allActions": "Ebikolwa byonna",
+      "exported": "{count, plural, one {Okutunda ebintu # ebweru} other {Ebyatwaliddwa ebweru # ebiyingiziddwa}}",
+      "exportCsv": "Okutunda ebweru CSV",
+      "summary": "{count, plural, one {# entry. Olukalala luno lwa kugattako byokka: ebintu tebisobola kukyusibwa oba okusangulwamu, nga n'abakulu bwe batyo.} other {# ebintu. Olukalala luno lugattako bwokka: ebintu tebisobola kukyusibwa oba okusangulwa, nga n'abakulembeze tebakkirizibwa kukikola.}}",
+      "emptyTitle": "Tewali kintu kyonna"
     },
     "broadcasts": {
       "channels": {
         "In-app": "Mu-app",
+        "Push": "Sindika",
         "Email": "Emeeri y'obubaka"
       },
-      "administrator": "Omukulembeze"
+      "audiences": {
+        "everyone": "Buli omu",
+        "central": "Ekitundu ky'omu masekkati",
+        "northern": "Ekitundu ky'obukiikakkono",
+        "eastern": "Ekitundu ky'obuvanjuba",
+        "western": "Ekitundu ky'obugwanjuba",
+        "health": "Abagoberezi b'eby'obulamu",
+        "elections": "Abawagizi b'okulonda"
+      },
+      "errors": {
+        "title": "Wandiika omutwe ogulabika obulungi (ogw'obutono 8 ebbaluwa).",
+        "message": "Nnyonnyola ekikyamu n'ekyokukola (waakiri 30 abantu).",
+        "channels": "Londa waakiri omukutu gumu."
+      },
+      "administrator": "Omukulembeze",
+      "sent": "Okusindika obubaka ku mpewo",
+      "sentSummary": "Abantu {count} · {channels}",
+      "composeTitle": "Okulangirira okw'amangu okuggya",
+      "composeDescription": "Ku bubaka obukyamu obw'omutawaana ogw'amaanyi obusaasaana mangu. Busindikibwa eri buli omu ali mu kibiina, ka babe nga balina enteekateeka ki ey'okulabula.",
+      "reviewAndSend": "Okwekenneenya n'okusindika",
+      "headline": "Omutwe",
+      "headlinePlaceholder": "Okugeza. Okulabula ku bubbi: emikutu gy'obubaka obw'obwereere obukyamu",
+      "message": "Obubaka",
+      "messagePlaceholder": "Kiki ekikyamu, kiki ekituufu, era abantu kye balina okukola.",
+      "messageCount": "{count}/{max} · ekkirira mu bibiri SMS",
+      "linkReport": "Akakwate ku kukebera amazima (kya kyeyagalire)",
+      "none": "Tewali",
+      "audience": "Abawuliriza",
+      "audienceEstimate": "Abantu nga {count}.",
+      "severity": "Obunene",
+      "severities": {
+        "high": "Waggulu",
+        "critical": "Ekikulu"
+      },
+      "severityHigh": "Okuva waggulu: okutegeeza",
+      "severityCritical": "Ekikulu: kutegeeza n'okussa ekirango ku buli lupapula",
+      "channelsLegend": "Emikutu",
+      "preview": "Okulaba mu bujjuvu",
+      "previewTitle": "Omutwe gwo ogw'oku ntikko",
+      "previewBody": "Obubaka bwo bulabika wano.",
+      "confirmTitle": "Okusindika eri abantu {count}?",
+      "confirmBody": "{audience} · {channels} · {severity}. Okuweereza tekusobola kuddizibwa nga SMS era obubaka bw'okukubira busindikiddwa.",
+      "send": "Sindika obubaka",
+      "sentTitle": "Okusindika obubaka",
+      "reached": "{audience} · {channels} · baatuuka ku {count}",
+      "opened": " · yagguddewo {percent}%"
+    },
+    "moderation": {
+      "doneBody": "Ebintu ebipya birabika wano nga bwe bijja.",
+      "resolvedBody": "Yateekeddwa mu kunoonyereza ku byafaayo.",
+      "recalculatedBody": "Okubala kuddamu okukolebwa. Kuteekeddwa mu lugendo lw'okukebera.",
+      "noReports": "Tewali alipoota zikkirizibwa",
+      "readers": "{count, plural, one {# omusomi} other {# abasomi}}",
+      "sendToReview": "Sindika okwekeneenya",
+      "sentToReview": "Kisindikiddwa okwekenneenyezebwa abakugu",
+      "dismiss": "Ggyako",
+      "dismissed": "Alipoota yagobwa",
+      "removeComment": "Ggyako okwogera",
+      "commentRemoved": "Ebyogerwa byaggyiddwawo",
+      "noManipulation": "Tewali kikolwa kyonna ekiteeberezebwa",
+      "likelyCoordinated": "{percent}% kirabika nga kyakwatagana",
+      "burst": "{direction, select, accurate {{count} “okutuufu” okupima mu {window}} other {{count} “ebitali bituufu” ebipimo mu {window}}}",
+      "discount": "Okupima okw'okukendeeza ku bbeeyi",
+      "discounted": "Okukendeeza ku kuteebereza kwa {count}",
+      "suspendAccounts": "Okusazaamu akawunti",
+      "suspended": "Akaunti ezisaziddwamu n'okukendeeza ku bubonero",
+      "notManipulation": "Si kukyusa",
+      "genuine": "Ekyolekedde nga ekituufu",
+      "reportsTab": "Ebiri mu mawulire ({count})",
+      "manipulationTab": "Okukozesa obubi okupima ({count})"
+    },
+    "settings": {
+      "errors": {
+        "suspended": "Silingi ey'okutimba erina okuba wansi wa silingi ey'okulinnya.",
+        "escalated": "Omutindo gw'okwongera gulina okuba wansi w'ekitundu \"ekibuuzibwa\".",
+        "inverted": "Ekigero ky'ekibuuzo kikyusiddwa.",
+        "verified": "Ekigero \"ekibuuzibwa\" kirina okukoma wansi wa Community Verified.",
+        "ratings": "Okugereka okutono kulina okweyongera: ekibuuzo ≤ kyayongerwa ku kigero eky'okubiri ≤ kyawummuzibwa."
+      },
+      "unsaved": "{count, plural, one {# enkyukakyuka etakakasiddwa} other {# enkyukakyuka ezitakuumiddwa}}",
+      "specDefaults": "Okusaba okw'okukkiriza",
+      "save": "Okutereka entegeka",
+      "thresholdsTitle": "Obukomo bw'okweyongera",
+      "thresholdsDescription": "Obubonero bw'ekitundu bwe bukyusa embeera y'ensala (§9.2). Kikola ku bubonero obupya mu bwangu.",
+      "verifiedAt": "Abantu b'ekitundu bakakasiddwa oba okusingawo",
+      "questionedFrom": "“Ekibuuzo” okuva ku",
+      "questionedTo": "“Okubuuzibwa” okutuuka ku",
+      "withMoreThan": "nga waliwo ebisingawo",
+      "ratings": "okupima",
+      "escalateAt": "Kisindike eri abakugu okwekenneenya ku oba wansi wa",
+      "suspendAt": "Sazaamu ensala eyo oba wansi waayo",
+      "weightsTitle": "Obuzito bw'okupima",
+      "weightsDescription": "Buli kifo ky'obuvunaanyizibwa kibala ki mu Community Confidence Score (§9.1).",
+      "operationsTitle": "Okukola",
+      "operationsDescription": "Okwekenneenya ennaku z'okukola, API obukomo n'okuddamu okutendeka enkola (§9.3).",
+      "sla": "Okwekenneenya kwa bakugu SLA",
+      "hours": "essaawa",
+      "slaHint": "Spec: 48 essaawa.",
+      "rateLimit": "Ekikomo ky'omuwendo ogwa bulijjo API",
+      "perHour": "req / essaawa",
+      "rateHint": "Ku buli kiyiiye. Spec: 100.",
+      "retraining": "Okutendeka okuddamu",
+      "weekly": "Buli wiiki (spec)",
+      "monthly": "Buli mwezi",
+      "minCcs": "Obubaka obutendekero okuva mu CCS waggulu",
+      "minCcsHint": "Ebyo ebikwatagana ennyo byokka bye bifuuka ebyokulabirako mu kutendekebwa. Spec: 85%.",
+      "confirmTitle": "{count, plural, one {Okuuma # okukyusa?} other {Okuuma # enkyukakyuka?}}",
+      "confirmBody": "Bino bikwata ku mukutu gwonna era biwandiikibwa mu katabo akakola okunoonyereza.",
+      "saved": "Ebyokutegeka bikuumiddwa"
     },
     "sources": {
       "types": {
-        "media": "Ekitongole ky'amawulire"
+        "media": "Ekitongole ky'amawulire",
+        "government": "Gavumenti",
+        "fact-checker": "Omukebera amazima",
+        "international": "Ensi yonna",
+        "academic": "Ebyensoma"
       },
+      "errors": {
+        "name": "Yingiza erinnya ly'ensibuko.",
+        "domain": "Yingizaamu ekitundu nga monitor.co.ug."
+      },
+      "editTitle": "Kola {name}",
+      "addTitle": "Gatta ensibuko eyeesigika",
+      "dialogDescription": "Okwemulugunya kwekenneenyezebwa buli nsibuko eriwo.",
       "name": "Erinnya",
-      "allTypes": "Ebika byonna"
+      "domain": "Ekifo ky'obuyinza",
+      "type": "Ekika",
+      "languages": "Ennimi",
+      "languagesHint": "Ebyawandiikibwa nga byawuliddwaamu obubonero.",
+      "tier": "Ekibiina ky'obwesigwa",
+      "tiers": {
+        "1": "Tier 1: eyasooka, obuzito obusingayo",
+        "2": "Tier 2: essomero lya siniya erimanyiddwa",
+        "3": "Tier 3: embeera yokka"
+      },
+      "addSource": "Yongerako ensibuko",
+      "columns": {
+        "source": "Ensibuko",
+        "type": "Ekika",
+        "languages": "Ennimi",
+        "crawl": "Okukwata okusembayo",
+        "actions": "Ebikolwa"
+      },
+      "inactive": "Tewali kikolebwa",
+      "failing": "Okulemererwa",
+      "actionsFor": "Ebikolwa ku {name}",
+      "edit": "Kola enkyukakyuka",
+      "recrawl": "Okuddamu okukola kati",
+      "recrawlQueued": "Okuddamu okuwandiika {name} kuteekeddwa mu layini",
+      "deactivate": "Kozesaamu",
+      "reactivate": "Okuddamu okukola",
+      "deactivated": "{name} teyali mu nkola",
+      "reactivated": "{name} yaddamu okukola",
+      "active": "Ensibuko ezikola",
+      "activeCount": "{active} / {target} ekigendererwa",
+      "activeLabel": "{active} ku {target} ensibuko",
+      "targetNote": "Ekikolebwa kyetaaga waakiri {target} Uganda n'ebiwandiiko by'ensi yonna (FR-DETECT-06).",
+      "crawlsFailing": "Okutambula nga kulemereddwa",
+      "searchPlaceholder": "Noonya nga weeyambisa erinnya oba domain…",
+      "searchLabel": "Noonya ensibuko",
+      "allTypes": "Ebika byonna",
+      "updated": "{name} etuukiddwako",
+      "added": "{name} eyongezeddwa"
+    },
+    "trends": {
+      "checksLabel": "Okukebera",
+      "chartTitle": "Okukebera buli mwezi",
+      "downloaded": "CSV etuuse okukozesebwa",
+      "exportAll": "Tumira ebintu byonna nga CSV",
+      "soFar": "{latest} okutuuka kati: {latestCount} okukebera. {previous}: {previousCount}.",
+      "monthlyTitle": "Alipoota ez'omwezi",
+      "columns": {
+        "month": "Omwezi",
+        "checks": "Okukebera",
+        "false": "Obulimba oba obuyinza okuba obulimba",
+        "ai": "AI-ekoleddwa",
+        "topics": "Emitwe egisinga obukulu",
+        "time": "Ekiseera ekya bulijjo",
+        "export": "Okutunda ebweru"
+      },
+      "monthDownloaded": "{month} etuuse okukozesebwa",
+      "pdfNote": "PDF alina ebipande n'ebiwandiiko by'okwogera ku bannakyewa bikolebwa ekitongole ekikola ku by'okulaga (Omutendera 3)."
     },
     "users": {
       "statuses": {
-        "suspended": "Okusazibwamu"
+        "active": "Ekikola",
+        "suspended": "Okusazibwamu",
+        "pending": "Ekyetaaga okukakasibwa"
       },
       "columns": {
-        "status": "Embeera"
+        "user": "Omukozesa",
+        "role": "Ekifo",
+        "status": "Embeera",
+        "ratings": "Okupima",
+        "lastActive": "Eyakolako ekisembayo",
+        "actions": "Ebikolwa"
       },
+      "joined": "yegasse ku {date}",
+      "actionsFor": "Ebikolwa ku {name}",
+      "approve": "Okukkiriza okuwandiisa",
+      "approved": "{name} kati ye munnamawulire akakasiddwa",
+      "changeRole": "Kyusa omulimu",
+      "reactivate": "Okuddamu okukola",
+      "reactivated": "{name} yaddamu okukola",
+      "suspend": "Okuyimiriza",
+      "roleChanged": "{name} kati ye {role}",
+      "suspendedToast": "{name} yasaziddwaamu",
+      "suspendedBody": "Okupima kwabwe tekukyabalibwa. Kweyongera mu ngeri y'okulondoola.",
+      "searchPlaceholder": "Noonya nga okozesa erinnya oba email…",
+      "searchLabel": "Noonya abakozesa",
+      "role": "Ekifo",
+      "allRoles": "Ebifo byonna",
       "status": "Embeera",
+      "allStatuses": "Embeera zonna",
+      "summary": "{shown} ku {total} abakozesa · {pending} balindirira okukakasibwa · {suspended} basaziddwamu",
+      "roleTitle": "Okukola {name} {role}?",
+      "suspendTitle": "Okusazaamu {name}?",
+      "roleTfa": "Bajja kwetaaga okuteekawo enkola ey'okukakasa ebintu bibiri ku kuyingira okulala.",
+      "roleNow": "Okutuuka kwabwe kukyuka amangu ddala.",
+      "suspendBody": "Tebasobola kussa mukono, era n'ebibalo byabwe bikoma okubala ku bubonero.",
+      "reasonPlaceholder": "Ensonga (eyawandiikibwa mu log ya audit)",
       "reason": "Ensonga"
     }
   },
@@ -1324,6 +1596,7 @@
     },
     "table": {
       "field": "Erinnya",
+      "type": "Ekika",
       "description": "Okunnyonnyola",
       "required": "Kyetaagisa"
     },
@@ -1403,14 +1676,20 @@
         "file_too_large": "Ebyokukozesa mu mawulire binene okusinga 50 MB.",
         "unsupported_media": "Ekika ky'omuwendo tekikkirizibwa.",
         "invalid_content": "Ebiri mu mawulire bitono nnyo, biwanvu nnyo oba si kya kikwatagana.",
-        "rate_limited": "Ekkalaamu ekozesezza ekiragiro kyayo eky'essaawa. Linda okuddamu oluvannyuma lw'obutikitiki."
+        "rate_limited": "Ekkalaamu ekozesezza ekiragiro kyayo eky'essaawa. Linda okuddamu oluvannyuma lw'obutikitiki.",
+        "server_error": "Waliwo ekintu ekyagenda bubi ku ludda lwaffe. Gezako nate oluvannyuma."
       }
     },
     "report": {
-      "title": "Funa okukebera amazima"
+      "title": "Funa okukebera amazima",
+      "body": "Kiddamu okufulumya ebikwata ku kukebera amazima by'ekola ID: obubaka bwe bumu obuli emabega w'okukozesa kwa lujjudde <link>olupapula lw'okulaga ebyavaamu</link>, nga mw'otwalidde ensala, obwesige, okunnyonnyola, ebyogerwa n'okulondoola kw'abantu."
+    },
+    "webhooks": {
+      "body": "Ekitongole ekitegekeddwa ku API okusobola obutakuba: okuddamu okukubira ku server yo nga ebyava mu kukebera bimaze okuteekebwawo. Ekitundu kino kijja kujjuzibwa nga okuwaayo kwa webhook kutandise mu mutendera 2. Bots za Zuula ku <link>WhatsApp ne Telegram</link> zikolebwa ku nkola y’ebintu emu."
     },
     "access": {
-      "title": "Funa obusobozi"
+      "title": "Funa obusobozi",
+      "body": "Abamawulire abakakasiddwa n’abakulembeze basobola okukola ekisumuluzo leero mu <keys>Akawunti → API okufuna</keys>; kijja kutandika okukola nga API etandise okukola mu mutendera 2. Okufuna okugatta ku mawulire oba okwongera ku kigero ky’okukozesa, wandiika email <email>hello@zuula.ug</email>. Okukozesa API kitegeeza okukkiriza <terms>API ebiragiro</terms>."
     }
   },
   "Related": {
