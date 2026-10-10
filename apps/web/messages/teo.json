@@ -91,6 +91,14 @@
     "expert": "Ecoran loepirioit",
     "admin": "Eyaiton"
   },
+  "Demo": {
+    "barLabel": "Aitodunet naka aswam",
+    "viewAs": "Demo: aswam kwape",
+    "signedOut": "Aponi kocamakinai",
+    "previewAs": "Aanyunet kwape",
+    "previewNote": "Mam iwadikatai. Itwasamaete aanyanario akiro nuikidioko ido mam ijaikinete adumunet.",
+    "demoNote": "Aitodunet naka alomar: aanyunet naka akiro, emamei ibore ijukario mama ejai esava."
+  },
   "Theme": {
     "change": "Ijulakinete akirot",
     "light": "Aica",
@@ -881,42 +889,305 @@
     }
   },
   "Admin": {
+    "loggedInAudit": "Ejaasi toma aingic naka akiro.",
+    "table": {
+      "emptyTitle": "Emamei idiobore kane",
+      "emptyBody": "Emamei irotin lu eputosi keda aiboisio nu."
+    },
     "overview": {
-      "needsAttention": "Ekoto aanyanario"
+      "kpis": {
+        "f1": "Ajenun akiro F1",
+        "deepfake": "Abeit naka deepfake",
+        "mau": "Itunga luitosomaete kangolilap",
+        "latency": "Apak na aitemokin akiro nuka aiwadikaet",
+        "ratings": "Aitemonokineta kotoma atubokinio",
+        "turnaround": "Aitemonokineta nuka ipirioitin",
+        "partners": "API ipaupa",
+        "languages": "Angajepisinei nuigangitai"
+      },
+      "onTarget": "Kotoma alosikinet",
+      "belowTarget": "Kwap naka alosikinet",
+      "target": "{direction, select, min {{status} · target ≥ {value}} other {{status} · target ≤ {value}}}",
+      "checksTitle": "Aingic kanginipaaran",
+      "checksTotal": "{count} kotoma apaarasia 14 luatuboros",
+      "checksLabel": "Aingic",
+      "showTable": "Itodunit kwape emesa",
+      "date": "Apaaran",
+      "mixTitle": "Akiro nu etubokinio olap lo",
+      "mixTotal": "{count} aomisio",
+      "healthTitle": "Angaleu naka eswamae",
+      "needsAttention": "Ekoto aanyanario",
+      "targetsTitle": "Ipuon lu ekaru losodit",
+      "targetsMet": "{met} kotoma {total} toma aiboisit naka alosit"
     },
     "audit": {
       "actions": {
         "verdict": {
           "override": "Aponi ijulakinai atubokinio",
           "confirm": "Aitogogongio naka atubokinio"
+        },
+        "user": {
+          "role_change": "Aijulakin aswam",
+          "suspend": "Aponi ikisarai etosoman",
+          "reinstate": "Abu etosoman kobongok"
+        },
+        "source": {
+          "add": "Aponi iyatakinai alibunet",
+          "deactivate": "Aponi kikisarai ewai"
+        },
+        "broadcast": {
+          "send": "Aponi ijukarai aijukario"
+        },
+        "settings": {
+          "update": "Aponi ijulakinai aitemonokineta"
+        },
+        "moderation": {
+          "remove": "Aponi kolemarai akiro"
         }
       },
       "columns": {
-        "action": "Aswamisioit"
+        "time": "Apak",
+        "actor": "Abolian",
+        "action": "Aswamisioit",
+        "target": "Alosikinet keda akiro nuikamunitos"
       },
-      "action": "Aswamisioit"
+      "searchPlaceholder": "Aingic alosikinet keda akiro nuipu…",
+      "searchLabel": "Kotoma aingic akiro nuka audit",
+      "actor": "Abolian",
+      "everyone": "Itunga kere",
+      "action": "Aswamisioit",
+      "allActions": "Aswamisinei kere",
+      "exported": "{count, plural, one {Aponi ijularai # alomar} other {Aponi koinakinai # akiro}}",
+      "exportCsv": "Aitolomun CSV",
+      "summary": "{count, plural, one {# alomar. Ejaasi aiwadikaet ngin keda akiro nuipu: mam epedorio aitemokin arai alemar, aimoriarit kanejaas eyaitok.} other {# akiro. Erai aiwadikaet na iyatakini bon: mam epedorio aitemokin arai alemar akiro, aimoriarit kanejaas eyaitok.}}",
+      "emptyTitle": "Emamei alomar"
     },
     "broadcasts": {
       "channels": {
+        "Push": "Aipikakin",
         "Email": "E-mail"
       },
-      "administrator": "Eyaiton"
+      "audiences": {
+        "everyone": "Itunga kere",
+        "central": "Atutubet nako kiding",
+        "northern": "Atutubet nako Nyakoi",
+        "eastern": "Atutubet nako Kide",
+        "western": "Atutubet nako too",
+        "health": "Itunga lu engarenokinitos angaleu",
+        "elections": "Itunga lu engarenokinitos aseo"
+      },
+      "errors": {
+        "title": "Iwadika akirot naepol noi (naedolete 8 itunga).",
+        "message": "Kitetem nu mam eraasi nuka abeit keda nu ibusakinit aswam (ikidioko 30 itunga).",
+        "channels": "Koseu atutubet adiope."
+      },
+      "administrator": "Eyaiton",
+      "sent": "Aponi ijukarai aijukario",
+      "sentSummary": "{count} itunga · {channels}",
+      "composeTitle": "Aitodiar akiro nuitetiak nuka ationis",
+      "composeDescription": "Kanu akiro nu mam eraasi nukabeit nuepolok noi nueutai aisiarakin katipet. Aponi ijukarai mama ejai nginitunganan kotoma atukot, araida epone bo ani loka aitijenikinio kec.",
+      "reviewAndSend": "Aanyanar kosodi aijukar",
+      "headline": "Akirot naepol noi",
+      "headlinePlaceholder": "e.g. Akiro nuikamunitos akoko: ikoruo luka aiboisio nuka elago",
+      "message": "Akirot",
+      "messagePlaceholder": "Inyoin bo mam erai abeit, inyoin bo erai abeit, ido inyoin bo ibusakinit itunga aswam.",
+      "messageCount": "{count}/{max} · etupitos toma SMS aarei",
+      "linkReport": "Akiro nuikamunitos aanyanario naka abeit (naepedori)",
+      "none": "Emamei",
+      "audience": "Itunga lu epupete",
+      "audienceEstimate": "Keda itunga luedolete {count}.",
+      "severity": "Aiboisit naepol noi",
+      "severities": {
+        "high": "Epol noi",
+        "critical": "Epolok noi"
+      },
+      "severityHigh": "Naepol: alimokin",
+      "severityCritical": "Naepol noi: alimonokin ka aipikakin ebanner kotoma apapulai kere",
+      "channelsLegend": "Ipuaketa",
+      "preview": "Aanyanario",
+      "previewTitle": "Akirot kon naepol noi",
+      "previewBody": "Ejaasi akirokon kane.",
+      "confirmTitle": "Ijukakisi mama ejaasi itunga {count}?",
+      "confirmBody": "{audience} · {channels} · {severity}. Mam epedorio ainyakar akiro nuka elago akaulo na SMS ido apotu akiro nuipu koloto kinga.",
+      "send": "Ijukak aitelekarit",
+      "sentTitle": "Aijukar akiro",
+      "reached": "{audience} · {channels} · abu kodol {count}",
+      "opened": " · apukorit {percent}%"
+    },
+    "moderation": {
+      "doneBody": "Iboro luitetiak etakanunete ne naarai elomarete.",
+      "resolvedBody": "Ejaasi toma aingic naka akiro.",
+      "recalculatedBody": "Aponi bobo itodunai akiro. Aponi iwadikatai toma aingic.",
+      "noReports": "Emamei alipoota nu apukor",
+      "readers": "{count, plural, one {# ekosio loesioma} other {# esiomak}}",
+      "sendToReview": "Ijukak aanyanario",
+      "sentToReview": "Aponi ijukarai aanyanario naka ipirioitin",
+      "dismiss": "Kotema",
+      "dismissed": "Aponi kongaleunai eripoota",
+      "removeComment": "Kotub aineranara",
+      "commentRemoved": "Aponi kolemarai aineranara",
+      "noManipulation": "Emamei aswamisioit na mam ejena",
+      "likelyCoordinated": "{percent}% aticepak erai loitemokinitai",
+      "discount": "Adoketait na itidisiaritai",
+      "discounted": "{count} itunga lu ejaasi keda aiyengun",
+      "suspendAccounts": "Alemar akaunts",
+      "suspended": "Aponi ikisarai akaunts ka aitidisiar adoketait",
+      "notManipulation": "Mam aitolitol",
+      "genuine": "Iwadikatai kwape abeit",
+      "reportsTab": "Akiro nu elimoritai ({count})",
+      "manipulationTab": "Aitemonokineta nuka aipim ({count})"
+    },
+    "settings": {
+      "errors": {
+        "suspended": "Ekot aiboisit naejai kiding etogo ajaut kwap naka aiboisit naepol noi.",
+        "escalated": "Ekot aiboisit naepol noi naka aitiji ajaut kwap naka “aibucaret”.",
+        "inverted": "Ejaasi aiboisit na “ingitai” keda aijulakinio.",
+        "verified": "Ebeit aiboisit na “nginibungatai” angetakin kwap naka Community Verified.",
+        "ratings": "Ibusakinit aiyatakin adoketait naedit: ationis ≤ apolou naepol noi ≤ aipikakin."
+      },
+      "unsaved": "{count, plural, one {# mam ijulakinitai} other {# mam aijulakineta nu idaritai}}",
+      "specDefaults": "Epedorete aijulakin akiro",
+      "save": "Kiswama aitemonokineta",
+      "thresholdsTitle": "Atutubena nu iyatakinor",
+      "thresholdsDescription": "Neijulakinor aanyanaret naka atutubet ejautene loka etube (§9.2). Itwasamao kanu aanyanaret nuitetiak katipet.",
+      "verifiedAt": "Aitigogongio naka itunga kotoma arai kuju",
+      "questionedFrom": "“Questioned” kama ejai",
+      "questionedTo": "“Abu aingisingisio” kitoni",
+      "withMoreThan": "keda lu edeparitos",
+      "ratings": "Aiboisio nu itereikina keda",
+      "escalateAt": "Ijukakini mama ejai aanyanaret naka epirioit kotoma arai kwap",
+      "suspendAt": "Aitub akiro kotoma arai kwap naka",
+      "weightsTitle": "Apesur nuka apolou",
+      "weightsDescription": "Ejaasi ngin aswam keda apointan adi kotoma Atukot Naka Amuno (§9.1).",
+      "operationsTitle": "Aswamisinei",
+      "operationsDescription": "Aanyanar apak na ekotoi, API ikisila ka aitetemonor bobo (§9.3).",
+      "sla": "Aingic naka ipirioitin SLA",
+      "hours": "isawan",
+      "slaHint": "Spec: 48 isawan.",
+      "rateLimit": "Etapit API aitemokin ikapun",
+      "perHour": "req / esawa",
+      "rateHint": "Kanu akirot. Spec: 100.",
+      "retraining": "Aitutuoro bobo",
+      "weekly": "Kanu (spec) kangolisabiti",
+      "monthly": "Ngolilap",
+      "minCcs": "Akiro nu itutuonoro kotoma CCS kuju",
+      "minCcsHint": "Arai bon aomisio nuecamunitos kesi ejaunos aanyuneta nuka aituutoorio. Spec: 85%.",
+      "confirmTitle": "{count, plural, one {Ipuakata # aijulakin?} other {Iyuwar # aijulanakineta?}}",
+      "confirmBody": "Ejaasi nu toma aiboisit kere ido iwadikatai toma aiwadikaeta nuka aingic.",
+      "saved": "Aponi iyatakinai aitemonokineta"
     },
     "sources": {
       "types": {
-        "media": "Ejai etogo loka iyemuto"
+        "media": "Ejai etogo loka iyemuto",
+        "government": "Apugan",
+        "fact-checker": "Etapit aanyanar akiro",
+        "international": "Akwapin kere",
+        "academic": "Esomero"
       },
+      "errors": {
+        "name": "Iwadika ekiror lo elomunit.",
+        "domain": "Iwadika akiro nuka aiboisit kwape nat monitor.co.ug"
+      },
+      "editTitle": "Kotub {name}",
+      "addTitle": "Kiyatak lo eyuunitai",
+      "dialogDescription": "Ejaasi akiro ngun keda aiboisio nuipu nuepedorete aitodun ebe eraasi kesi abeit.",
       "name": "Ekiror",
-      "allTypes": "Ipu luka iponesio"
+      "domain": "Erai aiboisit naepol noi",
+      "type": "Akirot",
+      "languages": "Angajepisinei",
+      "languagesHint": "Atiakatiaka keda comma.",
+      "tier": "Atutubet naka amunokina",
+      "tiers": {
+        "1": "Atutubet 1: epuraimare, apolou naepol noi",
+        "2": "Tier 2: esinia lo ejenara noi",
+        "3": "Tier 3: akiro bon"
+      },
+      "addSource": "Omedo akiro nuikamunitos",
+      "columns": {
+        "source": "Aiboisit naelomunit",
+        "type": "Akirot",
+        "languages": "Angajepisinei",
+        "crawl": "Alosit nawasia",
+        "actions": "Aswamisio"
+      },
+      "inactive": "Mam iswamai",
+      "failing": "Aibiror",
+      "actionsFor": "Aswamisio kanu {name}",
+      "edit": "Aitemokin",
+      "recrawl": "Abongun bobo kwana",
+      "recrawlQueued": "Aitemonokin bobo naka {name} ejai toma okokoro",
+      "deactivate": "Aitidisiar",
+      "reactivate": "Aitogogong bobo",
+      "deactivated": "{name} mam aponi itolomunai",
+      "reactivated": "{name} abu kobongok",
+      "active": "Iboro luejaasi keda aswam",
+      "activeCount": "{active} / {target} alosikinet",
+      "activeLabel": "{active} kotoma {target} luipu",
+      "targetNote": "Emita ngol ekoto {target} Uganda keda akwapin ace nuka aiboisio nu ejaas akiro (FR-DETECT-06).",
+      "crawlsFailing": "Euta alosit komam iswamai ejok",
+      "searchPlaceholder": "Aingic kotoma ekiror arai bo aiboisit…",
+      "searchLabel": "Aingic akiro",
+      "allTypes": "Ipu luka iponesio",
+      "updated": "{name} aponi itojokarai",
+      "added": "{name} aponi iyatakinai"
+    },
+    "trends": {
+      "checksLabel": "Aingic",
+      "chartTitle": "Aingic kangolilap",
+      "downloaded": "CSV aponi kopedorai alomar",
+      "exportAll": "Aitolomun kere kwape CSV",
+      "soFar": "{latest} kitoni kopana: {latestCount} aanyanaret. {previous}: {previousCount}.",
+      "monthlyTitle": "Aripootin nuka elap",
+      "columns": {
+        "month": "Elap",
+        "checks": "Aingic",
+        "false": "Mam abeit arai bo aticepak mam abeit",
+        "ai": "AI-abu kitolomun",
+        "topics": "Atutubena nuepolok",
+        "time": "Apak naepol noi",
+        "export": "Aitolomun iboro kinga"
+      },
+      "monthDownloaded": "{month} aponi kopedorai alomar",
+      "pdfNote": "PDF iyemuto lu ejaasi keda aputosia ka akiro nuikamunitos ipaupa kes itolomununete erionget loka iyemuto (Atutubet 3)."
     },
     "users": {
       "statuses": {
-        "suspended": "Aponi kisibwounai"
+        "active": "Ejaasi keda aswam",
+        "suspended": "Aponi kisibwounai",
+        "pending": "Ejaasi keda aingic"
       },
       "columns": {
-        "status": "Adoketait"
+        "user": "Erai ngin itunganan yen itosomai app lo",
+        "role": "Aswam",
+        "status": "Adoketait",
+        "ratings": "Aitemonokineta",
+        "lastActive": "Itunganan yen eswamat sek",
+        "actions": "Aswamisio"
       },
+      "joined": "abu kojaikin {date}",
+      "actionsFor": "Aswamisio kanu {name}",
+      "approve": "Acamun ajenanut",
+      "approved": "Erai kwana {name} Ewadikan loecamunitai",
+      "changeRole": "Aijulakin aswam",
+      "reactivate": "Aitogogong bobo",
+      "reactivated": "{name} abu kobongok",
+      "suspend": "Aitikitik",
+      "roleChanged": "Erai kwana {name} {role}",
+      "suspendedToast": "{name} aponi kisibwounai",
+      "suspendedBody": "Mam bobo aiboisit kec erai ibore yenepol noi.",
+      "searchPlaceholder": "Aingic kotoma ekiror arai bo email…",
+      "searchLabel": "Aingic itunga lu itwasamaete",
+      "role": "Aswam",
+      "allRoles": "Aswamisinei kere",
       "status": "Adoketait",
+      "allStatuses": "Ipu luka ejautene",
+      "summary": "{shown} kotoma {total} itunga · {pending} lu idarit aanyanario · {suspended} lu imikitai",
+      "roleTitle": "Ibusakinit {name} {role}?",
+      "suspendTitle": "Aitub {name}?",
+      "roleTfa": "Ekot kesi aitolomun aanyanario naka akiro aarei kotoma ailogin naetupakini.",
+      "roleNow": "Egelegela epone loedumunatar kesi.",
+      "suspendBody": "Mam kesi epedorete aipikakin akanin, ido mam bobo eponio aimar ikapun kec.",
+      "reasonPlaceholder": "Aomisioit (iwadikatai toma aiwadikaet naka aingic)",
       "reason": "Aomisioit"
     }
   },
@@ -1313,6 +1584,7 @@
     },
     "table": {
       "field": "Ekiror",
+      "type": "Akirot",
       "description": "Aitetemio",
       "required": "Ekotoi"
     },
@@ -1391,14 +1663,21 @@
         "not_found": "Emamei aanyanario arai bo aanyanario naka abeit naejai ID.",
         "file_too_large": "Epolokinit akiro ngun adepar 50 MB.",
         "unsupported_media": "Mam epone loka akiro eyangaritai.",
-        "invalid_content": "Epatana akiro ngun, elangir noi arai mam erai aiboisit naejok."
+        "invalid_content": "Epatana akiro ngun, elangir noi arai mam erai aiboisit naejok.",
+        "rate_limited": "Etapit ekisil aitwasam aijaanakinio ke naka esawa. Kidarak kanu abongokin akaulo naka atikatikan.",
+        "server_error": "Ajai ibore yen abu kobu ationis kotoma atutubetekosi. Kotam bobo ekaulo."
       }
     },
     "report": {
-      "title": "Adumun aanyanario naka akiro"
+      "title": "Adumun aanyanario naka akiro",
+      "body": "Ejaasi keda akiro nu aponi kitolomunai kanu aitogogongio naka ID: akiro nueputosi nuejaasi toma atukot naka itunga <link>Atutubet naka eripoota</link>, aimoriarit atubokinio, amuno, aitetem, aiwadikaeta keda aipim naka itunga."
+    },
+    "webhooks": {
+      "body": "Etemokinitai nepepe keda API tetere mam ibusakinit jo aingit: aijukar akiro mama ejai esiriginikon arai ekapakina aanyanario. Ebuni atutubet na ailelebikin akaulo na aitemonokinio naka aijukar akiro kotoma Atutubet 2. Ejaasi Zuula bots ko <link>WhatsApp keda Telegram</link> lu edukitai kotoma aduketait adiope."
     },
     "access": {
-      "title": "Adumun adolokin"
+      "title": "Adumun adolokin",
+      "body": "Epedorete arotak iyemuto lu itigogongoritai keda eyaitok aitolomun ekisil ilolo ko <keys>Akaunt → API adumunun</keys>; ebuni ageun aswam ne elomaria API toma atutubet naka 2. Kanu aimorikikin akiro nuka iyemuto arai bo adoketait naepol noi, kijuk email <email>hello@zuula.ug</email>. Aitwasam API apolouke acamun <terms>API akiro</terms>."
     }
   },
   "Related": {
