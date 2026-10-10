@@ -33,6 +33,7 @@
     "section": "Ekicweka kya {section}",
     "groups": {
       "review": "Okugarukamu",
+      "admin": "Omwebembezi",
       "account": "Akaunti"
     },
     "items": {
@@ -42,6 +43,7 @@
       "library": "Eibikiro ry'ebitabo",
       "about": "Aha bikwatiraine",
       "review": "Okugarukamu",
+      "admin": "Omwebembezi",
       "reviewOverview": "Okureeba hamwe",
       "reviewQueue": "Orunyiriri",
       "reviewHistory": "Ebyafaayo",
@@ -270,6 +272,7 @@
     "verifyClaim": "Kukakasa ekihandiiko",
     "contentTypeShort": {
       "text": "Ekihandiiko",
+      "url": "Akakwate",
       "image": "Ekishushani",
       "audio": "Eby'amahurire",
       "video": "Vidiyo"
@@ -341,6 +344,7 @@
     "submittedMeta": "{type} · {language} · ehaireyo {time}",
     "types": {
       "text": "Ekihandiiko",
+      "url": "Akakwate",
       "article": "Ekicweka",
       "media": "Ekihandiiko ky'empurizagana"
     },
@@ -435,6 +439,7 @@
         "body": "WhatsApp ab'omumaisho, obutumwa bw'abantu, ebigambirwe"
       },
       "link": {
+        "title": "Akakwate",
         "body": "Ebicweka by'amakuru hamwe n'emiko ya webu"
       },
       "media": {
@@ -497,6 +502,7 @@
     "activity": {
       "types": {
         "text": "Ekihandiiko",
+        "url": "Akakwate",
         "media": "Eby'amakuru",
         "article": "Ekicweka"
       },
@@ -508,6 +514,7 @@
       "viewReport": "Reeba ripoota",
       "viewStatus": "Reeba embeera",
       "resubmit": "Okugarukamu",
+      "resubmitLabel": "Garuka oteereho {id}",
       "youRated": "{vote, select, accurate {Okagisharamu nk'ehikire} other {Okagisharamu nk'etahikire}}",
       "submissionsTab": "Okuhayo ({count})",
       "ratingsTab": "Okupima ({count})"
@@ -618,6 +625,7 @@
       "createTitle": "Kora ekishumuruzo API",
       "createBody": "Buri kishumuruzo nikikora {limit} okushaba buri shaaha.",
       "name": "Eiziina",
+      "namePlaceholder": "e.g. eishomo ry'amakuru CMS",
       "permissions": "Obushoboorozi",
       "createKey": "Kora ekishumuruzo",
       "keysTitle": "Ebisumuruzo byawe",
@@ -682,6 +690,7 @@
       "verifiedTitle": "Ori omunyamakuru owaahamibwa",
       "name": "Eiziina",
       "verified": "Okukakasibwa",
+      "renews": "Kugaruka kugumizamu",
       "sampleOutlet": "Daily Monitor (eky'okureeberaho)",
       "changedNewsroom": "Okahindura omwanya gw'amakuru? Hindura ebirikukukwataho kandi nitwija kubigarukamu. Akabonero kaawe karaguma obu turikukyebera.",
       "updateDetails": "Okuhindura ebirikukwataho",
@@ -855,6 +864,7 @@
     },
     "case": {
       "communitySignals": "Obubonero bw'ekyanga",
+      "rater": "Omuteezi",
       "accurate": "Okuhikire",
       "inaccurate": "Ekitahikire",
       "yourDecision": "Okusharamu kwawe",
@@ -1110,6 +1120,7 @@
         "source": "Oburugo",
         "type": "Ekika",
         "languages": "Endimi",
+        "tier": "Omutindo",
         "crawl": "Okutambura okwahererukireyo",
         "actions": "Ebirikukorwa"
       },
@@ -1368,6 +1379,7 @@
     "password": {
       "show": "Yoreka akasumuruzo",
       "hide": "Kushereka akasumuruzo",
+      "met": "(kukwatanisa)",
       "notMet": "(takarahikirwe)",
       "rules": {
         "length": "Haakiri {min} abantu b'obumanyiso",
@@ -1563,6 +1575,7 @@
       "step1": "Oheereze ebirikukwata aha <code>POST /v1/checks</code>. Orikutunga okurondoora ID ahonaaho.",
       "step2": "Poll <code>GET /v1/checks/[trackingId]</code> kuhisya obu embeera yaahwa.",
       "step3": "Shoma okusharamu, obwesigye bw'obubonero, okushoborora hamwe n'okworekwa kuruga omu birugiremu.",
+      "baseUrl": "Omusingye URL",
       "formatLabel": "Omuringo",
       "format": "JSON ahari HTTPS (UTF-8). Obwire bw'okukora ni ISO 8601 omuri UTC."
     },
