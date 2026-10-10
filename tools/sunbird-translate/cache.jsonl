@@ -5418,3 +5418,235 @@
 {"lang":"nyn","src":"Demo sign-in: sample data, nothing is sent to a server.","out":"Okworeka okutaahamu: amakuru g'okureeberaho, tihariho ekirikutwarwa aha seva."}
 {"lang":"teo","src":"Demo sign-in: sample data, nothing is sent to a server.","out":"Aitodunet naka alomar: aanyunet naka akiro, emamei ibore ijukario mama ejai esava."}
 {"lang":"ach","src":"Demo sign-in: sample data, nothing is sent to a server.","out":"Nyutu lanyut me donyo: ngec ma kiyubu, pe tye gin mo ma kicwalo bot lapok tic."}
+{"lang":"teo","src":"Next","out":"Next"}
+{"lang":"ach","src":"(met)","out":"(met)"}
+{"lang":"teo","src":"Recent","out":"Akiro nukokau"}
+{"lang":"lg","src":"{0}: slides","out":"{0}: okusereba"}
+{"lang":"ach","src":"the (met)","out":"( met)","for":"(met)"}
+{"lang":"nyn","src":"(met)","out":"(kukwatanisa)"}
+{"lang":"teo","src":"(met)","out":"(akiro)"}
+{"lang":"teo","src":"next","out":"ngaren","for":"Next"}
+{"lang":"ach","src":"Media","out":"Media"}
+{"lang":"ach","src":"Copy {0}","out":"Kop {0}"}
+{"lang":"ach","src":"media file","out":"fail me me poko lok","for":"Media file"}
+{"lang":"ach","src":"Track","out":"Yoo"}
+{"lang":"ach","src":"media","out":"media","for":"Media"}
+{"lang":"ach","src":"Category","out":"Kic"}
+{"lang":"ach","src":"Filters ({0})","out":"Filter ({0})"}
+{"lang":"ach","src":"best match","out":"ma rwatte maber loyo","for":"Best match"}
+{"lang":"ach","src":"Link","out":"Link"}
+{"lang":"nyn","src":"Link","out":"Link"}
+{"lang":"ach","src":"Text","out":"Text"}
+{"lang":"ach","src":"the media","out":"luco lok angeya","for":"Media"}
+{"lang":"ach","src":"link","out":"kubu","for":"Link"}
+{"lang":"ach","src":"text","out":"coc","for":"Text"}
+{"lang":"nyn","src":"link","out":"akakwate","for":"Link"}
+{"lang":"ach","src":"Audio","out":"Winyo"}
+{"lang":"teo","src":"Audio","out":"Akiro nu epodokinitai"}
+{"lang":"ach","src":"Video","out":"Video"}
+{"lang":"ach","src":"Main","out":"Main"}
+{"lang":"teo","src":"or","out":"or"}
+{"lang":"ach","src":"video","out":"vidio","for":"Video"}
+{"lang":"teo","src":"the just now","out":"ngin ngesi kwana","for":"just now"}
+{"lang":"teo","src":"Main","out":"Main"}
+{"lang":"teo","src":"the or","out":"Erai arai","for":"or"}
+{"lang":"ach","src":"main","out":"main","for":"Main"}
+{"lang":"lg","src":"Mobile","out":"Ebyuma eby'okutambuza."}
+{"lang":"ach","src":"Mobile","out":"Cim"}
+{"lang":"teo","src":"main","out":"epolok","for":"Main"}
+{"lang":"ach","src":"the main","out":"gin ma pire tek","for":"Main"}
+{"lang":"lg","src":"Admin","out":"Omukulembeze"}
+{"lang":"ach","src":"Account","out":"Akaunt"}
+{"lang":"nyn","src":"Admin","out":"Omwebembezi"}
+{"lang":"teo","src":"audit log","out":"Akiro nu aanyanario","for":"Audit Log"}
+{"lang":"lg","src":"App","out":"App"}
+{"lang":"nyn","src":"App","out":"App"}
+{"lang":"ach","src":"App","out":"App"}
+{"lang":"teo","src":"App","out":"App"}
+{"lang":"ach","src":"app","out":"app","for":"App"}
+{"lang":"teo","src":"app","out":"app","for":"App"}
+{"lang":"lg","src":"app","out":"app","for":"App"}
+{"lang":"nyn","src":"app","out":"app","for":"App"}
+{"lang":"ach","src":"the app","out":"app ne","for":"App"}
+{"lang":"teo","src":"the app","out":"Erai app ngol","for":"App"}
+{"lang":"lg","src":"the app","out":"app","for":"App"}
+{"lang":"nyn","src":"the app","out":"app","for":"App"}
+{"lang":"lg","src":"{0} bot","out":"{0} bot"}
+{"lang":"ach","src":"{0} bot","out":"{0} bot"}
+{"lang":"nyn","src":"{0} bot","out":"{0} bot"}
+{"lang":"teo","src":"{0} bot","out":"{0} bot"}
+{"lang":"lg","src":"© {0} {1} · victoria university {2}","out":"© {0} {1} · Victoria University {2}","for":"© {0} {1} · Victoria University {2}"}
+{"lang":"ach","src":"© {0} {1} · victoria university {2}","out":"© {0} {1} · victoria university {2}","for":"© {0} {1} · Victoria University {2}"}
+{"lang":"teo","src":"© {0} {1} · victoria university {2}","out":"© {0} {1} · victoria university {2}","for":"© {0} {1} · Victoria University {2}"}
+{"lang":"nyn","src":"© {0} {1} · victoria university {2}","out":"© {0} {1} · victoria university {2}","for":"© {0} {1} · Victoria University {2}"}
+{"lang":"teo","src":"Economy","out":"Economy"}
+{"lang":"ach","src":"Luganda","out":"Luganda"}
+{"lang":"lg","src":"Luganda","out":"Luganda"}
+{"lang":"ach","src":"System","out":"Yub"}
+{"lang":"teo","src":"economy","out":"Economy","for":"Economy"}
+{"lang":"ach","src":"luganda","out":"jo me ot","for":"Luganda"}
+{"lang":"ach","src":"Acholi","out":"Acholi"}
+{"lang":"lg","src":"luganda","out":"Luganda","for":"Luganda"}
+{"lang":"teo","src":"the economy","out":"Economy","for":"Economy"}
+{"lang":"ach","src":"Runyankole","out":"Runyankole"}
+{"lang":"ach","src":"acholi","out":"Acholi","for":"Acholi"}
+{"lang":"lg","src":"the luganda","out":"Oluganda lwe lulimi lwange.","for":"Luganda"}
+{"lang":"nyn","src":"Runyankole","out":"Runyankole"}
+{"lang":"ach","src":"runyankole","out":"runyankole","for":"Runyankole"}
+{"lang":"ach","src":"Ateso","out":"Ateso"}
+{"lang":"ach","src":"the acholi","out":"Acholi","for":"Acholi"}
+{"lang":"ach","src":"the runyankole","out":"runyankole","for":"Runyankole"}
+{"lang":"nyn","src":"runyankole","out":"Runyankole","for":"Runyankole"}
+{"lang":"ach","src":"ateso","out":"Ateso","for":"Ateso"}
+{"lang":"nyn","src":"the runyankole","out":"Orunyankole","for":"Runyankole"}
+{"lang":"lg","src":"{0} — uganda fact-guard","out":"{0} — Uganda Fact-Guard","for":"{0} — Uganda Fact-Guard"}
+{"lang":"ach","src":"{0} — uganda fact-guard","out":"{0} — uganda fact-guard","for":"{0} — Uganda Fact-Guard"}
+{"lang":"ach","src":"the ateso","out":"Ateso","for":"Ateso"}
+{"lang":"nyn","src":"{0} — uganda fact-guard","out":"{0} — uganda fact-guard","for":"{0} — Uganda Fact-Guard"}
+{"lang":"teo","src":"{0} — uganda fact-guard","out":"{0} — uganda fact-guard","for":"{0} — Uganda Fact-Guard"}
+{"lang":"nyn","src":"Resubmit {0}","out":"Garuka oteereho {0}"}
+{"lang":"teo","src":"In-app","out":"In-app"}
+{"lang":"ach","src":"Email","out":"Email"}
+{"lang":"teo","src":"Email","out":"E-mail"}
+{"lang":"nyn","src":"e.g. Newsroom {0}","out":"e.g. Newsroom {0}"}
+{"lang":"ach","src":"email","out":"e-mail","for":"Email"}
+{"lang":"teo","src":"in-app","out":"in-app","for":"In-app"}
+{"lang":"teo","src":"email","out":"E-mail","for":"Email"}
+{"lang":"ach","src":"the email","out":"e-mail","for":"Email"}
+{"lang":"nyn","src":"e.g. newsroom {0}","out":"e.g. eishomo ry'amakuru {0}","for":"e.g. Newsroom {0}"}
+{"lang":"teo","src":"the email","out":"email ngin","for":"Email"}
+{"lang":"teo","src":"the in-app","out":"the in-app","for":"In-app"}
+{"lang":"teo","src":"e.g. Newsroom {0}","out":"e.g. Newsroom {0}"}
+{"lang":"nyn","src":"Renews","out":"Renews"}
+{"lang":"ach","src":"Renews","out":"Renews"}
+{"lang":"ach","src":"uganda journalists association","out":"dul pa lucoo lok angeya me uganda","for":"Uganda Journalists Association"}
+{"lang":"teo","src":"e.g. newsroom {0}","out":"e.g. aiboisit naka iyemuto {0}","for":"e.g. Newsroom {0}"}
+{"lang":"nyn","src":"renews","out":"kugaruka kugumizamu","for":"Renews"}
+{"lang":"ach","src":"District","out":"District"}
+{"lang":"ach","src":"renews","out":"tye ka cako","for":"Renews"}
+{"lang":"ach","src":"Password","out":"Password"}
+{"lang":"ach","src":"district","out":"dictrik","for":"District"}
+{"lang":"lg","src":"Uganda","out":"Uganda"}
+{"lang":"teo","src":"Password","out":"Akirot naka aiyeyea"}
+{"lang":"ach","src":"password","out":"password","for":"Password"}
+{"lang":"ach","src":"Uganda","out":"Uganda"}
+{"lang":"nyn","src":"Uganda","out":"Uganda"}
+{"lang":"ach","src":"the password","out":"password","for":"Password"}
+{"lang":"lg","src":"uganda","out":"Uganda","for":"Uganda"}
+{"lang":"ach","src":"uganda","out":"uganda","for":"Uganda"}
+{"lang":"nyn","src":"uganda","out":"Uganda","for":"Uganda"}
+{"lang":"ach","src":"the uganda","out":"uganda","for":"Uganda"}
+{"lang":"lg","src":"the uganda","out":"Uganda","for":"Uganda"}
+{"lang":"teo","src":"Uganda","out":"Uganda"}
+{"lang":"teo","src":"uganda","out":"Uganda","for":"Uganda"}
+{"lang":"nyn","src":"the uganda","out":"uganda","for":"Uganda"}
+{"lang":"ach","src":"victoria university {0}","out":"victoria university {0}","for":"Victoria University {0}"}
+{"lang":"lg","src":"victoria university {0}","out":"Yunivasite ya Victoria {0}","for":"Victoria University {0}"}
+{"lang":"nyn","src":"victoria university {0}","out":"VICTORIA UNIVERSITY {0}","for":"Victoria University {0}"}
+{"lang":"lg","src":"victoria university, kampala.","out":"Yunivasite ya Victoria, Kampala.","for":"Victoria University, Kampala."}
+{"lang":"teo","src":"victoria university {0}","out":"Eunibasite loka victoria {0}","for":"Victoria University {0}"}
+{"lang":"teo","src":"the uganda","out":"Uganda ngesi akwap naejok noi.","for":"Uganda"}
+{"lang":"ach","src":"Victoria University, Kampala.","out":"Victoria University, Kampala"}
+{"lang":"nyn","src":"Victoria University, Kampala.","out":"Victoria University, Kampala."}
+{"lang":"ach","src":"account → {0} keys","out":"account → {0} lagony","for":"Account → {0} Keys"}
+{"lang":"ach","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"ach","src":"victoria university, kampala.","out":"Victoria University, kampala","for":"Victoria University, Kampala."}
+{"lang":"nyn","src":"victoria university, kampala.","out":"VICTORIA University, kampala","for":"Victoria University, Kampala."}
+{"lang":"nyn","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"ach","src":"(over {0})","out":"(over {0})"}
+{"lang":"teo","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"ach","src":"the victoria university, kampala.","out":"VICTORIA University, Kampala","for":"Victoria University, Kampala."}
+{"lang":"nyn","src":"the victoria university, kampala.","out":"Yunivasite ya victoria, kampala.","for":"Victoria University, Kampala."}
+{"lang":"ach","src":"Rater","out":"Rater"}
+{"lang":"nyn","src":"Rater","out":"Rater"}
+{"lang":"teo","src":"(over {0})","out":"(over {0})"}
+{"lang":"lg","src":"Webhooks","out":"Webhooks"}
+{"lang":"ach","src":"Webhooks","out":"Webhooks"}
+{"lang":"nyn","src":"rater","out":"omuteezi","for":"Rater"}
+{"lang":"lg","src":"webhooks","out":"webhooks","for":"Webhooks"}
+{"lang":"ach","src":"rater","out":"ngat ma miyo kony","for":"Rater"}
+{"lang":"nyn","src":"Webhooks","out":"Webhooks"}
+{"lang":"lg","src":"the webhooks","out":"webhook z'ebintu","for":"Webhooks"}
+{"lang":"ach","src":"webhooks","out":"webhooks","for":"Webhooks"}
+{"lang":"teo","src":"Webhooks","out":"Webhooks"}
+{"lang":"nyn","src":"webhooks","out":"webhooks","for":"Webhooks"}
+{"lang":"teo","src":"webhooks","out":"webhooks","for":"Webhooks"}
+{"lang":"ach","src":"the webhooks","out":"webhooks","for":"Webhooks"}
+{"lang":"lg","src":"Base {0}","out":"Base {0}"}
+{"lang":"nyn","src":"the webhooks","out":"webhooks","for":"Webhooks"}
+{"lang":"lg","src":"base {0}","out":"base {0}","for":"Base {0}"}
+{"lang":"teo","src":"the webhooks","out":"webhooks","for":"Webhooks"}
+{"lang":"nyn","src":"Base {0}","out":"Base {0}"}
+{"lang":"teo","src":"Base {0}","out":"Base {0}"}
+{"lang":"ach","src":"Base {0}","out":"Base {0}"}
+{"lang":"ach","src":"{0} · target ≥ {1}","out":"{0} · target ≥ {1}"}
+{"lang":"ach","src":"base {0}","out":"base {0}","for":"Base {0}"}
+{"lang":"teo","src":"base {0}","out":"base {0}","for":"Base {0}"}
+{"lang":"nyn","src":"base {0}","out":"omusingye {0}","for":"Base {0}"}
+{"lang":"ach","src":"High","out":"High"}
+{"lang":"ach","src":"central region","out":"Central region","for":"Central region"}
+{"lang":"teo","src":"{0} · target ≥ {1}","out":"{0} · target ≥ {1}"}
+{"lang":"teo","src":"{0} · target ≤ {1}","out":"{0} · target ≤ {1}"}
+{"lang":"ach","src":"the central region","out":"Kabedo ma dyere","for":"Central region"}
+{"lang":"ach","src":"International","out":"International"}
+{"lang":"ach","src":"high","out":"ma lamal","for":"High"}
+{"lang":"ach","src":"Edit {0}","out":"Yub {0}"}
+{"lang":"ach","src":"Domain","out":"Domain"}
+{"lang":"ach","src":"Tier","out":"Tier"}
+{"lang":"ach","src":"international","out":"me wilobo","for":"International"}
+{"lang":"lg","src":"Tier","out":"Tier"}
+{"lang":"ach","src":"domain","out":"domain","for":"Domain"}
+{"lang":"ach","src":"tier","out":"tier","for":"Tier"}
+{"lang":"nyn","src":"Tier","out":"Tier"}
+{"lang":"ach","src":"the domain","out":"kabedo","for":"Domain"}
+{"lang":"lg","src":"tier","out":"ekitundu","for":"Tier"}
+{"lang":"ach","src":"the tier","out":"tier","for":"Tier"}
+{"lang":"nyn","src":"tier","out":"omutindo","for":"Tier"}
+{"lang":"teo","src":"Tier","out":"Tier"}
+{"lang":"teo","src":"tier","out":"Atutubet","for":"Tier"}
+{"lang":"ach","src":"App","out":"App"}
+{"lang":"lg","src":"App","out":"App"}
+{"lang":"ach","src":"(met)","out":"(met)"}
+{"lang":"ach","src":"Main","out":"Main"}
+{"lang":"teo","src":"App","out":"App"}
+{"lang":"nyn","src":"App","out":"App"}
+{"lang":"lg","src":"{0} bot","out":"{0} bot"}
+{"lang":"ach","src":"{0} bot","out":"{0} bot"}
+{"lang":"nyn","src":"{0} bot","out":"{0} bot"}
+{"lang":"ach","src":"Acholi","out":"Acholi"}
+{"lang":"teo","src":"{0} bot","out":"{0} bot"}
+{"lang":"teo","src":"Economy","out":"Economy"}
+{"lang":"ach","src":"Runyankole","out":"Runyankole"}
+{"lang":"ach","src":"Ateso","out":"Ateso"}
+{"lang":"ach","src":"Email","out":"Email"}
+{"lang":"ach","src":"Password","out":"Password"}
+{"lang":"teo","src":"In-app","out":"In-app"}
+{"lang":"teo","src":"Email","out":"E-mail"}
+{"lang":"ach","src":"Uganda","out":"Uganda"}
+{"lang":"nyn","src":"Uganda","out":"Uganda"}
+{"lang":"lg","src":"Uganda","out":"Uganda"}
+{"lang":"teo","src":"Uganda","out":"Uganda"}
+{"lang":"ach","src":"Victoria University, Kampala.","out":"Victoria University, Kampala"}
+{"lang":"ach","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"nyn","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"ach","src":"Rater","out":"Rater"}
+{"lang":"teo","src":"(over {0})","out":"(over {0})"}
+{"lang":"ach","src":"(over {0})","out":"(over {0})"}
+{"lang":"teo","src":"{0} h {1} min","out":"{0} h {1} min"}
+{"lang":"lg","src":"Webhooks","out":"Webhooks"}
+{"lang":"ach","src":"Webhooks","out":"Webhooks"}
+{"lang":"nyn","src":"Webhooks","out":"Webhooks"}
+{"lang":"ach","src":"the rater","out":"ngat ma pimo","for":"Rater"}
+{"lang":"teo","src":"Webhooks","out":"Webhooks"}
+{"lang":"ach","src":"Base {0}","out":"Base {0}"}
+{"lang":"lg","src":"Base {0}","out":"Base {0}"}
+{"lang":"teo","src":"Base {0}","out":"Base {0}"}
+{"lang":"ach","src":"{0} · target ≥ {1}","out":"{0} · target ≥ {1}"}
+{"lang":"teo","src":"{0} · target ≥ {1}","out":"{0} · target ≥ {1}"}
+{"lang":"teo","src":"{0} · target ≤ {1}","out":"{0} · target ≤ {1}"}
+{"lang":"ach","src":"Tier","out":"Tier"}
+{"lang":"ach","src":"Filters ({0})","out":"Filter ({0})"}
+{"lang":"ach","src":"Luganda","out":"Luganda"}
+{"lang":"teo","src":"or","out":"or"}
+{"lang":"nyn","src":"Runyankole","out":"Runyankole"}
+{"lang":"ach","src":"filters ({0})","out":"filters ({0})","for":"Filters ({0})"}
