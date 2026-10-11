@@ -13,7 +13,7 @@ GroqAnalysisProvider does, per claim, in this order:
    match is reused outright — no Tavily search, no Groq call — which is what keeps the same
    viral claim from costing anything the second time it's submitted.
 2. Otherwise, one Tavily web search for evidence (app/providers/tavily.py) and one Groq chat
-   completion (Llama 3.3 70B, free tier) over the claim and that evidence, asked to return the
+   completion (GROQ_MODEL, free tier) over the claim and that evidence, asked to return the
    verdict/claims/citations/summary shape in one JSON response — claim extraction and
    reasoning in the same call, not an agent loop. No Claude/Anthropic calls anywhere in this
    engine, per the P4 cost constraint (free-tier Groq only).
