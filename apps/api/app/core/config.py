@@ -127,6 +127,12 @@ class AnalysisSettings(BaseSettings):
     ai_text_detector_provider: str = "stub"
     ai_text_detector_model: str = "openai-community/roberta-base-openai-detector"
 
+    # app/providers/metadata_integrity.py: EXIF-metadata + content-hash tampering check for
+    # image submissions (§5.3 "Metadata Tampering"). No model, no download — defaults to
+    # `stub` anyway, same reasoning as the other signals: nobody's reviewed the heuristic on
+    # real traffic yet, so it shouldn't start flagging submissions silently.
+    metadata_tampering_provider: str = "stub"
+
     # Deepfake detection (image/video ai_signals) is explicitly out of scope for this engine:
     # Reality Defender's free tier (50/month) doesn't cover it affordably, and the owner opted
     # to skip it for v1 rather than half-build it. See AnalysisResult/ai_signals usage in

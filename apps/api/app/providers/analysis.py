@@ -26,6 +26,10 @@ composed back into one claim-level AnalysisResult:
    only).
 3. For text content, an in-process AI-generated-text signal
    (app/providers/ai_text_detector.py) is appended to ai_signals.
+4. For image content, a metadata tampering check (app/providers/metadata_integrity.py, EXIF
+   inconsistencies + a SHA-256 content hash, no model) is appended, using the submission's raw
+   bytes passed in as `media` — app/worker/pipeline.py reads them from object storage for
+   image submissions only.
 
 Deepfake detection (an ai_signals entry for image/video) is explicitly out of scope: Reality
 Defender's free tier (50/month) doesn't make it worth building for v1. ai_signals simply has
@@ -48,6 +52,10 @@ from app.providers.explanation import (
     Explanation,
     GroqError,
     GroqExplanationGenerator,
+)
+from app.providers.metadata_integrity import (
+    MetadataTamperingDetector,
+    get_metadata_tampering_detector,
 )
 from app.providers.source_verification import SourceVerifier, TavilySourceVerifier
 from app.providers.vector_db import VectorDbProvider, get_vector_db_provider
@@ -85,12 +93,19 @@ class AnalysisResult:
 
 class AnalysisProvider(Protocol):
     async def analyze(
-        self, *, db: AsyncSession, content_type: str, text: str, language: str
+        self,
+        *,
+        db: AsyncSession,
+        content_type: str,
+        text: str,
+        language: str,
+        media: bytes | None = None,
     ) -> AnalysisResult:
         """Given the submission's content, produce the analysis half of a FactCheckReport
         (everything but the identity/timing/community fields the pipeline fills in itself).
         `db` is the pipeline's own session — GroqAnalysisProvider's dedupe check reads
-        through it; the stub ignores it."""
+        through it; the stub ignores it. `media` is the raw uploaded bytes for an image
+        submission (None otherwise, and ignored by the stub)."""
         ...
 
 
@@ -103,7 +118,13 @@ class StubAnalysisProvider:
     same input twice gives a stable result."""
 
     async def analyze(
-        self, *, db: AsyncSession, content_type: str, text: str, language: str
+        self,
+        *,
+        db: AsyncSession,
+        content_type: str,
+        text: str,
+        language: str,
+        media: bytes | None = None,
     ) -> AnalysisResult:
         digest = zlib.crc32(f"{content_type}:{text}".encode())
         sample = SAMPLE_REPORTS[digest % len(SAMPLE_REPORTS)]
@@ -127,6 +148,7 @@ class GroqAnalysisProvider:
         *,
         embedder: EmbeddingProvider,
         ai_text_detector: AiTextDetector,
+        metadata_tampering_detector: MetadataTamperingDetector,
         vector_db: VectorDbProvider,
         source_verifier: SourceVerifier,
         explanation_generator: GroqExplanationGenerator,
@@ -134,13 +156,20 @@ class GroqAnalysisProvider:
     ):
         self._embedder = embedder
         self._ai_text_detector = ai_text_detector
+        self._metadata_tampering_detector = metadata_tampering_detector
         self._vector_db = vector_db
         self._source_verifier = source_verifier
         self._explanation_generator = explanation_generator
         self._dedupe_max_distance = dedupe_max_cosine_distance
 
     async def analyze(
-        self, *, db: AsyncSession, content_type: str, text: str, language: str
+        self,
+        *,
+        db: AsyncSession,
+        content_type: str,
+        text: str,
+        language: str,
+        media: bytes | None = None,
     ) -> AnalysisResult:
         embedding = self._embedder.embed(text) if text.strip() else None
 
@@ -158,6 +187,10 @@ class GroqAnalysisProvider:
 
         if content_type == "text":
             signal = self._ai_text_detector.detect(text)
+            if signal is not None:
+                result.ai_signals = [*result.ai_signals, signal]
+        elif content_type == "image" and media:
+            signal = self._metadata_tampering_detector.detect(media)
             if signal is not None:
                 result.ai_signals = [*result.ai_signals, signal]
         return result
@@ -223,6 +256,7 @@ def get_analysis_provider() -> AnalysisProvider:
     return GroqAnalysisProvider(
         embedder=get_embedding_provider(),
         ai_text_detector=get_ai_text_detector(),
+        metadata_tampering_detector=get_metadata_tampering_detector(),
         vector_db=get_vector_db_provider(),
         source_verifier=TavilySourceVerifier(
             tavily_api_key=settings.tavily_api_key, tavily_api_url=settings.tavily_api_url

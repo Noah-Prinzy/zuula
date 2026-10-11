@@ -20,6 +20,7 @@ from app.providers.ai_text_detector import StubAiTextDetector
 from app.providers.analysis import GroqAnalysisProvider, GroqError, get_analysis_provider
 from app.providers.embedding import StubEmbeddingProvider
 from app.providers.explanation import GroqExplanationGenerator
+from app.providers.metadata_integrity import StubMetadataTamperingDetector
 from app.providers.source_verification import TavilySourceVerifier
 from app.providers.vector_db import PgVectorProvider
 
@@ -33,6 +34,7 @@ def _provider(**overrides):
     kwargs = {
         "embedder": StubEmbeddingProvider(),
         "ai_text_detector": StubAiTextDetector(),
+        "metadata_tampering_detector": StubMetadataTamperingDetector(),
         "vector_db": PgVectorProvider(),
         "source_verifier": TavilySourceVerifier(
             tavily_api_key="tavily-key", tavily_api_url=TAVILY_URL
@@ -303,6 +305,37 @@ async def test_the_ai_text_detector_signal_is_appended_for_text_only(db):
 
     image_result = await provider.analyze(db=db, content_type="image", text="Some claim.", language="en")
     assert not any(sig.id == "x" for sig in image_result.ai_signals)
+
+
+@respx.mock
+async def test_the_metadata_tampering_signal_is_appended_only_for_image_content_with_media(db):
+    respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
+    respx.post(CHAT).mock(return_value=_verdict_response())
+
+    class FixedSignal:
+        def detect(self, data):
+            from app.schemas.fact_check import AISignal
+
+            return AISignal(
+                id="metadata-integrity", label="x", description="d", score=0.5, threshold=0.5, method="m"
+            )
+
+    provider = _provider(metadata_tampering_detector=FixedSignal())
+
+    no_media = await provider.analyze(
+        db=db, content_type="image", text="Some claim.", language="en", media=None
+    )
+    assert no_media.ai_signals == []
+
+    with_media = await provider.analyze(
+        db=db, content_type="image", text="Some claim.", language="en", media=b"fake-bytes"
+    )
+    assert {sig.id for sig in with_media.ai_signals} == {"metadata-integrity"}
+
+    text_with_media = await provider.analyze(
+        db=db, content_type="text", text="Some claim.", language="en", media=b"fake-bytes"
+    )
+    assert text_with_media.ai_signals == []
 
 
 # ---- get_analysis_provider() switch ----

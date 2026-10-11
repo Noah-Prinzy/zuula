@@ -126,21 +126,50 @@ async def test_image_media_is_never_sent_for_transcription(db):
 
 
 class _RecordingAnalysisProvider:
-    """A fake AnalysisProvider that returns a fixed embedding, so tests can see what
-    app/worker/pipeline.py does with it (app/providers/vector_db.py's upsert) without needing
-    GroqAnalysisProvider's real HTTP calls."""
+    """A fake AnalysisProvider that records what it was handed (app/providers/analysis.py's
+    `media` param) and optionally returns a fixed embedding, so tests can see what
+    app/worker/pipeline.py passes in without needing GroqAnalysisProvider's real HTTP calls."""
 
     def __init__(self, embedding=None):
+        self.seen = {}
         self._embedding = embedding
 
-    async def analyze(self, *, db, content_type, text, language):
+    async def analyze(self, *, db, content_type, text, language, media=None):
         from app.providers.analysis import StubAnalysisProvider
 
+        self.seen = {"media": media, "content_type": content_type}
         result = await StubAnalysisProvider().analyze(
-            db=db, content_type=content_type, text=text, language=language
+            db=db, content_type=content_type, text=text, language=language, media=media
         )
         result.embedding = self._embedding
         return result
+
+
+async def test_image_media_bytes_are_handed_to_the_analysis_provider(db, monkeypatch):
+    key = "submissions/test-image/original"
+    StubObjectStorage.OBJECTS[key] = (b"fake-image-bytes", "image/jpeg")
+    fields = {
+        **validate_input({"type": "media", "headline": "A photo"}),
+        "media_object_key": key,
+        "media_content_type": "image/jpeg",
+    }
+    s, _ = await create_submission(db, fields=fields, channel="web")
+    await db.commit()
+
+    recording = _RecordingAnalysisProvider()
+    monkeypatch.setattr("app.worker.pipeline.get_analysis_provider", lambda: recording)
+    await run_pipeline(db, s.tracking_id)
+
+    assert recording.seen == {"media": b"fake-image-bytes", "content_type": "image"}
+
+
+async def test_a_text_submission_is_never_handed_media_bytes(db, monkeypatch):
+    recording = _RecordingAnalysisProvider()
+    monkeypatch.setattr("app.worker.pipeline.get_analysis_provider", lambda: recording)
+    s = await _submit(db, _INPUT["text"])
+    await run_pipeline(db, s.tracking_id)
+
+    assert recording.seen["media"] is None
 
 
 async def test_a_new_report_with_an_embedding_is_upserted_into_the_vector_db(db, monkeypatch):
@@ -244,12 +273,12 @@ class _Recording:
     def __init__(self):
         self.seen = {}
 
-    async def analyze(self, *, db, content_type, text, language):
+    async def analyze(self, *, db, content_type, text, language, media=None):
         from app.providers.analysis import StubAnalysisProvider
 
         self.seen = {"text": text, "language": language}
         return await StubAnalysisProvider().analyze(
-            db=db, content_type=content_type, text=text, language=language
+            db=db, content_type=content_type, text=text, language=language, media=media
         )
 
 

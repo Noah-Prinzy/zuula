@@ -32,6 +32,11 @@ dependencies = [
   "trafilatura>=1.12",
   "sentence-transformers>=3.0",
   "transformers>=4.44",
+  # Metadata tampering (app/providers/metadata_integrity.py) decodes the uploaded image with
+  # Pillow to read its EXIF block — lightweight, no model weights, so unlike the two packages
+  # above it isn't tied to a stub-by-default provider for download-size reasons (it still
+  # defaults to `stub` anyway, same real-or-stub convention as every provider here).
+  "pillow>=10.4",
 ]
 
 [project.optional-dependencies]
