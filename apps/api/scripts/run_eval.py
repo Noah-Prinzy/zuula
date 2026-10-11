@@ -97,18 +97,35 @@ async def _tavily_search_with_retry(*, api_key, api_url, query, max_results=5, t
             raise
 
 
-async def analyze_with_retry(provider, *, db, content_type, text, language, max_attempts=6):
-    """Retries a transient GroqError (429/5xx/network) with backoff. A non-transient failure
-    (bad request, malformed JSON response) is raised immediately — retrying it would just
-    reproduce the same deterministic failure.
+_groq_pace_lock = asyncio.Lock()
+_groq_last_call: list[float] = [0.0]
+MIN_GROQ_INTERVAL_SECONDS = 20.0
 
-    Groq's free tier throttles on tokens-per-minute rather than request count (confirmed by
-    probing its rate-limit headers directly while building this harness), and gpt-oss-120b's
-    hidden reasoning tokens eat that budget fast — so backoff is capped at 60s, long enough to
-    clear a minute-scale token-bucket reset, rather than the shorter window a plain request-rate
-    429 would need."""
+
+async def _pace_groq_call() -> None:
+    """Enforces a minimum gap between the *start* of successive Groq calls, independent of
+    --concurrency and of the reactive retry/backoff below.
+
+    Observed on the first full-278 attempt (killed at 120/278, see git history): even at
+    --concurrency 1, reactive 429 retry/backoff alone was not enough — single gpt-oss-120b
+    calls (hidden reasoning tokens included) are large enough relative to Groq's free-tier
+    8000 tokens/minute budget that a sustained run drifts into a 429 feedback loop well before
+    any one call's backoff clears it. Pacing calls proactively keeps the harness under budget
+    instead of reacting to it after the fact."""
+    async with _groq_pace_lock:
+        wait = MIN_GROQ_INTERVAL_SECONDS - (time.monotonic() - _groq_last_call[0])
+        if wait > 0:
+            await asyncio.sleep(wait)
+        _groq_last_call[0] = time.monotonic()
+
+
+async def analyze_with_retry(provider, *, db, content_type, text, language, max_attempts=6):
+    """Retries a transient GroqError (429/5xx/network) with backoff, on top of the proactive
+    pacing in _pace_groq_call(). A non-transient failure (bad request, malformed JSON response)
+    is raised immediately — retrying it would just reproduce the same deterministic failure."""
     attempt = 0
     while True:
+        await _pace_groq_call()
         try:
             return await provider.analyze(
                 db=db, content_type=content_type, text=text, language=language
@@ -325,10 +342,29 @@ def setup_database(database_url: str) -> None:
     asyncio.run(seed_database(database_url, include_real=True))
 
 
+def _load_done(out_path: Path) -> dict[int, ItemResult]:
+    """Loads already-written per-item results from a prior (possibly killed) run, keyed by
+    idx, so a resumed run skips re-spending API quota on items it already scored."""
+    if not out_path.exists():
+        return {}
+    done: dict[int, ItemResult] = {}
+    for line in out_path.read_text().splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        done[row["idx"]] = ItemResult(**row)
+    return done
+
+
 async def run(args: argparse.Namespace) -> list[ItemResult]:
     items = load_eval_items(EVAL_DATA_DIR)
     if args.limit:
         items = items[: args.limit]
+
+    done = _load_done(args.out) if args.resume else {}
+    remaining = [item for item in items if item.idx not in done]
+    if done:
+        print(f"Resuming: {len(done)}/{len(items)} items already scored in {args.out}")
 
     analysis_module.tavily_search = _tavily_search_with_retry
     provider = get_analysis_provider()
@@ -341,15 +377,23 @@ async def run(args: argparse.Namespace) -> list[ItemResult]:
 
     engine = create_async_engine(args.database_url, poolclass=NullPool)
     semaphore = asyncio.Semaphore(args.concurrency)
-    results: list[ItemResult] = []
+    results: list[ItemResult] = list(done.values())
+    # Append-and-flush after every item (not just at the end) so a killed/crashed run only
+    # loses the one in-flight item's quota, not the whole batch — the earlier version wrote
+    # --out solely in main() after run() returned, so a background-timeout kill mid-run (as
+    # happened on the first full-278 attempt, killed at 50/278) discarded every scored item.
+    out_mode = "a" if (args.resume and done) else "w"
     try:
-        print(f"Running {len(items)} items at concurrency {args.concurrency} ...")
-        tasks = [process_item(provider, engine, item, semaphore) for item in items]
-        for i, coro in enumerate(asyncio.as_completed(tasks), start=1):
-            result = await coro
-            results.append(result)
-            if i % 10 == 0 or i == len(items):
-                print(f"  {i}/{len(items)} done")
+        print(f"Running {len(remaining)} remaining items at concurrency {args.concurrency} ...")
+        with args.out.open(out_mode) as out_f:
+            tasks = [process_item(provider, engine, item, semaphore) for item in remaining]
+            for i, coro in enumerate(asyncio.as_completed(tasks), start=1):
+                result = await coro
+                results.append(result)
+                out_f.write(json.dumps(asdict(result)) + "\n")
+                out_f.flush()
+                if i % 10 == 0 or i == len(remaining):
+                    print(f"  {len(done) + i}/{len(items)} done")
     finally:
         await engine.dispose()
 
@@ -373,10 +417,17 @@ def main() -> int:
         help="Reuse an already-migrated-and-seeded --database-url instead of provisioning one",
     )
     parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Skip items already present in --out (from a prior killed/crashed run) and "
+        "append the rest instead of overwriting",
+    )
+    parser.add_argument(
         "--out",
         type=Path,
         default=SCRIPTS_DIR / "eval_results.jsonl",
-        help="Per-item results, one JSON object per line",
+        help="Per-item results, one JSON object per line (written incrementally as each "
+        "item finishes, so a killed run keeps everything scored so far)",
     )
     parser.add_argument(
         "--report-out",
@@ -390,11 +441,7 @@ def main() -> int:
         setup_database(args.database_url)
 
     results = asyncio.run(run(args))
-
-    with args.out.open("w") as f:
-        for r in results:
-            f.write(json.dumps(asdict(r)) + "\n")
-    print(f"Wrote {len(results)} per-item results to {args.out}")
+    print(f"{len(results)} per-item results in {args.out}")
 
     report = build_report(results)
     args.report_out.write_text(report + "\n")
