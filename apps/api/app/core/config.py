@@ -133,10 +133,12 @@ class AnalysisSettings(BaseSettings):
     # real traffic yet, so it shouldn't start flagging submissions silently.
     metadata_tampering_provider: str = "stub"
 
-    # Deepfake detection (image/video ai_signals) is explicitly out of scope for this engine:
-    # Reality Defender's free tier (50/month) doesn't cover it affordably, and the owner opted
-    # to skip it for v1 rather than half-build it. See AnalysisResult/ai_signals usage in
-    # app/providers/analysis.py.
+    # app/providers/deepfake_detector.py: a pretrained (not fine-tuned) image classifier's
+    # AI-generated/synthetic-image signal — the achievable slice of §5.3's deepfake detection
+    # row given no labelled corpus or GPU budget for a real CNNDetection/FaceForensics++-style
+    # detector. Same stub-by-default reasoning as ai_text_detector_provider.
+    deepfake_detector_provider: str = "stub"
+    deepfake_detector_model: str = "umm-maybe/AI-image-detector"
 
 
 class LanguageSettings(BaseSettings):

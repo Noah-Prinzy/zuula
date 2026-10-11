@@ -26,14 +26,16 @@ composed back into one claim-level AnalysisResult:
    only).
 3. For text content, an in-process AI-generated-text signal
    (app/providers/ai_text_detector.py) is appended to ai_signals.
-4. For image content, a metadata tampering check (app/providers/metadata_integrity.py, EXIF
-   inconsistencies + a SHA-256 content hash, no model) is appended, using the submission's raw
-   bytes passed in as `media` — app/worker/pipeline.py reads them from object storage for
-   image submissions only.
+4. For image content, two more AI Content Detection Module signals are appended from the
+   submission's raw bytes, passed in as `media` (app/worker/pipeline.py reads them from
+   object storage for image submissions only): a metadata tampering check
+   (app/providers/metadata_integrity.py, EXIF inconsistencies + a SHA-256 content hash, no
+   model) and a basic AI-generated-image signal from a pretrained classifier
+   (app/providers/deepfake_detector.py).
 
-Deepfake detection (an ai_signals entry for image/video) is explicitly out of scope: Reality
-Defender's free tier (50/month) doesn't make it worth building for v1. ai_signals simply has
-no such entry yet — there's nothing half-built to find here.
+Deepfake-specific forensics (face-swap/lip-sync detection, trained on FaceForensics++-style
+data) are out of scope — no labelled corpus, no GPU budget. deepfake_detector.py's signal is a
+basic "does this look AI-generated" classifier, not that.
 """
 
 import logging
@@ -47,6 +49,7 @@ from app.core.config import get_analysis_settings
 from app.db.models import FactCheckReport
 from app.db.sample_data.fact_checks import SAMPLE_REPORTS
 from app.providers.ai_text_detector import AiTextDetector, get_ai_text_detector
+from app.providers.deepfake_detector import DeepfakeDetector, get_deepfake_detector
 from app.providers.embedding import EmbeddingProvider, get_embedding_provider
 from app.providers.explanation import (
     Explanation,
@@ -149,6 +152,7 @@ class GroqAnalysisProvider:
         embedder: EmbeddingProvider,
         ai_text_detector: AiTextDetector,
         metadata_tampering_detector: MetadataTamperingDetector,
+        deepfake_detector: DeepfakeDetector,
         vector_db: VectorDbProvider,
         source_verifier: SourceVerifier,
         explanation_generator: GroqExplanationGenerator,
@@ -157,6 +161,7 @@ class GroqAnalysisProvider:
         self._embedder = embedder
         self._ai_text_detector = ai_text_detector
         self._metadata_tampering_detector = metadata_tampering_detector
+        self._deepfake_detector = deepfake_detector
         self._vector_db = vector_db
         self._source_verifier = source_verifier
         self._explanation_generator = explanation_generator
@@ -190,9 +195,10 @@ class GroqAnalysisProvider:
             if signal is not None:
                 result.ai_signals = [*result.ai_signals, signal]
         elif content_type == "image" and media:
-            signal = self._metadata_tampering_detector.detect(media)
-            if signal is not None:
-                result.ai_signals = [*result.ai_signals, signal]
+            for detector in (self._metadata_tampering_detector, self._deepfake_detector):
+                signal = detector.detect(media)
+                if signal is not None:
+                    result.ai_signals = [*result.ai_signals, signal]
         return result
 
     async def _reuse_if_duplicate(
@@ -257,6 +263,7 @@ def get_analysis_provider() -> AnalysisProvider:
         embedder=get_embedding_provider(),
         ai_text_detector=get_ai_text_detector(),
         metadata_tampering_detector=get_metadata_tampering_detector(),
+        deepfake_detector=get_deepfake_detector(),
         vector_db=get_vector_db_provider(),
         source_verifier=TavilySourceVerifier(
             tavily_api_key=settings.tavily_api_key, tavily_api_url=settings.tavily_api_url

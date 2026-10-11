@@ -18,6 +18,7 @@ from app.core import config
 from app.db import models as m
 from app.providers.ai_text_detector import StubAiTextDetector
 from app.providers.analysis import GroqAnalysisProvider, GroqError, get_analysis_provider
+from app.providers.deepfake_detector import StubDeepfakeDetector
 from app.providers.embedding import StubEmbeddingProvider
 from app.providers.explanation import GroqExplanationGenerator
 from app.providers.metadata_integrity import StubMetadataTamperingDetector
@@ -35,6 +36,7 @@ def _provider(**overrides):
         "embedder": StubEmbeddingProvider(),
         "ai_text_detector": StubAiTextDetector(),
         "metadata_tampering_detector": StubMetadataTamperingDetector(),
+        "deepfake_detector": StubDeepfakeDetector(),
         "vector_db": PgVectorProvider(),
         "source_verifier": TavilySourceVerifier(
             tavily_api_key="tavily-key", tavily_api_url=TAVILY_URL
@@ -308,19 +310,25 @@ async def test_the_ai_text_detector_signal_is_appended_for_text_only(db):
 
 
 @respx.mock
-async def test_the_metadata_tampering_signal_is_appended_only_for_image_content_with_media(db):
+async def test_image_signals_are_appended_only_for_image_content_with_media_bytes(db):
     respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
     respx.post(CHAT).mock(return_value=_verdict_response())
 
     class FixedSignal:
+        def __init__(self, signal_id):
+            self._signal_id = signal_id
+
         def detect(self, data):
             from app.schemas.fact_check import AISignal
 
             return AISignal(
-                id="metadata-integrity", label="x", description="d", score=0.5, threshold=0.5, method="m"
+                id=self._signal_id, label="x", description="d", score=0.5, threshold=0.5, method="m"
             )
 
-    provider = _provider(metadata_tampering_detector=FixedSignal())
+    provider = _provider(
+        metadata_tampering_detector=FixedSignal("metadata-integrity"),
+        deepfake_detector=FixedSignal("deepfake-detector"),
+    )
 
     no_media = await provider.analyze(
         db=db, content_type="image", text="Some claim.", language="en", media=None
@@ -330,7 +338,7 @@ async def test_the_metadata_tampering_signal_is_appended_only_for_image_content_
     with_media = await provider.analyze(
         db=db, content_type="image", text="Some claim.", language="en", media=b"fake-bytes"
     )
-    assert {sig.id for sig in with_media.ai_signals} == {"metadata-integrity"}
+    assert {sig.id for sig in with_media.ai_signals} == {"metadata-integrity", "deepfake-detector"}
 
     text_with_media = await provider.analyze(
         db=db, content_type="text", text="Some claim.", language="en", media=b"fake-bytes"
