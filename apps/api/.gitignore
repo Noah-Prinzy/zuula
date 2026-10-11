@@ -5,3 +5,7 @@ __pycache__/
 .ruff_cache/
 .pytest_cache/
 .env
+
+# scripts/run_eval.py's in-progress per-item output; committed deliberately once a real run
+# completes (it's rewritten by git add -f at that point, not tracked automatically).
+scripts/eval_results.jsonl
