@@ -63,3 +63,29 @@ async def test_an_unparseable_response_raises():
     respx.post(SEARCH).mock(return_value=httpx.Response(200, text="not json"))
     with pytest.raises(TavilySearchError):
         await tavily_search(api_key="k", api_url=URL, query="q")
+
+
+@respx.mock
+async def test_include_domains_is_sent_when_given():
+    route = respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
+    await tavily_search(
+        api_key="k", api_url=URL, query="q", include_domains=["monitor.co.ug", "newvision.co.ug"]
+    )
+    body = json.loads(route.calls.last.request.content)
+    assert body["include_domains"] == ["monitor.co.ug", "newvision.co.ug"]
+
+
+@respx.mock
+async def test_include_domains_is_omitted_when_not_given():
+    route = respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
+    await tavily_search(api_key="k", api_url=URL, query="q")
+    body = json.loads(route.calls.last.request.content)
+    assert "include_domains" not in body
+
+
+@respx.mock
+async def test_include_domains_is_omitted_when_empty():
+    route = respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
+    await tavily_search(api_key="k", api_url=URL, query="q", include_domains=[])
+    body = json.loads(route.calls.last.request.content)
+    assert "include_domains" not in body
