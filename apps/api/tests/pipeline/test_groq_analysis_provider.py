@@ -1,6 +1,11 @@
-"""GroqAnalysisProvider: the dedupe check (through app/providers/vector_db.py) and the
-Tavily+Groq verdict path, both against respx mocks (for the hosted calls) and the real test
-database (for dedupe). Nothing calls a real service."""
+"""GroqAnalysisProvider as orchestrator: composes the vector-db dedupe lookup
+(app/providers/vector_db.py), the Source Verification Engine
+(app/providers/source_verification.py) and the Explanation Generator
+(app/providers/explanation.py) into one claim-level AnalysisResult, then appends the
+AI-text-detector signal. Each piece has its own focused tests (test_vector_db.py,
+test_source_verification.py, test_explanation_generator.py); this file covers the composition
+itself, against respx mocks for the hosted calls and the real test database for dedupe.
+Nothing calls a real service."""
 
 import json
 from datetime import UTC, datetime
@@ -14,6 +19,8 @@ from app.db import models as m
 from app.providers.ai_text_detector import StubAiTextDetector
 from app.providers.analysis import GroqAnalysisProvider, GroqError, get_analysis_provider
 from app.providers.embedding import StubEmbeddingProvider
+from app.providers.explanation import GroqExplanationGenerator
+from app.providers.source_verification import TavilySourceVerifier
 from app.providers.vector_db import PgVectorProvider
 
 GROQ_URL = "https://groq.example"
@@ -24,14 +31,15 @@ SEARCH = f"{TAVILY_URL}/search"
 
 def _provider(**overrides):
     kwargs = {
-        "groq_api_key": "groq-key",
-        "groq_api_url": GROQ_URL,
-        "groq_model": "llama-3.3-70b-versatile",
-        "tavily_api_key": "tavily-key",
-        "tavily_api_url": TAVILY_URL,
         "embedder": StubEmbeddingProvider(),
         "ai_text_detector": StubAiTextDetector(),
         "vector_db": PgVectorProvider(),
+        "source_verifier": TavilySourceVerifier(
+            tavily_api_key="tavily-key", tavily_api_url=TAVILY_URL
+        ),
+        "explanation_generator": GroqExplanationGenerator(
+            groq_api_key="groq-key", groq_api_url=GROQ_URL, groq_model="llama-3.3-70b-versatile"
+        ),
         "dedupe_max_cosine_distance": 0.08,
     }
     kwargs.update(overrides)
@@ -199,6 +207,8 @@ async def test_restricted_search_is_tried_first_and_marks_trusted_citations(db):
         db=db, content_type="text", text="Some claim about trusted example.", language="en"
     )
 
+    # Only one search happened at all: the restricted one already had enough results, so no
+    # fallback was needed.
     assert route.call_count == 1
     body = json.loads(route.calls.last.request.content)
     assert "trusted-example.ug" in body["include_domains"]
@@ -237,6 +247,7 @@ async def test_a_sparse_restricted_search_falls_back_to_an_unrestricted_one(db):
         db=db, content_type="text", text="Some unrelated claim.", language="en"
     )
 
+    # The restricted search came up empty, so a second, unrestricted search ran.
     assert route.call_count == 2
     assert [c.url for c in result.citations] == [
         "https://open-example.com/a",
