@@ -23,7 +23,13 @@ class TavilyResult:
 
 
 async def tavily_search(
-    *, api_key: str, api_url: str, query: str, max_results: int = 5, timeout: float = 20.0
+    *,
+    api_key: str,
+    api_url: str,
+    query: str,
+    max_results: int = 5,
+    timeout: float = 20.0,
+    include_domains: list[str] | None = None,
 ) -> list[TavilyResult]:
     payload = {
         "api_key": api_key,
@@ -32,6 +38,10 @@ async def tavily_search(
         "max_results": max_results,
         "include_answer": False,
     }
+    if include_domains:
+        # Tavily's documented allowlist filter: restricts results to these domains outright,
+        # rather than just boosting their ranking.
+        payload["include_domains"] = include_domains
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
             response = await client.post(f"{api_url.rstrip('/')}/search", json=payload)

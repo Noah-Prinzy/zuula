@@ -12,7 +12,11 @@ GroqAnalysisProvider does, per claim, in this order:
    existing report (pgvector cosine distance against `fact_check_reports.embedding`). A close
    match is reused outright — no Tavily search, no Groq call — which is what keeps the same
    viral claim from costing anything the second time it's submitted.
-2. Otherwise, one Tavily web search for evidence (app/providers/tavily.py) and one Groq chat
+2. Otherwise, one Tavily web search for evidence (app/providers/tavily.py), restricted to the
+   admin-managed trusted-source registry (`TrustedSource`, FR-DETECT-06) via Tavily's
+   `include_domains`, when that search returns enough to work with (see
+   `_RESTRICTED_SEARCH_MIN_RESULTS` below) — otherwise an unrestricted search for the same
+   claim, since the registry is nowhere near its 50-source target yet. One Groq chat
    completion (GROQ_MODEL, free tier) over the claim and that evidence, asked to return the
    verdict/claims/citations/summary shape in one JSON response — claim extraction and
    reasoning in the same call, not an agent loop. No Claude/Anthropic calls anywhere in this
@@ -30,13 +34,14 @@ import logging
 import zlib
 from dataclasses import dataclass, field
 from typing import Protocol
+from urllib.parse import urlparse
 
 import httpx
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_analysis_settings
-from app.db.models import FactCheckReport
+from app.db.models import FactCheckReport, TrustedSource
 from app.db.sample_data.fact_checks import SAMPLE_REPORTS
 from app.providers.ai_text_detector import AiTextDetector, get_ai_text_detector
 from app.providers.embedding import EmbeddingProvider, get_embedding_provider
@@ -175,6 +180,26 @@ def _coerce(value: object, allowed: tuple[str, ...], default: str) -> str:
     return value if isinstance(value, str) and value in allowed else default
 
 
+# Below this many results, a trusted-only search is too sparse to prefer over an open one —
+# the registry only has 12 of its SOURCE_TARGET=50 sources seeded so far (app/db/sample_data/
+# admin.py), so a hard restriction to it would tank evidence coverage for most claims.
+_RESTRICTED_SEARCH_MIN_RESULTS = 2
+
+
+async def _trusted_domains(db: AsyncSession) -> list[str]:
+    rows = await db.execute(select(TrustedSource.domain).where(TrustedSource.active.is_(True)))
+    return [domain for (domain,) in rows.all()]
+
+
+def _domain_of(url: str) -> str:
+    return urlparse(url).netloc.lower().removeprefix("www.")
+
+
+def _is_trusted(url: str, trusted_domains: frozenset[str]) -> bool:
+    domain = _domain_of(url)
+    return any(domain == d or domain.endswith(f".{d}") for d in trusted_domains)
+
+
 class GroqAnalysisProvider:
     def __init__(
         self,
@@ -209,18 +234,16 @@ class GroqAnalysisProvider:
             if reused is not None:
                 return reused
 
+        trusted_domains = await _trusted_domains(db)
         try:
-            sources = await tavily_search(
-                api_key=self._tavily_api_key,
-                api_url=self._tavily_api_url,
-                query=text[:400],
-                timeout=self._timeout,
-            )
+            sources = await self._search(text=text, trusted_domains=trusted_domains)
         except TavilySearchError:
             logger.warning("Tavily search failed; analyzing without web evidence", exc_info=True)
             sources = []
 
-        result = await self._verdict(content_type=content_type, text=text, sources=sources)
+        result = await self._verdict(
+            content_type=content_type, text=text, sources=sources, trusted_domains=trusted_domains
+        )
         result.embedding = embedding
 
         if content_type == "text":
@@ -228,6 +251,36 @@ class GroqAnalysisProvider:
             if signal is not None:
                 result.ai_signals = [*result.ai_signals, signal]
         return result
+
+    async def _search(self, *, text: str, trusted_domains: list[str]) -> list[TavilyResult]:
+        """One search per claim (the module docstring's cost constraint), restricted to the
+        admin-managed trusted-source registry when it has anything to offer. Only 12 of
+        SOURCE_TARGET=50 sources are seeded today, so a hard restriction would starve most
+        claims of evidence — fall back to an unrestricted search instead of returning sparse
+        or empty results."""
+        query = text[:400]
+        if trusted_domains:
+            restricted = await tavily_search(
+                api_key=self._tavily_api_key,
+                api_url=self._tavily_api_url,
+                query=query,
+                include_domains=trusted_domains,
+                timeout=self._timeout,
+            )
+            if len(restricted) >= _RESTRICTED_SEARCH_MIN_RESULTS:
+                return restricted
+            logger.info(
+                "Trusted-source search returned only %d result(s) (of %d trusted domains); "
+                "falling back to an unrestricted search",
+                len(restricted),
+                len(trusted_domains),
+            )
+        return await tavily_search(
+            api_key=self._tavily_api_key,
+            api_url=self._tavily_api_url,
+            query=query,
+            timeout=self._timeout,
+        )
 
     async def _reuse_if_duplicate(
         self, db: AsyncSession, embedding: list[float]
@@ -264,7 +317,12 @@ class GroqAnalysisProvider:
         )
 
     async def _verdict(
-        self, *, content_type: str, text: str, sources: list[TavilyResult]
+        self,
+        *,
+        content_type: str,
+        text: str,
+        sources: list[TavilyResult],
+        trusted_domains: list[str],
     ) -> AnalysisResult:
         payload = {
             "model": self._groq_model,
@@ -294,10 +352,13 @@ class GroqAnalysisProvider:
             data = json.loads(content)
         except (KeyError, IndexError, ValueError) as exc:
             raise GroqError("Groq returned something other than the expected JSON.") from exc
-        return _parse_verdict(data, text, sources)
+        return _parse_verdict(data, text, sources, trusted_domains)
 
 
-def _parse_verdict(data: dict, text: str, sources: list[TavilyResult]) -> AnalysisResult:
+def _parse_verdict(
+    data: dict, text: str, sources: list[TavilyResult], trusted_domains: list[str]
+) -> AnalysisResult:
+    trusted_set = frozenset(trusted_domains)
     stance_by_index = {
         int(s["index"]): _coerce(s.get("stance"), _STANCES, "context")
         for s in data.get("citationStances") or []
@@ -318,7 +379,7 @@ def _parse_verdict(data: dict, text: str, sources: list[TavilyResult]) -> Analys
                 url=source.url,
                 published_at=source.published_at or "",
                 stance=stance_by_index[index],
-                trusted=False,
+                trusted=_is_trusted(source.url, trusted_set),
                 excerpt=source.snippet[:280] or None,
             )
         )

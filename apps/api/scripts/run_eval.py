@@ -59,10 +59,38 @@ VERDICTS = ("authentic", "likely-false", "false", "ai-generated", "unverifiable"
 _event: ContextVar[dict] = ContextVar("eval_event")
 
 
+class _Pacer:
+    """Groq's free tier on gpt-oss-120b caps at 8000 tokens/minute (confirmed via its
+    `x-ratelimit-limit-tokens` response header) — far below what the retry backoff in
+    `analyze_with_retry` can work around, since a single analyze() call's prompt (system
+    prompt + claim + up to 5 Tavily snippets) plus gpt-oss-120b's hidden reasoning tokens can
+    approach or exceed that whole per-minute budget on its own: no amount of retrying fixes a
+    request that's bigger than the bucket. This enforces a minimum spacing between dispatching
+    Groq calls so the harness stays under budget instead of needing the 429 retry path at all."""
+
+    def __init__(self, min_interval: float):
+        self._min_interval = min_interval
+        self._lock = asyncio.Lock()
+        self._next_at = 0.0
+
+    async def wait(self) -> None:
+        async with self._lock:
+            now = time.monotonic()
+            delay = max(0.0, self._next_at - now)
+            self._next_at = max(now, self._next_at) + self._min_interval
+        if delay:
+            await asyncio.sleep(delay)
+
+
+_pacer: _Pacer | None = None
+
+
 # ---- retry/backoff instrumentation (wraps the real network calls; changes no provider logic) ----
 
 
-async def _tavily_search_with_retry(*, api_key, api_url, query, max_results=5, timeout=20.0):
+async def _tavily_search_with_retry(
+    *, api_key, api_url, query, max_results=5, timeout=20.0, include_domains=None
+):
     """Drop-in replacement for app.providers.analysis's imported `tavily_search`: retries a
     transient (429/5xx/network) failure a few times before giving up, so a Tavily hiccup
     doesn't permanently degrade one claim to "no evidence" the way a bare call would. On final
@@ -79,6 +107,7 @@ async def _tavily_search_with_retry(*, api_key, api_url, query, max_results=5, t
                 query=query,
                 max_results=max_results,
                 timeout=timeout,
+                include_domains=include_domains,
             )
             if event is not None:
                 event["tavily_called"] = True
@@ -97,36 +126,15 @@ async def _tavily_search_with_retry(*, api_key, api_url, query, max_results=5, t
             raise
 
 
-_groq_pace_lock = asyncio.Lock()
-_groq_last_call: list[float] = [0.0]
-MIN_GROQ_INTERVAL_SECONDS = 20.0
-
-
-async def _pace_groq_call() -> None:
-    """Enforces a minimum gap between the *start* of successive Groq calls, independent of
-    --concurrency and of the reactive retry/backoff below.
-
-    Observed on the first full-278 attempt (killed at 120/278, see git history): even at
-    --concurrency 1, reactive 429 retry/backoff alone was not enough — single gpt-oss-120b
-    calls (hidden reasoning tokens included) are large enough relative to Groq's free-tier
-    8000 tokens/minute budget that a sustained run drifts into a 429 feedback loop well before
-    any one call's backoff clears it. Pacing calls proactively keeps the harness under budget
-    instead of reacting to it after the fact."""
-    async with _groq_pace_lock:
-        wait = MIN_GROQ_INTERVAL_SECONDS - (time.monotonic() - _groq_last_call[0])
-        if wait > 0:
-            await asyncio.sleep(wait)
-        _groq_last_call[0] = time.monotonic()
-
-
 async def analyze_with_retry(provider, *, db, content_type, text, language, max_attempts=6):
     """Retries a transient GroqError (429/5xx/network) with backoff, on top of the proactive
-    pacing in _pace_groq_call(). A non-transient failure (bad request, malformed JSON response)
-    is raised immediately — retrying it would just reproduce the same deterministic failure."""
+    pacing in _Pacer. A non-transient failure (bad request, malformed JSON response) is raised
+    immediately — retrying it would just reproduce the same deterministic failure."""
     attempt = 0
     while True:
-        await _pace_groq_call()
         try:
+            if _pacer is not None:
+                await _pacer.wait()
             return await provider.analyze(
                 db=db, content_type=content_type, text=text, language=language
             )
@@ -357,6 +365,7 @@ def _load_done(out_path: Path) -> dict[int, ItemResult]:
 
 
 async def run(args: argparse.Namespace) -> list[ItemResult]:
+    global _pacer
     items = load_eval_items(EVAL_DATA_DIR)
     if args.limit:
         items = items[: args.limit]
@@ -366,6 +375,7 @@ async def run(args: argparse.Namespace) -> list[ItemResult]:
     if done:
         print(f"Resuming: {len(done)}/{len(items)} items already scored in {args.out}")
 
+    _pacer = _Pacer(args.request_interval)
     analysis_module.tavily_search = _tavily_search_with_retry
     provider = get_analysis_provider()
     if type(provider).__name__ != "GroqAnalysisProvider":
@@ -409,6 +419,16 @@ def main() -> int:
         type=int,
         default=2,
         help="Groq's free tier throttles on tokens/minute, not request count; keep this low",
+    )
+    parser.add_argument(
+        "--request-interval",
+        type=float,
+        default=20.0,
+        help=(
+            "Minimum seconds between dispatching Groq calls, regardless of --concurrency. "
+            "gpt-oss-120b's free tier is 8000 tokens/minute; 20s keeps a ~2600-token call "
+            "comfortably under that with no reliance on 429 retries."
+        ),
     )
     parser.add_argument("--database-url", default=EVAL_DB_URL)
     parser.add_argument(
