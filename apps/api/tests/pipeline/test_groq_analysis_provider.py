@@ -52,6 +52,21 @@ def _verdict_response(**fields) -> httpx.Response:
     return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps(body)}}]})
 
 
+async def _trusted_source(db, *, domain: str, source_id: str) -> m.TrustedSource:
+    source = m.TrustedSource(
+        id=source_id,
+        name=domain,
+        domain=domain,
+        type="media",
+        languages=["English"],
+        tier=1,
+        active=True,
+    )
+    db.add(source)
+    await db.flush()
+    return source
+
+
 async def _existing_report(db, *, text: str, tracking_id: str, report_id: str) -> m.FactCheckReport:
     db.add(m.Submission(tracking_id=tracking_id, type="text", status="completed"))
     await db.flush()
@@ -149,6 +164,86 @@ async def test_citations_and_claims_are_built_from_the_cited_sources(db):
     claim = result.claims[0]
     assert claim.citation_ids == [result.citations[0].id]
     assert text[claim.start : claim.end] == "a new hospital"
+
+
+@respx.mock
+async def test_restricted_search_is_tried_first_and_marks_trusted_citations(db):
+    await _trusted_source(db, domain="trusted-example.ug", source_id="src-test-1")
+
+    route = respx.post(SEARCH).mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "results": [
+                    {"title": "Trusted A", "url": "https://trusted-example.ug/a", "content": "A"},
+                    {
+                        "title": "Trusted B",
+                        "url": "https://www.trusted-example.ug/b",
+                        "content": "B",
+                    },
+                ]
+            },
+        )
+    )
+    respx.post(CHAT).mock(
+        return_value=_verdict_response(
+            citationStances=[
+                {"index": 0, "stance": "supports"},
+                {"index": 1, "stance": "supports"},
+            ]
+        )
+    )
+    result = await _provider().analyze(
+        db=db, content_type="text", text="Some claim about trusted example.", language="en"
+    )
+
+    # Only one search happened at all: the restricted one already had enough results, so no
+    # fallback was needed.
+    assert route.call_count == 1
+    body = json.loads(route.calls.last.request.content)
+    assert "trusted-example.ug" in body["include_domains"]
+    assert len(result.citations) == 2
+    assert all(c.trusted for c in result.citations)
+
+
+@respx.mock
+async def test_a_sparse_restricted_search_falls_back_to_an_unrestricted_one(db):
+    await _trusted_source(db, domain="trusted-example.ug", source_id="src-test-2")
+
+    def _search(request: httpx.Request) -> httpx.Response:
+        body = json.loads(request.content)
+        if "include_domains" in body:
+            return httpx.Response(200, json={"results": []})
+        return httpx.Response(
+            200,
+            json={
+                "results": [
+                    {"title": "Open A", "url": "https://open-example.com/a", "content": "A"},
+                    {"title": "Open B", "url": "https://open-example.com/b", "content": "B"},
+                ]
+            },
+        )
+
+    route = respx.post(SEARCH).mock(side_effect=_search)
+    respx.post(CHAT).mock(
+        return_value=_verdict_response(
+            citationStances=[
+                {"index": 0, "stance": "supports"},
+                {"index": 1, "stance": "context"},
+            ]
+        )
+    )
+    result = await _provider().analyze(
+        db=db, content_type="text", text="Some unrelated claim.", language="en"
+    )
+
+    # The restricted search came up empty, so a second, unrestricted search ran.
+    assert route.call_count == 2
+    assert [c.url for c in result.citations] == [
+        "https://open-example.com/a",
+        "https://open-example.com/b",
+    ]
+    assert not any(c.trusted for c in result.citations)
 
 
 @respx.mock
