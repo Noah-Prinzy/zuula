@@ -98,6 +98,14 @@ class AnalysisSettings(BaseSettings):
     tavily_api_key: str = ""
     tavily_api_url: str = "https://api.tavily.com"
 
+    # app/providers/vector_db.py: where the dedupe check's nearest-neighbor lookup runs.
+    # `pgvector` (default) matches the live demo path exactly — queries
+    # `fact_check_reports.embedding` directly, no extra infrastructure. `pinecone` is the
+    # additive alternative satisfying §4.2/§4.1 Layer 4's named vector-DB choice.
+    vector_db_provider: str = "pgvector"
+    pinecone_api_key: str = ""
+    pinecone_host: str = ""
+
     # app/providers/embedding.py: local sentence-embedding model for the dedupe check
     # (no API key, CPU-only). Defaults to `stub` — same real-when-configured spirit as the
     # other providers, but gated on an explicit opt-in rather than a credential, since there's

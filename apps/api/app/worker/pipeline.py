@@ -45,6 +45,7 @@ from app.providers.language import (
     resolve_submission_language,
 )
 from app.providers.transcription import TranscriptionError, get_transcription_provider
+from app.providers.vector_db import get_vector_db_provider
 from app.realtime import redis_client
 from app.realtime.submissions import publish_done, publish_failed, publish_step
 from app.services import escalation, notifications
@@ -189,6 +190,9 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
     s.status = "completed"
     s.completed_at = now
     await db.flush()
+
+    if report.embedding is not None:
+        await get_vector_db_provider().upsert(report_id=report.id, embedding=report.embedding)
 
     if report.confidence < rules.LOW_CONFIDENCE_THRESHOLD:
         await escalation.open_case(db, report, "low-confidence", await get_platform_settings(db))

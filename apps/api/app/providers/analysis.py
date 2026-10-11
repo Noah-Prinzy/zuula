@@ -9,9 +9,10 @@ than a hardcoded default.
 GroqAnalysisProvider does, per claim, in this order:
 
 1. Embed the claim locally (app/providers/embedding.py) and look for a near-duplicate
-   existing report (pgvector cosine distance against `fact_check_reports.embedding`). A close
-   match is reused outright — no Tavily search, no Groq call — which is what keeps the same
-   viral claim from costing anything the second time it's submitted.
+   existing report through app/providers/vector_db.py (pgvector by default; §4.2/§4.1 Layer 4
+   also names Pinecone, available as an alternative there). A close match is reused outright
+   — no Tavily search, no Groq call — which is what keeps the same viral claim from costing
+   anything the second time it's submitted.
 2. Otherwise, one Tavily web search for evidence (app/providers/tavily.py), restricted to the
    admin-managed trusted-source registry (`TrustedSource`, FR-DETECT-06) via Tavily's
    `include_domains`, when that search returns enough to work with (see
@@ -46,6 +47,7 @@ from app.db.sample_data.fact_checks import SAMPLE_REPORTS
 from app.providers.ai_text_detector import AiTextDetector, get_ai_text_detector
 from app.providers.embedding import EmbeddingProvider, get_embedding_provider
 from app.providers.tavily import TavilyResult, TavilySearchError, tavily_search
+from app.providers.vector_db import VectorDbProvider, get_vector_db_provider
 from app.schemas.common import CitationStance, ClaimAssessment, Verdict
 from app.schemas.fact_check import AISignal, Citation, Claim
 
@@ -211,6 +213,7 @@ class GroqAnalysisProvider:
         tavily_api_url: str,
         embedder: EmbeddingProvider,
         ai_text_detector: AiTextDetector,
+        vector_db: VectorDbProvider,
         dedupe_max_cosine_distance: float,
         timeout: float = 30.0,
     ):
@@ -221,6 +224,7 @@ class GroqAnalysisProvider:
         self._tavily_api_url = tavily_api_url
         self._embedder = embedder
         self._ai_text_detector = ai_text_detector
+        self._vector_db = vector_db
         self._dedupe_max_distance = dedupe_max_cosine_distance
         self._timeout = timeout
 
@@ -285,22 +289,16 @@ class GroqAnalysisProvider:
     async def _reuse_if_duplicate(
         self, db: AsyncSession, embedding: list[float]
     ) -> AnalysisResult | None:
-        distance = FactCheckReport.embedding.cosine_distance(embedding)
-        row = (
-            await db.execute(
-                select(FactCheckReport, distance.label("distance"))
-                .where(FactCheckReport.embedding.is_not(None))
-                .order_by(distance)
-                .limit(1)
-            )
-        ).first()
-        if row is None or row.distance is None or row.distance > self._dedupe_max_distance:
+        match = await self._vector_db.find_nearest(db, embedding)
+        if match is None or match.distance > self._dedupe_max_distance:
             return None
-        report = row[0]
+        report = await db.get(FactCheckReport, match.report_id)
+        if report is None:
+            return None
         logger.info(
             "Reusing fact_check_reports %s for a near-duplicate claim (cosine distance %.4f)",
             report.id,
-            row.distance,
+            match.distance,
         )
         return AnalysisResult(
             title=report.title,
@@ -444,5 +442,6 @@ def get_analysis_provider() -> AnalysisProvider:
         tavily_api_url=settings.tavily_api_url,
         embedder=get_embedding_provider(),
         ai_text_detector=get_ai_text_detector(),
+        vector_db=get_vector_db_provider(),
         dedupe_max_cosine_distance=settings.dedupe_max_cosine_distance,
     )

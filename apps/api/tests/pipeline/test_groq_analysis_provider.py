@@ -1,6 +1,6 @@
-"""GroqAnalysisProvider: the pgvector dedupe check and the Tavily+Groq verdict path, both
-against respx mocks (for the hosted calls) and the real test database (for dedupe). Nothing
-calls a real service."""
+"""GroqAnalysisProvider: the dedupe check (through app/providers/vector_db.py) and the
+Tavily+Groq verdict path, both against respx mocks (for the hosted calls) and the real test
+database (for dedupe). Nothing calls a real service."""
 
 import json
 from datetime import UTC, datetime
@@ -14,6 +14,7 @@ from app.db import models as m
 from app.providers.ai_text_detector import StubAiTextDetector
 from app.providers.analysis import GroqAnalysisProvider, GroqError, get_analysis_provider
 from app.providers.embedding import StubEmbeddingProvider
+from app.providers.vector_db import PgVectorProvider
 
 GROQ_URL = "https://groq.example"
 TAVILY_URL = "https://tavily.example"
@@ -30,6 +31,7 @@ def _provider(**overrides):
         "tavily_api_url": TAVILY_URL,
         "embedder": StubEmbeddingProvider(),
         "ai_text_detector": StubAiTextDetector(),
+        "vector_db": PgVectorProvider(),
         "dedupe_max_cosine_distance": 0.08,
     }
     kwargs.update(overrides)
@@ -197,8 +199,6 @@ async def test_restricted_search_is_tried_first_and_marks_trusted_citations(db):
         db=db, content_type="text", text="Some claim about trusted example.", language="en"
     )
 
-    # Only one search happened at all: the restricted one already had enough results, so no
-    # fallback was needed.
     assert route.call_count == 1
     body = json.loads(route.calls.last.request.content)
     assert "trusted-example.ug" in body["include_domains"]
@@ -237,7 +237,6 @@ async def test_a_sparse_restricted_search_falls_back_to_an_unrestricted_one(db):
         db=db, content_type="text", text="Some unrelated claim.", language="en"
     )
 
-    # The restricted search came up empty, so a second, unrestricted search ran.
     assert route.call_count == 2
     assert [c.url for c in result.citations] == [
         "https://open-example.com/a",
