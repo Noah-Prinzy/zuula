@@ -238,15 +238,74 @@ function validateUnit(src, out, n) {
 
 // ---------- cache + API ----------
 const cache = new Map() // `${lang}\u0000${src}` -> [raw outputs]
+// Replies to a reworded request (see VARIANTS), keyed by the original text: `${lang}\u0000${src}` -> [{ sent, out }]
+const variantCache = new Map()
 if (fs.existsSync(CACHE))
   for (const line of fs.readFileSync(CACHE, "utf8").split("\n").filter(Boolean)) {
-    const { lang, src, out } = JSON.parse(line)
+    const { lang, src, out, for: orig } = JSON.parse(line)
+    if (orig !== undefined) {
+      const k = `${lang}\u0000${orig}`
+      if (!variantCache.has(k)) variantCache.set(k, [])
+      variantCache.get(k).push({ sent: src, out })
+      continue
+    }
     const k = `${lang}\u0000${src}`
     if (!cache.has(k)) cache.set(k, [])
     cache.get(k).push(out)
   }
 const ck = (lang, src) => `${lang}\u0000${src}`
 const MAX_ATTEMPTS = 3
+
+// The model often returns short capitalised labels ("Link", "Audit Log") unchanged, and asking
+// again mostly gets the same reply. Rewording often gets a translation: lowercase first, then,
+// for short labels, with "the" in front. Each reworded form is sent once and only when the
+// original text gave no usable translation.
+const words = (s) => s.replace(/\{\d+\}/g, "").trim().split(/\s+/).filter(Boolean)
+const letters = (s) => s.replace(/\{\d+\}/g, "").toLowerCase().replace(/[^\p{L}]/gu, "")
+// Names: lowercasing them loses the capitals, and rewording a name only invites the model to
+// make something up ("Uganda" came back as a sentence about Uganda).
+const NAMES = /\b(?:Uganda|Luganda|Acholi|Ateso|Runyankole|Kampala|Victoria)\b/
+// Proper nouns after the first word ("Victoria University CIT", "Uganda Journalists Association")
+// would be lowercased too; two-word labels like "Audit Log" are fine.
+const properNouns = (s) => words(s).length > 2 && words(s).slice(1).some((w) => /^\p{Lu}\p{Ll}/u.test(w))
+const VARIANTS = [
+  (s) => (words(s).length <= 4 && s !== s.toLowerCase() && !NAMES.test(s) && !properNouns(s) ? s.toLowerCase() : null),
+  // Only for short capitalised labels made of words: "the or" or "the (met)" is not English.
+  (s) =>
+    words(s).length <= 3 && /^\p{Lu}[\p{L} -]*$/u.test(s) && !/^the\b/i.test(s) && !NAMES.test(s) && !properNouns(s)
+      ? "the " + s.toLowerCase()
+      : null,
+]
+// A usable reply translates the text: valid, and not the English again (ignoring case and punctuation).
+function translated(src, out, n) {
+  const v = validateUnit(src, out, n)
+  return typeof v === "object" && letters(v.text) !== letters(src) ? v : null
+}
+// Lowercase words of 3+ letters from the English (acronyms like ID or URL may stay).
+const englishWords = (s) =>
+  words(s)
+    .filter((w) => !/^[\p{Lu}\d]+$/u.test(w.replace(/[^\p{L}\d]/gu, "")))
+    .map((w) => w.toLowerCase().replace(/[^\p{L}]/gu, ""))
+    .filter((w) => w.length >= 3)
+// Once the model has given the English back, its other replies for that text are often
+// half-translated ("The in-app", "Email ngin", "Filter ({count})") or padded into a sentence.
+function plausible(src, text) {
+  const en = englishWords(src).concat(["the"])
+  const got = words(text).map((w) => w.toLowerCase().replace(/[^\p{L}]/gu, ""))
+  const same = (a, b) => a === b || (Math.min(a.length, b.length) >= 4 && (a.startsWith(b) || b.startsWith(a)))
+  return !got.some((g) => en.some((e) => same(g, e))) && got.length <= 2 * words(src).length + 1
+}
+// Reworded replies count only for a rewording the current rules would send.
+const allowedVariants = (src) => VARIANTS.map((f) => f(src)).filter(Boolean)
+const variantReplies = (lang, src) =>
+  (variantCache.get(ck(lang, src)) || []).filter(({ sent }) => allowedVariants(src).includes(sent))
+function fromVariant(src, out, n) {
+  const v = translated(src, out, n)
+  if (!v || !plausible(src, v.text)) return null
+  // Restore the capital the English starts with; the request was lowercased.
+  const t = /^\p{Lu}/u.test(src) ? v.text.replace(/^\p{Ll}/u, (c) => c.toUpperCase()) : v.text
+  return { text: t }
+}
 
 let bucket = [] // timestamps of recent requests
 const RPM = Number(process.env.RPM || 45)
@@ -303,12 +362,31 @@ async function callSunbird(lang, text) {
 function bestCached(lang, src, n) {
   const outs = cache.get(ck(lang, src)) || []
   let reason = "not translated"
+  const unchangedReply = outs.find((o) => {
+    const v = validateUnit(src, o, n)
+    return typeof v === "object" && letters(v.text) === letters(src)
+  })
+  let unchanged = null
   for (const o of outs) {
     const v = validateUnit(src, o, n)
-    if (typeof v === "object") return v
-    reason = v
+    if (typeof v !== "object") reason = v
+    else if (letters(v.text) !== letters(src)) {
+      if (!unchangedReply || plausible(src, v.text)) return v
+    } else unchanged ??= v
   }
-  return { reason, attempts: outs.length }
+  // The original text came back as English (or broken); a reworded request may have done better.
+  for (const { out } of variantReplies(lang, src)) {
+    const v = fromVariant(src, out, n)
+    if (v) return v
+  }
+  // An unchanged reply is still valid: names, acronyms and the like read the same in every language.
+  return unchanged || { reason, attempts: outs.length }
+}
+
+// A usable translation: what the locale file would get, and not the English again.
+function usable(lang, src, n) {
+  const r = bestCached(lang, src, n)
+  return !!r.text && letters(r.text) !== letters(src)
 }
 
 // ---------- messages ----------
@@ -364,25 +442,38 @@ for (const [p, msg] of leaves) {
       if (seen.has(k)) continue
       seen.add(k)
       const outs = cache.get(k) || []
-      const ok = outs.some((o) => typeof validateUnit(text, o, n) === "object")
-      if (!ok && outs.length < MAX_ATTEMPTS) todo.push([lang, text, n, sections.indexOf(p[0])])
+      const sent = (variantCache.get(k) || []).map((v) => v.sent)
+      const variantsLeft = allowedVariants(text).some((v) => !sent.includes(v))
+      if (!usable(lang, text, n) && (outs.length < MAX_ATTEMPTS || variantsLeft))
+        todo.push([lang, text, n, sections.indexOf(p[0])])
     }
 }
 // Sections in the order given (priority), so each completes in all languages before the next.
 todo.sort((a, b) => a[3] - b[3])
 console.log(`units to translate: ${todo.length}`)
+if ("dry" in args) process.exit(0)
 let done = 0
 const cacheFd = fs.openSync(CACHE, "a")
 async function worker() {
   while (todo.length && !quotaExhausted) {
     const [lang, text, n] = todo.shift()
-    for (let a = (cache.get(ck(lang, text)) || []).length; a < MAX_ATTEMPTS; a++) {
+    const k = ck(lang, text)
+    for (let a = (cache.get(k) || []).length; a < MAX_ATTEMPTS && !usable(lang, text, n); a++) {
       const out = await callSunbird(lang, text)
       if (out === null) break
       fs.writeSync(cacheFd, JSON.stringify({ lang, src: text, out }) + "\n")
-      if (!cache.has(ck(lang, text))) cache.set(ck(lang, text), [])
-      cache.get(ck(lang, text)).push(out)
-      if (typeof validateUnit(text, out, n) === "object") break
+      if (!cache.has(k)) cache.set(k, [])
+      cache.get(k).push(out)
+    }
+    // The original text gave no usable translation (only the English back, or broken replies): reword.
+    for (const sent of allowedVariants(text)) {
+      if (quotaExhausted || usable(lang, text, n)) break
+      if ((variantCache.get(k) || []).some((v) => v.sent === sent)) continue
+      const out = await callSunbird(lang, sent)
+      if (out === null) break
+      fs.writeSync(cacheFd, JSON.stringify({ lang, src: sent, out, for: text }) + "\n")
+      if (!variantCache.has(k)) variantCache.set(k, [])
+      variantCache.get(k).push({ sent, out })
     }
     if (++done % 25 === 0) console.log(`${done} done, ${todo.length} left, calls ${apiCalls}, errors ${apiErrors}`)
   }

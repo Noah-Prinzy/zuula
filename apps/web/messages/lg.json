@@ -26,12 +26,14 @@
   },
   "Nav": {
     "main": "Ekikulu",
+    "mobile": "Ebyuma eby'okutambuza",
     "openMenu": "Ggula menu",
     "tabBar": "Obulango obw'amangu",
     "accountMenu": "Mmeenyu ya akawunta",
     "section": "Ekitundu {section}",
     "groups": {
       "review": "Okuddamu okwekenneenya",
+      "admin": "Omukulembeze",
       "account": "Akawunti"
     },
     "items": {
@@ -41,6 +43,7 @@
       "library": "Ettendekero ly'ebitabo",
       "about": "Ku bikwata ku",
       "review": "Okuddamu okwekenneenya",
+      "admin": "Omukulembeze",
       "reviewOverview": "Okutunuulira mu bufunze",
       "reviewQueue": "Olunyiriri",
       "reviewHistory": "Ebyafaayo",
@@ -1119,6 +1122,7 @@
         "source": "Ensibuko",
         "type": "Ekika",
         "languages": "Ennimi",
+        "tier": "Ekitundu",
         "crawl": "Okukwata okusembayo",
         "actions": "Ebikolwa"
       },
@@ -1719,6 +1723,7 @@
       "next": "Ekiddako",
       "stop": "Komya okuzunguza slides",
       "start": "Tandika okuzunguza siraayidi",
+      "slides": "{title}: okusereba",
       "slide": "{current} ku {total}"
     },
     "feed": {

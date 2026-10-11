@@ -24,6 +24,7 @@
     "ago": "{unit, select, minute {{count} mam ber sek} hour {{count} sek sek} other {{count, plural, =1 {Abu bian kojaikin} other {# apaarasia kau}}}}"
   },
   "Nav": {
+    "main": "Epolok",
     "mobile": "Etelebision lo itingitai",
     "openMenu": "Apukor emenu",
     "tabBar": "Iboro luepedorete aingarakin atipet",
@@ -52,6 +53,7 @@
       "adminSources": "Ipuak luka akiro",
       "adminBroadcasts": "Aitodianareta",
       "adminReports": "Aripootin",
+      "adminAuditLog": "Akiro nu aanyanario",
       "adminSettings": "Aitemonokineta",
       "profile": "Akiro nuikamunitos itunganan",
       "activity": "Aswamisioit",
@@ -167,6 +169,7 @@
     "text": "Akirot",
     "url": "Akiro nuikamunitos arucokina",
     "image": "Aputo",
+    "audio": "Akiro nu epodokinitai",
     "video": "Ebidio"
   },
   "Verdicts": {
@@ -269,6 +272,7 @@
       "text": "Akirot",
       "url": "Erai Link",
       "image": "Aputo",
+      "audio": "Akiro nu epodokinitai",
       "video": "Ebidio"
     },
     "filter": {
@@ -457,6 +461,7 @@
       "accepts": "Aputosia, eporoto arai bo ebidio · kitoni {size}",
       "kinds": {
         "image": "Aputo",
+        "audio": "Akiro nu epodokinitai",
         "video": "Ebidio"
       },
       "unsupported": "Emamei agangat naka idoket",
@@ -617,6 +622,7 @@
       "createTitle": "Aitolomun API key",
       "createBody": "Ejaasi ngin ekisil keda {limit} ailip naka isawan.",
       "name": "Ekiror",
+      "namePlaceholder": "e.g. aiboisit naka iyemuto CMS",
       "permissions": "Aicoreta",
       "createKey": "Kiswama ekii a",
       "keysTitle": "Ipuakon luka ilaceta",
@@ -739,6 +745,7 @@
       },
       "securityTitle": "Ayuarite",
       "securityDescription": "Kotere aingadis naka ikapun kon kosodi awanyun ne alomar ijo.",
+      "passwordLabel": "Akirot naka aiyeyea",
       "passwordAge": "Aponi ijulakinai sek ilapio 3 kau",
       "devices": "Iboro lu iwadikatai",
       "signOutOthers": "Kogolok kotoma luce kere",
@@ -1107,6 +1114,7 @@
         "source": "Aiboisit naelomunit",
         "type": "Akirot",
         "languages": "Angajepisinei",
+        "tier": "Atutubet",
         "crawl": "Alosit nawasia",
         "actions": "Aswamisio"
       },
@@ -1217,6 +1225,7 @@
       "description": "Itunga luejenara kwape arotak iyemuto ingarakinete itunga aanyanar atubokinio."
     },
     "auditLog": {
+      "title": "Akiro nu aanyanario",
       "description": "Kangin aswamisioit naka eyaitene keda epirioit, keda ingai, awene ka kanukinyo."
     },
     "broadcasts": {
@@ -1355,6 +1364,7 @@
     "fields": {
       "identifier": "E-mail arai esimu",
       "identifierPlaceholder": "you@example.com arai 07XX XXX XXX",
+      "password": "Akirot naka aiyeyea",
       "newPassword": "Akirot naitetet naka aiyeyea",
       "confirmPassword": "Kitogogong password",
       "confirmNewPassword": "Itigogongoi password loitetet",
@@ -1363,6 +1373,7 @@
     "password": {
       "show": "Kitodu password",
       "hide": "Kanuwun password",
+      "met": "(akiro)",
       "notMet": "(mam itodolikinitai)",
       "rules": {
         "length": "Kanu at least {min} characters",
@@ -1704,12 +1715,14 @@
     "subtitle": "Ibusakinit jo aipikakin emesej, arai bo aipikakin aiboisit arai bo aipikakin akiro. Zuula itijenikini jo arai erai abeit, mam erai abeit arai bo AI-etolomunitai — ido <scribble>itodunit jo akiro nu elomunitos</scribble>.",
     "carousel": {
       "previous": "Nakolo sek",
+      "next": "Ngaren",
       "stop": "Opala aijulakin aputosia",
       "start": "Kogeu aijulakin isirigin",
       "slides": "{title}: iswamaete",
       "slide": "{current} kotoma {total}"
     },
     "feed": {
+      "eyebrow": "Akiro nukokau",
       "title": "Aanyanario naka akiro",
       "link": "Eibikiro loka itabon",
       "tagNew": "Loitetet",

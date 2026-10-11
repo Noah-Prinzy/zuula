@@ -25,13 +25,15 @@
     "ago": "{unit, select, minute {{count} dakika ma okato angec} hour {{count} h ma okato angec} other {{count, plural, =1 {laworo} other {# nino ma okato angec}}}}"
   },
   "Nav": {
+    "mobile": "Cim",
     "openMenu": "Yab menu",
     "tabBar": "Links ma oyot",
     "accountMenu": "Jami me menu me account",
     "section": "{section} dul",
     "groups": {
       "review": "Ngiyo",
-      "admin": "Lador tic"
+      "admin": "Lador tic",
+      "account": "Akaunt"
     },
     "items": {
       "home": "Paco",
@@ -102,7 +104,8 @@
   "Theme": {
     "change": "Lok kit ma nen kwede",
     "light": "Lero",
-    "dark": "Col piny"
+    "dark": "Col piny",
+    "system": "Yub"
   },
   "Search": {
     "button": "Yen lok me moko ada…",
@@ -161,8 +164,11 @@
     "English": "Acholi"
   },
   "ContentTypes": {
+    "text": "Coc",
     "url": "Link me coc",
-    "image": "Cal"
+    "image": "Cal",
+    "audio": "Winyo",
+    "video": "Vidio"
   },
   "Verdicts": {
     "labels": {
@@ -227,6 +233,7 @@
       "language": "Leb",
       "checked": "Ki ngiyo",
       "checkedIn": "Ki ngiyo <time>{date}</time> i {seconds}s",
+      "category": "Kic",
       "trackingId": "Lubu ID"
     },
     "card": {
@@ -247,6 +254,7 @@
     "searchLabel": "Yeny lok ada me moko",
     "sortBy": "Yer malube ki",
     "sorts": {
+      "relevance": "Ma rwatte maber loyo",
       "newest": "Manyen loyo",
       "most-rated": "Pol ma ki keto rwom"
     },
@@ -258,10 +266,15 @@
     "clearSearch": "Yeny ma atir",
     "verifyClaim": "Ngiyo lok ma ki waco",
     "contentTypeShort": {
-      "image": "Cal"
+      "text": "Coc",
+      "url": "Kubu",
+      "image": "Cal",
+      "audio": "Winyo",
+      "video": "Vidio"
     },
     "filter": {
       "verdict": "Ngolo kop",
+      "category": "Kic",
       "allCategories": "Kit mapat-pat weng",
       "language": "Leb",
       "allLanguages": "Leb weng",
@@ -300,6 +313,7 @@
     "notFoundTitle": "Pe watwero nongo ID me lubu kor",
     "notFoundBody": "Rot ID ki item doki. Tracking IDs nen calo ZL-7K3P-Q9.",
     "trackingId": "Lubu ID",
+    "copyId": "Kop ID",
     "copyLink": "Kob link",
     "idCopied": "Lubu ID kicwalo woko",
     "linkCopied": "Ki kwanyo ki kubu",
@@ -324,7 +338,10 @@
     "submittedTitle": "Ngo ma i cwalo",
     "submittedMeta": "{type} · {language} · ma kicwalo {time}",
     "types": {
-      "article": "Gajeti"
+      "text": "Coc",
+      "url": "Kubu",
+      "article": "Gajeti",
+      "media": "Fail me me poko lok"
     },
     "notifySignedIn": "Wabi niango in ka adwogi tic ne tye atera, kadi bed ni iweko pot buk man.",
     "notifyGuest": "Gwok pot buk man ayaba onyo gwok kit ma itye ka lubu kwede ID. <link>Yub akaunt</link> me nongo ngec me kakare.",
@@ -384,6 +401,7 @@
     },
     "lookup": {
       "label": "Lubu ID",
+      "track": "Yoo",
       "hint": "Inongo man ID ikare ma i cwalo.",
       "invalid": "Tracking IDs nen calo ZL-7K3P-Q9."
     }
@@ -412,12 +430,15 @@
     "whatTitle": "Gin ango ma itwero cwalo",
     "types": {
       "text": {
+        "title": "Coc",
         "body": "WhatsApp anyim, coc me kin dano, lok ma ki nwoyo"
       },
       "link": {
+        "title": "Kubu",
         "body": "Lok angea ki pot buk me intanet"
       },
       "media": {
+        "title": "Luco lok angeya",
         "body": "Cal, dwan ma ki mako ki vidio ma oo 50 MB"
       },
       "article": {
@@ -436,7 +457,9 @@
       "tapToChoose": "<browse>Yer cal, vidio onyo dwan ma ki mako</browse>",
       "accepts": "Cal, dwan onyo vidio · oo {size}",
       "kinds": {
-        "image": "Cal"
+        "image": "Cal",
+        "audio": "Winyo",
+        "video": "Vidio"
       },
       "unsupported": "Fail ma pe kicwako",
       "uploading": "Keto {percent}%",
@@ -456,7 +479,8 @@
         "verdict-ready": "Adwogi tye atera",
         "topic-alert": "Ngec manyen",
         "review-outcome": "Ngiyo pa ladiro",
-        "broadcast": "Cik me poyo wic pi peko atura"
+        "broadcast": "Cik me poyo wic pi peko atura",
+        "accreditation": "Akaunt"
       },
       "filterLabel": "Ngiyo lok ma ki cwalo",
       "all": "Ducu ({count})",
@@ -472,6 +496,9 @@
     },
     "activity": {
       "types": {
+        "text": "Coc",
+        "url": "Kubu",
+        "media": "Luco lok angeya",
         "article": "Gajeti"
       },
       "checking": "Ngiyo",
@@ -656,6 +683,7 @@
       "verifiedTitle": "In itye laco lok angeya ma ki moko",
       "name": "Nying",
       "verified": "Ki moko",
+      "renews": "Tye ka cako",
       "sampleOutlet": "Daily Monitor (lanyut)",
       "changedNewsroom": "Lok ma ki loko i kom lok angeya? Lok ngec ma mako in ci wabi ngiyo ne odoco. Badge ni bedo ka watye ka ngiyo ne.",
       "updateDetails": "Ngec manyen",
@@ -681,6 +709,7 @@
       "phone": "Cim (pi SMS me ciko dano)",
       "language": "Leb ma imaro",
       "languageHint": "Kitiyo kwede pi nyutu jami ki pi lok ma poyo wii.",
+      "district": "Dictrik",
       "districtHint": "Konyo wa me cwali lok ma mako kabedo ni.",
       "password": {
         "currentRequired": "Donyo i mung me donyo ni ma kombedi.",
@@ -826,6 +855,7 @@
     },
     "case": {
       "communitySignals": "Lanyut pa lwak",
+      "rater": "Ngat ma pimo",
       "accurate": "Kwene",
       "inaccurate": "Pe tye kakare",
       "yourDecision": "Moko tam ma itimo",
@@ -941,6 +971,7 @@
       },
       "audiences": {
         "everyone": "Dano weng",
+        "central": "Kabedo ma dyere",
         "northern": "But lobo ma kumalo",
         "eastern": "But lobo ma tung kunyango",
         "western": "But lobo ma tung kupoto ceng",
@@ -969,6 +1000,7 @@
       "audienceEstimate": "Dano ma romo {count}.",
       "severity": "Rac pa peko",
       "severities": {
+        "high": "Ma lamal",
         "critical": "Pire tek"
       },
       "severityHigh": "High: me ngeyo",
@@ -1052,15 +1084,18 @@
         "media": "Ot poko lok angeya",
         "government": "Gamente",
         "fact-checker": "Lamii lok ada",
+        "international": "Me wilobo",
         "academic": "Kwan"
       },
       "errors": {
         "name": "Dony i nying ma aa ki iye.",
         "domain": "Ket domain calo monitor.co.ug"
       },
+      "editTitle": "Yub {name}",
       "addTitle": "Medo ka ma genne",
       "dialogDescription": "Lok ma ki waco ni tye ka ngiyo lok ki jami ducu matye.",
       "name": "Nying",
+      "domain": "Kabedo",
       "type": "Kit",
       "languages": "Leb",
       "languagesHint": "Ma ki poko ki comma.",

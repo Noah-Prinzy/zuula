@@ -13,6 +13,9 @@ SUNBIRD_API_KEY=... NODE_USE_ENV_PROXY=1 node translate.mjs --sections=Home,Auth
 # Rebuild the locale files from cache.jsonl only (no API calls).
 node translate.mjs --sections=
 
+# Count what a run would send, without calling the API.
+node translate.mjs --sections=Home,Auth --dry
+
 # Check every locale message against en.json (exit 1 on any failure).
 node check-locales.mjs
 
@@ -38,6 +41,22 @@ Tests against the live API showed the model translates named placeholders (`{nam
   appears that wasn't in the input. Otherwise it's retried, up to 3 attempts, then the key is left
   out, so it falls back to English.
 - The message is rebuilt and parsed again, and must match what was built exactly.
+
+## When the model returns English
+
+The model often gives short capitalised labels back unchanged ("Link", "Password", "Audit Log").
+A reply like that is still used, so names and acronyms (WhatsApp, SMS, API) read correctly, but
+the text is sent again:
+
+- First as is, up to 3 attempts in all. Replies vary, so a later one is sometimes a translation.
+- Then reworded: in lowercase, and for short labels with "the" in front ("the password"). The
+  capital is restored in the result. Names (Uganda, Luganda, Victoria University, …) are never
+  reworded, because the model then makes something up.
+
+A reply that only arrives after the English one must also look like a translation: it may not
+reuse an English word from the source ("The in-app", "Email ngin", "Filter ({count})") or be more
+than twice as long in words. Reworded replies are stored in `cache.jsonl` with a `for` field
+naming the original text, so they are reused like any other reply.
 
 `check-locales.mjs` is independent of the translator. It requires each locale message to have
 exactly English's placeholders, tags and plural/select options. It also formats each one through
