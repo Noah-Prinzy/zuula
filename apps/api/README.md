@@ -10,7 +10,7 @@ auth, scoring, admin and the real integrations).
 **P4 (the AI verdict engine):** `app/providers/analysis.py`'s `GroqAnalysisProvider` is real
 when `GROQ_API_KEY`/`TAVILY_API_KEY` are set (`StubAnalysisProvider` otherwise, unchanged from
 P2): a vector-db dedupe check (pgvector by default, Pinecone as an alternative), one Tavily
-search and one Groq Llama 3.3 70B call per claim, plus local RoBERTa/EXIF/image-classifier
+search and one Groq chat completion per claim, plus local RoBERTa/EXIF/image-classifier
 signals for text and image content — no Claude/Anthropic calls, no agent loop. See "Providers"
 and "Verdict engine" below. Deepfake-specific forensics (face-swap/lip-sync, trained models)
 are out of scope for v1.
@@ -244,10 +244,13 @@ Generator) actually live in the code, composed back into one claim-level result:
    runs one Tavily web search (`app/providers/tavily.py`, free tier) for evidence, restricted
    to the trusted-source registry when it has enough to offer. **The Explanation Generator**
    (`app/providers/explanation.py`) then turns that evidence into the
-   verdict/claims/citations/summary shape in one Groq chat completion (`GROQ_MODEL`, Llama
-   3.3 70B free tier) — not an agent loop, and not a second LLM call either (see that module's
-   docstring for the cost/latency tradeoff). The two were one fused function before this split;
-   now they're separate modules, each independently tested.
+   verdict/claims/citations/summary shape in one Groq chat completion (`GROQ_MODEL`, free
+   tier) — not an agent loop, and not a second LLM call either (see that module's docstring
+   for the cost/latency tradeoff). The two were one fused function before this split; now
+   they're separate modules, each independently tested. The P4 brief specified Llama 3.3 70B;
+   Groq has since retired every Llama text model from its catalog, so `GROQ_MODEL` now
+   defaults to `openai/gpt-oss-120b`, the current free-tier model closest in size/capability
+   (see `scripts/run_eval.py`'s eval, which caught this live).
 3. For text content, an in-process AI-generated-text signal
    (`app/providers/ai_text_detector.py`, a small RoBERTa classifier via `transformers`, CPU, no
    key) is appended to `ai_signals`.

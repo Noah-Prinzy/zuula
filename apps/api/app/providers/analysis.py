@@ -20,7 +20,7 @@ composed back into one claim-level AnalysisResult:
    gathers web evidence for the claim (one Tavily search, free tier, restricted to the
    admin-managed trusted-source registry when it has enough to offer), then the
    **Explanation Generator** (app/providers/explanation.py) turns that evidence into the
-   verdict/claims/citations/summary shape in one Groq chat completion (Llama 3.3 70B, free
+   verdict/claims/citations/summary shape in one Groq chat completion (GROQ_MODEL, free
    tier) — claim extraction and reasoning in the same call, not an agent loop, and no
    Claude/Anthropic calls anywhere in this engine, per the P4 cost constraint (free-tier Groq
    only).
@@ -228,7 +228,6 @@ class GroqAnalysisProvider:
             ai_signals=[AISignal.model_validate(a) for a in report.ai_signals],
             embedding=embedding,
         )
-
 
 def _result_from_explanation(explanation: Explanation) -> AnalysisResult:
     return AnalysisResult(

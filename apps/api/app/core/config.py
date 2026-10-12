@@ -65,8 +65,8 @@ class AnalysisSettings(BaseSettings):
     """Sending submissions to a hosted LLM outside Uganda is an open §10.1 data-protection
     question (see the P2 brief and docs/adr/0001-api-architecture.md), so the provider and
     its region must be switchable rather than hardcoded. P2 shipped only `stub`; P4 adds
-    `groq` (Groq's free-tier hosted Llama 3.3 70B, chosen over Claude purely on cost — see
-    the P4 brief) behind the same app.providers.analysis.AnalysisProvider interface. Groq's
+    `groq` (a free-tier hosted model on Groq, chosen over Claude purely on cost — see the P4
+    brief) behind the same app.providers.analysis.AnalysisProvider interface. Groq's
     inference is also hosted outside Uganda, so §10.1 is still open either way; this field
     doesn't resolve it, it just keeps the choice a switch rather than a hardcoded default."""
 
@@ -83,10 +83,17 @@ class AnalysisSettings(BaseSettings):
     pipeline_step_scale: float = 1.0
 
     # `groq` provider (app/providers/analysis.py's GroqAnalysisProvider): one chat completion
-    # per claim (Llama 3.3 70B, Groq's free tier) over the claim text and Tavily's search
-    # results — no agent loop, no Claude/Anthropic calls anywhere in this engine.
+    # per claim (Groq's free tier) over the claim text and Tavily's search results — no agent
+    # loop, no Claude/Anthropic calls anywhere in this engine.
+    #
+    # The P4 brief specified Llama 3.3 70B; Groq has since fully retired every Llama text
+    # model from its catalog (GET /v1/models no longer lists one at all, confirmed while
+    # building the eval harness in scripts/run_eval.py — every call 404s with
+    # "model_not_found" otherwise). openai/gpt-oss-120b is Groq's current free-tier model
+    # closest in size/capability and was confirmed to support the same JSON response_format
+    # this provider relies on.
     groq_api_key: str = ""
-    groq_model: str = "llama-3.3-70b-versatile"
+    groq_model: str = "openai/gpt-oss-120b"
     # app/providers/transcription.py's GroqWhisperProvider — same key, Groq's hosted Whisper
     # (free tier, 2,000 requests/day).
     groq_whisper_model: str = "whisper-large-v3-turbo"

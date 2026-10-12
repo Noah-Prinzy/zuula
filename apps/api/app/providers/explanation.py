@@ -170,7 +170,13 @@ class GroqExplanationGenerator:
         except httpx.HTTPError as exc:
             raise GroqError("Groq chat completion failed.") from exc
         if response.status_code >= 400:
-            raise GroqError(f"Groq chat completion failed with HTTP {response.status_code}.")
+            # Groq's error body (e.g. a 429's "tokens per day" vs. plain per-minute rate-limit
+            # message, with its own suggested retry delay) is otherwise discarded; keeping it
+            # here is diagnostic only — it changes no verdict/scoring logic, just what callers
+            # can see about *why* a call failed.
+            raise GroqError(
+                f"Groq chat completion failed with HTTP {response.status_code}: {response.text}"
+            )
         try:
             content = response.json()["choices"][0]["message"]["content"]
             data = json.loads(content)
