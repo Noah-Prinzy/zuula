@@ -45,6 +45,7 @@ from app.providers.language import (
     resolve_submission_language,
 )
 from app.providers.transcription import TranscriptionError, get_transcription_provider
+from app.providers.vector_db import get_vector_db_provider
 from app.realtime import redis_client
 from app.realtime.submissions import publish_done, publish_failed, publish_step
 from app.services import escalation, notifications
@@ -140,9 +141,14 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
         publish_step(r, tracking_id, {"step": step, "status": "done", "seconds": seconds})
 
     report_content_type = _report_content_type(s)
+    media = await _media_bytes(s) if report_content_type == "image" else None
     try:
         analysis = await get_analysis_provider().analyze(
-            db=db, content_type=report_content_type, text=pivot_text, language=PIVOT_LANGUAGE
+            db=db,
+            content_type=report_content_type,
+            text=pivot_text,
+            language=PIVOT_LANGUAGE,
+            media=media,
         )
     except Exception:  # noqa: BLE001 — Groq/Tavily down: fail closed, same as `_scan_upload`
         logger.exception("Analysis failed for %s", s.tracking_id)
@@ -189,6 +195,9 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
     s.status = "completed"
     s.completed_at = now
     await db.flush()
+
+    if report.embedding is not None:
+        await get_vector_db_provider().upsert(report_id=report.id, embedding=report.embedding)
 
     if report.confidence < rules.LOW_CONFIDENCE_THRESHOLD:
         await escalation.open_case(db, report, "low-confidence", await get_platform_settings(db))
@@ -288,6 +297,21 @@ async def _scan_upload(s: Submission) -> tuple[str, str] | None:
     await storage.delete(key=s.media_object_key)
     s.media_object_key = None
     return ("invalid_content", "That file failed our malware scan, so we didn't check it.")
+
+
+async def _media_bytes(s: Submission) -> bytes | None:
+    """The raw uploaded bytes for an image submission — read back from object storage so
+    app/providers/metadata_integrity.py has something to inspect. Best effort: a storage
+    failure here shouldn't fail analysis, since this is an optional addition to the report,
+    not the verdict itself (unlike `_scan_upload`/`_transcribe_media`, which fail the
+    submission closed)."""
+    if not s.media_object_key:
+        return None
+    try:
+        return await get_object_storage().get(key=s.media_object_key)
+    except Exception:  # noqa: BLE001 — storage down: analyze without the image-only signals
+        logger.warning("Couldn't read upload %s for image AI signals", s.tracking_id, exc_info=True)
+        return None
 
 
 def _is_spoken_media(s: Submission) -> bool:

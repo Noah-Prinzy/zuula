@@ -105,6 +105,14 @@ class AnalysisSettings(BaseSettings):
     tavily_api_key: str = ""
     tavily_api_url: str = "https://api.tavily.com"
 
+    # app/providers/vector_db.py: where the dedupe check's nearest-neighbor lookup runs.
+    # `pgvector` (default) matches the live demo path exactly — queries
+    # `fact_check_reports.embedding` directly, no extra infrastructure. `pinecone` is the
+    # additive alternative satisfying §4.2/§4.1 Layer 4's named vector-DB choice.
+    vector_db_provider: str = "pgvector"
+    pinecone_api_key: str = ""
+    pinecone_host: str = ""
+
     # app/providers/embedding.py: local sentence-embedding model for the dedupe check
     # (no API key, CPU-only). Defaults to `stub` — same real-when-configured spirit as the
     # other providers, but gated on an explicit opt-in rather than a credential, since there's
@@ -126,10 +134,18 @@ class AnalysisSettings(BaseSettings):
     ai_text_detector_provider: str = "stub"
     ai_text_detector_model: str = "openai-community/roberta-base-openai-detector"
 
-    # Deepfake detection (image/video ai_signals) is explicitly out of scope for this engine:
-    # Reality Defender's free tier (50/month) doesn't cover it affordably, and the owner opted
-    # to skip it for v1 rather than half-build it. See AnalysisResult/ai_signals usage in
-    # app/providers/analysis.py.
+    # app/providers/metadata_integrity.py: EXIF-metadata + content-hash tampering check for
+    # image submissions (§5.3 "Metadata Tampering"). No model, no download — defaults to
+    # `stub` anyway, same reasoning as the other signals: nobody's reviewed the heuristic on
+    # real traffic yet, so it shouldn't start flagging submissions silently.
+    metadata_tampering_provider: str = "stub"
+
+    # app/providers/deepfake_detector.py: a pretrained (not fine-tuned) image classifier's
+    # AI-generated/synthetic-image signal — the achievable slice of §5.3's deepfake detection
+    # row given no labelled corpus or GPU budget for a real CNNDetection/FaceForensics++-style
+    # detector. Same stub-by-default reasoning as ai_text_detector_provider.
+    deepfake_detector_provider: str = "stub"
+    deepfake_detector_model: str = "umm-maybe/AI-image-detector"
 
 
 class LanguageSettings(BaseSettings):

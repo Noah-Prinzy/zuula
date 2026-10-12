@@ -32,6 +32,11 @@ dependencies = [
   "trafilatura>=1.12",
   "sentence-transformers>=3.0",
   "transformers>=4.44",
+  # Metadata tampering (EXIF) and the deepfake/AI-image signal both decode the uploaded image
+  # with Pillow — lightweight, no model weights, so unlike the two packages above it isn't
+  # tied to a stub-by-default provider for download-size reasons (both still default to
+  # `stub` anyway; see app/providers/metadata_integrity.py and app/providers/deepfake_detector.py).
+  "pillow>=10.4",
 ]
 
 [project.optional-dependencies]

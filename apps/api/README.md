@@ -9,9 +9,11 @@ auth, scoring, admin and the real integrations).
 
 **P4 (the AI verdict engine):** `app/providers/analysis.py`'s `GroqAnalysisProvider` is real
 when `GROQ_API_KEY`/`TAVILY_API_KEY` are set (`StubAnalysisProvider` otherwise, unchanged from
-P2): a pgvector dedupe check, one Tavily search and one Groq chat completion per claim, plus
-a local RoBERTa AI-text-detector signal — no Claude/Anthropic calls, no agent loop. See
-"Verdict engine" below. Deepfake detection (image/video) is out of scope for v1.
+P2): a vector-db dedupe check (pgvector by default, Pinecone as an alternative), one Tavily
+search and one Groq chat completion per claim, plus local RoBERTa/EXIF/image-classifier
+signals for text and image content — no Claude/Anthropic calls, no agent loop. See "Providers"
+and "Verdict engine" below. Deepfake-specific forensics (face-swap/lip-sync, trained models)
+are out of scope for v1.
 
 ## Run it
 
@@ -207,36 +209,72 @@ The hosted AI provider (`ANALYSIS_PROVIDER`, `ANALYSIS_PROVIDER_REGION`) stays s
 because sending submissions to a model hosted outside Uganda is an open data-protection
 question (ADR 0001) — Groq's hosted inference doesn't resolve that either way.
 
+### Providers (app/providers/)
+
+Every module here follows the same convention as `app/adapters/`: a Protocol interface, a
+real implementation, and a dev/test stub, picked by its own env var.
+
+| Provider | Real implementation | Switch (default) | Needs |
+|---|---|---|---|
+| Language (`language.py`) | Sunbird AI detect/translate | `LANGUAGE_PROVIDER` (`stub` when no key) | `SUNBIRD_API_KEY` |
+| Verdict engine (`analysis.py`) | Groq-orchestrated pipeline below | `ANALYSIS_PROVIDER` (`stub` when no key) | `GROQ_API_KEY`, `TAVILY_API_KEY` |
+| Source verification (`source_verification.py`) | Tavily web search | — (used by `analysis.py` when `groq`) | `TAVILY_API_KEY` |
+| Explanation (`explanation.py`) | Groq chat completion | — (used by `analysis.py` when `groq`) | `GROQ_API_KEY` |
+| Dedupe embedding (`embedding.py`) | sentence-transformers (CPU) | `EMBEDDING_PROVIDER` (`stub`) | — |
+| Vector DB (`vector_db.py`) | pgvector / Pinecone | `VECTOR_DB_PROVIDER` (`pgvector`) | `PINECONE_API_KEY`+`PINECONE_HOST` for `pinecone` |
+| AI-text detector (`ai_text_detector.py`) | RoBERTa classifier (CPU) | `AI_TEXT_DETECTOR_PROVIDER` (`stub`) | — |
+| Metadata tampering (`metadata_integrity.py`) | EXIF + SHA-256 (CPU) | `METADATA_TAMPERING_PROVIDER` (`stub`) | — |
+| Deepfake/AI-image (`deepfake_detector.py`) | pretrained image classifier (CPU) | `DEEPFAKE_DETECTOR_PROVIDER` (`stub`) | — |
+| Transcription (`transcription.py`) | Groq Whisper | `TRANSCRIPTION_PROVIDER` (`stub` when no key) | `GROQ_API_KEY` |
+| Article fetch (`fetch.py`) | trafilatura | always real | — |
+
 ### Verdict engine (P4)
 
-`app/providers/analysis.py`'s `GroqAnalysisProvider.analyze()`, per claim:
+`app/providers/analysis.py`'s `GroqAnalysisProvider.analyze()` orchestrates four independently
+swappable pieces — this is where the spec's §4.1 Core AI/ML Engine components (LLM
+Verification Module, AI Content Detection Module, Source Verification Engine, Explanation
+Generator) actually live in the code, composed back into one claim-level result:
 
 1. **Dedupe**: embeds the claim locally (`app/providers/embedding.py`, all-MiniLM-L6-v2 via
-   sentence-transformers, CPU, no key) and looks for a close pgvector cosine-distance match in
-   `fact_check_reports.embedding` (≤ `DEDUPE_MAX_COSINE_DISTANCE`, default 0.08). A match is
+   sentence-transformers, CPU, no key) and looks for a near-duplicate through
+   `app/providers/vector_db.py` (≤ `DEDUPE_MAX_COSINE_DISTANCE`, default 0.08). A match is
    reused outright — no Tavily search, no Groq call — which is what keeps a viral claim from
    costing anything the second time it's submitted.
-2. Otherwise, one Tavily web search (`app/providers/tavily.py`, free tier) for evidence, then
-   one Groq chat completion (`GROQ_MODEL`, free tier) over the claim and that evidence, asked
-   to return the verdict/claims/citations/summary shape in a single JSON response — not an
-   agent loop. The P4 brief specified Llama 3.3 70B; Groq has since retired every Llama text
-   model from its catalog, so `GROQ_MODEL` now defaults to `openai/gpt-oss-120b`, the current
-   free-tier model closest in size/capability (see `scripts/run_eval.py`'s eval, which caught
-   this live).
+2. Otherwise, **the Source Verification Engine** (`app/providers/source_verification.py`)
+   runs one Tavily web search (`app/providers/tavily.py`, free tier) for evidence, restricted
+   to the trusted-source registry when it has enough to offer. **The Explanation Generator**
+   (`app/providers/explanation.py`) then turns that evidence into the
+   verdict/claims/citations/summary shape in one Groq chat completion (`GROQ_MODEL`, free
+   tier) — not an agent loop, and not a second LLM call either (see that module's docstring
+   for the cost/latency tradeoff). The two were one fused function before this split; now
+   they're separate modules, each independently tested. The P4 brief specified Llama 3.3 70B;
+   Groq has since retired every Llama text model from its catalog, so `GROQ_MODEL` now
+   defaults to `openai/gpt-oss-120b`, the current free-tier model closest in size/capability
+   (see `scripts/run_eval.py`'s eval, which caught this live).
 3. For text content, an in-process AI-generated-text signal
    (`app/providers/ai_text_detector.py`, a small RoBERTa classifier via `transformers`, CPU, no
-   key) is appended to `ai_signals`. Deepfake detection (image/video) is explicitly out of
-   scope for v1 — see that module's docstring.
+   key) is appended to `ai_signals`.
+4. For image content, two more AI Content Detection Module signals are appended from the
+   submission's raw bytes: a metadata tampering check
+   (`app/providers/metadata_integrity.py`, EXIF inconsistencies + a SHA-256 content hash, no
+   model) and a basic AI-generated-image signal from a pretrained classifier
+   (`app/providers/deepfake_detector.py`). Deepfake-specific forensics (face-swap/lip-sync,
+   trained on FaceForensics++-style data) are explicitly out of scope — no labelled corpus, no
+   GPU budget; see that module's docstring.
 
 `app/providers/transcription.py`'s `GroqWhisperProvider` does the same for the `transcribe`
 step (audio/video), and `app/providers/fetch.py`'s `TrafilaturaArticleFetcher` does real
 article extraction for the `fetch` step (URL submissions) — both self-contained, no shared
 base class, same as every provider above.
 
-`EMBEDDING_PROVIDER`/`AI_TEXT_DETECTOR_PROVIDER` default to `stub` even when
-`ANALYSIS_PROVIDER=groq`: unlike Groq/Tavily, there's no credential to gate the real model on,
-and the real one is a model download dev/CI must never trigger by default. Set both to
-`sentence-transformers`/`roberta` for the real local models.
+`EMBEDDING_PROVIDER`/`AI_TEXT_DETECTOR_PROVIDER`/`METADATA_TAMPERING_PROVIDER`/
+`DEEPFAKE_DETECTOR_PROVIDER` default to `stub` even when `ANALYSIS_PROVIDER=groq`: unlike
+Groq/Tavily, there's no credential to gate the real implementation on, and two of them are a
+model download dev/CI must never trigger by default. Set them to
+`sentence-transformers`/`roberta`/`exif`/`transformers` for the real local implementations.
+`VECTOR_DB_PROVIDER` defaults to `pgvector` (the live demo path, unchanged); set it to
+`pinecone` (with `PINECONE_API_KEY`/`PINECONE_HOST`) for the spec's named vector-DB
+alternative — see `app/providers/vector_db.py` for why pgvector stays the default.
 
 ## Layout
 
@@ -255,10 +293,13 @@ app/
   webhooks/          Inbound WhatsApp/Telegram webhooks
   adapters/          The integrations: one interface, a real implementation and a dev stub
                      each; readiness.py picks between them and guards production
-  providers/         AnalysisProvider (the verdict engine: Groq+Tavily, real when
+  providers/         AnalysisProvider (the verdict engine orchestrator: Groq, real when
                      GROQ_API_KEY/TAVILY_API_KEY are set), LanguageProvider (Sunbird AI
-                     detection and translation), plus fetch/transcription/embedding/
-                     ai_text_detector, each with its own real-or-stub switch
+                     detection and translation), source_verification/explanation (the Source
+                     Verification Engine and Explanation Generator), vector_db (pgvector/
+                     Pinecone dedupe lookup), plus fetch/transcription/embedding/
+                     ai_text_detector/metadata_integrity/deepfake_detector, each with its own
+                     real-or-stub switch
   realtime/          Redis clients and submission pub/sub
   worker/            Celery app, the pipeline, messaging, admin tasks, dispatch
 migrations/          Alembic (async env)

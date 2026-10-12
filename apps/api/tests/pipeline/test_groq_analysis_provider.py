@@ -1,6 +1,11 @@
-"""GroqAnalysisProvider: the pgvector dedupe check and the Tavily+Groq verdict path, both
-against respx mocks (for the hosted calls) and the real test database (for dedupe). Nothing
-calls a real service."""
+"""GroqAnalysisProvider as orchestrator: composes the vector-db dedupe lookup
+(app/providers/vector_db.py), the Source Verification Engine
+(app/providers/source_verification.py) and the Explanation Generator
+(app/providers/explanation.py) into one claim-level AnalysisResult, then appends the
+AI-text-detector signal. Each piece has its own focused tests (test_vector_db.py,
+test_source_verification.py, test_explanation_generator.py); this file covers the composition
+itself, against respx mocks for the hosted calls and the real test database for dedupe.
+Nothing calls a real service."""
 
 import json
 from datetime import UTC, datetime
@@ -13,7 +18,12 @@ from app.core import config
 from app.db import models as m
 from app.providers.ai_text_detector import StubAiTextDetector
 from app.providers.analysis import GroqAnalysisProvider, GroqError, get_analysis_provider
+from app.providers.deepfake_detector import StubDeepfakeDetector
 from app.providers.embedding import StubEmbeddingProvider
+from app.providers.explanation import GroqExplanationGenerator
+from app.providers.metadata_integrity import StubMetadataTamperingDetector
+from app.providers.source_verification import TavilySourceVerifier
+from app.providers.vector_db import PgVectorProvider
 
 GROQ_URL = "https://groq.example"
 TAVILY_URL = "https://tavily.example"
@@ -23,13 +33,17 @@ SEARCH = f"{TAVILY_URL}/search"
 
 def _provider(**overrides):
     kwargs = {
-        "groq_api_key": "groq-key",
-        "groq_api_url": GROQ_URL,
-        "groq_model": "llama-3.3-70b-versatile",
-        "tavily_api_key": "tavily-key",
-        "tavily_api_url": TAVILY_URL,
         "embedder": StubEmbeddingProvider(),
         "ai_text_detector": StubAiTextDetector(),
+        "metadata_tampering_detector": StubMetadataTamperingDetector(),
+        "deepfake_detector": StubDeepfakeDetector(),
+        "vector_db": PgVectorProvider(),
+        "source_verifier": TavilySourceVerifier(
+            tavily_api_key="tavily-key", tavily_api_url=TAVILY_URL
+        ),
+        "explanation_generator": GroqExplanationGenerator(
+            groq_api_key="groq-key", groq_api_url=GROQ_URL, groq_model="llama-3.3-70b-versatile"
+        ),
         "dedupe_max_cosine_distance": 0.08,
     }
     kwargs.update(overrides)
@@ -293,6 +307,43 @@ async def test_the_ai_text_detector_signal_is_appended_for_text_only(db):
 
     image_result = await provider.analyze(db=db, content_type="image", text="Some claim.", language="en")
     assert not any(sig.id == "x" for sig in image_result.ai_signals)
+
+
+@respx.mock
+async def test_image_signals_are_appended_only_for_image_content_with_media_bytes(db):
+    respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
+    respx.post(CHAT).mock(return_value=_verdict_response())
+
+    class FixedSignal:
+        def __init__(self, signal_id):
+            self._signal_id = signal_id
+
+        def detect(self, data):
+            from app.schemas.fact_check import AISignal
+
+            return AISignal(
+                id=self._signal_id, label="x", description="d", score=0.5, threshold=0.5, method="m"
+            )
+
+    provider = _provider(
+        metadata_tampering_detector=FixedSignal("metadata-integrity"),
+        deepfake_detector=FixedSignal("deepfake-detector"),
+    )
+
+    no_media = await provider.analyze(
+        db=db, content_type="image", text="Some claim.", language="en", media=None
+    )
+    assert no_media.ai_signals == []
+
+    with_media = await provider.analyze(
+        db=db, content_type="image", text="Some claim.", language="en", media=b"fake-bytes"
+    )
+    assert {sig.id for sig in with_media.ai_signals} == {"metadata-integrity", "deepfake-detector"}
+
+    text_with_media = await provider.analyze(
+        db=db, content_type="text", text="Some claim.", language="en", media=b"fake-bytes"
+    )
+    assert text_with_media.ai_signals == []
 
 
 # ---- get_analysis_provider() switch ----
