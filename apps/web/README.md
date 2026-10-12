@@ -21,6 +21,19 @@ All four phases above are running well ahead of their scheduled windows — P2, 
 
 Repo layout: `apps/web` (this app), `apps/api` (P2–P4), `packages/shared`. `apps/api` now has substantial code (see its own README), including the P4 AI providers (`app/providers/`). The original plan's `services/ai` directory was never used — P4 landed inside `apps/api` instead, following the same real-or-stub provider pattern as every other integration there.
 
+### Path to full functionality
+
+What's between the app today and a fully wired, launch-ready platform:
+
+- **P4 close-out**: the FR-DETECT-03 eval run against the held-out set, and the `spec-fidelity` branch (Pinecone/Weaviate option, decoupled source-verification/explanation steps, EXIF/hash metadata-tampering detection, pretrained deepfake signal) both need to land and merge.
+- **Frontend-to-API wiring**: ratings, review, admin and account settings still run on mock data (`lib/mock`) — only fact-checks and auth call the real API so far. This is the largest remaining gap for an end-to-end-real demo.
+- **Role enforcement in the UI**: the API checks roles on its own endpoints, but most screens still only check the browser session's role, not the API. Needs wiring screen-by-screen.
+- **Translation review**: `messages/{lg,ach,nyn,teo}.json` are unreviewed Sunbird AI machine drafts and need native-speaker review before they count as real translations.
+- **CAPTCHA**: currently off in development; needs enabling for production.
+- **Hardening + launch phase**: not started — security review, performance testing, and production deployment.
+- **Open PRs**: [#55](https://github.com/Noah-Prinzy/zuula/pull/55) (dependency audit fixes) still needs review/merge, plus whatever the eval-harness and `spec-fidelity` sessions open.
+- **Permanently deferred, not blocking launch**: fine-tuned LLM and custom-trained CV detectors (§5) — blocked on a labelled-corpus and GPU budget this project doesn't have; see "Spec-fidelity branch" below.
+
 ### Spec-fidelity branch
 
 `main` (and this status table) tracks the pragmatic plan agreed with the supervisor — a hosted LLM doing retrieval-augmented generation, not the fine-tuned classifier §4/§5 of the spec describe. A separate `spec-fidelity` branch is picking up the parts of that original architecture that are achievable without new training data or GPU budget:
