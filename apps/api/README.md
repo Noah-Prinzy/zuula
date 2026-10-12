@@ -9,7 +9,7 @@ auth, scoring, admin and the real integrations).
 
 **P4 (the AI verdict engine):** `app/providers/analysis.py`'s `GroqAnalysisProvider` is real
 when `GROQ_API_KEY`/`TAVILY_API_KEY` are set (`StubAnalysisProvider` otherwise, unchanged from
-P2): a pgvector dedupe check, one Tavily search and one Groq Llama 3.3 70B call per claim, plus
+P2): a pgvector dedupe check, one Tavily search and one Groq chat completion per claim, plus
 a local RoBERTa AI-text-detector signal — no Claude/Anthropic calls, no agent loop. See
 "Verdict engine" below. Deepfake detection (image/video) is out of scope for v1.
 
@@ -217,9 +217,12 @@ question (ADR 0001) — Groq's hosted inference doesn't resolve that either way.
    reused outright — no Tavily search, no Groq call — which is what keeps a viral claim from
    costing anything the second time it's submitted.
 2. Otherwise, one Tavily web search (`app/providers/tavily.py`, free tier) for evidence, then
-   one Groq chat completion (`GROQ_MODEL`, Llama 3.3 70B free tier) over the claim and that
-   evidence, asked to return the verdict/claims/citations/summary shape in a single JSON
-   response — not an agent loop.
+   one Groq chat completion (`GROQ_MODEL`, free tier) over the claim and that evidence, asked
+   to return the verdict/claims/citations/summary shape in a single JSON response — not an
+   agent loop. The P4 brief specified Llama 3.3 70B; Groq has since retired every Llama text
+   model from its catalog, so `GROQ_MODEL` now defaults to `openai/gpt-oss-120b`, the current
+   free-tier model closest in size/capability (see `scripts/run_eval.py`'s eval, which caught
+   this live).
 3. For text content, an in-process AI-generated-text signal
    (`app/providers/ai_text_detector.py`, a small RoBERTa classifier via `transformers`, CPU, no
    key) is appended to `ai_signals`. Deepfake detection (image/video) is explicitly out of

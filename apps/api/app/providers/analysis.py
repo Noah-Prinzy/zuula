@@ -17,7 +17,7 @@ GroqAnalysisProvider does, per claim, in this order:
    `include_domains`, when that search returns enough to work with (see
    `_RESTRICTED_SEARCH_MIN_RESULTS` below) — otherwise an unrestricted search for the same
    claim, since the registry is nowhere near its 50-source target yet. One Groq chat
-   completion (Llama 3.3 70B, free tier) over the claim and that evidence, asked to return the
+   completion (GROQ_MODEL, free tier) over the claim and that evidence, asked to return the
    verdict/claims/citations/summary shape in one JSON response — claim extraction and
    reasoning in the same call, not an agent loop. No Claude/Anthropic calls anywhere in this
    engine, per the P4 cost constraint (free-tier Groq only).
@@ -346,7 +346,13 @@ class GroqAnalysisProvider:
         except httpx.HTTPError as exc:
             raise GroqError("Groq chat completion failed.") from exc
         if response.status_code >= 400:
-            raise GroqError(f"Groq chat completion failed with HTTP {response.status_code}.")
+            # Groq's error body (e.g. a 429's "tokens per day" vs. plain per-minute rate-limit
+            # message, with its own suggested retry delay) is otherwise discarded; keeping it
+            # here is diagnostic only — it changes no verdict/scoring logic, just what callers
+            # can see about *why* a call failed.
+            raise GroqError(
+                f"Groq chat completion failed with HTTP {response.status_code}: {response.text}"
+            )
         try:
             content = response.json()["choices"][0]["message"]["content"]
             data = json.loads(content)
