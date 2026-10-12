@@ -24,6 +24,7 @@ import argparse
 import asyncio
 import json
 import logging
+import re
 import sys
 import time
 from collections import Counter, defaultdict
@@ -126,10 +127,32 @@ async def _tavily_search_with_retry(
             raise
 
 
+_RETRY_AFTER_RE = re.compile(r"try again in (?:(\d+)m)?([\d.]+)s")
+
+# Above this, don't bother retrying within one item: app/providers/analysis.py's GroqError now
+# carries the response body (see its diff), and a real 429 body there can be either a
+# per-minute throttle (clears in seconds) or Groq's *daily* token quota (clears only once
+# enough of a rolling 24h window ages out — minutes, observed up to ~6 on this project's key).
+# A per-item retry loop blocking for minutes stalls the whole run's throughput for one item;
+# better to fail this item fast and let --resume pick it up once the daily budget recovers.
+MAX_INLINE_RETRY_WAIT_SECONDS = 90.0
+
+
+def _retry_after_seconds(message: str) -> float | None:
+    match = _RETRY_AFTER_RE.search(message)
+    if not match:
+        return None
+    minutes, seconds = match.groups()
+    return (int(minutes) * 60 if minutes else 0) + float(seconds)
+
+
 async def analyze_with_retry(provider, *, db, content_type, text, language, max_attempts=6):
     """Retries a transient GroqError (429/5xx/network) with backoff, on top of the proactive
     pacing in _Pacer. A non-transient failure (bad request, malformed JSON response) is raised
-    immediately — retrying it would just reproduce the same deterministic failure."""
+    immediately — retrying it would just reproduce the same deterministic failure. When Groq's
+    error names its own suggested retry delay, that's used instead of guessing via exponential
+    backoff — except past MAX_INLINE_RETRY_WAIT_SECONDS, where this gives up on the item instead
+    of blocking the whole run on one daily-quota-exhausted call (see its docstring)."""
     attempt = 0
     while True:
         try:
@@ -140,6 +163,9 @@ async def analyze_with_retry(provider, *, db, content_type, text, language, max_
             )
         except GroqError as exc:
             attempt += 1
+            retry_after = _retry_after_seconds(str(exc))
+            if retry_after is not None and retry_after > MAX_INLINE_RETRY_WAIT_SECONDS:
+                raise
             transient = any(code in str(exc) for code in ("429", "500", "502", "503", "504")) or (
                 "HTTP" not in str(exc)
             )
@@ -147,7 +173,8 @@ async def analyze_with_retry(provider, *, db, content_type, text, language, max_
             if event is not None:
                 event["groq_error"] = str(exc)
             if transient and attempt <= max_attempts:
-                await asyncio.sleep(min(2**attempt, 60))
+                wait = retry_after + 1 if retry_after is not None else min(2**attempt, 60)
+                await asyncio.sleep(wait)
                 continue
             raise
 
