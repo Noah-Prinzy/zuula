@@ -14,7 +14,7 @@ Deadline **30 Nov 2026**, one developer.
 | P1 Frontend | 21 Sep – 9 Oct | Next.js 16 + shadcn/ui, every page on mock data | In progress — core pages done; auth layout, home hero and mobile UI passes landed ahead of schedule |
 | P2 API design | 12 – 20 Oct | FastAPI core REST API; separate partner API (API keys, 100 requests/hour); SSE/WebSockets; WhatsApp and Telegram webhooks; AI job queue (Celery + Redis); OAuth, Africa's Talking SMS, Turnstile, ClamAV, S3 | Done — Steps 1–6 merged |
 | P3 Backend + database | 21 Oct – 6 Nov | PostgreSQL + pgvector, Redis, auth (bcrypt, 2FA), weighted CCS and escalation, audit log | Done — PRs 1–6 merged (DB foundation, auth/roles, content, admin, real adapters, docs); [ADR 0002](../../docs/adr/0002-p3-backend-and-database.md) accepted |
-| P4 AI engine | 9 – 24 Nov | Hosted LLM (Claude) with evidence retrieval; Sunbird AI for Ugandan languages; Whisper; RoBERTa AI-text detector and a deepfake API; evaluation on about 500 labelled items | In progress — Groq+Tavily verdict engine (dedupe check against pgvector, one search + one Llama 3.3 70B call per claim, search now scoped to the `trusted_sources` registry), Groq Whisper transcription, trafilatura article fetch, local RoBERTa AI-text signal, 363 real AFP-verified fact-checks, and the pgvector embedding backfill for seeded reports are all merged (PRs #46, #48, #52, #53). The FR-DETECT-03 accuracy run against the held-out ~500-item set is in its last stretch. Still open: the deepfake API (see "Spec-fidelity branch" below) |
+| P4 AI engine | 9 – 24 Nov | Hosted LLM (Claude) with evidence retrieval; Sunbird AI for Ugandan languages; Whisper; RoBERTa AI-text detector and a deepfake API; evaluation on about 500 labelled items | Done — Groq+Tavily verdict engine (dedupe check against a vector DB, one search + one Groq chat completion per claim, search scoped to the `trusted_sources` registry), Groq Whisper transcription, trafilatura article fetch, local RoBERTa AI-text signal, 363 real AFP-verified fact-checks, the pgvector embedding backfill for seeded reports, the FR-DETECT-03 eval harness, and the spec-fidelity additions (Pinecone vector-DB option, decoupled Source Verification Engine/Explanation Generator, EXIF/hash metadata-tampering check, pretrained deepfake signal) are all merged (PRs #46, #48, #52, #53, #57, #58). FR-DETECT-03's ≥90% target is not met and not yet reliably testable — see "Path to full functionality" below |
 | Hardening + launch | 25 – 30 Nov | Security, performance, deployment | Not started |
 
 All four phases above are running well ahead of their scheduled windows — P2, P3 and P4 are each substantially built before their windows have opened (P3 finished on 23 Sep, four weeks before its 21 Oct start; P4's first PRs merged 3 Oct, five weeks before its 9 Nov start).
@@ -25,25 +25,24 @@ Repo layout: `apps/web` (this app), `apps/api` (P2–P4), `packages/shared`. `ap
 
 What's between the app today and a fully wired, launch-ready platform:
 
-- **P4 close-out**: the FR-DETECT-03 eval run against the held-out set, and the `spec-fidelity` branch (Pinecone/Weaviate option, decoupled source-verification/explanation steps, EXIF/hash metadata-tampering detection, pretrained deepfake signal) both need to land and merge.
+- **FR-DETECT-03 is unverified, not just "not met"**: the eval harness (`apps/api/scripts/run_eval.py`) ran the full 278-item held-out set to completion, but Groq's shared daily token quota and Tavily's shared monthly search quota were both exhausted by other concurrent work during the run. Only 17 of 278 items got both a real verdict and real web evidence — those hit 64.7% accuracy, well under the 90% target but too small a sample to certify either way. A trustworthy number needs a dedicated (non-shared) Groq/Tavily key. Full results: `apps/api/EVAL_RESULTS.md`.
 - **Frontend-to-API wiring**: ratings, review, admin and account settings still run on mock data (`lib/mock`) — only fact-checks and auth call the real API so far. This is the largest remaining gap for an end-to-end-real demo.
 - **Role enforcement in the UI**: the API checks roles on its own endpoints, but most screens still only check the browser session's role, not the API. Needs wiring screen-by-screen.
 - **Translation review**: `messages/{lg,ach,nyn,teo}.json` are unreviewed Sunbird AI machine drafts and need native-speaker review before they count as real translations.
 - **CAPTCHA**: currently off in development; needs enabling for production.
 - **Hardening + launch phase**: not started — security review, performance testing, and production deployment.
-- **Open PRs**: [#55](https://github.com/Noah-Prinzy/zuula/pull/55) (dependency audit fixes) still needs review/merge, plus whatever the eval-harness and `spec-fidelity` sessions open.
-- **Permanently deferred, not blocking launch**: fine-tuned LLM and custom-trained CV detectors (§5) — blocked on a labelled-corpus and GPU budget this project doesn't have; see "Spec-fidelity branch" below.
+- **Permanently deferred, not blocking launch**: fine-tuned LLM and custom-trained CV detectors (§5) — blocked on a labelled-corpus and GPU budget this project doesn't have; see "Spec-fidelity additions" below.
 
-### Spec-fidelity branch
+### Spec-fidelity additions
 
-`main` (and this status table) tracks the pragmatic plan agreed with the supervisor — a hosted LLM doing retrieval-augmented generation, not the fine-tuned classifier §4/§5 of the spec describe. A separate `spec-fidelity` branch is picking up the parts of that original architecture that are achievable without new training data or GPU budget:
+`main`'s P4 engine follows the pragmatic plan agreed with the supervisor — a hosted LLM doing retrieval-augmented generation, not the fine-tuned classifier §4/§5 of the spec describe. On top of that, the parts of the original §4/§5 architecture that are achievable without new training data or GPU budget are now merged into `main` (PR #58):
 
-- Swap the pgvector dedupe cache for a hosted vector DB (Pinecone or Weaviate, §4.1 Layer 4), matching the spec's technology choice even though pgvector already does the job
-- Split the single Groq call into the spec's separate components — a Source Verification Engine step (evidence retrieval + cross-referencing) feeding a distinct Explanation Generator step (§4.1 Layer 3), rather than one fused generation call
-- Metadata Tampering detection via EXIF/hash inspection (§5.3's cheapest row, >95% target) — no ML needed
-- A deepfake/synthetic-media signal using an existing pretrained model, wired in behind the same real-or-stub provider pattern as everything else — not a custom-trained classifier
+- A hosted vector DB option (Pinecone, `VECTOR_DB_PROVIDER=pinecone`) alongside the default pgvector dedupe cache (§4.1 Layer 4), matching the spec's technology choice even though pgvector already does the job
+- The single Groq call split into the spec's separate components — a Source Verification Engine (`app/providers/source_verification.py`, evidence retrieval + cross-referencing) feeding a distinct Explanation Generator (`app/providers/explanation.py`, §4.1 Layer 3), rather than one fused generation call
+- Metadata Tampering detection via EXIF/hash inspection (`app/providers/metadata_integrity.py`, §5.3's cheapest row, >95% target) — no ML needed
+- A deepfake/synthetic-media signal (`app/providers/deepfake_detector.py`) using an existing pretrained model, wired in behind the same real-or-stub provider pattern as everything else — not a custom-trained classifier
 
-**Explicitly not attempted, on this branch or any other, until a data-collection phase exists:** fine-tuning LLaMA 3 / Mistral on Ugandan news and multilingual corpora (§5.1–§5.2) and training custom deepfake/synthetic-audio/manipulated-video detectors (CNNDetection+FaceForensics++, Resemblyzer, FaceSwap+temporal, §5.3). Both need a curated, labelled corpus that doesn't exist yet plus real GPU budget — no branch produces that by writing code. This is a future phase, not a gap in the current plan.
+**Explicitly not attempted, here or anywhere else, until a data-collection phase exists:** fine-tuning LLaMA 3 / Mistral on Ugandan news and multilingual corpora (§5.1–§5.2) and training custom deepfake/synthetic-audio/manipulated-video detectors (CNNDetection+FaceForensics++, Resemblyzer, FaceSwap+temporal, §5.3). Both need a curated, labelled corpus that doesn't exist yet plus real GPU budget — no amount of code produces that. This is a future phase, not a gap in the current plan.
 
 Pages live in `app/[locale]/(public|auth|app)/`. The URL never carries the language: `proxy.ts` (next-intl, `localePrefix: "never"`) maps the `NEXT_LOCALE` cookie to the `[locale]` segment, so each language is prerendered. English strings live in `messages/en.json`.
 
@@ -54,7 +53,7 @@ These were agreed during planning and still need the supervisor's sign-off.
 | Spec | Plan | Why |
 |---|---|---|
 | Fine-tuned LLaMA 3 / Mistral trained on Ugandan corpora (§5) | Hosted LLM with evidence retrieval, Sunbird AI for local languages | 10-week timeline; no training data or GPU budget yet — picked up again once a labelled corpus exists, not before |
-| Accuracy targets of at least 90% text and 85% deepfake (FR-DETECT-03, 04) | Measured on about 500 labelled items; deepfake detection via a pretrained model (`spec-fidelity` branch), not a custom-trained one | Estimates only, not proof; no training data for a custom detector |
+| Accuracy targets of at least 90% text and 85% deepfake (FR-DETECT-03, 04) | Deepfake detection via a pretrained model (`app/providers/deepfake_detector.py`), not a custom-trained one; FR-DETECT-03 measured on a 278-item held-out set, but not yet reliably (see "Path to full functionality") | Estimates only, not proof; no training data for a custom detector; eval needs a dedicated API quota |
 | Native Android and iOS apps (Phase 5) | PWA at launch, React Native after | Timeline |
 | Kubernetes (§7.4) | Docker Compose | Single-server deployment is enough at launch |
 | Browser extension (FR-API-04), coordinated behaviour detection (FR-DETECT-09) | After launch | Low priority in the spec |
