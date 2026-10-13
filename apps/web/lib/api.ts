@@ -3,8 +3,9 @@ import type { components, operations } from "@zuula/shared"
 import { demoAuthApi } from "@/lib/demo-auth"
 
 // Thin client for apps/api (the core /api/v1 surface), typed from packages/shared's generated
-// openapi.ts. Only the identity/session calls live here for now: content (fact-checks,
-// ratings, review, admin) still comes from lib/mock until the backend's content layer lands.
+// openapi.ts. The identity/session calls live here; lib/ratings-api.ts and lib/review-api.ts
+// reuse request()/JsonBody below for the ratings and review surfaces (FR-RATE, FR-REVIEW).
+// Admin and account settings still come from lib/mock until their turn.
 //
 // The session is the API's HttpOnly `zuula_session` cookie, so every call sends credentials
 // and this code never sees the token. That only works when the API lists this site's origin in
@@ -19,7 +20,7 @@ export type ApiSession = Schemas["Session"]
 export type TwoFactorChallenge = Schemas["TwoFactorChallenge"]
 export type ApiErrorCode = Schemas["ErrorEnvelope"]["error"]["code"]
 
-type JsonBody<Op extends keyof operations> = operations[Op] extends {
+export type JsonBody<Op extends keyof operations> = operations[Op] extends {
   requestBody: { content: { "application/json": infer B } }
 }
   ? B
@@ -66,7 +67,10 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, init: { method?: string; body?: unknown } = {}): Promise<T> {
+export async function request<T>(
+  path: string,
+  init: { method?: string; body?: unknown } = {}
+): Promise<T> {
   const base = apiBaseUrl()
   if (base === null) throw new ApiError(0, "unconfigured", "NEXT_PUBLIC_API_URL is not set.")
 

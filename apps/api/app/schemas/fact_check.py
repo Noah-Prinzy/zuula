@@ -92,6 +92,9 @@ class CommunityRating(CamelModel):
     inaccurate: RatingCounts
     comments: list[RatingComment]
     score: CommunityScore
+    # The signed-in viewer's own current vote (None if unrated or no one is signed in) — see
+    # app.services.reports.full_report()'s viewer_id parameter.
+    my_vote: str | None = None
 
 
 class FactCheckReport(CamelModel):

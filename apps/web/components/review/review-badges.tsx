@@ -10,7 +10,8 @@ import { useTranslations } from "next-intl"
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useFormat } from "@/lib/format"
-import { slaFor, type ReviewReason } from "@/lib/mock/review"
+import type { ReviewReason } from "@/lib/mock/review"
+import { hoursLeftFor, slaStateFromHours } from "@/lib/review-api"
 import { cn } from "@/lib/utils"
 
 // Labels live in Review.sla.<state>.
@@ -33,13 +34,17 @@ export function useSlaText() {
   }
 }
 
-// FR-REVIEW-06: time left on the 48-hour review SLA.
-export function SlaBadge({ flaggedAt, className }: { flaggedAt: string; className?: string }) {
+// FR-REVIEW-06: time left on the 48-hour review SLA. `dueAt` is the deadline itself (the
+// caller computes it — lib/mock/review.ts's slaFor() for sample data, or the API's own
+// slaDueAt for a real case) so this always reads against the real current time, never a
+// frozen demo clock.
+export function SlaBadge({ dueAt, className }: { dueAt: string; className?: string }) {
   const t = useTranslations("Review.sla")
   const slaText = useSlaText()
   const f = useFormat()
-  const sla = slaFor(flaggedAt)
-  const s = SLA_STYLE[sla.state]
+  const hoursLeft = hoursLeftFor(dueAt)
+  const state = slaStateFromHours(hoursLeft)
+  const s = SLA_STYLE[state]
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -48,13 +53,13 @@ export function SlaBadge({ flaggedAt, className }: { flaggedAt: string; classNam
           className={cn("inline-flex min-h-5 w-fit max-w-full items-center gap-1 border px-1.5 text-xs tabular-nums", s.className, className)}
         >
           <s.icon className="size-3" aria-hidden />
-          {slaText(sla.hoursLeft)}
+          {slaText(hoursLeft)}
         </span>
       </TooltipTrigger>
       <TooltipContent>
         {t("tooltip", {
-          status: t(sla.state),
-          time: f.date(sla.due, { weekday: "short", hour: "2-digit", minute: "2-digit" }),
+          status: t(state),
+          time: f.date(dueAt, { weekday: "short", hour: "2-digit", minute: "2-digit" }),
         })}
       </TooltipContent>
     </Tooltip>

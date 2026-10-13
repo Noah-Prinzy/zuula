@@ -201,7 +201,7 @@ export default async function ReportPage({ params }: Props) {
 
         <aside className="flex flex-col gap-8">
           <Section id="rating" title={tr("rating")}>
-            <RatingPanel initial={report.community} />
+            <RatingPanel reportId={report.id} initial={report.community} />
           </Section>
 
           <Section

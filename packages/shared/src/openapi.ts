@@ -1209,6 +1209,11 @@ export interface components {
             inaccurate: components["schemas"]["RatingCounts"];
             comments: components["schemas"]["RatingComment"][];
             score: components["schemas"]["CommunityScore"];
+            /**
+             * @description The signed-in viewer's own current vote on this report. Omitted (not null) when they haven't rated it or no one is signed in, per dump_report()'s optional-absent convention.
+             * @enum {string}
+             */
+            myVote?: "accurate" | "inaccurate";
         };
         /** @description Full report — core API only (includes submittedText, annotations and comments). */
         FactCheckReport: {

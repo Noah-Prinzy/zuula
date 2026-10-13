@@ -194,7 +194,7 @@ async def get_review_case(
     report = await db.get(FactCheckReport, case.report_id)
     return {
         "case": _case_of(case, assignee, flags, datetime.now(UTC)),
-        "report": dump_report(await full_report(db, report)) if report else None,
+        "report": dump_report(await full_report(db, report, viewer_id=user.id)) if report else None,
     }
 
 

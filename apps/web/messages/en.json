@@ -854,6 +854,7 @@
     },
     "queue": {
       "assigned": "Assigned to you",
+      "assignFailed": "Couldn't assign this case. Please try again.",
       "columns": {
         "content": "Content",
         "verdict": "AI verdict",
@@ -903,9 +904,6 @@
       "required": "(required)",
       "justificationPlaceholder": "What evidence did you check? Who did you contact?",
       "justificationHint": "Internal. Stored in the audit log with your name and the time.",
-      "publicNote": "Note for readers (optional)",
-      "publicNotePlaceholder": "Adds context to the report as an expert note.",
-      "showOnReport": "Show on the public report",
       "submitDecision": "Submit decision",
       "backToQueue": "Back to queue",
       "confirmTitle": "Confirm this verdict?",
@@ -914,7 +912,11 @@
       "submit": "Submit",
       "publicReport": "Public report",
       "aiFindings": "AI findings",
-      "auditNote": "Every decision is recorded with reviewer, time and justification (FR-REVIEW-03)."
+      "auditNote": "Every decision is recorded with reviewer, time and justification (FR-REVIEW-03).",
+      "decisionFailed": "Couldn't submit the decision. Please try again.",
+      "notFoundTitle": "Case not found",
+      "notFoundBody": "It may have already been decided, or the link is wrong.",
+      "loadError": "Couldn't load this case. Please try again."
     }
   },
   "Admin": {
@@ -1362,7 +1364,9 @@
       "dialogBody": "Your reason is shown publicly with your name and helps expert reviewers.",
       "reasonLabel": "Reason (optional)",
       "reasonPlaceholder": "E.g. I checked the official statement and…",
-      "saveReason": "Save reason"
+      "saveReason": "Save reason",
+      "voteFailed": "Couldn't save your rating. Please try again.",
+      "reasonFailed": "Couldn't post your reason. Please try again."
     },
     "comments": {
       "empty": "No one has explained their rating yet.",
