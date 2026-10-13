@@ -14,7 +14,7 @@ from urllib.parse import urlparse
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.models import ExpertAnnotation, FactCheckReport, RatingComment, User
+from app.db.models import ExpertAnnotation, FactCheckReport, Rating, RatingComment, User
 from app.schemas.admin import PlatformSettings
 from app.schemas.fact_check import (
     CommunityRating,
@@ -80,9 +80,13 @@ def summary_of(row: FactCheckReport, settings: PlatformSettings) -> FactCheckSum
 
 
 async def full_report(
-    db: AsyncSession, row: FactCheckReport, settings: PlatformSettings | None = None
+    db: AsyncSession,
+    row: FactCheckReport,
+    settings: PlatformSettings | None = None,
+    viewer_id: str | None = None,
 ) -> ReportSchema:
     settings = settings or await get_platform_settings(db)
+    my_vote = (await db.get(Rating, (row.id, viewer_id))) if viewer_id else None
     annotations = (
         await db.execute(
             select(ExpertAnnotation, User.name)
@@ -129,6 +133,7 @@ async def full_report(
             inaccurate=inaccurate,
             comments=[comment_of(c, name) for c, name in comments],
             score=score_of(row, settings),
+            my_vote=my_vote.vote if my_vote else None,
         ),
         category=row.category,
         checked_at=row.checked_at,

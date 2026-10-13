@@ -14,14 +14,27 @@ vi.mock("@/components/providers/session-provider", () => ({
     user: session.role ? { name: "Test User", email: "t@example.com", role: session.role } : null,
   }),
 }))
-vi.mock("next/navigation", () => ({ usePathname: () => "/fact-checks/fc-1" }))
-const toast = vi.hoisted(() => ({ success: vi.fn() }))
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/fact-checks/fc-1",
+  useRouter: () => ({ refresh: vi.fn() }),
+}))
+const toast = vi.hoisted(() => ({ success: vi.fn(), error: vi.fn() }))
 vi.mock("sonner", () => ({ toast }))
+// No backend configured in these tests: every assertion below is the same local-only,
+// optimistic-UI behavior the panel had before the real ratings API existed.
+vi.mock("@/lib/ratings-api", () => ({
+  ratingsApiConfigured: () => false,
+  rate: vi.fn(),
+  retractRating: vi.fn(),
+  addComment: vi.fn(),
+}))
+vi.mock("@/lib/fact-checks-api", () => ({ fetchFullReport: vi.fn() }))
 
 import { RatingPanel } from "@/components/community/rating-panel"
 
 // 3 public say accurate, 1 says inaccurate → 75%.
 const initial = { accurate: counts({ public: 3 }), inaccurate: counts({ public: 1 }) }
+const reportId = "fc-1"
 const score = () => screen.getByText(/^\d+%$|^—$/).textContent
 
 beforeEach(() => {
@@ -31,12 +44,12 @@ beforeEach(() => {
 
 describe("RatingPanel", () => {
   it("shows the community score", () => {
-    renderWithIntl(<RatingPanel initial={initial} />)
+    renderWithIntl(<RatingPanel reportId={reportId} initial={initial} />)
     expect(score()).toBe("75%")
   })
 
   it("asks signed-out visitors to sign in and disables voting", () => {
-    renderWithIntl(<RatingPanel initial={initial} />)
+    renderWithIntl(<RatingPanel reportId={reportId} initial={initial} />)
     const group = screen.getByRole("group")
     for (const button of within(group).getAllByRole("button")) expect(button).toBeDisabled()
     expect(screen.getByRole("link", { name: /sign in/i })).toHaveAttribute(
@@ -47,14 +60,14 @@ describe("RatingPanel", () => {
 
   it("tells signed-in users how much their rating counts", () => {
     session.role = "expert"
-    renderWithIntl(<RatingPanel initial={initial} />)
+    renderWithIntl(<RatingPanel reportId={reportId} initial={initial} />)
     expect(screen.getByText(/5×/)).toBeInTheDocument()
   })
 
   it("records a vote, weights it by role and lets the user change it", async () => {
     session.role = "journalist"
     const user = userEvent.setup()
-    renderWithIntl(<RatingPanel initial={initial} />)
+    renderWithIntl(<RatingPanel reportId={reportId} initial={initial} />)
     const [accurate, inaccurate] = within(screen.getByRole("group")).getAllByRole("button")
 
     await user.click(accurate)
@@ -77,7 +90,7 @@ describe("RatingPanel", () => {
   it("saves an optional reason", async () => {
     session.role = "public"
     const user = userEvent.setup()
-    renderWithIntl(<RatingPanel initial={initial} />)
+    renderWithIntl(<RatingPanel reportId={reportId} initial={initial} />)
 
     await user.click(within(screen.getByRole("group")).getAllByRole("button")[0])
     await user.click(screen.getByRole("button", { name: /add a reason/i }))

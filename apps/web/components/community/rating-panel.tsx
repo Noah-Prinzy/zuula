@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
   RiChat3Line,
   RiThumbDownFill,
@@ -27,7 +28,9 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 import { Textarea } from "@/components/ui/textarea"
+import { fetchFullReport } from "@/lib/fact-checks-api"
 import { applyVote, communityScore, RATING_WEIGHTS, raterRole } from "@/lib/community"
+import { addComment, rate, ratingsApiConfigured } from "@/lib/ratings-api"
 import type { CommunityRating } from "@/lib/types/fact-check"
 import { cn } from "@/lib/utils"
 import { usePagePath } from "@/hooks/use-page-path"
@@ -36,34 +39,76 @@ type Vote = "accurate" | "inaccurate"
 
 const MAX_COMMENT = 280
 
-// FR-RATE-01, 04, 06, 09: one rating per user, changeable, optional reason.
-// Local state only until the ratings API exists.
+// FR-RATE-01, 04, 06, 09: one rating per user, changeable, optional reason. Real vote/retract/
+// comment calls against the ratings API (lib/ratings-api.ts) when configured; otherwise the
+// same local-only optimistic behavior this had before the API existed (demo mode).
 export function RatingPanel({
+  reportId,
   initial,
   className,
 }: {
-  initial: Pick<CommunityRating, "accurate" | "inaccurate">
+  reportId: string
+  initial: Pick<CommunityRating, "accurate" | "inaccurate" | "myVote">
   className?: string
 }) {
   const { user, role } = useSession()
+  const router = useRouter()
   const pathname = usePagePath()
   const t = useTranslations("Community.panel")
   const tc = useTranslations("Common")
   const tr = useTranslations("Roles")
   const [counts, setCounts] = React.useState(initial)
-  const [vote, setVote] = React.useState<Vote | null>(null)
+  const [vote, setVote] = React.useState<Vote | null>(initial.myVote ?? null)
   const [comment, setComment] = React.useState("")
   const [draft, setDraft] = React.useState("")
   const [dialogOpen, setDialogOpen] = React.useState(false)
+  const [busy, setBusy] = React.useState(false)
+
+  // The report page renders server-side with no viewer context (this app's sessions are
+  // client-only — see components/providers/session-provider.tsx), so `initial.myVote` is never
+  // set there. Once we know who's signed in, re-fetch client-side (credentials ride along
+  // automatically) to pick up this viewer's real vote.
+  React.useEffect(() => {
+    if (!user || !ratingsApiConfigured()) return
+    let cancelled = false
+    fetchFullReport(reportId)
+      .then((r) => {
+        if (cancelled || !r) return
+        setCounts({ accurate: r.community.accurate, inaccurate: r.community.inaccurate })
+        setVote(r.community.myVote ?? null)
+      })
+      .catch(() => {
+        // Keep the SSR snapshot; the next successful vote/retract still reconciles.
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [user, reportId])
 
   const score = communityScore(counts)
   const weight = role ? RATING_WEIGHTS[raterRole(role)] : 1
 
-  function cast(next: Vote) {
-    if (!role || next === vote) return
+  async function cast(next: Vote) {
+    if (!role || next === vote || busy) return
+    const previous = { counts, vote }
     setCounts((c) => applyVote(c, raterRole(role), vote, next))
     const changed = vote !== null
     setVote(next)
+
+    if (ratingsApiConfigured()) {
+      setBusy(true)
+      try {
+        await rate(reportId, next)
+      } catch {
+        setCounts(previous.counts)
+        setVote(previous.vote)
+        toast.error(t("voteFailed"))
+        setBusy(false)
+        return
+      }
+      setBusy(false)
+    }
+
     toast.success(changed ? t("changed") : t("thanks"), {
       description: t("ratedAs", { vote: next }),
       action: { label: t("addReasonAction"), onClick: () => openDialog() },
@@ -75,10 +120,25 @@ export function RatingPanel({
     setDialogOpen(true)
   }
 
-  function saveComment() {
-    setComment(draft.trim())
+  async function saveComment() {
+    const text = draft.trim()
+    if (ratingsApiConfigured() && vote) {
+      setBusy(true)
+      try {
+        await addComment(reportId, vote, text)
+        // Comments are public, SSR-rendered data (components/community/rating-comments.tsx) —
+        // a router refresh is enough to show the new one, no separate client fetch needed.
+        router.refresh()
+      } catch {
+        toast.error(t("reasonFailed"))
+        setBusy(false)
+        return
+      }
+      setBusy(false)
+    }
+    setComment(text)
     setDialogOpen(false)
-    toast.success(draft.trim() ? t("reasonSaved") : t("reasonRemoved"))
+    toast.success(text ? t("reasonSaved") : t("reasonRemoved"))
   }
 
   return (
@@ -93,7 +153,7 @@ export function RatingPanel({
           variant="outline"
           size="lg"
           aria-pressed={vote === "accurate"}
-          disabled={!user}
+          disabled={!user || busy}
           onClick={() => cast("accurate")}
           className={cn(
             vote === "accurate" &&
@@ -107,7 +167,7 @@ export function RatingPanel({
           variant="outline"
           size="lg"
           aria-pressed={vote === "inaccurate"}
-          disabled={!user}
+          disabled={!user || busy}
           onClick={() => cast("inaccurate")}
           className={cn(
             vote === "inaccurate" &&
@@ -179,7 +239,7 @@ export function RatingPanel({
             <DialogClose asChild>
               <Button variant="outline">{tc("cancel")}</Button>
             </DialogClose>
-            <Button onClick={saveComment}>{t("saveReason")}</Button>
+            <Button onClick={saveComment} disabled={busy}>{t("saveReason")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

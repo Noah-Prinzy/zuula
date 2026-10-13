@@ -105,6 +105,9 @@ export type CommunityRating = {
    * from per-role counts this type doesn't carry — lib/community.ts's communityScore() returns
    * this as-is instead of recomputing it from `accurate`/`inaccurate` when it's set. */
   score?: PrecomputedCommunityScore
+  /** The signed-in viewer's own current vote (real API only; absent when unrated, signed out,
+   * or sourced from mock). */
+  myVote?: "accurate" | "inaccurate"
 }
 
 export type FactCheckReport = {

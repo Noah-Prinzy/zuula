@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -36,7 +36,14 @@ import { VerdictBadge } from "@/components/verdict/verdict-badge"
 import { VerdictSummary } from "@/components/verdict/verdict-summary"
 import { WhatIsTrueCard } from "@/components/verdict/what-is-true-card"
 import { communityScore, RATING_WEIGHTS } from "@/lib/community"
-import type { ReviewCase } from "@/lib/mock/review"
+import { getCase as getMockCase } from "@/lib/mock/review"
+import {
+  decideCase,
+  dueAtFor,
+  getCase as getApiCase,
+  reviewApiConfigured,
+  type ReviewCase,
+} from "@/lib/review-api"
 import { VERDICTS, type FactCheckReport, type RaterRole, type Verdict } from "@/lib/types/fact-check"
 import { cn } from "@/lib/utils"
 
@@ -101,17 +108,18 @@ function CommunitySignals({ report }: { report: FactCheckReport }) {
 
 type Decision = "confirm" | "override"
 
-// FR-REVIEW-02 to 05: confirm or override the AI verdict with a logged justification.
+// FR-REVIEW-02 to 05: confirm or override the AI verdict with a logged justification. Real
+// decideCase() call when the review API is configured; otherwise the toast-and-redirect-only
+// behavior this had before the API existed (demo mode).
 function DecisionForm({ report, caseId }: { report: FactCheckReport; caseId: string }) {
   const router = useRouter()
   const { user } = useSession()
   const [decision, setDecision] = React.useState<Decision>("confirm")
   const [verdict, setVerdict] = React.useState<Verdict | null>(null)
   const [justification, setJustification] = React.useState("")
-  const [note, setNote] = React.useState("")
-  const [publishNote, setPublishNote] = React.useState(true)
   const [errors, setErrors] = React.useState<Record<string, string>>({})
   const [confirmOpen, setConfirmOpen] = React.useState(false)
+  const [busy, setBusy] = React.useState(false)
   const t = useTranslations("Review.case")
   const tc = useTranslations("Common")
 
@@ -129,7 +137,23 @@ function DecisionForm({ report, caseId }: { report: FactCheckReport; caseId: str
     if (Object.keys(next).length === 0) setConfirmOpen(true)
   }
 
-  function submit() {
+  async function submit() {
+    if (reviewApiConfigured()) {
+      setBusy(true)
+      try {
+        await decideCase(caseId, {
+          outcome: decision === "confirm" ? "confirmed" : "overridden",
+          ...(decision === "override" && verdict ? { verdict } : {}),
+          justification: justification.trim(),
+        })
+      } catch {
+        toast.error(t("decisionFailed"))
+        setBusy(false)
+        setConfirmOpen(false)
+        return
+      }
+      setBusy(false)
+    }
     toast.success(decision === "confirm" ? t("confirmedToast") : t("overriddenToast"), {
       description: t("loggedAs", { caseId, name: user?.name ?? t("yourName") }),
     })
@@ -202,23 +226,6 @@ function DecisionForm({ report, caseId }: { report: FactCheckReport; caseId: str
         {errors.justification && <FieldError>{errors.justification}</FieldError>}
       </Field>
 
-      <Field>
-        <FieldLabel htmlFor="public-note">{t("publicNote")}</FieldLabel>
-        <Textarea
-          id="public-note"
-          rows={3}
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          placeholder={t("publicNotePlaceholder")}
-        />
-        <div className="flex items-center gap-2">
-          <Checkbox id="publish-note" checked={publishNote} onCheckedChange={(c) => setPublishNote(c === true)} />
-          <label htmlFor="publish-note" className="text-xs text-muted-foreground">
-            {t("showOnReport")}
-          </label>
-        </div>
-      </Field>
-
       <div className="flex flex-wrap gap-2">
         <Button type="submit">{t("submitDecision")}</Button>
         <Button type="button" variant="ghost" asChild>
@@ -247,7 +254,7 @@ function DecisionForm({ report, caseId }: { report: FactCheckReport; caseId: str
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{tc("goBack")}</AlertDialogCancel>
-            <AlertDialogAction onClick={submit}>{t("submit")}</AlertDialogAction>
+            <AlertDialogAction onClick={submit} disabled={busy}>{t("submit")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -255,17 +262,77 @@ function DecisionForm({ report, caseId }: { report: FactCheckReport; caseId: str
   )
 }
 
-export function CaseReview({ reviewCase, report }: { reviewCase: ReviewCase; report: FactCheckReport }) {
-  const score = communityScore(report.community)
+type Loaded = { case: ReviewCase; report: FactCheckReport }
+
+// Case detail is signed-in, role-gated data (Expert/Admin only), so — like review-queue.tsx and
+// review-history.tsx — it has to be fetched client-side: a server component has no access to
+// the viewer's session cookie (see components/providers/session-provider.tsx). Real API when
+// configured, the matching sample case otherwise.
+export function CaseReview({ caseId }: { caseId: string }) {
+  const [state, setState] = React.useState<Loaded | null | "loading" | "error">("loading")
   const t = useTranslations("Review")
+  const tc = useTranslations("Common")
   const tRep = useTranslations("Report")
+
+  React.useEffect(() => {
+    let cancelled = false
+    async function load() {
+      if (reviewApiConfigured()) {
+        try {
+          const { case: c, report } = await getApiCase(caseId)
+          if (!cancelled && c && report) {
+            setState({ case: c, report })
+            return
+          }
+        } catch {
+          if (!cancelled) setState("error")
+          return
+        }
+      }
+      const found = getMockCase(caseId)
+      if (cancelled) return
+      if (!found) {
+        setState(null)
+        return
+      }
+      setState({
+        case: { ...found.case, slaDueAt: dueAtFor(found.case) },
+        report: found.report,
+      })
+    }
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [caseId])
+
+  if (state === "loading") {
+    return <p className="py-12 text-center text-sm text-muted-foreground">{tc("loading")}</p>
+  }
+  if (state === null || state === "error") {
+    return (
+      <Empty className="border">
+        <EmptyHeader>
+          <EmptyTitle>{t("case.notFoundTitle")}</EmptyTitle>
+          <EmptyDescription>{state === "error" ? t("case.loadError") : t("case.notFoundBody")}</EmptyDescription>
+        </EmptyHeader>
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/review/queue">{t("case.backToQueue")}</Link>
+        </Button>
+      </Empty>
+    )
+  }
+
+  const { case: reviewCase, report } = state
+  const score = communityScore(report.community)
+  const dueAt = dueAtFor(reviewCase)
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <span className="font-mono text-sm">{reviewCase.id}</span>
         <ReasonBadge reason={reviewCase.reason} reports={reviewCase.reports} />
-        <SlaBadge flaggedAt={reviewCase.flaggedAt} />
+        <SlaBadge dueAt={dueAt} />
         {reviewCase.priority === "high" && <Badge variant="destructive">{t("highPriority")}</Badge>}
         <span className="text-xs text-muted-foreground">{t(`reasons.${reviewCase.reason}.description`)}</span>
         <Button variant="outline" size="sm" asChild className="ml-auto">

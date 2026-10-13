@@ -10,8 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ApiError
 from app.core.router import APIRouter
+from app.core.security import get_current_user
 from app.db.models import FactCheckReport
 from app.db.session import get_db
+from app.schemas.account import UserProfile
 from app.schemas.common import ContentType
 from app.schemas.fact_check import FactCheckSummary, dump_report
 from app.services import reports as rep
@@ -215,9 +217,16 @@ async def get_report_row(db: AsyncSession, report_id: str) -> FactCheckReport:
 
 
 @router.get("/{id}", response_model=None)
-async def get_fact_check(id: str, db: AsyncSession = Depends(get_db)):  # noqa: A002, B008
-    # Direct links work even for suspended reports; only listings hide them.
-    return dump_report(await rep.full_report(db, await get_report_row(db, id)))
+async def get_fact_check(
+    id: str,  # noqa: A002
+    db: AsyncSession = Depends(get_db),  # noqa: B008
+    user: UserProfile | None = Depends(get_current_user),  # noqa: B008
+):
+    # Direct links work even for suspended reports; only listings hide them. Optional auth
+    # (get_current_user) so community.myVote can reflect the viewer's own vote when signed in,
+    # without requiring sign-in just to read a report.
+    row = await get_report_row(db, id)
+    return dump_report(await rep.full_report(db, row, viewer_id=user.id if user else None))
 
 
 @router.get("/{id}/related", response_model=list[FactCheckSummary])
