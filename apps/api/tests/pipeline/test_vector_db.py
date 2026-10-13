@@ -63,6 +63,49 @@ async def test_pgvector_returns_none_with_no_embeddings(db):
     assert match is None
 
 
+async def test_pgvector_find_similar_returns_up_to_limit_closest_first(db):
+    closer = await _report(
+        db,
+        text="Free unlimited internet for every Ugandan.",
+        tracking_id="ZL-SIMA-EF",
+        report_id="fc-2026-8010",
+    )
+    farther = await _report(
+        db,
+        text="A tax increase announced for fuel in 2027.",
+        tracking_id="ZL-SIMB-EF",
+        report_id="fc-2026-8011",
+    )
+    query = StubEmbeddingProvider().embed(
+        "Free unlimited internet for every Ugandan starting soon."
+    )
+
+    matches = await PgVectorProvider().find_similar(db, query, limit=2)
+    assert [m.report_id for m in matches] == [closer.id, farther.id]
+    assert matches[0].distance <= matches[1].distance
+
+
+async def test_pgvector_find_similar_respects_limit(db):
+    for i in range(3):
+        await _report(
+            db,
+            text=f"Claim number {i} about something in Uganda.",
+            tracking_id=f"ZL-LIM{i + 2}-EF",
+            report_id=f"fc-2026-802{i}",
+        )
+    matches = await PgVectorProvider().find_similar(
+        db, StubEmbeddingProvider().embed("Claim number 0 about something in Uganda."), limit=1
+    )
+    assert len(matches) == 1
+
+
+async def test_pgvector_find_similar_with_no_embeddings_returns_empty(db):
+    matches = await PgVectorProvider().find_similar(
+        db, StubEmbeddingProvider().embed("anything"), limit=3
+    )
+    assert matches == []
+
+
 async def test_pgvector_upsert_is_a_no_op(db):
     # Nothing to assert beyond "doesn't raise" — the embedding is already the
     # fact_check_reports row's own column, written by the INSERT that creates it.
@@ -75,14 +118,43 @@ async def test_pgvector_upsert_is_a_no_op(db):
 @respx.mock
 async def test_pinecone_find_nearest_converts_similarity_to_distance(db):
     respx.post(QUERY).mock(
-        return_value=httpx.Response(
-            200, json={"matches": [{"id": "fc-2026-9001", "score": 0.95}]}
-        )
+        return_value=httpx.Response(200, json={"matches": [{"id": "fc-2026-9001", "score": 0.95}]})
     )
     match = await PineconeVectorProvider(api_key="k", host=PINECONE_HOST).find_nearest(
         db, [0.1, 0.2]
     )
     assert match == VectorMatch(report_id="fc-2026-9001", distance=pytest.approx(0.05))
+
+
+@respx.mock
+async def test_pinecone_find_similar_converts_each_match(db):
+    respx.post(QUERY).mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "matches": [
+                    {"id": "fc-2026-9010", "score": 0.95},
+                    {"id": "fc-2026-9011", "score": 0.8},
+                ]
+            },
+        )
+    )
+    matches = await PineconeVectorProvider(api_key="k", host=PINECONE_HOST).find_similar(
+        db, [0.1, 0.2], limit=2
+    )
+    assert matches == [
+        VectorMatch(report_id="fc-2026-9010", distance=pytest.approx(0.05)),
+        VectorMatch(report_id="fc-2026-9011", distance=pytest.approx(0.2)),
+    ]
+
+
+@respx.mock
+async def test_pinecone_find_similar_on_http_error_returns_empty(db):
+    respx.post(QUERY).mock(return_value=httpx.Response(500))
+    matches = await PineconeVectorProvider(api_key="k", host=PINECONE_HOST).find_similar(
+        db, [0.1, 0.2], limit=2
+    )
+    assert matches == []
 
 
 @respx.mock

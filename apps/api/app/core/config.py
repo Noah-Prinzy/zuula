@@ -113,21 +113,39 @@ class AnalysisSettings(BaseSettings):
     pinecone_api_key: str = ""
     pinecone_host: str = ""
 
-    # app/providers/embedding.py: local sentence-embedding model for the dedupe check
-    # (no API key, CPU-only). Defaults to `stub` — same real-when-configured spirit as the
-    # other providers, but gated on an explicit opt-in rather than a credential, since there's
-    # no key to gate on and the real model is a ~90MB download the test suite must never
-    # trigger. `ANALYSIS_PROVIDER=groq` in production should set this to
-    # `sentence-transformers`.
+    # app/providers/embedding.py: local sentence-embedding model for the dedupe check and the
+    # local-evidence retrieval step (no API key, CPU-only). Defaults to `stub` — same
+    # real-when-configured spirit as the other providers, but gated on an explicit opt-in
+    # rather than a credential, since there's no key to gate on and the real model is a
+    # download the test suite must never trigger. `ANALYSIS_PROVIDER=groq` in production
+    # should set this to `sentence-transformers`.
     embedding_provider: str = "stub"
-    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    # paraphrase-multilingual-MiniLM-L12-v2, not the original all-MiniLM-L6-v2: same
+    # sentence-transformers family and the same 384-dim output (no migration needed — see
+    # migrations/versions/0004_embedding_dimensions.py), but trained across 50+ languages
+    # rather than English-only. Uganda's submissions aren't all English (Luganda, Acholi,
+    # Swahili, ...); the English-only model couldn't match a non-English resubmission of an
+    # already-checked claim to its existing report, nor to a related one in the local-evidence
+    # corpus below. See docs/adr/0004-ai-engine-retrieval.md.
+    embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     # Cosine distance (1 - cosine similarity) below which a new claim is treated as a
     # near-duplicate of an existing report and reused instead of re-run through Tavily+Groq.
-    # 0.08 is roughly 92% cosine similarity on all-MiniLM-L6-v2 — tight enough that two
-    # different claims about the same event shouldn't collide, loose enough to catch the
-    # reworded/retranslated copies of the same viral claim that make repeats worth catching.
-    # Picked by inspection, not a tuned threshold; revisit once real traffic exists.
+    # 0.08 is roughly 92% cosine similarity — tight enough that two different claims about the
+    # same event shouldn't collide, loose enough to catch the reworded/retranslated copies of
+    # the same viral claim that make repeats worth catching. Picked by inspection, not a tuned
+    # threshold; revisit once real traffic exists.
     dedupe_max_cosine_distance: float = 0.08
+    # Looser than dedupe_max_cosine_distance: a match in this band isn't the same claim (not
+    # reused outright) but is close enough to be useful grounding — a previously-verified
+    # report on the same or a closely related claim, surfaced to the Explanation Generator as
+    # an always-trusted citation alongside the live Tavily search (app/providers/analysis.py's
+    # GroqAnalysisProvider._augment_with_local_evidence). This is the local half of the
+    # engine's retrieval: our own verified corpus, not the open web. Same "picked by
+    # inspection" caveat as dedupe_max_cosine_distance.
+    local_evidence_max_cosine_distance: float = 0.3
+    # How many local-corpus matches (within local_evidence_max_cosine_distance) to surface per
+    # claim at most.
+    local_evidence_limit: int = 3
 
     # app/providers/ai_text_detector.py: in-process RoBERTa AI-generated-text classifier
     # (CPU, no hosted endpoint). Same stub-by-default reasoning as embedding_provider.

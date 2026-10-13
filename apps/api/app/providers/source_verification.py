@@ -32,10 +32,20 @@ _RESTRICTED_SEARCH_MIN_RESULTS = 2
 @dataclass
 class EvidenceBundle:
     """What the Source Verification Engine hands the Explanation Generator: the web evidence
-    it found, and which domains were considered trusted (so citations can be marked)."""
+    it found, and which domains were considered trusted (so citations can be marked).
+
+    `sources` may carry local-evidence entries from app/providers/analysis.py's
+    GroqAnalysisProvider._augment_with_local_evidence (prepended, per `local_evidence_count`)
+    ahead of this module's own Tavily results — see docs/adr/0004-ai-engine-retrieval.md.
+    This module only ever produces `local_evidence_count=0` bundles itself."""
 
     sources: list[TavilyResult]
     trusted_domains: list[str]
+    # How many of the leading `sources` entries are local-evidence matches (already-verified
+    # Zuula reports) rather than this module's own live Tavily results — see
+    # app/providers/explanation.py's _sources_block and _parse_explanation, which treat them
+    # as always trusted and label them distinctly for the model.
+    local_evidence_count: int = 0
 
 
 async def _trusted_domains(db: AsyncSession) -> list[str]:

@@ -162,10 +162,13 @@ class FactCheckReport(Base):
     )
     status_changed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
-    # FR-SEARCH-03 related reports, and the P4 dedupe check (app/providers/analysis.py's
-    # GroqAnalysisProvider): all-MiniLM-L6-v2 (app/providers/embedding.py), 384 dimensions.
+    # FR-SEARCH-03 related reports, the P4 dedupe check and local-evidence retrieval
+    # (app/providers/analysis.py's GroqAnalysisProvider): paraphrase-multilingual-MiniLM-L12-v2
+    # (app/providers/embedding.py), 384 dimensions — see docs/adr/0004-ai-engine-retrieval.md.
     # migrations/versions/0004_embedding_dimensions.py narrows this from the untyped
-    # vector P3 shipped and adds the HNSW index below.
+    # vector P3 shipped and adds the HNSW index below (that migration predates, and still
+    # names, the original all-MiniLM-L6-v2 choice it was written for; both models share this
+    # same 384-dim/cosine-distance shape, so no new migration was needed for the swap).
     embedding: Mapped[list[float] | None] = mapped_column(Vector(384))
     search_tsv: Mapped[str] = mapped_column(TSVECTOR, Computed(_SEARCH_TSV, persisted=True))
 

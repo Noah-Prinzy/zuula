@@ -11,19 +11,28 @@ one is swappable and independently testable — this is where §4.1's Core AI/ML
 components (LLM Verification Module, Source Verification Engine, Explanation Generator) live,
 composed back into one claim-level AnalysisResult:
 
-1. **Dedupe** (app/providers/embedding.py + app/providers/vector_db.py): embed the claim
-   locally, then look for a near-duplicate existing report through a VectorDbProvider
-   (pgvector by default — §4.2/§4.1 Layer 4 also names Pinecone, available as an alternative,
-   see vector_db.py). A close match is reused outright — no Tavily search, no Groq call —
-   which is what keeps a viral claim from costing anything the second time it's submitted.
-2. Otherwise, the **Source Verification Engine** (app/providers/source_verification.py)
-   gathers web evidence for the claim (one Tavily search, free tier, restricted to the
-   admin-managed trusted-source registry when it has enough to offer), then the
-   **Explanation Generator** (app/providers/explanation.py) turns that evidence into the
-   verdict/claims/citations/summary shape in one Groq chat completion (GROQ_MODEL, free
-   tier) — claim extraction and reasoning in the same call, not an agent loop, and no
-   Claude/Anthropic calls anywhere in this engine, per the P4 cost constraint (free-tier Groq
-   only).
+1. **Embed + retrieve locally** (app/providers/embedding.py + app/providers/vector_db.py):
+   embed the claim locally (multilingual — see embedding.py), then look up the nearest
+   existing reports through a VectorDbProvider (pgvector by default — §4.2/§4.1 Layer 4 also
+   names Pinecone, available as an alternative, see vector_db.py). This one lookup serves two
+   purposes, split by how close the nearest match is (see docs/adr/0004-ai-engine-retrieval.md):
+   - **Dedupe**: a match within DEDUPE_MAX_COSINE_DISTANCE is reused outright — no Tavily
+     search, no Groq call — which is what keeps a viral claim (even retranslated or reworded)
+     from costing anything the second time it's submitted.
+   - **Local-evidence retrieval**: looser matches, within LOCAL_EVIDENCE_MAX_COSINE_DISTANCE,
+     aren't close enough to reuse but are close enough to be useful grounding — Zuula's own
+     verified corpus, not the open web, retrieved before the explanation step below rather
+     than replacing it (_augment_with_local_evidence).
+2. Otherwise (or alongside local evidence, when found), the **Source Verification Engine**
+   (app/providers/source_verification.py) gathers live web evidence for the claim (one Tavily
+   search, free tier, restricted to the admin-managed trusted-source registry when it has
+   enough to offer), then the **Explanation Generator** (app/providers/explanation.py) turns
+   the combined evidence into the verdict/claims/citations/summary shape in one Groq chat
+   completion (GROQ_MODEL, free tier) — claim extraction and reasoning in the same call, not
+   an agent loop, and no Claude/Anthropic calls anywhere in this engine, per the P4 cost
+   constraint (free-tier Groq only). Exactly one Tavily search and one Groq call per claim
+   either way: local-evidence retrieval is a free local lookup already paid for by the embed
+   step above, not an extra round of either.
 3. For text content, an in-process AI-generated-text signal
    (app/providers/ai_text_detector.py) is appended to ai_signals.
 4. For image content, two more AI Content Detection Module signals are appended from the
@@ -60,8 +69,13 @@ from app.providers.metadata_integrity import (
     MetadataTamperingDetector,
     get_metadata_tampering_detector,
 )
-from app.providers.source_verification import SourceVerifier, TavilySourceVerifier
-from app.providers.vector_db import VectorDbProvider, get_vector_db_provider
+from app.providers.source_verification import (
+    EvidenceBundle,
+    SourceVerifier,
+    TavilySourceVerifier,
+)
+from app.providers.tavily import TavilyResult
+from app.providers.vector_db import VectorDbProvider, VectorMatch, get_vector_db_provider
 from app.schemas.fact_check import AISignal, Citation, Claim
 
 logger = logging.getLogger("zuula.providers.analysis")
@@ -157,6 +171,8 @@ class GroqAnalysisProvider:
         source_verifier: SourceVerifier,
         explanation_generator: GroqExplanationGenerator,
         dedupe_max_cosine_distance: float,
+        local_evidence_max_cosine_distance: float = 0.3,
+        local_evidence_limit: int = 3,
     ):
         self._embedder = embedder
         self._ai_text_detector = ai_text_detector
@@ -166,6 +182,8 @@ class GroqAnalysisProvider:
         self._source_verifier = source_verifier
         self._explanation_generator = explanation_generator
         self._dedupe_max_distance = dedupe_max_cosine_distance
+        self._local_evidence_max_distance = local_evidence_max_cosine_distance
+        self._local_evidence_limit = local_evidence_limit
 
     async def analyze(
         self,
@@ -177,13 +195,20 @@ class GroqAnalysisProvider:
         media: bytes | None = None,
     ) -> AnalysisResult:
         embedding = self._embedder.embed(text) if text.strip() else None
+        local_matches: list[VectorMatch] = []
 
         if embedding is not None:
-            reused = await self._reuse_if_duplicate(db, embedding)
-            if reused is not None:
-                return reused
+            local_matches = await self._vector_db.find_similar(
+                db, embedding, limit=self._local_evidence_limit
+            )
+            if local_matches and local_matches[0].distance <= self._dedupe_max_distance:
+                reused = await self._reuse_report(db, local_matches[0], embedding)
+                if reused is not None:
+                    return reused
 
         evidence = await self._source_verifier.gather_evidence(db, text)
+        if local_matches:
+            evidence = await self._augment_with_local_evidence(db, local_matches, evidence)
         explanation = await self._explanation_generator.generate(
             content_type=content_type, text=text, evidence=evidence
         )
@@ -201,12 +226,9 @@ class GroqAnalysisProvider:
                     result.ai_signals = [*result.ai_signals, signal]
         return result
 
-    async def _reuse_if_duplicate(
-        self, db: AsyncSession, embedding: list[float]
+    async def _reuse_report(
+        self, db: AsyncSession, match: VectorMatch, embedding: list[float]
     ) -> AnalysisResult | None:
-        match = await self._vector_db.find_nearest(db, embedding)
-        if match is None or match.distance > self._dedupe_max_distance:
-            return None
         report = await db.get(FactCheckReport, match.report_id)
         if report is None:
             return None
@@ -228,6 +250,56 @@ class GroqAnalysisProvider:
             ai_signals=[AISignal.model_validate(a) for a in report.ai_signals],
             embedding=embedding,
         )
+
+    async def _augment_with_local_evidence(
+        self, db: AsyncSession, matches: list[VectorMatch], evidence: EvidenceBundle
+    ) -> EvidenceBundle:
+        """Prepend up to `_local_evidence_limit` already-verified reports from Zuula's own
+        corpus to `evidence.sources`, ahead of the live Tavily results it already carries —
+        the local half of this engine's retrieval (docs/adr/0004-ai-engine-retrieval.md).
+        `matches` is the same vector-DB lookup `analyze` already made for the dedupe check,
+        so this costs nothing extra beyond resolving each match's report row."""
+        local_sources: list[TavilyResult] = []
+        for match in matches:
+            if match.distance <= self._dedupe_max_distance:
+                continue  # close enough that analyze() already reused it outright
+            if match.distance > self._local_evidence_max_distance:
+                continue  # too distant to be useful grounding
+            report = await db.get(FactCheckReport, match.report_id)
+            if report is None:
+                continue
+            source = _local_evidence_source(report)
+            if source is not None:
+                local_sources.append(source)
+        if not local_sources:
+            return evidence
+        return EvidenceBundle(
+            sources=[*local_sources, *evidence.sources],
+            trusted_domains=evidence.trusted_domains,
+            local_evidence_count=len(local_sources),
+        )
+
+
+def _local_evidence_source(report: FactCheckReport) -> TavilyResult | None:
+    """A local-evidence TavilyResult for `report`, cited to its own source rather than
+    Zuula's report page — the original fact-check (e.g. the AFP article) is the citable
+    authority; `report.citations[0]` is that source when the report has one (a prior
+    AnalysisResult always does), falling back to the submission's own source_url."""
+    url: str | None = None
+    if report.citations:
+        first = report.citations[0]
+        if isinstance(first, dict):
+            url = first.get("url")
+    url = url or report.source_url
+    if not url:
+        return None
+    return TavilyResult(
+        title=report.title,
+        url=url,
+        snippet=report.summary[:500],
+        published_at=report.checked_at.date().isoformat() if report.checked_at else None,
+    )
+
 
 def _result_from_explanation(explanation: Explanation) -> AnalysisResult:
     return AnalysisResult(
@@ -273,4 +345,6 @@ def get_analysis_provider() -> AnalysisProvider:
             groq_model=settings.groq_model,
         ),
         dedupe_max_cosine_distance=settings.dedupe_max_cosine_distance,
+        local_evidence_max_cosine_distance=settings.local_evidence_max_cosine_distance,
+        local_evidence_limit=settings.local_evidence_limit,
     )

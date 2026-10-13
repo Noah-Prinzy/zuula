@@ -1,10 +1,14 @@
 """ExplanationGenerator: the Explanation Generator half of §4.1 Layer 3 — turns a claim and
-the evidence app/providers/source_verification.py gathered into the report's verdict, claims
-and citations, in one Groq chat completion (Llama 3.3 70B, free tier). Kept in its own
-module, separate from evidence retrieval, so the Source Verification Engine and the
-Explanation Generator are independently testable and swappable, matching the spec's
-distinct §4.1 Layer 3 components. app/providers/analysis.py's GroqAnalysisProvider composes
-the two back into one claim-level AnalysisResult.
+an EvidenceBundle into the report's verdict, claims and citations, in one Groq chat
+completion (Llama 3.3 70B, free tier). The bundle's evidence can come from two places, both
+composed by app/providers/analysis.py's GroqAnalysisProvider before this module ever sees it:
+app/providers/source_verification.py's live Tavily search, and GroqAnalysisProvider's own
+local-evidence retrieval against Zuula's verified corpus (docs/adr/0004-ai-engine-retrieval.md)
+— `EvidenceBundle.local_evidence_count` says how many of the leading `sources` are the latter,
+so this module can label and trust them differently without needing to know where they came
+from. Kept in its own module, separate from evidence retrieval, so the Source Verification
+Engine and the Explanation Generator are independently testable and swappable, matching the
+spec's distinct §4.1 Layer 3 components.
 
 Why one Groq call rather than two (one to cross-reference/score the evidence, one to word
 the explanation): Groq's free tier is both rate- and request-limited, and this engine already
@@ -23,7 +27,6 @@ import logging
 import httpx
 
 from app.providers.source_verification import EvidenceBundle, is_trusted
-from app.providers.tavily import TavilyResult
 from app.schemas.common import CitationStance, ClaimAssessment, Verdict
 from app.schemas.fact_check import Citation, Claim
 
@@ -81,8 +84,11 @@ class Explanation:
 
 _SYSTEM_PROMPT = """\
 You are Zuula's fact-checking engine for Uganda. You are given a claim (possibly an article \
-or a social media post) and a numbered list of web search results. Weigh the claim against \
-the evidence and reply with ONLY a JSON object, no other text, of this exact shape:
+or a social media post) and a numbered list of evidence. Each item is labeled either \
+"(Zuula's own verified fact-check corpus)" — a report on the same or a closely related claim \
+that a human fact-checker has already verified, strong evidence — or "(live web search)" — an \
+ordinary web result, weigh with normal scrutiny. Weigh the claim against the evidence and \
+reply with ONLY a JSON object, no other text, of this exact shape:
 
 {
   "verdict": one of "authentic", "likely-false", "false", "ai-generated", "unverifiable",
@@ -96,26 +102,32 @@ the evidence and reply with ONLY a JSON object, no other text, of this exact sha
     "text": a short quote or paraphrase of the specific factual claim,
     "assessment": one of "false", "misleading", "unsupported", "out-of-context", "supported",
     "reason": 1-2 sentences explaining the assessment,
-    "sourceIndexes": list of integers, the 0-based indexes of the search results (below) that
+    "sourceIndexes": list of integers, the 0-based indexes of the evidence items (below) that
       support this assessment; empty if none do
   },
   "citationStances": list of {"index": integer, "stance": one of "supports", "contradicts", \
-"context"}, one entry per search result index you actually cited in "claims"
+"context"}, one entry per evidence index you actually cited in "claims"
 }
 
-If there are no search results, or none are relevant, say so in "summary" and lean toward
-"unverifiable" rather than guessing. Only use the search results given; never invent URLs or
+If there is no evidence, or none of it is relevant, say so in "summary" and lean toward
+"unverifiable" rather than guessing. Only use the evidence given; never invent URLs or
 sources."""
 
 
-def _sources_block(sources: list[TavilyResult]) -> str:
-    if not sources:
-        return "No web search results were found."
-    lines = [
-        f"[{i}] {s.title} ({s.url}, published {s.published_at or 'date unknown'}): "
-        f"{s.snippet[:500]}"
-        for i, s in enumerate(sources)
-    ]
+def _sources_block(evidence: EvidenceBundle) -> str:
+    if not evidence.sources:
+        return "No evidence was found."
+    lines = []
+    for i, s in enumerate(evidence.sources):
+        provenance = (
+            "Zuula's own verified fact-check corpus"
+            if i < evidence.local_evidence_count
+            else "live web search"
+        )
+        lines.append(
+            f"[{i}] ({provenance}) {s.title} "
+            f"({s.url}, published {s.published_at or 'date unknown'}): {s.snippet[:500]}"
+        )
     return "\n".join(lines)
 
 
@@ -156,7 +168,7 @@ class GroqExplanationGenerator:
                     "role": "user",
                     "content": (
                         f"Content type: {content_type}\n\nSubmitted content:\n{text}\n\n"
-                        f"Web search results:\n{_sources_block(evidence.sources)}"
+                        f"Evidence:\n{_sources_block(evidence)}"
                     ),
                 },
             ],
@@ -207,7 +219,9 @@ def _parse_explanation(data: dict, text: str, evidence: EvidenceBundle) -> Expla
                 url=source.url,
                 published_at=source.published_at or "",
                 stance=stance_by_index[index],
-                trusted=is_trusted(source.url, trusted_set),
+                trusted=(
+                    index < evidence.local_evidence_count or is_trusted(source.url, trusted_set)
+                ),
                 excerpt=source.snippet[:280] or None,
             )
         )
