@@ -81,7 +81,9 @@ async def _trusted_source(db, *, domain: str, source_id: str) -> m.TrustedSource
     return source
 
 
-async def _existing_report(db, *, text: str, tracking_id: str, report_id: str) -> m.FactCheckReport:
+async def _existing_report(
+    db, *, text: str, tracking_id: str, report_id: str, citations: list[dict] | None = None
+) -> m.FactCheckReport:
     db.add(m.Submission(tracking_id=tracking_id, type="text", status="completed"))
     await db.flush()
     report = m.FactCheckReport(
@@ -97,6 +99,7 @@ async def _existing_report(db, *, text: str, tracking_id: str, report_id: str) -
         checked_at=datetime.now(UTC),
         processing_seconds=1.0,
         embedding=StubEmbeddingProvider().embed(text),
+        citations=citations or [],
     )
     db.add(report)
     await db.flush()
@@ -123,6 +126,80 @@ async def test_a_near_duplicate_claim_reuses_the_existing_report_without_calling
 
 
 @respx.mock
+async def test_a_related_but_not_identical_claim_is_surfaced_as_local_evidence(db):
+    original_url = "https://factcheck.example/free-internet-hoax"
+    await _existing_report(
+        db,
+        text="Free unlimited internet for every Ugandan starting January 2027.",
+        tracking_id="ZL-REL9-EF",
+        report_id="fc-2026-9010",
+        citations=[
+            {
+                "id": "s1",
+                "sourceName": "Fact Check Example",
+                "title": "No, there is no free internet plan",
+                "url": original_url,
+                "publishedAt": "2025-01-01",
+                "stance": "contradicts",
+                "trusted": True,
+            }
+        ],
+    )
+    route = respx.post(SEARCH).mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "results": [{"title": "Web source", "url": "https://web.example/a", "content": "x"}]
+            },
+        )
+    )
+    respx.post(CHAT).mock(
+        return_value=_verdict_response(
+            citationStances=[
+                {"index": 0, "stance": "contradicts"},
+                {"index": 1, "stance": "context"},
+            ]
+        )
+    )
+
+    result = await _provider(local_evidence_max_cosine_distance=0.6).analyze(
+        db=db,
+        content_type="text",
+        text="Government announces free unlimited internet for all Ugandans.",
+        language="en",
+    )
+
+    # Tavily was still called — local evidence augments the live search, doesn't replace it.
+    # (It may be called twice: this repo's seeded trusted-source registry triggers the
+    # restricted-search-with-fallback path in source_verification.py, independent of this test.)
+    assert route.called
+    by_url = {c.url: c for c in result.citations}
+    assert original_url in by_url
+    assert by_url[original_url].trusted is True
+    assert by_url["https://web.example/a"].trusted is False
+
+
+@respx.mock
+async def test_local_evidence_is_not_surfaced_beyond_the_configured_distance(db):
+    await _existing_report(
+        db,
+        text="Free unlimited internet for every Ugandan starting January 2027.",
+        tracking_id="ZL-REL2-EF",
+        report_id="fc-2026-9011",
+    )
+    respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
+    respx.post(CHAT).mock(return_value=_verdict_response())
+
+    result = await _provider(local_evidence_max_cosine_distance=0.08).analyze(
+        db=db,
+        content_type="text",
+        text="Government announces free unlimited internet for all Ugandans.",
+        language="en",
+    )
+    assert result.citations == []
+
+
+@respx.mock
 async def test_an_unrelated_claim_is_not_reused_and_goes_through_groq(db):
     await _existing_report(
         db,
@@ -132,7 +209,9 @@ async def test_an_unrelated_claim_is_not_reused_and_goes_through_groq(db):
     )
     respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
     respx.post(CHAT).mock(
-        return_value=_verdict_response(verdict="unverifiable", title="A new hospital", confidence=40)
+        return_value=_verdict_response(
+            verdict="unverifiable", title="A new hospital", confidence=40
+        )
     )
     result = await _provider().analyze(
         db=db,
@@ -264,7 +343,9 @@ async def test_a_sparse_restricted_search_falls_back_to_an_unrestricted_one(db):
 async def test_a_tavily_failure_still_produces_a_verdict(db):
     respx.post(SEARCH).mock(return_value=httpx.Response(500))
     respx.post(CHAT).mock(return_value=_verdict_response())
-    result = await _provider().analyze(db=db, content_type="text", text="Some claim.", language="en")
+    result = await _provider().analyze(
+        db=db, content_type="text", text="Some claim.", language="en"
+    )
     assert result.verdict == "false"
 
 
@@ -298,14 +379,23 @@ async def test_the_ai_text_detector_signal_is_appended_for_text_only(db):
             from app.schemas.fact_check import AISignal
 
             return AISignal(
-                id="x", label="AI-generated text", description="d", score=0.9, threshold=0.5, method="m"
+                id="x",
+                label="AI-generated text",
+                description="d",
+                score=0.9,
+                threshold=0.5,
+                method="m",
             )
 
     provider = _provider(ai_text_detector=FixedSignal())
-    text_result = await provider.analyze(db=db, content_type="text", text="Some claim.", language="en")
+    text_result = await provider.analyze(
+        db=db, content_type="text", text="Some claim.", language="en"
+    )
     assert any(sig.id == "x" for sig in text_result.ai_signals)
 
-    image_result = await provider.analyze(db=db, content_type="image", text="Some claim.", language="en")
+    image_result = await provider.analyze(
+        db=db, content_type="image", text="Some claim.", language="en"
+    )
     assert not any(sig.id == "x" for sig in image_result.ai_signals)
 
 

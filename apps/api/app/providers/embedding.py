@@ -1,19 +1,24 @@
 """EmbeddingProvider: turns a claim's text into the fixed-length vector
-`app.providers.analysis.GroqAnalysisProvider` uses for the dedupe check — a pgvector
-nearest-neighbor search against `fact_check_reports.embedding` that reuses a close match's
-report instead of spending a Tavily search and a Groq generation on the same viral claim
-again.
+`app.providers.analysis.GroqAnalysisProvider` uses for two things, both pgvector
+nearest-neighbor searches against `fact_check_reports.embedding`: the dedupe check (reuse an
+existing report outright for a near-identical claim) and the local-evidence retrieval step
+(surface related, already-verified reports as grounding for the Explanation Generator — see
+docs/adr/0004-ai-engine-retrieval.md). Neither spends a Tavily search or a Groq call on work
+already done.
 
-`SentenceTransformerEmbeddingProvider` runs `all-MiniLM-L6-v2` locally on CPU
-(sentence-transformers; no API key, no hosted endpoint — free). It needs a real model
-download, so `EMBEDDING_PROVIDER` defaults to `stub` rather than real-when-configured: there's
-no credential to gate on the way there is for Groq/Tavily, and the test suite must never try
-to pull a model over the network. The model is loaded once per process and cached
-(_load_model), not once per call — it's too slow to reload for every submission.
+`SentenceTransformerEmbeddingProvider` runs `paraphrase-multilingual-MiniLM-L12-v2` locally on
+CPU (sentence-transformers; no API key, no hosted endpoint — free), chosen over the
+English-only `all-MiniLM-L6-v2` it replaced so a non-English resubmission (Luganda, Acholi,
+Swahili, ...) of an already-checked claim still matches it. It needs a real model download,
+so `EMBEDDING_PROVIDER` defaults to `stub` rather than real-when-configured: there's no
+credential to gate on the way there is for Groq/Tavily, and the test suite must never try to
+pull a model over the network. The model is loaded once per process and cached (_load_model),
+not once per call — it's too slow to reload for every submission.
 
-EMBEDDING_DIMENSIONS (384) must match all-MiniLM-L6-v2's output size: it's also the pgvector
-column's fixed dimension (migrations/versions/0004_embedding_dimensions.py). Changing the
-model means a new migration to match.
+EMBEDDING_DIMENSIONS (384) must match the configured model's output size: it's also the
+pgvector column's fixed dimension (migrations/versions/0004_embedding_dimensions.py).
+paraphrase-multilingual-MiniLM-L12-v2 happens to share all-MiniLM-L6-v2's 384 dims, so this
+model swap needed no new migration; a future model with a different output size would.
 """
 
 import zlib

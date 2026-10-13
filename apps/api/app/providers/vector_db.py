@@ -43,6 +43,17 @@ class VectorDbProvider(Protocol):
         DEDUPE_MAX_COSINE_DISTANCE itself — this just finds the nearest neighbor."""
         ...
 
+    async def find_similar(
+        self, db: AsyncSession, embedding: list[float], *, limit: int
+    ) -> list[VectorMatch]:
+        """Up to `limit` existing reports, closest first — the same search as find_nearest,
+        widened past one result. GroqAnalysisProvider uses this both for the dedupe check
+        (closest result, same as find_nearest) and for local-evidence retrieval (the rest):
+        reports similar enough to be useful grounding for the Explanation Generator without
+        being a near-duplicate of the new claim. Empty list if the index has nothing to
+        offer."""
+        ...
+
     async def upsert(self, *, report_id: str, embedding: list[float]) -> None:
         """Index a newly written report's embedding so a later claim can find it."""
         ...
@@ -54,18 +65,26 @@ class PgVectorProvider:
     keep in sync."""
 
     async def find_nearest(self, db: AsyncSession, embedding: list[float]) -> VectorMatch | None:
+        matches = await self.find_similar(db, embedding, limit=1)
+        return matches[0] if matches else None
+
+    async def find_similar(
+        self, db: AsyncSession, embedding: list[float], *, limit: int
+    ) -> list[VectorMatch]:
         distance = FactCheckReport.embedding.cosine_distance(embedding)
-        row = (
+        rows = (
             await db.execute(
                 select(FactCheckReport.id, distance.label("distance"))
                 .where(FactCheckReport.embedding.is_not(None))
                 .order_by(distance)
-                .limit(1)
+                .limit(limit)
             )
-        ).first()
-        if row is None or row.distance is None:
-            return None
-        return VectorMatch(report_id=row.id, distance=row.distance)
+        ).all()
+        return [
+            VectorMatch(report_id=row.id, distance=row.distance)
+            for row in rows
+            if row.distance is not None
+        ]
 
     async def upsert(self, *, report_id: str, embedding: list[float]) -> None:
         # Already persisted: the embedding is the `fact_check_reports.embedding` column,
@@ -91,35 +110,41 @@ class PineconeVectorProvider:
         return {"Api-Key": self._api_key, "Content-Type": "application/json"}
 
     async def find_nearest(self, db: AsyncSession, embedding: list[float]) -> VectorMatch | None:
+        matches = await self.find_similar(db, embedding, limit=1)
+        return matches[0] if matches else None
+
+    async def find_similar(
+        self, db: AsyncSession, embedding: list[float], *, limit: int
+    ) -> list[VectorMatch]:
         import httpx
 
-        payload = {"vector": embedding, "topK": 1, "includeValues": False}
+        payload = {"vector": embedding, "topK": limit, "includeValues": False}
         try:
             async with httpx.AsyncClient(timeout=self._timeout) as client:
                 response = await client.post(
                     f"{self._host}/query", json=payload, headers=self._headers()
                 )
         except httpx.HTTPError:
-            logger.warning("Pinecone query failed; treating as no match", exc_info=True)
-            return None
+            logger.warning("Pinecone query failed; treating as no matches", exc_info=True)
+            return []
         if response.status_code >= 400:
             logger.warning("Pinecone query failed with HTTP %d", response.status_code)
-            return None
+            return []
         try:
             matches = response.json().get("matches") or []
         except ValueError:
             logger.warning("Pinecone returned something unexpected", exc_info=True)
-            return None
-        if not matches:
-            return None
-        best = matches[0]
-        score = best.get("score")
-        if score is None or best.get("id") is None:
-            return None
-        # Pinecone's cosine metric returns similarity (1 = identical); GroqAnalysisProvider
-        # compares distance (0 = identical) against DEDUPE_MAX_COSINE_DISTANCE, same as
-        # PgVectorProvider's pgvector distance.
-        return VectorMatch(report_id=str(best["id"]), distance=1.0 - float(score))
+            return []
+        results = []
+        for match in matches:
+            score = match.get("score")
+            if score is None or match.get("id") is None:
+                continue
+            # Pinecone's cosine metric returns similarity (1 = identical); GroqAnalysisProvider
+            # compares distance (0 = identical) against DEDUPE_MAX_COSINE_DISTANCE /
+            # LOCAL_EVIDENCE_MAX_COSINE_DISTANCE, same as PgVectorProvider's pgvector distance.
+            results.append(VectorMatch(report_id=str(match["id"]), distance=1.0 - float(score)))
+        return results
 
     async def upsert(self, *, report_id: str, embedding: list[float]) -> None:
         import httpx
