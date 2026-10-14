@@ -26,7 +26,9 @@ import { clearPendingAuth, homeFor, safeNext } from "@/lib/auth"
 // API sends a one-time code by SMS (or email when the account has no phone) and returns a
 // challenge id from sign-in; this screen completes that challenge. There are no authenticator
 // apps or backup codes in the API yet, so neither is offered here.
-export function TwoFactorForm() {
+// `challenge` comes from the URL when Google/Facebook sign-in needs a second factor: the API's
+// OAuth callback redirects to /sign-in/two-factor?challenge=…, with nothing in sessionStorage.
+export function TwoFactorForm({ challenge }: { challenge?: string }) {
   const router = useRouter()
   const { setAccount } = useSession()
   const t = useTranslations("Auth")
@@ -39,8 +41,8 @@ export function TwoFactorForm() {
   const [busy, setBusy] = React.useState(false)
 
   if (pending === undefined) return <Skeleton className="h-80 w-full" />
-  const challengeId = pending?.challengeId
-  if (!pending || !challengeId) {
+  const challengeId = pending?.challengeId ?? challenge
+  if (!challengeId) {
     return (
       <div className="flex flex-col gap-4">
         <AuthHeading title={t("twoFactor.signInFirstTitle")} description={t("twoFactor.signInFirstBody")} />
@@ -50,7 +52,7 @@ export function TwoFactorForm() {
       </div>
     )
   }
-  const destination = pending.maskedIdentifier ?? ""
+  const destination = pending?.maskedIdentifier ?? t("twoFactor.yourAccount")
 
   async function submit(value = code) {
     if (value.length < 6) {
