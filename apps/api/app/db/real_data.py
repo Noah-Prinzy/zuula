@@ -2,10 +2,18 @@
 `FactCheckReport` schema objects, for `app.db.seed` to insert alongside (or instead of) the
 fictional `SAMPLE_REPORTS`.
 
-Source: AFP Fact Check Africa's own ClaimReview data (claim, verdict, headline, publish date,
-language, source URL), pulled via Google's Fact Check Tools API — see the PR that added this
-module for the collection method and the org-verdict -> Zuula-Verdict mapping. PesaCheck isn't
-indexed by that API and its site blocks automated access, so it contributes nothing here.
+Two sources share this directory, same JSON shape:
+- AFP Fact Check Africa's own ClaimReview data (claim, verdict, headline, publish date,
+  language, source URL), pulled via Google's Fact Check Tools API — see the PR that added this
+  module for the collection method and the org-verdict -> Zuula-Verdict mapping. PesaCheck isn't
+  indexed by that API and its site blocks automated access, so it contributes nothing here.
+  Every AFP record is a debunk (`false`/`likely-false`/`ai-generated`) by the nature of
+  fact-checking, which left this corpus with zero real `authentic` examples.
+- `hand-curated-authentic-uganda.json`: officially-confirmed true claims (a ministry
+  announcement, an Electoral Commission declaration, a central bank rate decision, ...),
+  individually sourced and fetch-verified against a working citation rather than pulled from
+  any API, specifically to close that gap. See the PR that added this file for the sourcing
+  notes on each record.
 
 These reports never went through Zuula's own pipeline or community rating, so several fields
 have no real value to carry over — see the comments below for the defaults used instead.
@@ -33,8 +41,17 @@ _VIDEO_WORDS = ("video", "footage", "clip", "filmed")
 _IMAGE_WORDS = ("photo", "image", "picture")
 
 # No numeric confidence comes from the source data (AFP's ClaimReview carries only a textual
-# rating); these are editorial defaults reflecting how definitive each rating is.
-_CONFIDENCE = {"false": 90, "likely-false": 75, "ai-generated": 85, "unverifiable": 50}
+# rating); these are editorial defaults reflecting how definitive each rating is. "authentic"
+# records (data/fact-checks/seed/hand-curated-authentic-uganda.json) are hand-verified against
+# an official source or primary-reporting confirmation, not an AFP rating, but the same
+# definitiveness reasoning applies — 90 matches "false"'s confidence.
+_CONFIDENCE = {
+    "false": 90,
+    "likely-false": 75,
+    "ai-generated": 85,
+    "unverifiable": 50,
+    "authentic": 90,
+}
 
 # A claim-span assessment is a different axis from the report-level Verdict; AFP's ClaimReview
 # doesn't distinguish them, so each report-level verdict maps to the closest span assessment.
@@ -98,7 +115,7 @@ def _to_report(i: int, record: dict) -> FactCheckReport:
         confidence=_CONFIDENCE[verdict],
         summary=record["summary"],
         what_is_false=[claim] if verdict in ("false", "likely-false", "ai-generated") else [],
-        what_is_true=[],
+        what_is_true=[claim] if verdict == "authentic" else [],
         claims=[
             Claim(
                 id="c1",
