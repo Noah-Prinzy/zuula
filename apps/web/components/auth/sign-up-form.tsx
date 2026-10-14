@@ -197,7 +197,7 @@ export function SignUpForm({ next }: { next?: string }) {
         </Button>
       </form>
 
-      <SocialButtons disabled={formState.isSubmitting} className="max-md:-order-1" />
+      <SocialButtons disabled={formState.isSubmitting} next={next} className="max-md:-order-1" />
 
       <p className="text-center text-sm text-muted-foreground">
         {t("signUp.haveAccount")}{" "}

@@ -1432,7 +1432,12 @@
       "divider": "or continue with",
       "notConnected": "{provider} sign-in isn't connected yet",
       "notConnectedBody": "It will work once the authentication API is live.",
-      "dividerEmail": "or use your email or phone"
+      "dividerEmail": "or use your email or phone",
+      "errors": {
+        "oauth": "Couldn't sign you in with that account. Please try again.",
+        "oauth-unavailable": "That sign-in option isn't available right now. Use your email or phone instead.",
+        "suspended": "This account is suspended. Contact Zuula support if you think this is a mistake."
+      }
     },
     "resend": {
       "prompt": "Didn't get it?",
@@ -1483,6 +1488,7 @@
       "descriptionApp": "Enter the 6-digit code from your authenticator app.",
       "descriptionBackup": "Enter one of the backup codes you saved when you set up two-factor.",
       "sentTo": "Enter the 6-digit sign-in code we sent to <strong>{destination}</strong>.",
+      "yourAccount": "the phone or email on your account",
       "cantReceive": "Can't receive the code?",
       "codeLabel": "Authentication code",
       "backupLabel": "Backup code",
