@@ -7,9 +7,9 @@ export async function generateMetadata() {
   return { title: t("signIn") }
 }
 
-type Props = { searchParams: Promise<{ next?: string }> }
+type Props = { searchParams: Promise<{ next?: string; error?: string }> }
 
 export default async function SignInPage({ searchParams }: Props) {
-  const { next } = await searchParams
-  return <SignInForm next={next} />
+  const { next, error } = await searchParams
+  return <SignInForm next={next} oauthError={error} />
 }

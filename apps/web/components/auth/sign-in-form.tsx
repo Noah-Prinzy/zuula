@@ -28,14 +28,21 @@ import { homeFor, safeNext, setPendingAuth, signInSchema } from "@/lib/auth"
 
 type Values = z.infer<typeof signInSchema>
 
-export function SignInForm({ next }: { next?: string }) {
+// Reasons the API's OAuth callback sends back as /sign-in?error=… (apps/api/app/api/v1/auth.py).
+const OAUTH_ERRORS = ["oauth", "oauth-unavailable", "suspended"] as const
+
+export function SignInForm({ next, oauthError }: { next?: string; oauthError?: string }) {
   const router = useRouter()
   const { setAccount } = useSession()
   const t = useTranslations("Auth")
   const tr = useTranslations("Roles")
   const v = useValidationMessage()
   const apiMessage = useApiErrorMessage()
-  const [error, setError] = React.useState<string | null>(null)
+  const ts = useTranslations("Auth.social.errors")
+  const [error, setError] = React.useState<string | null>(() => {
+    const reason = OAUTH_ERRORS.find((r) => r === oauthError)
+    return reason ? ts(reason) : null
+  })
   const form = useForm<Values>({
     resolver: zodResolver(signInSchema),
     defaultValues: { identifier: "", password: "", remember: true },
@@ -150,7 +157,7 @@ export function SignInForm({ next }: { next?: string }) {
         </Button>
       </form>
 
-      <SocialButtons disabled={formState.isSubmitting} className="max-md:-order-1" />
+      <SocialButtons disabled={formState.isSubmitting} next={next} className="max-md:-order-1" />
 
       <p className="text-center text-sm text-muted-foreground">
         {t("signIn.newHere")}{" "}
