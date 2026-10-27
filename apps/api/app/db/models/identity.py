@@ -125,15 +125,17 @@ class AuthChallenge(Base):
 
 
 ACCREDITATION_STATUSES = ("pending", "approved", "rejected")
+ACCREDITATION_ROLES = ("journalist", "expert")
 
 
 class AccreditationApplication(Base):
-    """A journalist accreditation request (FR-AUTH-02). Approving one makes the user a
-    journalist — an audited role change."""
+    """A Verified Journalist or Expert Reviewer accreditation request (FR-AUTH-02). An admin
+    approving one gives the user `requested_role` — an audited role change."""
 
     __tablename__ = "accreditation_applications"
     __table_args__ = (
         CheckConstraint(in_check("status", ACCREDITATION_STATUSES), name="status"),
+        CheckConstraint(in_check("requested_role", ACCREDITATION_ROLES), name="requested_role"),
         # At most one application under consideration per user.
         Index(
             "uq_accreditation_applications_pending_user",
@@ -146,6 +148,9 @@ class AccreditationApplication(Base):
     id: Mapped[str] = mapped_column(Text, primary_key=True)
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
     status: Mapped[str] = mapped_column(Text, default="pending", server_default="pending")
+    requested_role: Mapped[str] = mapped_column(
+        Text, default="journalist", server_default="journalist"
+    )
     organisation: Mapped[str | None] = mapped_column(Text)
     press_card_number: Mapped[str | None] = mapped_column(Text)
     # S3 object keys of the uploaded press card / ID documents (openapi.yaml `documents`).

@@ -26,6 +26,7 @@ from app.db.models import (
     Submission,
     User,
 )
+from app.db.models.identity import ACCREDITATION_ROLES
 from app.db.session import get_db
 from app.schemas.account import AccreditationStatus, DeviceSession, UserProfile
 from app.schemas.submission import ActivityRating, ActivitySubmission
@@ -258,7 +259,7 @@ async def export_my_data(
     }
 
 
-# ---- Journalist accreditation (FR-AUTH-02, FR-RATE-06) ----
+# ---- Journalist / expert accreditation (FR-AUTH-02, FR-RATE-06) ----
 
 
 @router.get("/me/verification", response_model=AccreditationStatus)
@@ -278,6 +279,7 @@ async def get_verification(
         return AccreditationStatus(status="none")
     return AccreditationStatus(
         status=app.status,
+        role=app.requested_role,
         organisation=app.organisation,
         submitted_at=app.submitted_at,
         reviewed_at=app.reviewed_at,
@@ -290,10 +292,15 @@ async def apply_for_verification(
     organisation: str = Form(...),
     documents: list[UploadFile] = File(...),  # noqa: B008
     press_card_number: str | None = Form(None, alias="pressCardNumber"),
+    role: str = Form("journalist"),
     user: UserProfile = Depends(_signed_in),  # noqa: B008
     db: AsyncSession = Depends(get_db),  # noqa: B008
 ):
-    if user.role in ("journalist", "expert", "admin"):
+    """Apply as a Verified Journalist or, from public or journalist, as an Expert Reviewer.
+    An admin decides (POST /admin/verifications/{id}/decision)."""
+    if role not in ACCREDITATION_ROLES:
+        raise ApiError("bad_request", "role must be 'journalist' or 'expert'.")
+    if user.role in ("expert", "admin") or user.role == role:
         raise ApiError("conflict", "Your account already has a verified role.")
     pending = (
         await db.execute(
@@ -333,6 +340,7 @@ async def apply_for_verification(
             user_id=user.id,
             status="pending",
             organisation=organisation.strip(),
+            requested_role=role,
             press_card_number=(press_card_number or "").strip() or None,
             document_keys=keys,
         )

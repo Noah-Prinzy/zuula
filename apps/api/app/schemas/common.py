@@ -29,6 +29,8 @@ AuditAction = Literal[
     "broadcast.send",
     "settings.update",
     "moderation.remove",
+    "accreditation.approve",
+    "accreditation.reject",
 ]
 
 

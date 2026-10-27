@@ -34,6 +34,7 @@ class DeviceSession(CamelModel):
 
 class AccreditationStatus(CamelModel):
     status: str  # none | pending | approved | rejected
+    role: str | None = None  # the role applied for: journalist | expert
     organisation: str | None = None
     submitted_at: datetime | None = None
     reviewed_at: datetime | None = None

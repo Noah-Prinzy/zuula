@@ -124,6 +124,8 @@ AUDIT_ACTIONS = (
     "broadcast.send",
     "settings.update",
     "moderation.remove",
+    "accreditation.approve",  # an admin approving or rejecting an accreditation application
+    "accreditation.reject",
 )
 
 

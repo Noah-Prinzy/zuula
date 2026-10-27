@@ -157,3 +157,40 @@ class PlatformSettings(CamelModel):
     sla_hours: int
     api_rate_limit: int
     retraining: Retraining
+
+
+AccreditationRole = Literal["journalist", "expert"]
+
+
+class AccreditationApplicant(CamelModel):
+    id: str
+    name: str
+    email: str  # or their phone, for a phone-only account (same as AdminUser.email)
+    role: Role
+    status: str  # active | suspended | pending
+    district: str | None = None
+    joined: date
+
+
+class AccreditationDocument(CamelModel):
+    index: int
+    url: str  # signed, short-lived path on this API; opens without a session
+    expires_at: datetime
+
+
+class AccreditationApplication(CamelModel):
+    id: str
+    status: str  # pending | approved | rejected
+    requested_role: AccreditationRole
+    organisation: str | None = None
+    press_card_number: str | None = None
+    submitted_at: datetime
+    reviewed_at: datetime | None = None
+    reviewer: str | None = None
+    note: str | None = None
+    document_count: int
+    applicant: AccreditationApplicant
+
+
+class AccreditationApplicationDetail(AccreditationApplication):
+    documents: list[AccreditationDocument]

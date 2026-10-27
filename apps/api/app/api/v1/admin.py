@@ -1,14 +1,18 @@
 from datetime import UTC, datetime
 
-from fastapi import Body, Depends, Query, Request
+from fastapi import Body, Depends, Query, Request, Response
 from sqlalchemy import func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased
 
+from app.adapters.clamav import ScanError, get_clamav_scanner
+from app.adapters.storage import get_object_storage
 from app.core.errors import ApiError
 from app.core.pagination import PageParams, page_params
 from app.core.router import APIRouter
 from app.core.security import require_roles
 from app.db.base import new_id
+from app.db.models import AccreditationApplication as AccreditationApplicationRow
 from app.db.models import (
     AuditLogEntry,
     ContentFlag,
@@ -23,9 +27,14 @@ from app.db.models import (
 from app.db.models import Broadcast as BroadcastRow
 from app.db.models import PlatformSettings as PlatformSettingsRow
 from app.db.models import TrustedSource as TrustedSourceRow
+from app.db.models.identity import ACCREDITATION_STATUSES
 from app.db.session import get_db
 from app.schemas.account import UserProfile
 from app.schemas.admin import (
+    AccreditationApplicant,
+    AccreditationApplication,
+    AccreditationApplicationDetail,
+    AccreditationDocument,
     AdminOverview,
     AdminUser,
     AuditEntry,
@@ -36,7 +45,14 @@ from app.schemas.admin import (
 )
 from app.schemas.admin import ContentReport as ContentReportSchema
 from app.schemas.admin import ManipulationSignal as ManipulationSignalSchema
-from app.services import admin_metrics, audit, broadcasts, recompute
+from app.services import (
+    accreditation_documents,
+    admin_metrics,
+    audit,
+    broadcasts,
+    notifications,
+    recompute,
+)
 from app.services.auth import revoke_sessions
 from app.services.platform_settings import get_platform_settings
 from app.worker import dispatch
@@ -193,6 +209,233 @@ async def update_admin_user(
         )
     ).scalar_one()
     return _admin_user(target, ratings)
+
+
+# ---- Accreditation review (FR-AUTH-02) ----
+
+
+def _applicant(u: User) -> AccreditationApplicant:
+    return AccreditationApplicant(
+        id=u.id,
+        name=u.name,
+        email=u.email or u.phone or "",
+        role=u.role,
+        status=u.status,
+        district=u.district,
+        joined=u.created_at.date(),
+    )
+
+
+def _application(
+    a: AccreditationApplicationRow, applicant: User, reviewer: str | None
+) -> AccreditationApplication:
+    return AccreditationApplication(
+        id=a.id,
+        status=a.status,
+        requested_role=a.requested_role,
+        organisation=a.organisation,
+        press_card_number=a.press_card_number,
+        submitted_at=a.submitted_at,
+        reviewed_at=a.reviewed_at,
+        reviewer=reviewer,
+        note=a.note,
+        document_count=len(a.document_keys),
+        applicant=_applicant(applicant),
+    )
+
+
+def _detail(
+    a: AccreditationApplicationRow, applicant: User, reviewer: str | None
+) -> AccreditationApplicationDetail:
+    documents = []
+    for index in range(len(a.document_keys)):
+        url, expires_at = accreditation_documents.signed_path(a.id, index)
+        documents.append(AccreditationDocument(index=index, url=url, expires_at=expires_at))
+    return AccreditationApplicationDetail(
+        **dict(_application(a, applicant, reviewer)), documents=documents
+    )
+
+
+_Reviewer = aliased(User)
+
+
+def _with_people():
+    return (
+        select(AccreditationApplicationRow, User, _Reviewer.name)
+        .join(User, User.id == AccreditationApplicationRow.user_id)
+        .outerjoin(_Reviewer, _Reviewer.id == AccreditationApplicationRow.reviewer_id)
+    )
+
+
+@router.get("/verifications", response_model=None)
+async def list_verifications(
+    status: str | None = None,
+    params: PageParams = Depends(page_params),  # noqa: B008
+    user: UserProfile = Depends(_admin),  # noqa: B008
+    db: AsyncSession = Depends(get_db),  # noqa: B008
+):
+    """The accreditation queue: pending applications oldest first, then decided ones, most
+    recently decided first."""
+    conditions = []
+    if status:
+        if status not in ACCREDITATION_STATUSES:
+            raise ApiError("bad_request", "Unknown status.")
+        conditions.append(AccreditationApplicationRow.status == status)
+    total = (
+        await db.execute(
+            select(func.count()).select_from(AccreditationApplicationRow).where(*conditions)
+        )
+    ).scalar_one()
+    rows = await db.execute(
+        _with_people()
+        .where(*conditions)
+        .order_by(
+            AccreditationApplicationRow.status != "pending",
+            AccreditationApplicationRow.reviewed_at.desc().nulls_first(),
+            AccreditationApplicationRow.submitted_at,
+            AccreditationApplicationRow.id,
+        )
+        .offset((params.page - 1) * params.per_page)
+        .limit(params.per_page)
+    )
+    return {
+        "data": [_dump(_application(a, u, reviewer)) for a, u, reviewer in rows],
+        "page": params.page,
+        "perPage": params.per_page,
+        "total": total,
+    }
+
+
+@router.get("/verifications/{id}", response_model=None)
+async def get_verification_application(
+    id: str,  # noqa: A002
+    user: UserProfile = Depends(_admin),  # noqa: B008
+    db: AsyncSession = Depends(get_db),  # noqa: B008
+):
+    """One application, with its applicant and short-lived links to its documents."""
+    row = (await db.execute(_with_people().where(AccreditationApplicationRow.id == id))).first()
+    if row is None:
+        raise ApiError("not_found", f"No application '{id}'.")
+    return _dump(_detail(*row))
+
+
+@router.get("/verifications/{id}/documents/{index}", response_model=None)
+async def download_verification_document(
+    id: str,  # noqa: A002
+    index: int,
+    expires: int = Query(...),
+    sig: str = Query(...),
+    db: AsyncSession = Depends(get_db),  # noqa: B008
+):
+    """A signed link from GET /admin/verifications/{id}: the signature is the credential (see
+    app/services/accreditation_documents.py). The file is virus-scanned before it's served."""
+    if not accreditation_documents.link_valid(id, index, expires, sig):
+        raise ApiError("forbidden", "This link has expired. Reopen the application.")
+    application = await db.get(AccreditationApplicationRow, id)
+    if application is None or not 0 <= index < len(application.document_keys):
+        raise ApiError("not_found", "No such document.")
+    data = await get_object_storage().get(key=application.document_keys[index])
+    try:
+        scan = await get_clamav_scanner().scan(data)
+    except ScanError as exc:
+        # Fail closed: an unscanned document is never handed out.
+        raise ApiError("server_error", "Couldn't scan this document. Try again later.") from exc
+    if not scan.clean:
+        raise ApiError(
+            "invalid_content", f"This document failed the virus scan ({scan.signature})."
+        )
+    content_type, ext = accreditation_documents.sniff(data)
+    return Response(
+        content=data,
+        media_type=content_type,
+        headers={
+            "Content-Disposition": f'inline; filename="{id}-{index + 1}.{ext}"',
+            "Cache-Control": "private, no-store",
+            "X-Content-Type-Options": "nosniff",
+        },
+    )
+
+
+@router.post("/verifications/{id}/decision", response_model=None)
+async def decide_verification(
+    id: str,  # noqa: A002
+    request: Request,
+    body: dict = Body(...),  # noqa: B008
+    user: UserProfile = Depends(_admin),  # noqa: B008
+    db: AsyncSession = Depends(get_db),  # noqa: B008
+):
+    """Approve (the applicant gets the role they applied for, effective on their next request)
+    or reject with a note. Audited, and the applicant is told in-app and by email."""
+    decision = body.get("decision")
+    note = (body.get("note") or "").strip()
+    if decision not in ("approve", "reject"):
+        raise ApiError("bad_request", "decision must be 'approve' or 'reject'.")
+    if decision == "reject" and len(note) < 5:
+        raise ApiError("bad_request", "Say why the application is rejected; the applicant sees it.")
+
+    application = (
+        await db.scalars(
+            select(AccreditationApplicationRow)
+            .where(AccreditationApplicationRow.id == id)
+            .with_for_update()
+        )
+    ).first()
+    if application is None:
+        raise ApiError("not_found", f"No application '{id}'.")
+    if application.status != "pending":
+        raise ApiError("conflict", "This application has already been decided.")
+    applicant = await db.get(User, application.user_id)
+    if applicant is None or applicant.deleted_at is not None:
+        raise ApiError("conflict", "The applicant's account has been deleted.")
+    if applicant.id == user.id:
+        raise ApiError("bad_request", "You can't decide your own application.")
+
+    requested = _ROLE_LABELS[application.requested_role]
+    if decision == "approve":
+        if applicant.role == "admin":
+            raise ApiError("conflict", "The applicant is an admin; change their role directly.")
+        organisation = f" ({application.organisation})" if application.organisation else ""
+        audit.record(
+            db,
+            actor=user,
+            action="accreditation.approve",
+            target=applicant.name,
+            detail=f"{_ROLE_LABELS[applicant.role]} → {requested}{organisation}",
+            request=request,
+        )
+        applicant.role = application.requested_role
+        title = "Accreditation approved"
+        message = f"Your application to become a {requested} was approved."
+    else:
+        audit.record(
+            db,
+            actor=user,
+            action="accreditation.reject",
+            target=applicant.name,
+            detail=f"{requested}: {note}",
+            request=request,
+        )
+        title = "Accreditation not approved"
+        message = f"Your application to become a {requested} wasn't approved: {note}"
+    # "pending" marks an account awaiting accreditation; decided either way, it's active.
+    if applicant.status == "pending":
+        applicant.status = "active"
+    application.status = "approved" if decision == "approve" else "rejected"
+    application.reviewed_at = datetime.now(UTC)
+    application.reviewer_id = user.id
+    application.note = note or None
+    notifications.notify(
+        db,
+        user_id=applicant.id,
+        kind="accreditation",
+        title=title,
+        body=message,
+        href="/account/verification",
+    )
+    await db.commit()
+    if applicant.email:
+        await dispatch.dispatch_message("email", applicant.email, message, f"Zuula: {title}")
+    return _dump(_detail(application, applicant, user.name))
 
 
 # ---- Moderation (FR-RATE-07, FR-ADMIN) ----
