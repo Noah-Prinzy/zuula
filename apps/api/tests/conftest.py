@@ -29,6 +29,7 @@ from app.adapters.storage import StubObjectStorage
 from app.core.config import (
     get_adapters_settings,
     get_analysis_settings,
+    get_database_settings,
     get_language_settings,
     get_settings,
 )
@@ -58,15 +59,29 @@ def _no_real_analysis_provider():
     environment may carry real GROQ_API_KEY/TAVILY_API_KEY, which would switch
     get_analysis_provider()/get_transcription_provider() to Groq/Tavily's live APIs. Tests
     that exercise GroqAnalysisProvider mock HTTP with respx and configure their own keys."""
-    saved = {
-        name: os.environ.pop(name, None) for name in ("GROQ_API_KEY", "TAVILY_API_KEY")
-    }
+    saved = {name: os.environ.pop(name, None) for name in ("GROQ_API_KEY", "TAVILY_API_KEY")}
     get_analysis_settings.cache_clear()
     yield
     for name, value in saved.items():
         if value is not None:
             os.environ[name] = value
     get_analysis_settings.cache_clear()
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _test_database_only():
+    """DatabaseSettings reads apps/api/.env, which may point at a real database. Eager Celery
+    tasks (app/worker/pipeline.py, admin_tasks.py) open their own engine from those settings,
+    so every test run pins DATABASE_URL to the test database instead."""
+    saved = os.environ.get("DATABASE_URL")
+    os.environ["DATABASE_URL"] = TEST_DATABASE_URL
+    get_database_settings.cache_clear()
+    yield
+    if saved is None:
+        os.environ.pop("DATABASE_URL", None)
+    else:
+        os.environ["DATABASE_URL"] = saved
+    get_database_settings.cache_clear()
 
 
 @pytest.fixture(autouse=True, scope="session")
