@@ -36,7 +36,7 @@ from app.db.models import ApiKey, ApiUsageHourly, Session, User
 from app.db.session import get_db
 from app.realtime import redis_client
 from app.schemas.account import UserProfile
-from app.services.auth import to_profile, token_hash
+from app.services.auth import needs_two_factor, to_profile, token_hash
 from app.services.platform_settings import get_platform_settings
 
 ROLE_HIERARCHY = ["public", "journalist", "expert", "admin"]
@@ -73,15 +73,20 @@ def _is_jwt(token: str) -> bool:
     return token.count(".") == 2
 
 
-async def _resolve_supabase(db: AsyncSession, token: str) -> tuple[User, None] | None:
+async def _resolve_supabase(db: AsyncSession, token: str) -> tuple[User, Session | None] | None:
     """A Supabase access token's account, or None (signed out) if the token is invalid or the
-    account can't sign in, the same as an unknown session token."""
+    account can't sign in, the same as an unknown session token. FR-AUTH-05 accounts count as
+    signed in only once this Supabase session has passed the second factor."""
     try:
         # Off the event loop: a JWKS cache miss is a blocking HTTP fetch.
         claims = await asyncio.to_thread(supabase_auth.verify_access_token, token)
-        return await supabase_auth.resolve_supabase_user(db, claims), None
+        user = await supabase_auth.resolve_supabase_user(db, claims)
     except ApiError:
         return None
+    if not needs_two_factor(user):
+        return user, None
+    session = await supabase_auth.verified_session(db, user, claims)
+    return (user, session) if session is not None else None
 
 
 async def _resolve_session(

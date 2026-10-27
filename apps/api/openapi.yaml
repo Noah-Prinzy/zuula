@@ -141,6 +141,30 @@ paths:
         "401": { $ref: "#/components/responses/Unauthorized" }
         "429": { $ref: "#/components/responses/RateLimited" }
 
+  /api/v1/auth/supabase/second-factor:
+    post:
+      operationId: supabaseSecondFactor
+      tags: [auth]
+      summary: Supabase sign-in's second step (FR-AUTH-05).
+      description: |
+        Only with ZUULA_AUTH_PROVIDER=supabase, called with the Supabase access token as
+        `Authorization: Bearer <jwt>` right after the password step. Returns the account, or
+        for Expert Reviewers, Admins and opted-in users a code sent over the identifier's own
+        channel and tied to that Supabase session; /auth/two-factor/verify (with the same
+        bearer token) completes it. Asking again while that code is usable returns the same
+        challenge.
+      security: []
+      responses:
+        "200":
+          description: Signed in, or a two-factor challenge.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Session"
+                  - $ref: "#/components/schemas/TwoFactorChallenge"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
   /api/v1/auth/two-factor/verify:
     post:
       operationId: verifyTwoFactor

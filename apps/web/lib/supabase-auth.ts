@@ -22,8 +22,9 @@ import {
 // Needs, in the Supabase dashboard: "Confirm email" and "Secure email change" on; the
 // "Confirm signup" and "Reset password" email templates showing {{ .Token }}, since the forms
 // ask for the 6-digit code; an SMS provider for phone numbers.
-// Not yet: the Expert/Admin second factor (FR-AUTH-05). Until Supabase MFA replaces it, this
-// mode signs everyone in with a password alone, so it must not be switched on in production.
+// Second factor (FR-AUTH-05): after the password step the API sends Expert Reviewers, Admins
+// and opted-in users its own 6-digit code, tied to this Supabase session; the existing
+// /sign-in/two-factor screen completes it through /two-factor/verify.
 //
 // lib/supabase.ts is imported lazily, so other auth modes never load supabase-js.
 
@@ -31,9 +32,6 @@ type SignUpAccepted = { maskedIdentifier: string }
 type Credential = { email: string } | { phone: string }
 
 const PENDING_KEY = "zuula.supabase-pending"
-const NO_TWO_FACTOR =
-  "Two-factor sign-in isn't available with Supabase sign-in yet."
-
 async function auth() {
   return (await import("@/lib/supabase")).supabase.auth
 }
@@ -84,18 +82,44 @@ function pending(): string {
 }
 
 /** The Zuula account for the Supabase session just started. */
+/**
+ * The Zuula account for the Supabase session just started, or the API's second-factor
+ * challenge (FR-AUTH-05). Also what /auth/callback calls after Google/Facebook.
+ */
+export async function continueSignIn(): Promise<
+  ApiSession | TwoFactorChallenge
+> {
+  try {
+    const result = await request<ApiSession | TwoFactorChallenge>(
+      "/api/v1/auth/supabase/second-factor",
+      { method: "POST" }
+    )
+    setPending(null)
+    return result
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 401) {
+      await (await auth()).signOut()
+      throw new ApiError(
+        401,
+        "unauthorized",
+        "Signed in, but Zuula couldn't open your account."
+      )
+    }
+    throw e
+  }
+}
+
+/** After sign-up: new accounts never need the second factor; a linked one may. */
 async function signedIn(): Promise<ApiSession> {
-  const user = await supabaseAuthApi.me()
-  if (!user) {
-    await (await auth()).signOut()
+  const result = await continueSignIn()
+  if ("challengeId" in result) {
     throw new ApiError(
       401,
       "unauthorized",
-      "Signed in, but Zuula couldn't open your account."
+      "Your account is ready. Sign in to get your security code."
     )
   }
-  setPending(null)
-  return { user }
+  return result
 }
 
 /** OTP verification: email codes by type, phone codes are always "sms". */
@@ -177,19 +201,25 @@ export const supabaseAuthApi = {
         : { phone: c.phone, password: body.password }
     )
     if (error) fail(error)
-    return signedIn()
+    return continueSignIn()
   },
 
-  async verifyTwoFactor(): Promise<ApiSession> {
-    throw new ApiError(400, "bad_request", NO_TWO_FACTOR)
-  },
+  /** request() sends the Supabase token, which the code is tied to. */
+  verifyTwoFactor: (body: JsonBody<"verifyTwoFactor">) =>
+    request<ApiSession>("/api/v1/auth/two-factor/verify", {
+      method: "POST",
+      body,
+    }),
 
-  async resendTwoFactor(): Promise<void> {
-    throw new ApiError(400, "bad_request", NO_TWO_FACTOR)
-  },
+  resendTwoFactor: (body: JsonBody<"resendTwoFactor">) =>
+    request<void>("/api/v1/auth/two-factor/resend", { method: "POST", body }),
 
   async signOut(): Promise<void> {
     setPending(null)
+    // End the API's record of a second-factor sign-in first, while the token still works.
+    await request<void>("/api/v1/auth/sign-out", { method: "POST" }).catch(
+      () => undefined
+    )
     const { error } = await (await auth()).signOut()
     if (error) fail(error)
   },

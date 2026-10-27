@@ -5,6 +5,7 @@ Every flow ends in app.services.auth.start_session(): an opaque token set as the
 own channel (SMS for a phone number, email for an address) through app/adapters/.
 """
 
+import asyncio
 import base64
 import hashlib
 import hmac
@@ -17,8 +18,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.oauth import ProviderUnavailable, get_oauth_provider
-from app.core import rules
-from app.core.config import get_settings
+from app.core import rules, supabase_auth
+from app.core.config import get_settings, get_supabase_settings
 from app.core.errors import ApiError
 from app.core.router import APIRouter
 from app.core.security import current_session_id, get_current_user
@@ -210,6 +211,70 @@ async def sign_in(
     return await _sign_in(db, request, response, user, remember=remember)
 
 
+async def _supabase_claims(request: Request) -> dict:
+    """The verified claims of the request's Supabase access token (ZUULA_AUTH_PROVIDER=supabase)."""
+    token = supabase_auth.bearer_token(request)
+    if not get_supabase_settings().is_supabase_enabled or not token:
+        raise ApiError("unauthorized", "Sign in required.")
+    # Off the event loop: a JWKS cache miss is a blocking HTTP fetch.
+    return await asyncio.to_thread(supabase_auth.verify_access_token, token)
+
+
+async def _supabase_session_id(request: Request) -> str | None:
+    try:
+        return (await _supabase_claims(request)).get("session_id")
+    except ApiError:
+        return None
+
+
+@router.post("/supabase/second-factor", response_model=None)
+async def supabase_second_factor(
+    request: Request,
+    db: AsyncSession = Depends(get_db),  # noqa: B008
+):
+    """Supabase sign-in, after the password step (FR-AUTH-05). The account, or for Expert
+    Reviewers, Admins and opted-in users a code over the identifier's own channel, tied to this
+    Supabase session and checked by /two-factor/verify. Asking again while a code is still
+    usable returns the same challenge instead of sending another."""
+    claims = await _supabase_claims(request)
+    user = await supabase_auth.resolve_supabase_user(db, claims)
+    if not svc.needs_two_factor(user) or await supabase_auth.verified_session(db, user, claims):
+        return _session_body(user)
+    session_id = claims.get("session_id")
+    if not session_id:
+        raise ApiError("unauthorized", "Sign in again.")
+
+    second = _second_factor(user)
+    challenge = (
+        (
+            await db.execute(
+                select(AuthChallenge).where(
+                    AuthChallenge.user_id == user.id,
+                    AuthChallenge.purpose == "two_factor",
+                    AuthChallenge.consumed_at.is_(None),
+                    AuthChallenge.attempts < rules.OTP_MAX_ATTEMPTS,
+                    AuthChallenge.expires_at > datetime.now(UTC),
+                    AuthChallenge.payload["supabase_session"].astext == session_id,
+                )
+            )
+        )
+        .scalars()
+        .first()
+    )
+    if challenge is None:
+        challenge = await svc.create_challenge(
+            db,
+            purpose="two_factor",
+            ident=second,
+            user=user,
+            payload={"supabase_session": session_id},
+        )
+        await db.commit()
+    return TwoFactorChallenge(
+        challenge_id=challenge.id, masked_identifier=svc.mask(second.value)
+    ).model_dump(by_alias=True)
+
+
 @router.post("/two-factor/verify", response_model=None)
 async def verify_two_factor(
     request: Request,
@@ -221,6 +286,10 @@ async def verify_two_factor(
     challenge = await db.get(AuthChallenge, challenge_id) if challenge_id else None
     if not svc.challenge_usable(challenge, "two_factor"):
         raise ApiError("bad_request", "That code has expired. Sign in again to get a new one.")
+    # A Supabase sign-in's code is only good with that same Supabase session's token.
+    supabase_session = (challenge.payload or {}).get("supabase_session")
+    if supabase_session and await _supabase_session_id(request) != supabase_session:
+        raise ApiError("bad_request", "That code has expired. Sign in again to get a new one.")
     if not svc.check_code(challenge, body.get("code", "")):
         await db.commit()
         raise ApiError("bad_request", _BAD_CODE)
@@ -229,6 +298,10 @@ async def verify_two_factor(
     if user is None or user.status == "suspended" or user.deleted_at is not None:
         await db.commit()
         raise ApiError("bad_request", "This account can't sign in.")
+    if supabase_session:
+        supabase_auth.start_verified_session(db, user, request, supabase_session)
+        await db.commit()
+        return _session_body(user)
     remember = (challenge.payload or {}).get("remember", True)
     return await _sign_in(db, request, response, user, remember=remember)
 

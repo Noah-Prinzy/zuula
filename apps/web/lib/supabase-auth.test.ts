@@ -56,15 +56,41 @@ describe("supabase auth mode", () => {
   it("signs in with Supabase, then sends its token to the API for the Zuula account", async () => {
     auth.signInWithPassword.mockResolvedValue({ error: null })
     signedIn("supabase-jwt")
-    fetchMock.mockResolvedValueOnce(reply(200, PROFILE))
+    fetchMock.mockResolvedValueOnce(reply(200, { user: PROFILE }))
 
     await expect(authApi.signIn({ identifier: "amina@example.com", password: "x" })).resolves.toEqual({
       user: PROFILE,
     })
     expect(auth.signInWithPassword).toHaveBeenCalledWith({ email: "amina@example.com", password: "x" })
     const [url, init] = fetchMock.mock.calls[0]
-    expect(url).toBe("http://localhost:8000/api/v1/me")
+    expect(url).toBe("http://localhost:8000/api/v1/auth/supabase/second-factor")
     expect((init?.headers as Record<string, string>).Authorization).toBe("Bearer supabase-jwt")
+  })
+
+  it("hands Experts and Admins the API's code challenge, then verifies it with the same token", async () => {
+    auth.signInWithPassword.mockResolvedValue({ error: null })
+    signedIn("supabase-jwt")
+    const challenge = { challengeId: "chl_1", maskedIdentifier: "da•••@example.com" }
+    fetchMock.mockResolvedValueOnce(reply(200, challenge))
+
+    await expect(authApi.signIn({ identifier: "david@example.com", password: "x" })).resolves.toEqual(challenge)
+    expect(auth.signOut).not.toHaveBeenCalled()
+
+    fetchMock.mockResolvedValueOnce(reply(200, { user: { ...PROFILE, role: "expert" } }))
+    await expect(authApi.verifyTwoFactor({ challengeId: "chl_1", code: "123456" })).resolves.toMatchObject({
+      user: { role: "expert" },
+    })
+    const [url, init] = fetchMock.mock.calls[1]
+    expect(url).toBe("http://localhost:8000/api/v1/auth/two-factor/verify")
+    expect((init?.headers as Record<string, string>).Authorization).toBe("Bearer supabase-jwt")
+  })
+
+  it("signs out of the API's second-factor record before Supabase", async () => {
+    signedIn("supabase-jwt")
+    fetchMock.mockResolvedValueOnce(new Response(null, { status: 204 }))
+    await authApi.signOut()
+    expect(fetchMock.mock.calls[0][0]).toBe("http://localhost:8000/api/v1/auth/sign-out")
+    expect(auth.signOut).toHaveBeenCalled()
   })
 
   it("surfaces Supabase's refusal as an ApiError", async () => {
@@ -88,7 +114,7 @@ describe("supabase auth mode", () => {
     auth.signUp.mockResolvedValue({ error: null })
     auth.verifyOtp.mockResolvedValue({ error: null })
     signedIn("supabase-jwt")
-    fetchMock.mockResolvedValueOnce(reply(200, PROFILE))
+    fetchMock.mockResolvedValueOnce(reply(200, { user: PROFILE }))
 
     await authApi.signUp({ name: "Amina", identifier: "0772123456", password: "x", consent: true })
     await expect(authApi.verifySignUp({ code: "123456" })).resolves.toEqual({ user: PROFILE })

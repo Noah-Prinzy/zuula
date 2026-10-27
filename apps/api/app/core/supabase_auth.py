@@ -12,8 +12,17 @@ How a token finds its account:
   to it. An account already linked to a different Supabase user is never re-linked.
 - Roles always come from the users table; a token never grants one.
 - Anonymous Supabase users are refused.
+
+Second factor (FR-AUTH-05): Expert Reviewers, Admins and opted-in users also need the 6-digit
+code the API sends over the identifier's own channel, as with the legacy sign-in. Passing it
+marks *that Supabase session* (the token's `session_id`) with a `sessions` row, so sign-out,
+revocation and /me/sessions work as they do for legacy sessions. Until then their tokens count
+as signed out. The row's token_hash is an HMAC under ZUULA_SECRET_KEY, not a SHA-256 of
+something a client holds, so it can't be presented as a legacy session token.
 """
 
+import hashlib
+import hmac
 from datetime import UTC, datetime, timedelta
 from functools import lru_cache
 
@@ -23,10 +32,12 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import get_supabase_settings
+from app.core import rules
+from app.core.config import get_settings, get_supabase_settings
 from app.core.errors import ApiError
 from app.db.base import new_id
-from app.db.models import User
+from app.db.models import Session, User
+from app.services.auth import client_ip, describe_device
 
 _AUDIENCE = "authenticated"
 # Supabase signs with the project's asymmetric signing key (published as JWKS), or with the
@@ -144,3 +155,47 @@ async def resolve_supabase_user(db: AsyncSession, claims: dict) -> User:
         user.last_active_at = now
         await db.commit()
     return user
+
+
+def session_key(session_id: str) -> str:
+    """sessions.token_hash for a Supabase session that passed the second factor."""
+    key = get_settings().secret_key.encode()
+    return hmac.new(key, f"supabase-session:{session_id}".encode(), hashlib.sha256).hexdigest()
+
+
+async def verified_session(db: AsyncSession, user: User, claims: dict) -> Session | None:
+    """The live `sessions` row marking this Supabase session as past the second factor."""
+    session_id = claims.get("session_id")
+    if not session_id:
+        return None
+    return (
+        await db.execute(
+            select(Session).where(
+                Session.token_hash == session_key(session_id),
+                Session.user_id == user.id,
+                Session.revoked_at.is_(None),
+                Session.expires_at > datetime.now(UTC),
+            )
+        )
+    ).scalar_one_or_none()
+
+
+def start_verified_session(
+    db: AsyncSession, user: User, request: Request, session_id: str
+) -> Session:
+    """Record that this Supabase session passed the second factor. Not committed."""
+    now = datetime.now(UTC)
+    session = Session(
+        id=new_id("ses"),
+        user_id=user.id,
+        token_hash=session_key(session_id),
+        device=describe_device(request.headers.get("user-agent")),
+        ip=client_ip(request),
+        location=None,
+        created_at=now,
+        last_active_at=now,
+        expires_at=now + timedelta(seconds=rules.SESSION_TTL_REMEMBER_SECONDS),
+    )
+    db.add(session)
+    user.last_active_at = now
+    return session

@@ -55,6 +55,31 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/supabase/second-factor": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Supabase sign-in's second step (FR-AUTH-05).
+         * @description Only with ZUULA_AUTH_PROVIDER=supabase, called with the Supabase access token as
+         *     `Authorization: Bearer <jwt>` right after the password step. Returns the account, or
+         *     for Expert Reviewers, Admins and opted-in users a code sent over the identifier's own
+         *     channel and tied to that Supabase session; /auth/two-factor/verify (with the same
+         *     bearer token) completes it. Asking again while that code is usable returns the same
+         *     challenge.
+         */
+        post: operations["supabaseSecondFactor"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/two-factor/verify": {
         parameters: {
             query?: never;
@@ -1841,6 +1866,27 @@ export interface operations {
             };
             401: components["responses"]["Unauthorized"];
             429: components["responses"]["RateLimited"];
+        };
+    };
+    supabaseSecondFactor: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Signed in, or a two-factor challenge. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Session"] | components["schemas"]["TwoFactorChallenge"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
         };
     };
     verifyTwoFactor: {
