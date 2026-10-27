@@ -95,6 +95,15 @@ describe("supabase auth mode", () => {
     expect(auth.verifyOtp).toHaveBeenCalledWith({ phone: "+256772123456", token: "123456", type: "sms" })
   })
 
+  it("reports an address that already has an account, instead of waiting for a code", async () => {
+    // Supabase's response for an existing address: success, a user with no identities.
+    auth.signUp.mockResolvedValue({ data: { user: { identities: [] } }, error: null })
+    await expect(
+      authApi.signUp({ name: "Amina", identifier: "amina@example.com", password: "x", consent: true })
+    ).rejects.toMatchObject({ status: 409, code: "conflict" })
+    await expect(authApi.verifySignUp({ code: "123456" })).rejects.toMatchObject({ code: "bad_request" })
+  })
+
   it("is signed out, without calling the API, when there is no Supabase session", async () => {
     signedIn(null)
     await expect(authApi.me()).resolves.toBeNull()

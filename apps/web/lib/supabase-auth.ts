@@ -143,7 +143,7 @@ export const supabaseAuthApi = {
       data: { full_name: body.name.trim() },
       emailRedirectTo: `${window.location.origin}/auth/callback`,
     }
-    const { error } = await (
+    const { data, error } = await (
       await auth()
     ).signUp(
       "email" in c
@@ -151,6 +151,11 @@ export const supabaseAuthApi = {
         : { phone: c.phone, password: body.password, options }
     )
     if (error) fail(error)
+    // An address that already has an account gets a fake success from Supabase: a user with
+    // no identities, and no code sent. Say so, as the API's own sign-up does (409 conflict).
+    if (data?.user?.identities?.length === 0) {
+      throw new ApiError(409, "conflict", "An account with that email or phone number already exists.")
+    }
     setPending(body.identifier)
     return { maskedIdentifier: maskIdentifier(body.identifier) }
   },
