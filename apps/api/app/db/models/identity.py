@@ -43,6 +43,9 @@ class User(Base):
     # Stored lower-cased by the auth service; unique so one identifier = one account.
     email: Mapped[str | None] = mapped_column(Text, unique=True)
     phone: Mapped[str | None] = mapped_column(Text, unique=True)  # E.164
+    # Supabase Auth user id (the access token's `sub`), set on first Supabase sign-in. NULL for
+    # accounts that have only used the legacy session sign-in. See app/core/supabase_auth.py.
+    supabase_user_id: Mapped[str | None] = mapped_column(Text, unique=True)
     # NULL for accounts created through OAuth that never set a password.
     password_hash: Mapped[str | None] = mapped_column(Text)
     role: Mapped[str] = mapped_column(Text, default="public", server_default="public")

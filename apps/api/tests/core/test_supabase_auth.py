@@ -11,6 +11,7 @@ from starlette.requests import Request
 
 from app.core import config, supabase_auth
 from app.core.errors import ApiError
+from app.db.models import User
 
 PROJECT = "https://example.supabase.co"
 SECRET = "test-jwt-secret-that-is-long-enough-for-hs256"
@@ -114,3 +115,93 @@ def test_identifier_normalises_email_and_phone():
         None,
         "+256700000001",
     )
+
+
+class _FakeDb:
+    """Just enough AsyncSession for resolve_supabase_user: `select(User).where(col == value)`
+    lookups over an in-memory list, and commits that only count."""
+
+    def __init__(self, *users):
+        self.users = list(users)
+        self.commits = 0
+
+    async def execute(self, statement):
+        clause = statement.whereclause
+        column, value = clause.left.key, clause.right.value
+        found = [u for u in self.users if getattr(u, column) == value]
+
+        class _Result:
+            def scalar_one_or_none(self):
+                return found[0] if found else None
+
+            def scalar_one(self):
+                return found[0]
+
+        return _Result()
+
+    def add(self, user):
+        self.users.append(user)
+
+    async def commit(self):
+        self.commits += 1
+
+    async def rollback(self):
+        pass
+
+
+def _user(**fields):
+    defaults = {
+        "id": "usr_existing",
+        "name": "Amina",
+        "email": "amina@example.com",
+        "phone": None,
+        "supabase_user_id": None,
+        "status": "active",
+        "deleted_at": None,
+        "last_active_at": None,
+    }
+    return User(**{**defaults, **fields})
+
+
+SUBJECT = _claims()["sub"]
+
+
+async def test_first_sign_in_links_the_account_with_that_email():
+    existing = _user()
+    db = _FakeDb(existing)
+    user = await supabase_auth.resolve_supabase_user(db, _claims())
+    assert user is existing
+    assert user.supabase_user_id == SUBJECT
+
+
+async def test_later_sign_ins_find_the_account_by_subject_even_after_an_email_change():
+    linked = _user(supabase_user_id=SUBJECT)
+    db = _FakeDb(linked)
+    user = await supabase_auth.resolve_supabase_user(db, _claims(email="new@example.com"))
+    assert user is linked
+    assert user.email == "amina@example.com"
+
+
+async def test_an_account_linked_to_another_supabase_user_is_not_taken_over():
+    db = _FakeDb(_user(supabase_user_id="someone-else"))
+    with pytest.raises(ApiError):
+        await supabase_auth.resolve_supabase_user(db, _claims())
+
+
+async def test_new_people_get_a_public_account_with_no_role_from_the_token():
+    db = _FakeDb()
+    claims = _claims(app_metadata={"role": "admin"}, user_metadata={"role": "admin"})
+    user = await supabase_auth.resolve_supabase_user(db, claims)
+    assert user.role in (None, "public")  # column default "public" applies on insert
+    assert user.supabase_user_id == SUBJECT
+    assert user.email == "amina@example.com"
+    assert user.id.startswith("usr_")
+
+
+async def test_suspended_and_anonymous_users_are_refused():
+    with pytest.raises(ApiError):
+        await supabase_auth.resolve_supabase_user(
+            _FakeDb(_user(supabase_user_id=SUBJECT, status="suspended")), _claims()
+        )
+    with pytest.raises(ApiError):
+        await supabase_auth.resolve_supabase_user(_FakeDb(), _claims(is_anonymous=True))
