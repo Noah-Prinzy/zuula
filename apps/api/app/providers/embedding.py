@@ -3,7 +3,7 @@
 nearest-neighbor searches against `fact_check_reports.embedding`: the dedupe check (reuse an
 existing report outright for a near-identical claim) and the local-evidence retrieval step
 (surface related, already-verified reports as grounding for the Explanation Generator — see
-docs/adr/0004-ai-engine-retrieval.md). Neither spends a Tavily search or a Groq call on work
+docs/zuula_state.md, ADR 0004). Neither spends a Tavily search or a Groq call on work
 already done.
 
 `SentenceTransformerEmbeddingProvider` runs `paraphrase-multilingual-MiniLM-L12-v2` locally on

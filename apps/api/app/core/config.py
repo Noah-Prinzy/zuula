@@ -90,7 +90,7 @@ class CelerySettings(BaseSettings):
 
 class AnalysisSettings(BaseSettings):
     """Sending submissions to a hosted LLM outside Uganda is an open §10.1 data-protection
-    question (see the P2 brief and docs/adr/0001-api-architecture.md), so the provider and
+    question (see the P2 brief and docs/zuula_state.md, ADR 0001), so the provider and
     its region must be switchable rather than hardcoded. P2 shipped only `stub`; P4 adds
     `groq` (a free-tier hosted model on Groq, chosen over Claude purely on cost — see the P4
     brief) behind the same app.providers.analysis.AnalysisProvider interface. Groq's
@@ -153,7 +153,7 @@ class AnalysisSettings(BaseSettings):
     # rather than English-only. Uganda's submissions aren't all English (Luganda, Acholi,
     # Swahili, ...); the English-only model couldn't match a non-English resubmission of an
     # already-checked claim to its existing report, nor to a related one in the local-evidence
-    # corpus below. See docs/adr/0004-ai-engine-retrieval.md.
+    # corpus below. See docs/zuula_state.md, ADR 0004.
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     # Cosine distance (1 - cosine similarity) below which a new claim is treated as a
     # near-duplicate of an existing report and reused instead of re-run through Tavily+Groq.

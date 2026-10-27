@@ -3,7 +3,7 @@ an EvidenceBundle into the report's verdict, claims and citations, in one Groq c
 completion (Llama 3.3 70B, free tier). The bundle's evidence can come from two places, both
 composed by app/providers/analysis.py's GroqAnalysisProvider before this module ever sees it:
 app/providers/source_verification.py's live Tavily search, and GroqAnalysisProvider's own
-local-evidence retrieval against Zuula's verified corpus (docs/adr/0004-ai-engine-retrieval.md)
+local-evidence retrieval against Zuula's verified corpus (docs/zuula_state.md, ADR 0004)
 — `EvidenceBundle.local_evidence_count` says how many of the leading `sources` are the latter,
 so this module can label and trust them differently without needing to know where they came
 from. Kept in its own module, separate from evidence retrieval, so the Source Verification

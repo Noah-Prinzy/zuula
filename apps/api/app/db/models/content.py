@@ -164,7 +164,7 @@ class FactCheckReport(Base):
 
     # FR-SEARCH-03 related reports, the P4 dedupe check and local-evidence retrieval
     # (app/providers/analysis.py's GroqAnalysisProvider): paraphrase-multilingual-MiniLM-L12-v2
-    # (app/providers/embedding.py), 384 dimensions — see docs/adr/0004-ai-engine-retrieval.md.
+    # (app/providers/embedding.py), 384 dimensions — see docs/zuula_state.md, ADR 0004.
     # migrations/versions/0004_embedding_dimensions.py narrows this from the untyped
     # vector P3 shipped and adds the HNSW index below (that migration predates, and still
     # names, the original all-MiniLM-L6-v2 choice it was written for; both models share this

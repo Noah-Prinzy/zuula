@@ -36,7 +36,7 @@ class EvidenceBundle:
 
     `sources` may carry local-evidence entries from app/providers/analysis.py's
     GroqAnalysisProvider._augment_with_local_evidence (prepended, per `local_evidence_count`)
-    ahead of this module's own Tavily results — see docs/adr/0004-ai-engine-retrieval.md.
+    ahead of this module's own Tavily results — see docs/zuula_state.md, ADR 0004.
     This module only ever produces `local_evidence_count=0` bundles itself."""
 
     sources: list[TavilyResult]

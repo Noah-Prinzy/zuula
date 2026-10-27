@@ -80,7 +80,7 @@ MAX_MEDIA_BYTES = 50 * 1024 * 1024
 PARTNER_RATE_LIMIT_PER_HOUR = 100
 
 # =======================================================================================
-# P3 additions (docs/adr/0002-p3-backend-and-database.md). Values the spec or frontend sets
+# P3 additions (docs/zuula_state.md, ADR 0002). Values the spec or frontend sets
 # cite them; values the spec leaves open are marked "ADR 0002" — P3's choice, approved by
 # Noah on 23 Sep 2026. Admins can change weights, thresholds, SLA and rate limit at runtime
 # (FR-ADMIN-06): the constants above are the defaults the `platform_settings` row is seeded

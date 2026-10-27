@@ -1,7 +1,7 @@
 """LanguageProvider: the interface between the submission pipeline and whatever identifies
 and translates the five languages Zuula supports (FR-SUBMIT-03: English, Luganda, Acholi,
 Runyankole, Ateso). The real implementation is Sunbird AI (`SunbirdLanguageProvider`); the
-stub stays for local dev and the tests. See docs/adr/0003-language-provider.md.
+stub stays for local dev and the tests. See docs/zuula_state.md, ADR 0003.
 
 Two jobs, matching the pipeline's `language` step (app/worker/pipeline.py's PIPELINES,
 transcribed from apps/web/lib/analysis.ts: "Identifying the language and any

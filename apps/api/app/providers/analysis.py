@@ -2,7 +2,7 @@
 and whatever actually produces a verdict. P2 shipped only a stub; P4 replaces it with
 `GroqAnalysisProvider` behind the same interface, picked by ANALYSIS_PROVIDER /
 ANALYSIS_PROVIDER_REGION exactly as before — sending submissions to a hosted LLM outside
-Uganda is still an open §10.1 data-protection question (see docs/adr/0001-api-architecture.md)
+Uganda is still an open §10.1 data-protection question (see docs/zuula_state.md, ADR 0001)
 that Groq's hosted inference doesn't resolve either way, so the switch stays a switch rather
 than a hardcoded default.
 
@@ -15,7 +15,7 @@ composed back into one claim-level AnalysisResult:
    embed the claim locally (multilingual — see embedding.py), then look up the nearest
    existing reports through a VectorDbProvider (pgvector by default — §4.2/§4.1 Layer 4 also
    names Pinecone, available as an alternative, see vector_db.py). This one lookup serves two
-   purposes, split by how close the nearest match is (see docs/adr/0004-ai-engine-retrieval.md):
+   purposes, split by how close the nearest match is (see docs/zuula_state.md, ADR 0004):
    - **Dedupe**: a match within DEDUPE_MAX_COSINE_DISTANCE is reused outright — no Tavily
      search, no Groq call — which is what keeps a viral claim (even retranslated or reworded)
      from costing anything the second time it's submitted.
@@ -256,7 +256,7 @@ class GroqAnalysisProvider:
     ) -> EvidenceBundle:
         """Prepend up to `_local_evidence_limit` already-verified reports from Zuula's own
         corpus to `evidence.sources`, ahead of the live Tavily results it already carries —
-        the local half of this engine's retrieval (docs/adr/0004-ai-engine-retrieval.md).
+        the local half of this engine's retrieval (docs/zuula_state.md, ADR 0004).
         `matches` is the same vector-DB lookup `analyze` already made for the dedupe check,
         so this costs nothing extra beyond resolving each match's report row."""
         local_sources: list[TavilyResult] = []
