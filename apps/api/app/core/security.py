@@ -6,7 +6,9 @@ The dependency names and call shapes routers use are unchanged — `Depends(get_
 become authenticated for real.
 
 Core API: an opaque session token, from the `zuula_session` cookie or `Authorization: Bearer`
-(a bearer value starting `zl_live_` is a partner key, never a session). The token's SHA-256
+(a bearer value starting `zl_live_` is a partner key, never a session). With
+ZUULA_AUTH_PROVIDER=supabase, a bearer JWT is a Supabase access token instead, resolved by
+app/core/supabase_auth.py; with it unset, JWTs count as signed out. The token's SHA-256
 is looked up in `sessions`; revoked, expired, or belonging to a suspended/deleted user means
 signed out. Roles come from the database row, never from the request.
 
@@ -16,6 +18,7 @@ carry the scope the method needs (POST = `submit`, GET = `read`, as /developers 
 Rate limiting is a Redis sliding window per key (FR-API-01), limit from platform settings.
 """
 
+import asyncio
 import secrets
 import time
 from datetime import UTC, datetime, timedelta
@@ -26,8 +29,8 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core import rules
-from app.core.config import get_settings
+from app.core import rules, supabase_auth
+from app.core.config import get_settings, get_supabase_settings
 from app.core.errors import ApiError
 from app.db.models import ApiKey, ApiUsageHourly, Session, User
 from app.db.session import get_db
@@ -64,13 +67,38 @@ def _check_origin(request: Request) -> None:
         raise ApiError("unauthorized", "Cross-site request refused.")
 
 
-async def _resolve_session(request: Request, db: AsyncSession) -> tuple[User, Session] | None:
+def _is_jwt(token: str) -> bool:
+    # Supabase access tokens are JWTs (header.payload.signature); our session tokens are
+    # token_urlsafe() strings, which never contain a dot.
+    return token.count(".") == 2
+
+
+async def _resolve_supabase(db: AsyncSession, token: str) -> tuple[User, None] | None:
+    """A Supabase access token's account, or None (signed out) if the token is invalid or the
+    account can't sign in, the same as an unknown session token."""
+    try:
+        # Off the event loop: a JWKS cache miss is a blocking HTTP fetch.
+        claims = await asyncio.to_thread(supabase_auth.verify_access_token, token)
+        return await supabase_auth.resolve_supabase_user(db, claims), None
+    except ApiError:
+        return None
+
+
+async def _resolve_session(
+    request: Request, db: AsyncSession
+) -> tuple[User, Session | None] | None:
+    """(user, session) for the request's credentials. With ZUULA_AUTH_PROVIDER=supabase a
+    bearer JWT is a Supabase access token: there is no session row, so session is None.
+    Legacy session cookies and bearer tokens keep working alongside."""
     if hasattr(request.state, "auth"):
         return request.state.auth
 
     token, source = _session_token(request)
     found = None
-    if token:
+    if token and source == "bearer" and _is_jwt(token):
+        if get_supabase_settings().is_supabase_enabled:
+            found = await _resolve_supabase(db, token)
+    elif token:
         now = datetime.now(UTC)
         row = (
             await db.execute(
@@ -104,7 +132,7 @@ def current_session_id(request: Request) -> str | None:
     """The signed-in session's id (for "this device" on /me/sessions, sign-out). Only valid
     after get_current_user/require_roles ran for this request."""
     auth = getattr(request.state, "auth", None)
-    return auth[1].id if auth else None
+    return auth[1].id if auth and auth[1] is not None else None
 
 
 async def get_current_user(

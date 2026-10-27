@@ -1,8 +1,7 @@
 """Supabase Auth access tokens: verify them and find the Zuula account they belong to.
 
-Nothing calls this yet. app/core/security.py still signs people in with the legacy
-`zuula_session` cookie; Phase 1.2 makes `_resolve_session` fall back to `bearer_token` →
-`verify_access_token` → `resolve_supabase_user` when ZUULA_AUTH_PROVIDER=supabase.
+app/core/security.py's `_resolve_session` calls `verify_access_token` → `resolve_supabase_user`
+for bearer JWTs when ZUULA_AUTH_PROVIDER=supabase; legacy session cookies keep working too.
 
 How a token finds its account:
 - By `users.supabase_user_id` (the token's `sub`), once linked.
