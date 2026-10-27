@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { apiBaseUrl, authMode } from "@/lib/api"
 import { safeNext } from "@/lib/auth"
+import { startOAuth } from "@/lib/supabase-auth"
 import { cn } from "@/lib/utils"
 
 type Provider = "google" | "facebook"
@@ -16,6 +17,7 @@ type Provider = "google" | "facebook"
 // /sign-in/two-factor?challenge=… when a second factor is due, or /sign-in?error=… on failure).
 // A full-page navigation, not fetch: the provider's pages can't load in the background.
 // In demo mode (no API) there is nothing to sign in with, so the buttons only explain that.
+// In Supabase mode (lib/supabase-auth.ts) Supabase runs the round trip instead.
 // Phones put these first (the forms order them with max-md:-order-1): one tap beats typing an
 // address and password on a phone keyboard. The divider then sits below them and leads into
 // the form, instead of above them after it.
@@ -29,8 +31,13 @@ export function SocialButtons({
   className?: string
 }) {
   const t = useTranslations("Auth.social")
+  const ts = useTranslations("Auth.social.errors")
 
   function start(provider: Provider, label: string) {
+    if (authMode() === "supabase") {
+      startOAuth(provider, next).catch(() => toast.error(ts("oauth-unavailable")))
+      return
+    }
     const base = apiBaseUrl()
     if (authMode() === "demo" || base === null) {
       toast.info(t("notConnected", { provider: label }), { description: t("notConnectedBody") })

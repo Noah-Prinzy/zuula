@@ -1,6 +1,7 @@
 import type { components, operations } from "@zuula/shared"
 
 import { demoAuthApi } from "@/lib/demo-auth"
+import { accessToken, supabaseAuthApi } from "@/lib/supabase-auth"
 
 // Thin client for apps/api (the core /api/v1 surface), typed from packages/shared's generated
 // openapi.ts. The identity/session calls live here; lib/ratings-api.ts and lib/review-api.ts
@@ -40,14 +41,16 @@ export function apiBaseUrl(): string | null {
 }
 
 // "api": real sign-in against apps/api. "demo": the browser-only demo sign-in in
-// lib/demo-auth.ts (any password, role from the address). NEXT_PUBLIC_AUTH_MODE forces either;
-// unset, a build with an API address uses it and a build without one (the deployed site until
-// the API is hosted) falls back to the demo instead of refusing to sign anyone in.
-export type AuthMode = "api" | "demo"
+// lib/demo-auth.ts (any password, role from the address). "supabase": Supabase Auth
+// (lib/supabase-auth.ts), with the API accepting its tokens; only when forced, never a default.
+// NEXT_PUBLIC_AUTH_MODE forces any of them; unset, a build with an API address uses it and a
+// build without one (the deployed site until the API is hosted) falls back to the demo instead
+// of refusing to sign anyone in.
+export type AuthMode = "api" | "demo" | "supabase"
 
 export function authMode(): AuthMode {
   const forced = process.env.NEXT_PUBLIC_AUTH_MODE?.trim()
-  if (forced === "api" || forced === "demo") return forced
+  if (forced === "api" || forced === "demo" || forced === "supabase") return forced
   return apiBaseUrl() === null ? "demo" : "api"
 }
 
@@ -74,13 +77,19 @@ export async function request<T>(
   const base = apiBaseUrl()
   if (base === null) throw new ApiError(0, "unconfigured", "NEXT_PUBLIC_API_URL is not set.")
 
+  const headers: Record<string, string> = {}
+  if (init.body !== undefined) headers["Content-Type"] = "application/json"
+  // Supabase mode: the session is Supabase's, so its access token goes along as a bearer.
+  const token = authMode() === "supabase" ? await accessToken() : null
+  if (token) headers.Authorization = `Bearer ${token}`
+
   let res: Response
   try {
     res = await fetch(`${base}${path}`, {
       method: init.method ?? "GET",
       credentials: "include",
       cache: "no-store",
-      headers: init.body === undefined ? undefined : { "Content-Type": "application/json" },
+      headers: Object.keys(headers).length ? headers : undefined,
       body: init.body === undefined ? undefined : JSON.stringify(init.body),
     })
   } catch {
@@ -150,6 +159,12 @@ const realAuthApi = {
 }
 
 // What the app calls. Resolved per call, so tests (and nothing else) can switch modes.
+const AUTH_APIS: Record<AuthMode, typeof realAuthApi> = {
+  api: realAuthApi,
+  demo: demoAuthApi,
+  supabase: supabaseAuthApi,
+}
+
 export const authApi: typeof realAuthApi = new Proxy(realAuthApi, {
-  get: (real, key: keyof typeof realAuthApi) => (authMode() === "demo" ? demoAuthApi : real)[key],
+  get: (_real, key: keyof typeof realAuthApi) => AUTH_APIS[authMode()][key],
 })
