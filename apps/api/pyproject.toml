@@ -17,6 +17,9 @@ dependencies = [
   "pgvector>=0.3.6",
   # P3 auth (ADR 0002 §5): the bcrypt package directly, not the unmaintained passlib.
   "bcrypt>=4.2",
+  # Supabase Auth: verify JWTs issued by Supabase (app/core/supabase_auth.py).
+  # [crypto] adds the ES256/RS256 support needed for Supabase signing keys (JWKS).
+  "pyjwt[crypto]>=2.8",
   # P3 real adapters (ADR 0002 §7): httpx for every HTTP integration (OAuth, Africa's Talking,
   # Turnstile, WhatsApp, Telegram), boto3 for S3-compatible storage, aiosmtplib for email.
   "httpx>=0.27",

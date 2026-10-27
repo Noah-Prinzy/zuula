@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.core.rules import PARTNER_RATE_LIMIT_PER_HOUR
@@ -44,11 +45,37 @@ class DatabaseSettings(BaseSettings):
     field names match .env.example's var names. The URL must use the asyncpg driver
     (`postgresql+asyncpg://`); the worker runs its DB work through the same async engine."""
 
-    model_config = SettingsConfigDict(extra="ignore")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     database_url: str = "postgresql+asyncpg://zuula:zuula@localhost:5432/zuula"
     database_pool_size: int = 5
     database_echo: bool = False
+
+
+class SupabaseSettings(BaseSettings):
+    """Supabase Auth (Phase 1.2, see app/core/supabase_auth.py). The API verifies Supabase
+    access tokens against the project's JWKS, or SUPABASE_JWT_SECRET for HS256 tokens; the web
+    app uses the publishable key."""
+
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    supabase_url: str = ""
+    # Legacy shared secret; only needed while the project still signs tokens with HS256.
+    supabase_jwt_secret: str = ""
+    # "legacy" = the zuula_session cookie (security.py); "supabase" = Supabase access tokens.
+    auth_provider: str = Field("legacy", validation_alias="ZUULA_AUTH_PROVIDER")
+
+    @property
+    def issuer(self) -> str:
+        return f"{self.supabase_url.rstrip('/')}/auth/v1"
+
+    @property
+    def jwks_url(self) -> str:
+        return f"{self.issuer}/.well-known/jwks.json"
+
+    @property
+    def is_supabase_enabled(self) -> bool:
+        return self.auth_provider == "supabase" and bool(self.supabase_url)
 
 
 class CelerySettings(BaseSettings):
@@ -256,3 +283,8 @@ def get_language_settings() -> LanguageSettings:
 @lru_cache
 def get_adapters_settings() -> AdaptersSettings:
     return AdaptersSettings()
+
+
+@lru_cache
+def get_supabase_settings() -> SupabaseSettings:
+    return SupabaseSettings()
