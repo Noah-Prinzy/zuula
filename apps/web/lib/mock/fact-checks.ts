@@ -1,6 +1,7 @@
 // SAMPLE DATA — fictional claims, articles and people for UI development only.
 // Replaced by the API in Phase 3. Source URLs point to outlet home pages, not real articles.
 
+import { factChecksApiConfigured } from "@/lib/fact-checks-api"
 import { QUICK_REPORTS } from "@/lib/mock/quick-reports"
 import type { FactCheckReport } from "@/lib/types/fact-check"
 
@@ -270,4 +271,12 @@ export const SAMPLE_REPORTS: FactCheckReport[] = [...DETAILED_REPORTS, ...QUICK_
 
 export function getSampleReport(id: string) {
   return SAMPLE_REPORTS.find((r) => r.id === id)
+}
+
+// The fictional reports above (mirrored by the API's app/db/sample_data) get a "sample report"
+// notice. Demo builds show nothing else; live, a report the pipeline made (fc-<year>-<n>, the
+// same id pattern) or a loaded real one (fc-real-*) is genuine.
+const SAMPLE_IDS = new Set(SAMPLE_REPORTS.map((r) => r.id))
+export function isSampleReport(id: string): boolean {
+  return !factChecksApiConfigured() || SAMPLE_IDS.has(id)
 }

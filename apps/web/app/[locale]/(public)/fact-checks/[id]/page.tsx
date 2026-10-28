@@ -25,7 +25,7 @@ import {
   fetchRelated,
 } from "@/lib/fact-checks-api"
 import { relatedReports } from "@/lib/library"
-import { getSampleReport, SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
+import { getSampleReport, isSampleReport, SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
 import type { FactCheckReport } from "@/lib/types/fact-check"
 
 type Props = { params: Promise<{ id: string }> }
@@ -105,7 +105,7 @@ export default async function ReportPage({ params }: Props) {
         </Button>
       </div>
 
-      {!report.id.startsWith("fc-real-") && (
+      {isSampleReport(report.id) && (
         <Alert className="enter">
           <RiFlaskLine aria-hidden />
           <AlertTitle>{tc("sampleReportTitle")}</AlertTitle>

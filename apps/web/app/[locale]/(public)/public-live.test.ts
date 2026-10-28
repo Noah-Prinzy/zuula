@@ -29,3 +29,19 @@ describe("public pages against an unreachable API", () => {
     await expect(reportMetadata({ params })).rejects.toMatchObject({ code: "network" })
   })
 })
+
+describe("the sample-report notice", () => {
+  it("marks only the fictional seed reports, not ones the pipeline made", async () => {
+    const { isSampleReport } = await import("@/lib/mock/fact-checks")
+    expect(isSampleReport("fc-2026-0142")).toBe(true)
+    expect(isSampleReport("fc-2026-0165")).toBe(false) // made by the pipeline on 28 Oct 2026
+    expect(isSampleReport("fc-real-0001")).toBe(false)
+  })
+
+  it("knows every report the API seeds as sample data", async () => {
+    const { readFileSync } = await import("node:fs")
+    const seeded = readFileSync("../api/app/db/sample_data/fact_checks.py", "utf8").match(/fc-\d{4}-\d{4}/g) ?? []
+    expect(seeded.length).toBeGreaterThan(0)
+    for (const id of new Set(seeded)) expect(SAMPLE_REPORTS.map((r) => r.id)).toContain(id)
+  })
+})
