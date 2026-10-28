@@ -48,6 +48,20 @@ class TestOverview:
         assert 0 < september["falseShare"] < 100 and len(september["topCategories"]) <= 3
 
 
+class TestUsers:
+    def test_status_counts_cover_every_account_not_just_the_page(self, core_client):
+        def total(status):
+            url = f"/api/v1/admin/users?perPage=1&status={status}"
+            return core_client.get(url, headers=ADMIN).json()["total"]
+
+        core_client.patch("/api/v1/admin/users/u6", json={"status": "suspended"}, headers=ADMIN)
+        page = core_client.get("/api/v1/admin/users?perPage=1&role=admin", headers=ADMIN).json()
+        assert len(page["data"]) == 1
+        assert page["counts"] == {"pending": total("pending"), "suspended": total("suspended")}
+        assert page["counts"]["suspended"] >= 1
+        core_client.patch("/api/v1/admin/users/u6", json={"status": "active"}, headers=ADMIN)
+
+
 class TestModeration:
     def test_dismissing_closes_the_item(self, core_client):
         items = core_client.get("/api/v1/admin/moderation/reports", headers=ADMIN).json()["data"]

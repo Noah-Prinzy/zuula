@@ -133,11 +133,25 @@ async def list_admin_users(
         .offset((params.page - 1) * params.per_page)
         .limit(params.per_page)
     )
+    # Across all accounts, not just this page or filter: the screen's "N pending · N suspended".
+    by_status = dict(
+        (
+            await db.execute(
+                select(User.status, func.count())
+                .where(User.deleted_at.is_(None), User.status.in_(("pending", "suspended")))
+                .group_by(User.status)
+            )
+        ).all()
+    )
     return {
         "data": [_dump(_admin_user(u, n)) for u, n in rows],
         "page": params.page,
         "perPage": params.per_page,
         "total": total,
+        "counts": {
+            "pending": by_status.get("pending", 0),
+            "suspended": by_status.get("suspended", 0),
+        },
     }
 
 

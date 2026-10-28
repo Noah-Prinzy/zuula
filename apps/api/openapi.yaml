@@ -1210,6 +1210,14 @@ paths:
                       data:
                         type: array
                         items: { $ref: "#/components/schemas/AdminUser" }
+                      counts:
+                        description: Pending and suspended accounts across the whole platform, regardless of filters or page.
+                        type: object
+                        required: [pending, suspended]
+                        properties:
+                          pending: { type: integer }
+                          suspended: { type: integer }
+                    required: [data, counts]
 
         "401": { $ref: "#/components/responses/Unauthorized" }
         "403": { $ref: "#/components/responses/Forbidden" }

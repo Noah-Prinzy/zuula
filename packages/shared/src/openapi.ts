@@ -3312,7 +3312,12 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PageMeta"] & {
-                        data?: components["schemas"]["AdminUser"][];
+                        data: components["schemas"]["AdminUser"][];
+                        /** @description Pending and suspended accounts across the whole platform, regardless of filters or page. */
+                        counts: {
+                            pending: number;
+                            suspended: number;
+                        };
                     };
                 };
             };

@@ -19,9 +19,9 @@ export type VerificationDecision = JsonBody<"decideVerificationApplication">
 
 type Paged<T> = { data: T[]; page: number; perPage: number; total: number }
 
-/** Admin calls need a real API session, so the demo sign-in (lib/demo-auth.ts) gets samples. */
+/** Admin calls need a real API session (API or Supabase sign-in); the demo sign-in gets samples. */
 export function verificationApiConfigured(): boolean {
-  return authMode() === "api"
+  return authMode() !== "demo"
 }
 
 /** GET /admin/verifications — pending oldest first, then decided ones, newest decision first. */

@@ -36,7 +36,7 @@ import { Input } from "@/components/ui/input"
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { Textarea } from "@/components/ui/textarea"
 import { useApiErrorMessage } from "@/hooks/use-api-error-message"
-import { adminApi, type Paged } from "@/lib/admin-api"
+import { adminApi, type UsersPage } from "@/lib/admin-api"
 import { SAMPLE_USERS, type AdminUser, type UserStatus } from "@/lib/mock/admin"
 import { ROLES, type Role } from "@/lib/roles"
 import { useFormat } from "@/lib/format"
@@ -46,7 +46,25 @@ import { Pager } from "./pager"
 import { useAdminData } from "./use-admin-data"
 
 const PER_PAGE = 50
-const DEMO: Paged<AdminUser> = { data: SAMPLE_USERS, page: 1, perPage: SAMPLE_USERS.length, total: SAMPLE_USERS.length }
+const countStatus = (users: AdminUser[], s: UserStatus) => users.filter((u) => u.status === s).length
+const DEMO: UsersPage = {
+  data: SAMPLE_USERS,
+  page: 1,
+  perPage: SAMPLE_USERS.length,
+  total: SAMPLE_USERS.length,
+  counts: { pending: countStatus(SAMPLE_USERS, "pending"), suspended: countStatus(SAMPLE_USERS, "suspended") },
+}
+
+// Keeps the platform-wide counts right after one user's status changes.
+function withUser(page: UsersPage, user: AdminUser): UsersPage {
+  const before = page.data.find((u) => u.id === user.id)?.status
+  const counts = { ...page.counts }
+  for (const s of ["pending", "suspended"] as const) {
+    if (before === s) counts[s] -= 1
+    if (user.status === s) counts[s] += 1
+  }
+  return { ...page, data: page.data.map((u) => (u.id === user.id ? user : u)), counts }
+}
 
 const STATUS_STYLE: Record<UserStatus, string> = {
   active: "border-verdict-authentic/40 bg-verdict-authentic/10 text-verdict-authentic",
@@ -95,8 +113,7 @@ export function UserManagement() {
   // Resolves true once the change is saved (live) or applied (demo); false after an error.
   const update = React.useCallback(
     async (id: string, patch: Pick<Partial<AdminUser>, "role" | "status">): Promise<boolean> => {
-      const replace = (u: AdminUser) =>
-        setData((d) => (d ? { ...d, data: d.data.map((x) => (x.id === id ? u : x)) } : d))
+      const replace = (u: AdminUser) => setData((d) => (d ? withUser(d, u) : d))
       if (!live) {
         const current = users.find((u) => u.id === id)
         if (current) replace({ ...current, ...patch })
@@ -251,8 +268,8 @@ export function UserManagement() {
 
   const counts = {
     total: live ? (data?.total ?? 0) : users.length,
-    suspended: users.filter((u) => u.status === "suspended").length,
-    pending: users.filter((u) => u.status === "pending").length,
+    suspended: data?.counts.suspended ?? 0,
+    pending: data?.counts.pending ?? 0,
   }
 
   return (

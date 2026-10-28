@@ -63,9 +63,13 @@ describe("admin screens against the API (Phase 2)", () => {
   })
 
   it("Users lists the API's users, filtered and paged by the API", async () => {
-    fetchMock.mockResolvedValueOnce(reply(200, { data: [NOAH], page: 1, perPage: 50, total: 1 }))
+    fetchMock.mockResolvedValueOnce(
+      reply(200, { data: [NOAH], page: 1, perPage: 50, total: 442, counts: { pending: 1, suspended: 9 } })
+    )
     renderWithIntl(<UserManagement />)
     expect(await screen.findByText("Noah Admin")).toBeInTheDocument()
+    // The counts are the platform's, not this one-user page's.
+    expect(screen.getByText(/1 of 442 users · 1 pending accreditation · 9 suspended/)).toBeInTheDocument()
     expect(String(fetchMock.mock.calls[0][0])).toContain("/api/v1/admin/users?page=1&perPage=50")
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1)) // and no refetch loop
   })

@@ -30,6 +30,8 @@ export type AuditEntry = Schemas["AuditEntry"]
 export type PlatformSettings = Schemas["PlatformSettings"]
 
 export type Paged<T> = { data: T[]; page: number; perPage: number; total: number }
+/** Users, with platform-wide pending/suspended counts (not just this page's). */
+export type UsersPage = Paged<AdminUser> & { counts: { pending: number; suspended: number } }
 /** Every list endpoint also takes `perPage` (1–100, default 20; app/core/pagination.py). */
 type PageSize = { perPage?: number }
 
@@ -51,7 +53,7 @@ export const adminApi = {
   overview: () => request<AdminOverview>("/api/v1/admin/overview"),
 
   users: (params: Query<"listAdminUsers"> & PageSize = {}) =>
-    request<Paged<AdminUser>>(`/api/v1/admin/users${qs(params)}`),
+    request<UsersPage>(`/api/v1/admin/users${qs(params)}`),
   updateUser: (id: string, body: JsonBody<"updateAdminUser">) =>
     request<AdminUser>(`/api/v1/admin/users/${path(id)}`, { method: "PATCH", body }),
 
