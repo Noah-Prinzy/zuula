@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (sample accounts locked in production).
+*Last updated: 28 October 2026 (production Admin set).
 
 **Contents**
 
@@ -177,14 +177,14 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 |---|---|---|
 | Named sample accounts `u1`–`u9` | 9 | Their password `zuula-sample-password` is public. **Locked 28 Oct 2026:** all suspended, passwords removed, 3 sessions and 2 API keys revoked, one `user.suspend` audit entry each. (Were: 1 Admin, 2 Experts, 2 Journalists, 4 Public.) |
 | Sample raters | 430 | No password; can't sign in. |
-| Real accounts (Supabase-linked) | 3 | Noah's sign-up tests. |
+| Real accounts (Supabase-linked) | 3 | Noah's: `noahprinzy@gmail.com` (Admin), `noahdevsug@gmail.com` and `noahwebalemukama@gmail.com` (Public). |
 | Fact-check reports | 12 | **All fictional** (`fc-2026-*`). The 363 AFP fact-checks and 11 Uganda claims were never loaded. |
 | Ratings / comments / submissions / review cases | 2,042 / 5 / 13 / 9 | Sample. |
 | Sessions / API keys | 3 / 2 | Seeded with random hashes; unusable. |
 | Notifications / audit entries / broadcasts / accreditation applications | 6 / 10 / 2 / 1 | Sample. |
 | Trusted sources | 12 | Real registry; keep. |
 
-**No active Admin can sign in to production** since the lock (the remaining active Experts are passwordless sample raters). Noah's real account needs the Admin role set directly in the database, because only an Admin can change roles in the app.
+**Production's Admin:** after the lock, Noah's Supabase-linked account **noahprinzy@gmail.com** (`usr_41ed27efa0095765`) was made Admin directly in the database (audited `user.role_change`, 28 Oct 2026). It's the only active Admin; further role changes go through Admin → Users. As an Admin it needs the second sign-in step, so signing in to Supabase mode needs Redis and the worker running for the code email.
 
 Remaining fix, before launch: back up the database, then reset it to real content only (no sample users, ratings or reports; AFP + Uganda fact-checks and trusted sources loaded). The seed script needs a real-content-only mode for that, since `--real` still adds the fictional set. Supabase's free plan has no backups, so take a `pg_dump` first.
 
