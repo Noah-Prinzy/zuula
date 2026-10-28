@@ -21,8 +21,13 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui
 import { Input } from "@/components/ui/input"
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { Slider } from "@/components/ui/slider"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
+import { adminApi } from "@/lib/admin-api"
 import { DEFAULT_SETTINGS, type PlatformSettings } from "@/lib/mock/admin"
 import { cn } from "@/lib/utils"
+
+import { useAdminData } from "./use-admin-data"
 
 type Thresholds = PlatformSettings["thresholds"]
 
@@ -89,10 +94,20 @@ function validate(t: Thresholds) {
 }
 
 // FR-ADMIN-06: escalation thresholds, rating weights, SLA and retraining (§9.1–9.3).
+// FR-ADMIN-06: the live settings come from the API (GET /admin/settings) and saving them is a
+// PATCH the API validates and audits; demo builds edit the sample settings locally.
 export function PlatformSettingsForm() {
-  const [s, setS] = React.useState<PlatformSettings>(DEFAULT_SETTINGS)
-  const [saved, setSaved] = React.useState<PlatformSettings>(DEFAULT_SETTINGS)
+  const { live, data } = useAdminData(adminApi.settings, DEFAULT_SETTINGS, [])
+  if (!data) return <Skeleton className="h-96 w-full" />
+  // The contract marks every nested field optional; the API always returns them all.
+  return <SettingsForm live={live} initial={data as PlatformSettings} />
+}
+
+function SettingsForm({ live, initial }: { live: boolean; initial: PlatformSettings }) {
+  const [s, setS] = React.useState<PlatformSettings>(initial)
+  const [saved, setSaved] = React.useState<PlatformSettings>(initial)
   const [confirm, setConfirm] = React.useState(false)
+  const errorMessage = useApiErrorMessage()
   const tr = useTranslations("Admin.settings")
   const tRoles = useTranslations("Roles")
   const tc = useTranslations("Common")
@@ -197,9 +212,13 @@ export function PlatformSettingsForm() {
           <AlertDialogFooter>
             <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => {
-                setSaved(s)
-                toast.success(tr("saved"), { description: ta("loggedInAudit") })
+              onClick={async () => {
+                try {
+                  setSaved(live ? ((await adminApi.updateSettings(s)) as PlatformSettings) : s)
+                  toast.success(tr("saved"), { description: ta("loggedInAudit") })
+                } catch (e) {
+                  toast.error(errorMessage(e))
+                }
               }}
             >
               {tc("save")}

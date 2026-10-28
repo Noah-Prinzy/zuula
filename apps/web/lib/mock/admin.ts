@@ -255,6 +255,9 @@ export type AuditAction =
   | "broadcast.send"
   | "settings.update"
   | "moderation.remove"
+  | "ratings.exclude"
+  | "accreditation.approve"
+  | "accreditation.reject"
 
 export type AuditEntry = {
   id: string
@@ -278,6 +281,9 @@ export const AUDIT_ACTION_LABELS: Record<AuditAction, string> = {
   "broadcast.send": "Broadcast sent",
   "settings.update": "Settings changed",
   "moderation.remove": "Content removed",
+  "ratings.exclude": "Ratings excluded",
+  "accreditation.approve": "Accreditation approved",
+  "accreditation.reject": "Accreditation rejected",
 }
 
 export const SAMPLE_AUDIT: AuditEntry[] = [

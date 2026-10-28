@@ -12,8 +12,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { useFormat } from "@/lib/format"
+import { Skeleton } from "@/components/ui/skeleton"
+import { adminApi, type Paged } from "@/lib/admin-api"
 import { AUDIT_ACTION_LABELS, SAMPLE_AUDIT, type AuditAction, type AuditEntry } from "@/lib/mock/admin"
 import { initials } from "@/lib/utils"
+
+import { Pager } from "./pager"
+import { useAdminData } from "./use-admin-data"
+
+const PER_PAGE = 100
+const DEMO: Paged<AuditEntry> = { data: SAMPLE_AUDIT, page: 1, perPage: SAMPLE_AUDIT.length, total: SAMPLE_AUDIT.length }
 
 function exportCsv(rows: AuditEntry[]) {
   const esc = (v: string) => `"${v.replace(/"/g, '""')}"`
@@ -34,15 +42,24 @@ export function AuditLog() {
   const [query, setQuery] = React.useState("")
   const [actor, setActor] = React.useState("")
   const [action, setAction] = React.useState<AuditAction | "">("")
+  const [page, setPage] = React.useState(1)
+  // FR-ADMIN-07: live, the API filters by action and pages newest first (GET /admin/audit-log);
+  // the text search and actor filter narrow the loaded page.
+  const { live, data } = useAdminData(
+    () => adminApi.auditLog({ action: action || undefined, page, perPage: PER_PAGE }),
+    DEMO,
+    [action, page]
+  )
+  const entries = React.useMemo(() => (data?.data ?? []) as AuditEntry[], [data])
   const t = useTranslations("Admin.audit")
   const tRoles = useTranslations("Roles")
   const f = useFormat()
   // Action ids contain a dot ("verdict.override"), which next-intl reads as a nested path.
   const actionLabel = React.useCallback((a: AuditAction) => t(`actions.${a}`), [t])
 
-  const actors = [...new Set(SAMPLE_AUDIT.map((a) => a.actor))].sort()
+  const actors = [...new Set(entries.map((a) => a.actor))].sort()
   const q = query.trim().toLowerCase()
-  const rows = SAMPLE_AUDIT.filter(
+  const rows = entries.filter(
     (e) =>
       (!q || `${e.target} ${e.detail}`.toLowerCase().includes(q)) &&
       (!actor || e.actor === actor) &&
@@ -115,7 +132,14 @@ export function AuditLog() {
           {actors.map((a) => <NativeSelectOption key={a} value={a}>{a}</NativeSelectOption>)}
         </NativeSelect>
         <label htmlFor="audit-action" className="sr-only">{t("action")}</label>
-        <NativeSelect id="audit-action" value={action} onChange={(e) => setAction(e.target.value as AuditAction | "")}>
+        <NativeSelect
+          id="audit-action"
+          value={action}
+          onChange={(e) => {
+            setAction(e.target.value as AuditAction | "")
+            setPage(1)
+          }}
+        >
           <NativeSelectOption value="">{t("allActions")}</NativeSelectOption>
           {(Object.keys(AUDIT_ACTION_LABELS) as AuditAction[]).map((a) => (
             <NativeSelectOption key={a} value={a}>{actionLabel(a)}</NativeSelectOption>
@@ -134,7 +158,12 @@ export function AuditLog() {
       <p className="text-sm text-muted-foreground" aria-live="polite">
         {t("summary", { count: rows.length })}
       </p>
-      <DataTable data={rows} columns={columns} getRowId={(e) => e.id} initialSorting={[{ id: "at", desc: true }]} emptyTitle={t("emptyTitle")} />
+      {data ? (
+        <DataTable data={rows} columns={columns} getRowId={(e) => e.id} initialSorting={[{ id: "at", desc: true }]} emptyTitle={t("emptyTitle")} />
+      ) : (
+        <Skeleton className="h-64 w-full" />
+      )}
+      {live && data && <Pager page={page} total={data.total} perPage={PER_PAGE} onPage={setPage} />}
     </div>
   )
 }

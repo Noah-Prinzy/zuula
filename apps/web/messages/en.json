@@ -978,6 +978,13 @@
         },
         "moderation": {
           "remove": "Content removed"
+        },
+        "ratings": {
+          "exclude": "Ratings excluded"
+        },
+        "accreditation": {
+          "approve": "Accreditation approved",
+          "reject": "Accreditation rejected"
         }
       },
       "columns": {

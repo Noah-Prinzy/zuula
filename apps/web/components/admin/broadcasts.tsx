@@ -26,10 +26,15 @@ import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import { SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
+import { adminApi } from "@/lib/admin-api"
 import { SAMPLE_BROADCASTS, type Broadcast } from "@/lib/mock/admin"
 import { useSession } from "@/components/providers/session-provider"
 import { useFormat } from "@/lib/format"
 import { cn } from "@/lib/utils"
+
+import { useAdminData } from "./use-admin-data"
 
 // Channel ids double as the stored values; labels live in Admin.broadcasts.channels.
 const CHANNELS = ["In-app", "Push", "Email", "SMS", "WhatsApp"] as const
@@ -43,6 +48,13 @@ const AUDIENCES = [
   { value: "elections", estimate: 10_800 },
 ] as const
 const MAX_MESSAGE = 320 // fits two SMS segments
+// The API's channel ids (POST /admin/broadcasts). It has no WhatsApp broadcast yet.
+const API_CHANNELS: Partial<Record<(typeof CHANNELS)[number], "in-app" | "push" | "email" | "sms">> = {
+  "In-app": "in-app",
+  Push: "push",
+  Email: "email",
+  SMS: "sms",
+}
 
 function useChannelList() {
   const t = useTranslations("Admin.broadcasts.channels")
@@ -50,8 +62,9 @@ function useChannelList() {
     channels.map((c) => (t.has(c as (typeof CHANNELS)[number]) ? t(c as (typeof CHANNELS)[number]) : c)).join(", ")
 }
 
-function Composer({ onSent }: { onSent: (b: Broadcast) => void }) {
+function Composer({ live, onSent }: { live: boolean; onSent: (b: Broadcast) => void }) {
   const { user } = useSession()
+  const errorMessage = useApiErrorMessage()
   const [title, setTitle] = React.useState("")
   const [message, setMessage] = React.useState("")
   const [reportId, setReportId] = React.useState("")
@@ -78,19 +91,31 @@ function Composer({ onSent }: { onSent: (b: Broadcast) => void }) {
     if (Object.keys(next).length === 0) setConfirm(true)
   }
 
-  function send() {
-    onSent({
-      id: crypto.randomUUID(),
-      title: title.trim(),
-      message: message.trim(),
-      severity,
-      audience: audLabel,
-      channels,
-      sentAt: new Date().toISOString(),
-      sentBy: user?.name ?? t("administrator"),
-      reach: aud.estimate,
-      opened: 0,
-    })
+  async function send() {
+    if (live) {
+      const apiChannels = channels.flatMap((c) => API_CHANNELS[c as (typeof CHANNELS)[number]] ?? [])
+      try {
+        onSent(
+          await adminApi.sendBroadcast({ title: title.trim(), message: message.trim(), severity, audience: audLabel, channels: apiChannels })
+        )
+      } catch (e) {
+        toast.error(errorMessage(e))
+        return
+      }
+    } else {
+      onSent({
+        id: crypto.randomUUID(),
+        title: title.trim(),
+        message: message.trim(),
+        severity,
+        audience: audLabel,
+        channels,
+        sentAt: new Date().toISOString(),
+        sentBy: user?.name ?? t("administrator"),
+        reach: aud.estimate,
+        opened: 0,
+      })
+    }
     toast.success(t("sent"), { description: t("sentSummary", { count: f.number(aud.estimate), channels: channelList(channels) }) })
     setTitle("")
     setMessage("")
@@ -154,7 +179,7 @@ function Composer({ onSent }: { onSent: (b: Broadcast) => void }) {
         <FieldSet data-invalid={!!errors.channels}>
           <FieldLegend variant="label">{t("channelsLegend")}</FieldLegend>
           <div className="flex flex-wrap gap-4">
-            {CHANNELS.map((c) => (
+            {(live ? CHANNELS.filter((c) => API_CHANNELS[c]) : CHANNELS).map((c) => (
               <label key={c} className="flex items-center gap-2 text-sm">
                 <Checkbox checked={channels.includes(c)} onCheckedChange={(on) => setChannels((cs) => (on === true ? [...cs, c] : cs.filter((x) => x !== c)))} />
                 {t(`channels.${c}`)}
@@ -197,14 +222,22 @@ function Composer({ onSent }: { onSent: (b: Broadcast) => void }) {
 }
 
 // FR-ADMIN-05: emergency broadcasts about high-priority misinformation.
+// FR-ADMIN-03: urgent alerts. Live, sending goes to the API (POST /admin/broadcasts, audited and
+// delivered by the worker) and the history is GET /admin/broadcasts; demo builds keep both local.
 export function Broadcasts() {
-  const [sent, setSent] = React.useState(SAMPLE_BROADCASTS)
+  const { live, data } = useAdminData(adminApi.broadcasts, SAMPLE_BROADCASTS, [])
+  if (!data) return <Skeleton className="h-96 w-full" />
+  return <BroadcastsView live={live} initial={data} />
+}
+
+function BroadcastsView({ live, initial }: { live: boolean; initial: Broadcast[] }) {
+  const [sent, setSent] = React.useState(initial)
   const t = useTranslations("Admin.broadcasts")
   const f = useFormat()
   const channelList = useChannelList()
   return (
     <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_28rem]">
-      <Composer onSent={(b) => setSent((s) => [b, ...s])} />
+      <Composer live={live} onSent={(b) => setSent((s) => [b, ...s])} />
       <section data-reveal aria-labelledby="sent-title" className="flex flex-col gap-3 [--d:1]">
         <h2 id="sent-title" className="flex items-center gap-2 font-heading text-lg font-bold">
           <RiMegaphoneLine className="size-5 text-primary" aria-hidden /> {t("sentTitle")}

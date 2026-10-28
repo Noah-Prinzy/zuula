@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (admin Overview/Users wired; PR #70 migration warning).
+*Last updated: 28 October 2026 (all admin screens wired to the API).
 
 **Contents**
 
@@ -51,7 +51,7 @@ Deadline: **30 November 2026**.
 | P3 Backend + database | Done (PostgreSQL + pgvector, auth, weighted CCS, audit log). |
 | P4 AI engine | Built (Groq + Tavily verdict engine, multilingual embeddings, local-evidence RAG, Sunbird, Whisper, local signals). FR-DETECT-03's ≥90% accuracy is **unverified** — see §8 and [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03). |
 | **Phase 1 of the completion plan: Supabase migration** | **Mostly done.** Database live on Supabase, RLS lockdown, Supabase Auth working end to end behind a switch (email sign-up with code, sign-in, Expert/Admin second factor), Brevo email, uptime monitor. Storage and Realtime not migrated yet. |
-| Phase 2: frontend-to-API wiring | **In progress.** Submission flow done (28 Oct): the composers post to `POST /submissions` (JSON, or multipart with real upload progress for media; idempotency key per attempt), and the Status page follows the real pipeline over the API's server-sent events, polling the status if the stream drops, then opens the real report. Demo builds keep the simulated flow. Admin: Overview and Users wired (28 Oct; shared `useAdminData` hook and `Pager`, `lib/admin-api.ts`); Moderation, Sources, Broadcasts, Audit log, Settings and Reports next, then the account screens. |
+| Phase 2: frontend-to-API wiring | **In progress.** Submission flow done (28 Oct): the composers post to `POST /submissions` (JSON, or multipart with real upload progress for media; idempotency key per attempt), and the Status page follows the real pipeline over the API's server-sent events, polling the status if the stream drops, then opens the real report. Demo builds keep the simulated flow. **All 8 admin screens wired** (28 Oct; `lib/admin-api.ts`, shared `useAdminData` hook and `Pager`): Overview, Users (server-side search/filters/paging), Moderation, Sources, Broadcasts, Audit log (action filter + paging server-side), Settings, Reports. Actions the API doesn't have yet are hidden live and kept in demo builds: "send to review" and manipulation-signal actions (Moderation), source re-crawl, WhatsApp broadcasts. Next: the account screens. |
 | Hardening + launch | Not started. |
 
 ### Work landed on 27–28 October 2026 (not yet pushed)

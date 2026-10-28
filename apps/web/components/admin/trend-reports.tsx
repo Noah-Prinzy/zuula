@@ -12,7 +12,11 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } f
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useContentLabels } from "@/hooks/use-content-labels"
 import { useFormat } from "@/lib/format"
+import { Skeleton } from "@/components/ui/skeleton"
+import { adminApi } from "@/lib/admin-api"
 import { MONTHLY_REPORTS, type MonthlyReport } from "@/lib/mock/admin"
+
+import { useAdminData } from "./use-admin-data"
 
 // Mid-month in Kampala, so the month never shifts with the viewer's time zone.
 const midMonth = (ym: string) => `${ym}-15T12:00:00+03:00`
@@ -33,9 +37,17 @@ function toCsv(rows: MonthlyReport[]) {
 }
 
 // FR-ADMIN-04: monthly misinformation trend reports.
+// FR-ADMIN-05: monthly trends from the API (GET /admin/reports) or, in demo builds, the samples.
 export function TrendReports() {
-  const latest = MONTHLY_REPORTS[MONTHLY_REPORTS.length - 1]
-  const previous = MONTHLY_REPORTS[MONTHLY_REPORTS.length - 2]
+  const { data } = useAdminData(adminApi.monthlyReports, MONTHLY_REPORTS, [])
+  if (!data) return <Skeleton className="h-96 w-full" />
+  return <Trends reports={data} />
+}
+
+function Trends({ reports }: { reports: MonthlyReport[] }) {
+  // A new deployment may have under two months of data; the comparison line needs both.
+  const latest = reports.at(-1)
+  const previous = reports.at(-2)
   const t = useTranslations("Admin.trends")
   const f = useFormat()
   const labels = useContentLabels()
@@ -53,7 +65,7 @@ export function TrendReports() {
             variant="outline"
             size="sm"
             onClick={() => {
-              download("zuula-monthly-trends.csv", toCsv(MONTHLY_REPORTS))
+              download("zuula-monthly-trends.csv", toCsv(reports))
               toast.success(t("downloaded"))
             }}
           >
@@ -61,7 +73,7 @@ export function TrendReports() {
           </Button>
         </div>
         <ChartContainer config={config} className="h-60 w-full">
-          <BarChart data={MONTHLY_REPORTS} margin={{ left: 0, right: 0, top: 8 }}>
+          <BarChart data={reports} margin={{ left: 0, right: 0, top: 8 }}>
             <CartesianGrid vertical={false} strokeOpacity={0.5} />
             <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(v) => f.date(midMonth(String(v)), "month")} />
             <YAxis tickLine={false} axisLine={false} width={44} tickFormatter={(v) => f.number(v)} />
@@ -69,14 +81,16 @@ export function TrendReports() {
             <Bar dataKey="checks" fill="var(--color-checks)" radius={[2, 2, 0, 0]} maxBarSize={48} />
           </BarChart>
         </ChartContainer>
-        <p className="text-xs text-muted-foreground">
-          {t("soFar", {
-            latest: monthLabel(latest.month),
-            latestCount: f.number(latest.checks),
-            previous: monthLabel(previous.month),
-            previousCount: f.number(previous.checks),
-          })}
-        </p>
+        {latest && previous && (
+          <p className="text-xs text-muted-foreground">
+            {t("soFar", {
+              latest: monthLabel(latest.month),
+              latestCount: f.number(latest.checks),
+              previous: monthLabel(previous.month),
+              previousCount: f.number(previous.checks),
+            })}
+          </p>
+        )}
       </section>
 
       <section data-reveal aria-labelledby="months-title" className="flex flex-col gap-3 [--d:1]">
@@ -99,7 +113,7 @@ export function TrendReports() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {[...MONTHLY_REPORTS].reverse().map((r) => (
+              {[...reports].reverse().map((r) => (
                 <TableRow key={r.month}>
                   <TableCell className="font-medium whitespace-nowrap">{monthLabel(r.month)}</TableCell>
                   <TableCell className="text-right font-mono tabular-nums">{f.number(r.checks)}</TableCell>

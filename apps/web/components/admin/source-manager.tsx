@@ -26,7 +26,10 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui
 import { Input } from "@/components/ui/input"
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { Progress } from "@/components/ui/progress"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
 import { useRelativeTime } from "@/hooks/use-relative-time"
+import { adminApi, type Paged } from "@/lib/admin-api"
 import {
   SAMPLE_SOURCES,
   SOURCE_TARGET,
@@ -36,6 +39,10 @@ import {
 } from "@/lib/mock/admin"
 import { LOCALES } from "@/lib/locales"
 import { cn } from "@/lib/utils"
+
+import { useAdminData } from "./use-admin-data"
+
+const DEMO: Paged<TrustedSource> = { data: SAMPLE_SOURCES, page: 1, perPage: 100, total: SAMPLE_SOURCES.length }
 
 const EMPTY = { name: "", domain: "", type: "media" as SourceType, languages: "English", tier: "1" }
 
@@ -48,7 +55,7 @@ function SourceDialog({
   open: boolean
   onOpenChange: (o: boolean) => void
   initial: TrustedSource | null
-  onSave: (s: TrustedSource) => void
+  onSave: (s: TrustedSource) => void | Promise<void>
 }) {
   const [form, setForm] = React.useState(EMPTY)
   const [error, setError] = React.useState<string | null>(null)
@@ -141,8 +148,35 @@ function SourceDialog({
 }
 
 // FR-ADMIN-03 / FR-DETECT-06: the trusted-source registry.
+// FR-ADMIN-04: the trusted-source registry the verdict engine searches. Live, the list comes from
+// the API (GET /admin/sources) and adding, editing and (de)activating are saved and audited
+// there; it has no re-crawl action yet, so that one is demo-only.
 export function SourceManager() {
-  const [sources, setSources] = React.useState(SAMPLE_SOURCES)
+  const { live, data } = useAdminData(() => adminApi.sources({ perPage: 100 }), DEMO, [])
+  if (!data) return <Skeleton className="h-96 w-full" />
+  return <Sources live={live} initial={data.data} />
+}
+
+function Sources({ live, initial }: { live: boolean; initial: TrustedSource[] }) {
+  const [sources, setSources] = React.useState(initial)
+  const errorMessage = useApiErrorMessage()
+
+  // Saves a source (new when `isNew`); resolves with what to show, or null after an error.
+  const persist = React.useCallback(async (s: TrustedSource, isNew: boolean): Promise<TrustedSource | null> => {
+    if (!live) return s
+    const input = { name: s.name, domain: s.domain, type: s.type, languages: s.languages, tier: s.tier, active: s.active }
+    try {
+      return await (isNew ? adminApi.addSource(input) : adminApi.updateSource(s.id, input))
+    } catch (e) {
+      toast.error(errorMessage(e))
+      return null
+    }
+  }, [live, errorMessage])
+  const show = React.useCallback(
+    (s: TrustedSource) =>
+      setSources((xs) => (xs.some((x) => x.id === s.id) ? xs.map((x) => (x.id === s.id ? s : x)) : [s, ...xs])),
+    []
+  )
   const [query, setQuery] = React.useState("")
   const [type, setType] = React.useState<SourceType | "">("")
   const [editing, setEditing] = React.useState<TrustedSource | null>(null)
@@ -210,18 +244,22 @@ export function SourceManager() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onSelect={() => { setEditing(s); setOpen(true) }}>{t("edit")}</DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => {
-                  setSources((xs) => xs.map((x) => (x.id === s.id ? { ...x, lastCrawled: new Date().toISOString(), crawlOk: true } : x)))
-                  toast.success(t("recrawlQueued", { name: s.name }))
-                }}
-              >
-                {t("recrawl")}
-              </DropdownMenuItem>
+              {!live && (
+                <DropdownMenuItem
+                  onSelect={() => {
+                    setSources((xs) => xs.map((x) => (x.id === s.id ? { ...x, lastCrawled: new Date().toISOString(), crawlOk: true } : x)))
+                    toast.success(t("recrawlQueued", { name: s.name }))
+                  }}
+                >
+                  {t("recrawl")}
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem
                 variant={s.active ? "destructive" : "default"}
-                onSelect={() => {
-                  setSources((xs) => xs.map((x) => (x.id === s.id ? { ...x, active: !x.active } : x)))
+                onSelect={async () => {
+                  const saved = await persist({ ...s, active: !s.active }, false)
+                  if (!saved) return
+                  show(saved)
                   toast.success(s.active ? t("deactivated", { name: s.name }) : t("reactivated", { name: s.name }))
                 }}
               >
@@ -232,7 +270,7 @@ export function SourceManager() {
         ),
       },
     ],
-    [t, relativeTime]
+    [t, relativeTime, live, persist, show]
   )
 
   return (
@@ -277,8 +315,10 @@ export function SourceManager() {
         open={open}
         onOpenChange={setOpen}
         initial={editing}
-        onSave={(s) => {
-          setSources((xs) => (xs.some((x) => x.id === s.id) ? xs.map((x) => (x.id === s.id ? s : x)) : [s, ...xs]))
+        onSave={async (s) => {
+          const saved = await persist(s, !editing)
+          if (!saved) return
+          show(saved)
           toast.success(editing ? t("updated", { name: s.name }) : t("added", { name: s.name }), { description: ta("loggedInAudit") })
         }}
       />
