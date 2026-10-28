@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
+import { connection } from "next/server"
 import { getTranslations } from "next-intl/server"
 
 import { PageHero, PageSheet } from "@/components/decor/page-sheet"
@@ -23,7 +24,12 @@ async function loadLibrary(): Promise<{
   categories: string[]
   languages: string[]
 }> {
-  if (factChecksApiConfigured()) return fetchAllReportsForLibrary()
+  if (factChecksApiConfigured()) {
+    // Render per request, never at build time: the data changes, and a build must not depend
+    // on (or freeze) whatever the API returned then.
+    await connection()
+    return fetchAllReportsForLibrary()
+  }
   return { reports: SAMPLE_REPORTS, ...facets(SAMPLE_REPORTS) }
 }
 

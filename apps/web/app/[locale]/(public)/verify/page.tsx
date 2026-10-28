@@ -8,6 +8,7 @@ import {
 } from "@remixicon/react"
 
 import type { Metadata } from "next"
+import { connection } from "next/server"
 import { getTranslations } from "next-intl/server"
 
 import { PageHero, PageSheet } from "@/components/decor/page-sheet"
@@ -23,6 +24,9 @@ import { SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
 // locally). Live, a failed fetch hides the leaderboard rather than show invented checks.
 async function loadLeaderboard() {
   if (factChecksApiConfigured()) {
+    // Render per request, never at build time: the data changes, and a build must not depend
+    // on (or freeze) whatever the API returned then.
+    await connection()
     return fetchHomeFeed()
       .then((feed) => feed.leaderboard)
       .catch(() => [])

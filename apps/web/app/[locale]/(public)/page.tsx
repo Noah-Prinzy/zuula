@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { connection } from "next/server"
 import { getTranslations } from "next-intl/server"
 import { RiFireLine, RiThumbUpLine, RiTrophyLine } from "@remixicon/react"
 
@@ -29,6 +30,9 @@ import { formatDate } from "@/lib/verdicts"
 // unavailable: invented sample checks must never pass for real ones on a live site.
 async function loadHomeFeed() {
   if (factChecksApiConfigured()) {
+    // Render per request, never at build time: the data changes, and a build must not depend
+    // on (or freeze) whatever the API returned then.
+    await connection()
     try {
       const feed = await fetchHomeFeed()
       return { recent: feed.recent, debated: feed.debated, topics: feed.trending, leaders: feed.leaderboard, unavailable: false }

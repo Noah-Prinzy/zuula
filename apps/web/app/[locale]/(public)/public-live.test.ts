@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
+// Outside Next there's no request to wait for; connection() (render per request) is a no-op.
+vi.mock("next/server", () => ({ connection: async () => {} }))
+
 import LibraryPage from "@/app/[locale]/(public)/fact-checks/page"
 import { generateMetadata as reportMetadata } from "@/app/[locale]/(public)/fact-checks/[id]/page"
 import { SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
