@@ -35,10 +35,18 @@ import {
 import { Input } from "@/components/ui/input"
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { Textarea } from "@/components/ui/textarea"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
+import { adminApi, type Paged } from "@/lib/admin-api"
 import { SAMPLE_USERS, type AdminUser, type UserStatus } from "@/lib/mock/admin"
 import { ROLES, type Role } from "@/lib/roles"
 import { useFormat } from "@/lib/format"
 import { cn, initials } from "@/lib/utils"
+
+import { Pager } from "./pager"
+import { useAdminData } from "./use-admin-data"
+
+const PER_PAGE = 50
+const DEMO: Paged<AdminUser> = { data: SAMPLE_USERS, page: 1, perPage: SAMPLE_USERS.length, total: SAMPLE_USERS.length }
 
 const STATUS_STYLE: Record<UserStatus, string> = {
   active: "border-verdict-authentic/40 bg-verdict-authentic/10 text-verdict-authentic",
@@ -51,12 +59,31 @@ type Pending =
   | { kind: "suspend"; user: AdminUser }
   | null
 
-// FR-ADMIN-02: activate, suspend and change roles.
+// FR-ADMIN-02: activate, suspend and change roles. Live, the API filters and pages the
+// list (GET /admin/users) and records every change in the audit log (PATCH); in demo
+// builds the sample users are filtered and changed locally.
 export function UserManagement() {
-  const [users, setUsers] = React.useState(SAMPLE_USERS)
   const [query, setQuery] = React.useState("")
+  const [search, setSearch] = React.useState("")
   const [role, setRole] = React.useState<Role | "">("")
   const [status, setStatus] = React.useState<UserStatus | "">("")
+  const [page, setPage] = React.useState(1)
+  const { live, data, setData } = useAdminData(
+    () => adminApi.users({ q: search || undefined, role: role || undefined, status: status || undefined, page, perPage: PER_PAGE }),
+    DEMO,
+    [search, role, status, page]
+  )
+  const users = React.useMemo(() => data?.data ?? [], [data])
+  const errorMessage = useApiErrorMessage()
+
+  // Typing searches after a pause, not on every key; any filter change starts at page 1.
+  React.useEffect(() => {
+    const t = setTimeout(() => {
+      setSearch(query.trim())
+      setPage(1)
+    }, 300)
+    return () => clearTimeout(t)
+  }, [query])
   const [pending, setPending] = React.useState<Pending>(null)
   const [reason, setReason] = React.useState("")
   const t = useTranslations("Admin.users")
@@ -65,11 +92,29 @@ export function UserManagement() {
   const tc = useTranslations("Common")
   const ta = useTranslations("Admin")
 
-  const update = React.useCallback((id: string, patch: Partial<AdminUser>) => {
-    setUsers((us) => us.map((u) => (u.id === id ? { ...u, ...patch } : u)))
-  }, [])
+  // Resolves true once the change is saved (live) or applied (demo); false after an error.
+  const update = React.useCallback(
+    async (id: string, patch: Pick<Partial<AdminUser>, "role" | "status">): Promise<boolean> => {
+      const replace = (u: AdminUser) =>
+        setData((d) => (d ? { ...d, data: d.data.map((x) => (x.id === id ? u : x)) } : d))
+      if (!live) {
+        const current = users.find((u) => u.id === id)
+        if (current) replace({ ...current, ...patch })
+        return true
+      }
+      try {
+        replace(await adminApi.updateUser(id, patch))
+        return true
+      } catch (e) {
+        toast.error(errorMessage(e))
+        return false
+      }
+    },
+    [live, users, setData, errorMessage]
+  )
 
   const rows = React.useMemo(() => {
+    if (live) return users // filtered by the API
     const q = query.trim().toLowerCase()
     return users.filter(
       (u) =>
@@ -77,7 +122,7 @@ export function UserManagement() {
         (!role || u.role === role) &&
         (!status || u.status === status)
     )
-  }, [users, query, role, status])
+  }, [live, users, query, role, status])
 
   const columns = React.useMemo<AdminColumn<AdminUser>[]>(
     () => [
@@ -148,9 +193,8 @@ export function UserManagement() {
               <DropdownMenuSeparator />
               {u.status === "pending" && (
                 <DropdownMenuItem
-                  onSelect={() => {
-                    update(u.id, { status: "active", role: "journalist" })
-                    toast.success(t("approved", { name: u.name }))
+                  onSelect={async () => {
+                    if (await update(u.id, { status: "active", role: "journalist" })) toast.success(t("approved", { name: u.name }))
                   }}
                 >
                   {t("approve")}
@@ -174,9 +218,8 @@ export function UserManagement() {
               <DropdownMenuSeparator />
               {u.status === "suspended" ? (
                 <DropdownMenuItem
-                  onSelect={() => {
-                    update(u.id, { status: "active" })
-                    toast.success(t("reactivated", { name: u.name }))
+                  onSelect={async () => {
+                    if (await update(u.id, { status: "active" })) toast.success(t("reactivated", { name: u.name }))
                   }}
                 >
                   {t("reactivate")}
@@ -194,13 +237,12 @@ export function UserManagement() {
     [update, t, tRoles, f]
   )
 
-  function confirmPending() {
+  async function confirmPending() {
     if (!pending) return
     if (pending.kind === "role") {
-      update(pending.user.id, { role: pending.role })
-      toast.success(t("roleChanged", { name: pending.user.name, role: tRoles(pending.role) }), { description: ta("loggedInAudit") })
-    } else {
-      update(pending.user.id, { status: "suspended" })
+      if (await update(pending.user.id, { role: pending.role }))
+        toast.success(t("roleChanged", { name: pending.user.name, role: tRoles(pending.role) }), { description: ta("loggedInAudit") })
+    } else if (await update(pending.user.id, { status: "suspended" })) {
       toast.success(t("suspendedToast", { name: pending.user.name }), { description: t("suspendedBody") })
     }
     setPending(null)
@@ -208,7 +250,7 @@ export function UserManagement() {
   }
 
   const counts = {
-    total: users.length,
+    total: live ? (data?.total ?? 0) : users.length,
     suspended: users.filter((u) => u.status === "suspended").length,
     pending: users.filter((u) => u.status === "pending").length,
   }
@@ -221,14 +263,20 @@ export function UserManagement() {
           <Input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t("searchPlaceholder")} aria-label={t("searchLabel")} className="pl-9" />
         </div>
         <label htmlFor="users-role" className="sr-only">{t("role")}</label>
-        <NativeSelect id="users-role" value={role} onChange={(e) => setRole(e.target.value as Role | "")}>
+        <NativeSelect id="users-role" value={role} onChange={(e) => {
+            setRole(e.target.value as Role | "")
+            setPage(1)
+          }}>
           <NativeSelectOption value="">{t("allRoles")}</NativeSelectOption>
           {ROLES.map((r) => (
             <NativeSelectOption key={r} value={r}>{tRoles(r)}</NativeSelectOption>
           ))}
         </NativeSelect>
         <label htmlFor="users-status" className="sr-only">{t("status")}</label>
-        <NativeSelect id="users-status" value={status} onChange={(e) => setStatus(e.target.value as UserStatus | "")}>
+        <NativeSelect id="users-status" value={status} onChange={(e) => {
+            setStatus(e.target.value as UserStatus | "")
+            setPage(1)
+          }}>
           <NativeSelectOption value="">{t("allStatuses")}</NativeSelectOption>
           <NativeSelectOption value="active">{t("statuses.active")}</NativeSelectOption>
           <NativeSelectOption value="pending">{t("statuses.pending")}</NativeSelectOption>
@@ -240,6 +288,7 @@ export function UserManagement() {
       </p>
 
       <DataTable data={rows} columns={columns} getRowId={(u) => u.id} initialSorting={[{ id: "name", desc: false }]} />
+      {live && data && <Pager page={page} total={data.total} perPage={PER_PAGE} onPage={setPage} />}
 
       <AlertDialog open={pending !== null} onOpenChange={(o) => !o && setPending(null)}>
         <AlertDialogContent>

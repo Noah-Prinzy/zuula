@@ -921,6 +921,8 @@
     }
   },
   "Admin": {
+    "loadFailed": "Couldn't load this data",
+    "pager": { "previous": "Previous", "next": "Next", "page": "Page {page} of {pages}" },
     "loggedInAudit": "Logged in the audit trail.",
     "table": {
       "emptyTitle": "Nothing here",
