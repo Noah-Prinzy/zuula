@@ -78,6 +78,9 @@ function Composer({ live, onSent }: { live: boolean; onSent: (b: Broadcast) => v
   const f = useFormat()
   const channelList = useChannelList()
 
+  // Live, the API sends every broadcast to every active account: offering a region or topic
+  // (or an invented reach) would mislead. Targeting arrives with Phase 4.
+  const audiences = live ? AUDIENCES.filter((a) => a.value === "everyone") : AUDIENCES
   const aud = AUDIENCES.find((a) => a.value === audience)!
   const audLabel = t(`audiences.${aud.value}`)
 
@@ -92,12 +95,13 @@ function Composer({ live, onSent }: { live: boolean; onSent: (b: Broadcast) => v
   }
 
   async function send() {
+    let reach: number = aud.estimate
     if (live) {
       const apiChannels = channels.flatMap((c) => API_CHANNELS[c as (typeof CHANNELS)[number]] ?? [])
       try {
-        onSent(
-          await adminApi.sendBroadcast({ title: title.trim(), message: message.trim(), severity, audience: audLabel, channels: apiChannels })
-        )
+        const sent = await adminApi.sendBroadcast({ title: title.trim(), message: message.trim(), severity, audience: audLabel, channels: apiChannels })
+        reach = sent.reach
+        onSent(sent)
       } catch (e) {
         toast.error(errorMessage(e))
         return
@@ -116,7 +120,7 @@ function Composer({ live, onSent }: { live: boolean; onSent: (b: Broadcast) => v
         opened: 0,
       })
     }
-    toast.success(t("sent"), { description: t("sentSummary", { count: f.number(aud.estimate), channels: channelList(channels) }) })
+    toast.success(t("sent"), { description: t("sentSummary", { count: f.number(reach), channels: channelList(channels) }) })
     setTitle("")
     setMessage("")
     setReportId("")
@@ -146,6 +150,8 @@ function Composer({ live, onSent }: { live: boolean; onSent: (b: Broadcast) => v
           {errors.message && <FieldError>{errors.message}</FieldError>}
         </Field>
         <div className="grid gap-4 sm:grid-cols-2">
+          {/* Demo only: the API doesn't take a linked report yet. */}
+          {!live && (
           <Field>
             <FieldLabel htmlFor="bc-report">{t("linkReport")}</FieldLabel>
             <NativeSelect id="bc-report" className="w-full" value={reportId} onChange={(e) => setReportId(e.target.value)}>
@@ -155,14 +161,17 @@ function Composer({ live, onSent }: { live: boolean; onSent: (b: Broadcast) => v
               ))}
             </NativeSelect>
           </Field>
+          )}
           <Field>
             <FieldLabel htmlFor="bc-audience">{t("audience")}</FieldLabel>
             <NativeSelect id="bc-audience" className="w-full" value={audience} onChange={(e) => setAudience(e.target.value as (typeof AUDIENCES)[number]["value"])}>
-              {AUDIENCES.map((a) => (
+              {audiences.map((a) => (
                 <NativeSelectOption key={a.value} value={a.value}>{t(`audiences.${a.value}`)}</NativeSelectOption>
               ))}
             </NativeSelect>
-            <FieldDescription>{t("audienceEstimate", { count: f.number(aud.estimate) })}</FieldDescription>
+            <FieldDescription>
+              {live ? t("audienceAllActive") : t("audienceEstimate", { count: f.number(aud.estimate) })}
+            </FieldDescription>
           </Field>
         </div>
         <FieldSet>
@@ -204,7 +213,9 @@ function Composer({ live, onSent }: { live: boolean; onSent: (b: Broadcast) => v
       <AlertDialog open={confirm} onOpenChange={setConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("confirmTitle", { count: f.number(aud.estimate) })}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {live ? t("confirmTitleAll") : t("confirmTitle", { count: f.number(aud.estimate) })}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {t("confirmBody", { audience: audLabel, channels: channelList(channels), severity: t(`severities.${severity}`) })}
             </AlertDialogDescription>

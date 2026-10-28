@@ -999,6 +999,8 @@
       "none": "Pe tye",
       "audience": "Lutela",
       "audienceEstimate": "Dano ma romo {count}.",
+      "audienceAllActive": "Every active account. Regional and topic audiences aren't available yet.",
+      "confirmTitleAll": "Send to every active account?",
       "severity": "Rac pa peko",
       "severities": {
         "high": "Ma lamal",

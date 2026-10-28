@@ -1009,6 +1009,8 @@
       "none": "Tihariho",
       "audience": "Abareebi",
       "audienceEstimate": "Abantu nka {count}.",
+      "audienceAllActive": "Every active account. Regional and topic audiences aren't available yet.",
+      "confirmTitleAll": "Send to every active account?",
       "severity": "Oburemeezi",
       "severities": {
         "high": "Ahaiguru",

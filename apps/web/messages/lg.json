@@ -1011,6 +1011,8 @@
       "none": "Tewali",
       "audience": "Abawuliriza",
       "audienceEstimate": "Abantu nga {count}.",
+      "audienceAllActive": "Every active account. Regional and topic audiences aren't available yet.",
+      "confirmTitleAll": "Send to every active account?",
       "severity": "Obunene",
       "severities": {
         "high": "Waggulu",

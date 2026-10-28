@@ -1004,6 +1004,8 @@
       "none": "Emamei",
       "audience": "Itunga lu epupete",
       "audienceEstimate": "Keda itunga luedolete {count}.",
+      "audienceAllActive": "Every active account. Regional and topic audiences aren't available yet.",
+      "confirmTitleAll": "Send to every active account?",
       "severity": "Aiboisit naepol noi",
       "severities": {
         "high": "Epol noi",

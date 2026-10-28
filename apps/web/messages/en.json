@@ -1043,6 +1043,8 @@
       "none": "None",
       "audience": "Audience",
       "audienceEstimate": "About {count} people.",
+      "audienceAllActive": "Every active account. Regional and topic audiences aren't available yet.",
+      "confirmTitleAll": "Send to every active account?",
       "severity": "Severity",
       "severities": {
         "high": "High",

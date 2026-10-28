@@ -97,4 +97,15 @@ describe("admin screens against the API (Phase 2)", () => {
     expect(called.sort()).toEqual([...paths].sort())
     expect(toast.error).not.toHaveBeenCalled()
   })
+
+  it("Broadcasts offers only 'Everyone' live, with no invented reach or sample reports", async () => {
+    fetchMock.mockResolvedValueOnce(reply(200, []))
+    renderWithIntl(<Broadcasts />)
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1))
+    const audience = screen.getByLabelText("Audience") as HTMLSelectElement
+    expect([...audience.options].map((o) => o.value)).toEqual(["everyone"])
+    expect(screen.getByText(/Every active account/)).toBeInTheDocument()
+    expect(screen.queryByText(/About .* people/)).not.toBeInTheDocument()
+    expect(screen.queryByLabelText(/Link to a fact-check/)).not.toBeInTheDocument()
+  })
 })
