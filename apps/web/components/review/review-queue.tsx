@@ -28,6 +28,7 @@ import { useSession } from "@/components/providers/session-provider"
 import { ReasonBadge, SlaBadge } from "@/components/review/review-badges"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Empty,
   EmptyDescription,
@@ -120,6 +121,7 @@ export function ReviewQueue() {
   const [reports, setReports] = React.useState<Map<string, FactCheckReport>>(
     () => (reviewApiConfigured() ? new Map() : reportsById(SAMPLE_REPORTS))
   )
+  const [loading, setLoading] = React.useState(reviewApiConfigured)
   const tc = useTranslations("Common")
   const errorMessage = useApiErrorMessage()
   const [query, setQuery] = React.useState("")
@@ -140,6 +142,7 @@ export function ReviewQueue() {
       .then(async (queue) => {
         if (cancelled) return
         setCases(queue.data)
+        setLoading(false)
         // Not fetchAllReportsForLibrary(): that's the public listing, which excludes
         // suspended reports (app/services/reports.py's LISTED) — exactly the kind of report a
         // review case is often open about. Fetch each case's report directly instead (GET
@@ -154,7 +157,9 @@ export function ReviewQueue() {
         )
       })
       .catch((e) => {
-        if (!cancelled) toast.error(tc("loadFailed"), { description: errorMessage(e) })
+        if (cancelled) return
+        setLoading(false)
+        toast.error(tc("loadFailed"), { description: errorMessage(e) })
       })
     return () => {
       cancelled = true
@@ -323,6 +328,9 @@ export function ReviewQueue() {
     state: { sorting },
     onSortingChange: setSorting,
   })
+
+  // Live, a placeholder until loaded: "0 cases" would read as an empty queue.
+  if (loading) return <Skeleton className="h-96 w-full" />
 
   return (
     <div className="flex flex-col gap-4">

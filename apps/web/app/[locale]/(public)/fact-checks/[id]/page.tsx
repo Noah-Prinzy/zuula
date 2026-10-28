@@ -21,7 +21,6 @@ import { WhatIsTrueCard } from "@/components/verdict/what-is-true-card"
 import { communityScore } from "@/lib/community"
 import {
   factChecksApiConfigured,
-  fetchAllReportsForLibrary,
   fetchFullReport,
   fetchRelated,
 } from "@/lib/fact-checks-api"
@@ -45,22 +44,9 @@ async function loadRelated(id: string, report: FactCheckReport): Promise<FactChe
   return relatedReports(SAMPLE_REPORTS, report, 3)
 }
 
-// The [locale] layout sets dynamicParams = false (only 5 known locales should ever match), and
-// Next computes that per route as the AND of every segment's own setting — a descendant can't
-// override an ancestor's false back to true. So a real id has to come out of this function
-// too, or it 404s like any other unlisted id, same as it would under the sample-only set.
-export async function generateStaticParams() {
-  const ids = SAMPLE_REPORTS.map((r) => r.id)
-  if (factChecksApiConfigured()) {
-    try {
-      const { reports } = await fetchAllReportsForLibrary()
-      ids.push(...reports.map((r) => r.id))
-    } catch {
-      // Build/dev without a reachable API: the sample ids are still enough to render.
-    }
-  }
-  return ids.map((id) => ({ id }))
-}
+// No generateStaticParams, on purpose: the [locale] layout's dynamicParams = false would then
+// 404 every id not listed at build time, so a report published (or an API unreachable) after
+// the build would 404. Without it, any id renders on request; loadReport() 404s unknown ones.
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const report = await loadReport((await params).id)

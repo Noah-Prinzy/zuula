@@ -6,6 +6,7 @@ import { RiArrowRightLine } from "@remixicon/react"
 import { useTranslations } from "next-intl"
 
 import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { VerdictBadge } from "@/components/verdict/verdict-badge"
@@ -23,10 +24,14 @@ const loadDecisions = () => getHistory().then((page) => page.data)
 // decisions only in demo builds; live, a failed load shows a toast, never the samples.
 export function ReviewHistory() {
   const [filter, setFilter] = React.useState<Filter>("all")
-  const decisions: ReviewDecision[] = useLiveData(reviewApiConfigured(), loadDecisions, SAMPLE_DECISIONS, []).data ?? []
+  const loaded: ReviewDecision[] | null = useLiveData(reviewApiConfigured(), loadDecisions, SAMPLE_DECISIONS, []).data
   const t = useTranslations("Review.history")
   const to = useTranslations("Review.outcomes")
   const f = useFormat()
+
+  // Live, a placeholder until loaded: an empty list would read as "no decisions".
+  if (!loaded) return <Skeleton className="h-64 w-full" />
+  const decisions = loaded
 
   const shown = filter === "all" ? decisions : decisions.filter((d) => d.outcome === filter)
   const count = (f: Filter) => (f === "all" ? decisions.length : decisions.filter((d) => d.outcome === f).length)

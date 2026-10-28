@@ -12,6 +12,7 @@ import {
   StatCard,
 } from "@/components/review/review-badges"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { VerdictBadge } from "@/components/verdict/verdict-badge"
 import { fetchFullReport } from "@/lib/fact-checks-api"
 import { SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
@@ -84,13 +85,16 @@ export function ReviewOverview() {
   const live = reviewApiConfigured()
   // Sample data only in demo builds; live, empty until loaded and a toast if it fails.
   const [demo] = React.useState(() => (live ? EMPTY_STATE : sampleState()))
-  const state = useLiveData(live, loadState, demo, []).data ?? EMPTY_STATE
+  const loaded = useLiveData(live, loadState, demo, []).data
   const t = useTranslations("Review.overview")
   const tr = useTranslations("Review.reasons")
   const to = useTranslations("Review.outcomes")
   const f = useFormat()
   const relativeTime = useRelativeTime()
 
+  // Live, a placeholder until loaded: zeros would read as an empty queue.
+  if (!loaded) return <Skeleton className="h-96 w-full" />
+  const state = loaded
   const withSla = state.cases
     .map((c) => ({ ...c, hoursLeft: hoursLeftFor(dueAtFor(c)) }))
     .sort((a, b) => a.hoursLeft - b.hoursLeft)
