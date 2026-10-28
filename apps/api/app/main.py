@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI
@@ -16,6 +17,7 @@ from app.realtime import redis_client
 from app.webhooks import router as webhooks_router
 from app.worker import dispatch
 
+logger = logging.getLogger("zuula.health")
 settings = get_settings()
 # In production, missing adapter credentials stop startup rather than fall back to stubs.
 assert_production_ready()
@@ -60,6 +62,12 @@ def healthz():
     return {"status": "ok"}
 
 
+def _log_unavailable(what: str, error: Exception) -> None:
+    # The error's type and message say why (DNS, TLS, auth); connection URLs aren't in them.
+    # WARNING, so it shows under plain uvicorn, which doesn't print the app's INFO logs.
+    logger.warning("readyz: %s unavailable: %s: %s", what, type(error).__name__, error)
+
+
 @app.get("/readyz", tags=["health"])
 async def readyz(db: AsyncSession = Depends(get_db)):  # noqa: B008
     """Readiness — PostgreSQL and Redis both answer. 503 (with which one failed) otherwise,
@@ -68,13 +76,15 @@ async def readyz(db: AsyncSession = Depends(get_db)):  # noqa: B008
     try:
         await db.execute(text("SELECT 1"))
         checks["database"] = "ok"
-    except Exception:  # noqa: BLE001 — any failure means "not ready"
+    except Exception as e:  # noqa: BLE001 — any failure means "not ready"
         checks["database"] = "unavailable"
+        _log_unavailable("database", e)
     try:
         await redis_client.get_async_redis().ping()
         checks["redis"] = "ok"
-    except Exception:  # noqa: BLE001
+    except Exception as e:  # noqa: BLE001
         checks["redis"] = "unavailable"
+        _log_unavailable("redis", e)
     ready = all(v == "ok" for v in checks.values())
     return JSONResponse(
         {"status": "ok" if ready else "unavailable", "checks": checks},
