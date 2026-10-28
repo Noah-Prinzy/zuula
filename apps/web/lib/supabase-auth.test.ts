@@ -130,6 +130,16 @@ describe("supabase auth mode", () => {
     await expect(authApi.verifySignUp({ code: "123456" })).rejects.toMatchObject({ code: "bad_request" })
   })
 
+  it("shows email reset errors but hides phone ones that would reveal an account", async () => {
+    const reset = vi.fn().mockResolvedValue({ error: { status: 500, message: "Error sending recovery email" } })
+    const otp = vi.fn().mockResolvedValue({ error: { status: 422, message: "Signups not allowed for otp" } })
+    Object.assign(auth, { resetPasswordForEmail: reset, signInWithOtp: otp })
+    await expect(authApi.forgotPassword({ identifier: "amina@example.com" })).rejects.toMatchObject({
+      message: "Error sending recovery email",
+    })
+    await expect(authApi.forgotPassword({ identifier: "0772123456" })).resolves.toBeUndefined()
+  })
+
   it("is signed out, without calling the API, when there is no Supabase session", async () => {
     signedIn(null)
     await expect(authApi.me()).resolves.toBeNull()

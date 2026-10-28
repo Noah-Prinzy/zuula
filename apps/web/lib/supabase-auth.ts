@@ -237,7 +237,11 @@ export const supabaseAuthApi = {
             phone: c.phone,
             options: { shouldCreateUser: false },
           })
-    if (error?.status === 429) fail(error)
+    if (!error) return
+    // Supabase answers an unknown email exactly like a known one, so its email errors (a failed
+    // send, a bad redirect) reveal nothing and are worth showing. For phones, a no-such-user
+    // error would reveal who has an account; only "too many requests" is shown there.
+    if ("email" in c || error.status === 429) fail(error)
   },
 
   /** Checks the code, sets the new password, then signs out, as the API's reset does. */

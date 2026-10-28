@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (local Redis, worker and pooler set up).
+*Last updated: 28 October 2026 (password reset errors shown).
 
 **Contents**
 
@@ -128,7 +128,8 @@ Supabase: PostgreSQL 17 + pgvector + pg_trgm · Auth · Storage · Realtime
 1. **Sign-up:** Supabase sends the 6-digit code (Brevo), the form verifies it, and the API creates a **Public User** on first contact and links it by `supabase_user_id`. An address that already has an account gets "An account with that email or phone number already exists."
 2. **Account linking:** by `supabase_user_id`; on an existing account's first Supabase sign-in, by its confirmed email (else phone). An account already linked to another Supabase user is never re-linked. Deleting a Supabase user unlinks the account (trigger), so signing up again re-links it. Roles never come from the token.
 3. **Second factor (FR-AUTH-05, as specified):** after the password step the web app calls `POST /api/v1/auth/supabase/second-factor`. Expert Reviewers, Admins and opted-in users get the API's own 6-digit code by email/SMS, tied to that Supabase session; the existing `/sign-in/two-factor` screen completes it. Until then their tokens count as signed out. Passing it creates a `sessions` row (key: an HMAC of the Supabase session id), so sign-out, revocation and `/me/sessions` work as before.
-4. **Google/Facebook** go through Supabase OAuth and come back to `/auth/callback` (needs the providers enabled first).
+4. **Forgot password:** Supabase emails a 6-digit code ("Reset your Zuula password"); the reset screen takes email + code + new password, then signs out. Email errors from Supabase are shown (it answers unknown emails like known ones, so nothing leaks); for phones only rate limits are shown. Supabase records each send in `auth.users.recovery_sent_at`, handy for checking whether an email went out.
+5. **Google/Facebook** go through Supabase OAuth and come back to `/auth/callback` (needs the providers enabled first).
 
 Verified end to end on 27 Oct 2026: sign-up with the emailed code, account created and linked, `/api/v1/me` authenticated. The Expert second factor is covered by contract tests; a live run needs Redis + the worker locally (§6).
 
