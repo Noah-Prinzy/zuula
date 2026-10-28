@@ -47,7 +47,7 @@ Deadline: **30 November 2026**.
 
 | Area | State |
 |---|---|
-| P1 Frontend | Every page built (Next.js 16 + shadcn/ui) and wired to the API (Phase 2). Sample data is still shown in demo builds, and — a launch risk — public and review screens also fall back to it when an API call fails (§8). |
+| P1 Frontend | Every page built (Next.js 16 + shadcn/ui) and wired to the API (Phase 2). Sample data only in demo builds; live builds show an error or empty state when the API fails (§8). |
 | P2 API design | Done (FastAPI core API + partner API, webhooks, Celery pipeline). |
 | P3 Backend + database | Done (PostgreSQL + pgvector, auth, weighted CCS, audit log). |
 | P4 AI engine | Built (Groq + Tavily verdict engine, multilingual embeddings, local-evidence RAG, Sunbird, Whisper, local signals). FR-DETECT-03's ≥90% accuracy is **unverified** — see §8 and [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03). |
@@ -184,7 +184,9 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 
 **GitHub `main` vs local `main`:** synced 28 Oct 2026 by merging GitHub `main` into local `main` (PR #70's follow-up fix and Dependabot #66–#69). GitHub's `0005_accreditation_review` doesn't exist locally (it's `0008`, applied to production); `alembic heads` shows the single head `0008`. Everything was pushed on 28 Oct 2026; local and GitHub `main` match (`a644d70`), and Vercel deployed it. Every push to `main` deploys the web app. **Never apply a `0005_accreditation_review` migration to production.**
 
-**Launch risk: silent fallback to sample reports.** Home, the fact-check library, a report page, Verify and the Review screens show the fictional sample reports (`lib/mock/`) not only in demo builds but also whenever the API call fails. Once the API is hosted, an outage would present invented fact-checks as real ones. Live builds should show an error or empty state instead (planned in §11).
+**Fixed 28 Oct 2026 (`52e99a0`): no silent fallback to sample reports.** Home, the Library, report pages, Verify and the Review screens used to show the fictional `lib/mock/` reports whenever an API call failed, so an outage would have passed invented fact-checks off as real ones. Sample data is now for demo builds only (no `NEXT_PUBLIC_API_URL`). Live: the Library and report pages go to the error page with Retry; Home's two cards say "Fact-checks can't be loaded right now" (or "No fact-checks published yet" when the API has none); Verify hides its leaderboard; Review screens start empty and show a "Couldn't load this data" toast; an unknown review case is "not found", never a sample case. Checked in the browser by stopping the local API. Tests: `components/review/review-live.test.tsx`, `app/[locale]/(public)/public-live.test.ts`. The two new Home strings are in English in all five locale files, pending the translation review.
+
+**Note for hosting (Milestone B):** report pages are listed at build time (`generateStaticParams`; the `[locale]` layout's `dynamicParams = false` can't be overridden). A live build that can't reach the API at build time lists no real report ids, so every real report 404s until the next build. Deploy the API before pointing a Vercel build at it, and rebuild after loading new reports, or move report pages to on-demand rendering.
 
 **Launch blocker: production holds only sample data.** The production database was seeded with `python -m app.db.seed` *without* `--real`. Audit of 28 Oct 2026 (read-only):
 
@@ -221,8 +223,8 @@ Remaining fix, before launch: back up the database, then reset it to real conten
 **Security updates (28 Oct 2026):** Next.js 16.3.8 → 16.4.1 (fixes two critical unauthenticated remote-code-execution flaws and a high denial-of-service flaw), eslint-config-next 16.4.1, vitest/@vitest/mocker 4.1.12, ip-address 10.7.5. Still open: `deepmerge` 4.3.1 (low severity, transitive; no fixed version exists yet). Check GitHub's Dependabot alerts after each dependency change; production runs whatever `main` holds.
 
 **Housekeeping**
-- 9 seed/backfill API tests fail on Windows only (`UnicodeDecodeError: 'charmap'` reading a data file — needs `encoding="utf-8"`).
-- `apps/web/lib/supabase-api.ts` and `apps/api/scripts/test_supabase_connection.py` are unused duplicates from setup (not committed); delete them.
+- Done 28 Oct 2026: seed and eval data files are read as UTF-8 (`6ca9507`), so all 489 API tests pass on Windows without `PYTHONUTF8`; the unused setup leftovers `apps/web/lib/supabase-api.ts` and `apps/api/scripts/test_supabase_connection.py` were deleted (never committed).
+- Restart the web dev server after any `npm install` that changes Next.js: a server left running across the 16.4.1 upgrade served only 500s (Turbopack "module not found") until it was restarted with `.next/dev` cleared.
 - `scripts/run_eval.py` still writes its report to `apps/api/EVAL_RESULTS.md`; fold new results into Appendix F.
 
 **Open questions for the supervisor** are listed in [Appendix B](#appendix-b--zuula-web-app) ("Changes from the specification").
@@ -234,7 +236,7 @@ Agreed 27 Oct 2026: finish Zuula on free tiers only (domain the one possible cos
 | Phase | Scope | Status |
 |---|---|---|
 | 1. Supabase migration (wk 1–2) | Database, Auth, Storage, Realtime, RLS; keep Redis only for Celery; local AI providers; Cloudflare, Brevo, UptimeRobot | Database, Auth, RLS, Brevo, UptimeRobot done; Storage, Realtime, Upstash, Cloudflare pending |
-| 2. Frontend-to-API wiring (wk 2–3) | Replace all mock data: home, library, report, submission (+ live status), all admin screens, all account screens | Wiring done 28 Oct. Left: signed-in click-through, and no sample-data fallback in live builds (§8) |
+| 2. Frontend-to-API wiring (wk 2–3) | Replace all mock data: home, library, report, submission (+ live status), all admin screens, all account screens | Wiring done 28 Oct; sample-data fallback removed from live builds (§8). Left: signed-in click-through |
 | 3. AI engine upgrades (wk 3–4) | Vercel AI SDK with Groq → Gemini → OpenRouter fallback, Gemini grounding search, all local signals on, FR-DETECT-03 re-run with dedicated keys, trusted sources 12 → 50 | Not started |
 | 4. Missing features (wk 4–5) | Push notifications (FCM/OneSignal), WhatsApp/Telegram media (Groq Whisper), webhook dedupe, regional broadcast targeting, virus-scanned accreditation documents | Not started |
 | 5. Production deployment (wk 5–6) | Cloudflare, API + worker on Render/Fly.io, Upstash, Vercel, Brevo SMTP, Turnstile, monitoring, end-to-end test | Not started |
@@ -262,7 +264,7 @@ About 4½ weeks to the 30 November deadline. The §9 phases are reordered so the
 
 | # | Milestone | Work | Done when | Size |
 |---|---|---|---|---|
-| A | **Close Phase 2** | (1) Live builds stop falling back to sample reports: show an error or empty state; sample data only in demo builds. (2) Signed-in click-through of every wired screen as Admin, and as a Public user. (3) Housekeeping: delete the two untracked leftovers, `encoding="utf-8"` for the 9 Windows-only seed tests. | No `lib/mock` data is reachable in a live build; every screen checked against the local API. | 1–2 days |
+| A | **Close Phase 2** | (1) Live builds stop falling back to sample reports: show an error or empty state; sample data only in demo builds. (2) Signed-in click-through of every wired screen as Admin, and as a Public user. (3) Housekeeping: delete the two untracked leftovers, `encoding="utf-8"` for the 9 Windows-only seed tests. | No `lib/mock` data is reachable in a live build; every screen checked against the local API. | 1–2 days — (1) and (3) done 28 Oct; (2) waiting on Noah to sign in |
 | B | **Host the API early** (Phase 5 brought forward) | API + Celery worker on Render (free), Upstash Redis, Supabase IPv4 pooler, `ZUULA_CORS_ORIGINS` and Supabase redirect URLs for the Vercel domain, Vercel `NEXT_PUBLIC_API_URL` + `NEXT_PUBLIC_AUTH_MODE=supabase`. Follows [Appendix E](#appendix-e--deploying-the-api-to-render). | The Vercel site signs in and submits against the hosted API. | 2–3 days |
 | C | **Storage** (rest of Phase 1) | API's S3 settings → Supabase Storage (S3-compatible); `zuula-documents` stays private with signed links. Realtime Broadcast is deferred: the SSE + polling status page already works. | Uploads and verification documents land in Supabase Storage. | 1 day |
 | D | **AI engine** (Phase 3) | Groq → Gemini → OpenRouter fallback chain, in Python inside `apps/api/app/providers/` (the engine lives in FastAPI, so the Vercel AI SDK doesn't fit); trusted sources 12 → 50; FR-DETECT-03 re-run with dedicated keys, results into Appendix F. | A provider outage doesn't fail a check; accuracy measured honestly. | 4–5 days |
