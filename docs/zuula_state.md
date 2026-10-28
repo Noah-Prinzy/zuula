@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (Next.js security upgrade).
+*Last updated: 28 October 2026 (status review and next-phase plan, §11).*
 
 **Contents**
 
@@ -19,6 +19,7 @@ This is the project's single document. It replaces the separate READMEs, ADRs, U
   - [8. What's left](#8-whats-left)
   - [9. The completion plan (cost-free stack)](#9-the-completion-plan-cost-free-stack)
   - [10. Design resources](#10-design-resources)
+  - [11. Next steps: plan to launch (28 Oct 2026)](#11-next-steps-plan-to-launch-28-oct-2026)
 - [Part 2 — Reference (the earlier documents, unchanged)](#part-2--reference-the-earlier-documents-unchanged)
 
 ---
@@ -46,7 +47,7 @@ Deadline: **30 November 2026**.
 
 | Area | State |
 |---|---|
-| P1 Frontend | Every page built (Next.js 16 + shadcn/ui). Admin, account and submission screens still on mock data. |
+| P1 Frontend | Every page built (Next.js 16 + shadcn/ui) and wired to the API (Phase 2). Sample data is still shown in demo builds, and — a launch risk — public and review screens also fall back to it when an API call fails (§8). |
 | P2 API design | Done (FastAPI core API + partner API, webhooks, Celery pipeline). |
 | P3 Backend + database | Done (PostgreSQL + pgvector, auth, weighted CCS, audit log). |
 | P4 AI engine | Built (Groq + Tavily verdict engine, multilingual embeddings, local-evidence RAG, Sunbird, Whisper, local signals). FR-DETECT-03's ≥90% accuracy is **unverified** — see §8 and [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03). |
@@ -54,7 +55,7 @@ Deadline: **30 November 2026**.
 | Phase 2: frontend-to-API wiring | **In progress.** Submission flow done (28 Oct): the composers post to `POST /submissions` (JSON, or multipart with real upload progress for media; idempotency key per attempt), and the Status page follows the real pipeline over the API's server-sent events, polling the status if the stream drops, then opens the real report. Demo builds keep the simulated flow. **All 8 admin screens wired** (28 Oct; `lib/admin-api.ts`, shared `useAdminData` hook and `Pager`): Overview, Users (server-side search/filters/paging), Moderation, Sources, Broadcasts, Audit log (action filter + paging server-side), Settings, Reports. Actions the API doesn't have yet are hidden live and kept in demo builds: "send to review" and manipulation-signal actions (Moderation), source re-crawl, WhatsApp broadcasts. **Account screens wired** (28 Oct; `lib/account-api.ts`, shared `hooks/use-live-data.ts`): Profile (details, password, two-factor, devices, data export, account erasure), Activity, Notifications (bell + page), API keys, Alerts, and the journalist verification application (feeds Admin → Verifications). With Supabase sign-in, passwords change in Supabase (current password re-checked first) and the email address isn't edited here. Not in the API yet, so local or demo-only: marking a notification unread or deleting it, alert delivery frequency, withdrawing a verification application, and the application's job title / work email / links fields. Erasing an account anonymises the Zuula account but leaves its Supabase login (deleting that needs the service-role key server-side). **Phase 2's wiring is done**; what's left is a signed-in click-through of each screen. |
 | Hardening + launch | Not started. |
 
-### Work landed on 27–28 October 2026 (not yet pushed)
+### Work landed on 27–28 October 2026 (all pushed to GitHub `main` on 28 Oct; Phase 2 and the security upgrade followed, last commit `a644d70`)
 
 | Commit | What |
 |---|---|
@@ -181,7 +182,9 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 
 ## 8. What's left
 
-**GitHub `main` vs local `main`:** synced 28 Oct 2026 by merging GitHub `main` into local `main` (PR #70's follow-up fix and Dependabot #66–#69). GitHub's `0005_accreditation_review` doesn't exist locally (it's `0008`, applied to production); `alembic heads` shows the single head `0008`. Local `main` is ahead of GitHub and not pushed yet; pushing deploys the web app to Vercel. **Never apply a `0005_accreditation_review` migration to production.**
+**GitHub `main` vs local `main`:** synced 28 Oct 2026 by merging GitHub `main` into local `main` (PR #70's follow-up fix and Dependabot #66–#69). GitHub's `0005_accreditation_review` doesn't exist locally (it's `0008`, applied to production); `alembic heads` shows the single head `0008`. Everything was pushed on 28 Oct 2026; local and GitHub `main` match (`a644d70`), and Vercel deployed it. Every push to `main` deploys the web app. **Never apply a `0005_accreditation_review` migration to production.**
+
+**Launch risk: silent fallback to sample reports.** Home, the fact-check library, a report page, Verify and the Review screens show the fictional sample reports (`lib/mock/`) not only in demo builds but also whenever the API call fails. Once the API is hosted, an outage would present invented fact-checks as real ones. Live builds should show an error or empty state instead (planned in §11).
 
 **Launch blocker: production holds only sample data.** The production database was seeded with `python -m app.db.seed` *without* `--real`. Audit of 28 Oct 2026 (read-only):
 
@@ -231,7 +234,7 @@ Agreed 27 Oct 2026: finish Zuula on free tiers only (domain the one possible cos
 | Phase | Scope | Status |
 |---|---|---|
 | 1. Supabase migration (wk 1–2) | Database, Auth, Storage, Realtime, RLS; keep Redis only for Celery; local AI providers; Cloudflare, Brevo, UptimeRobot | Database, Auth, RLS, Brevo, UptimeRobot done; Storage, Realtime, Upstash, Cloudflare pending |
-| 2. Frontend-to-API wiring (wk 2–3) | Replace all mock data: home, library, report, submission (+ live status), all admin screens, all account screens | Not started (fact-checks, ratings and review already wired) |
+| 2. Frontend-to-API wiring (wk 2–3) | Replace all mock data: home, library, report, submission (+ live status), all admin screens, all account screens | Wiring done 28 Oct. Left: signed-in click-through, and no sample-data fallback in live builds (§8) |
 | 3. AI engine upgrades (wk 3–4) | Vercel AI SDK with Groq → Gemini → OpenRouter fallback, Gemini grounding search, all local signals on, FR-DETECT-03 re-run with dedicated keys, trusted sources 12 → 50 | Not started |
 | 4. Missing features (wk 4–5) | Push notifications (FCM/OneSignal), WhatsApp/Telegram media (Groq Whisper), webhook dedupe, regional broadcast targeting, virus-scanned accreditation documents | Not started |
 | 5. Production deployment (wk 5–6) | Cloudflare, API + worker on Render/Fly.io, Upstash, Vercel, Brevo SMTP, Turnstile, monitoring, end-to-end test | Not started |
@@ -252,6 +255,22 @@ Current design system: shadcn preset `b20twYRDfO`; brand colours Crimson `#C7003
 - **3D and animation:** [Spline](https://spline.design), [Vectary](https://vectary.com), [Unicorn Studio](https://unicorn.studio), [Theatre JS](https://theatrejs.com), [GSAP](https://gsap.com), [Motion](https://motion.dev), [Barba JS](https://barba.js.org), [SVGator](https://svgator.com)
 - **Icons and fonts:** [Lucide](https://lucide.dev), [Phosphor Icons](https://phosphoricons.com), [Iconify](https://iconify.design), [Heroicons](https://heroicons.com), [Fontshare](https://fontshare.com), [Bunny Fonts](https://fonts.bunny.net)
 - **AI builders:** [Manus](https://manus.im)
+
+## 11. Next steps: plan to launch (28 Oct 2026)
+
+About 4½ weeks to the 30 November deadline. The §9 phases are reordered so the riskiest work, a hosted API, happens early rather than in week 5. Production today is the Vercel web app in demo mode with no hosted API. Each milestone ends green (`tsc`, vitest, pytest), committed, with this document updated.
+
+| # | Milestone | Work | Done when | Size |
+|---|---|---|---|---|
+| A | **Close Phase 2** | (1) Live builds stop falling back to sample reports: show an error or empty state; sample data only in demo builds. (2) Signed-in click-through of every wired screen as Admin, and as a Public user. (3) Housekeeping: delete the two untracked leftovers, `encoding="utf-8"` for the 9 Windows-only seed tests. | No `lib/mock` data is reachable in a live build; every screen checked against the local API. | 1–2 days |
+| B | **Host the API early** (Phase 5 brought forward) | API + Celery worker on Render (free), Upstash Redis, Supabase IPv4 pooler, `ZUULA_CORS_ORIGINS` and Supabase redirect URLs for the Vercel domain, Vercel `NEXT_PUBLIC_API_URL` + `NEXT_PUBLIC_AUTH_MODE=supabase`. Follows [Appendix E](#appendix-e--deploying-the-api-to-render). | The Vercel site signs in and submits against the hosted API. | 2–3 days |
+| C | **Storage** (rest of Phase 1) | API's S3 settings → Supabase Storage (S3-compatible); `zuula-documents` stays private with signed links. Realtime Broadcast is deferred: the SSE + polling status page already works. | Uploads and verification documents land in Supabase Storage. | 1 day |
+| D | **AI engine** (Phase 3) | Groq → Gemini → OpenRouter fallback chain, in Python inside `apps/api/app/providers/` (the engine lives in FastAPI, so the Vercel AI SDK doesn't fit); trusted sources 12 → 50; FR-DETECT-03 re-run with dedicated keys, results into Appendix F. | A provider outage doesn't fail a check; accuracy measured honestly. | 4–5 days |
+| E | **Production data reset** | `pg_dump` backup, real-content-only seed mode, reset production (AFP + Uganda fact-checks, trusted sources, Noah's accounts kept). Needs Noah's go-ahead. | Production holds no sample data. | 1 day |
+| F | **Missing features** (Phase 4, by priority) | Webhook dedupe; regional broadcast targeting; WhatsApp/Telegram media via Groq Whisper; push notifications last, cut if time runs out. | Agreed subset shipped. | 4–5 days |
+| G | **Hardening and launch** (Phase 6 + remaining Phase 5) | Cloudflare DNS + Turnstile, `zuula.ug` sending domain in Brevo, Google/Facebook sign-in, credential rotation, delete legacy auth, WCAG 2.1 AA and Lighthouse ≥ 80 passes, Playwright smoke tests, native-speaker translation review (needs reviewers Noah arranges). | Launch checklist signed off by Noah. | 5–6 days |
+
+**Calls for Noah:** where to start (recommended: A, then B); whether Realtime Broadcast can wait until after launch; which Phase 4 features may be cut; who reviews the translations.
 
 ---
 
