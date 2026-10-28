@@ -3,6 +3,7 @@
     "label": "Language"
   },
   "Common": {
+    "loadFailed": "Couldn't load this data",
     "appName": "Zuula",
     "tagline": "Uganda Fact-Guard",
     "signIn": "Sign In",

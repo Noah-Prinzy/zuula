@@ -17,7 +17,11 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Switch } from "@/components/ui/switch"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
 import { useContentLabels } from "@/hooks/use-content-labels"
+import { useLiveData } from "@/hooks/use-live-data"
+import { accountApi, accountApiLive, type AlertSettings as ApiAlertSettings } from "@/lib/account-api"
 import { cn } from "@/lib/utils"
 
 // FR-NOTIFY-01: topic subscriptions.
@@ -80,11 +84,49 @@ function ToggleRow({
   )
 }
 
+type Form = {
+  topics: Record<string, boolean>
+  channels: Record<string, boolean>
+  types: { results: boolean; viral: boolean; reviews: boolean }
+}
+
+const DEMO: ApiAlertSettings = {
+  topics: ["health", "elections", "technology"],
+  notifyOn: { submissionResults: true, viralMisinformation: true, expertReviews: true },
+  channels: { inApp: true, email: true, push: false, sms: false },
+}
+
+function toForm(s: ApiAlertSettings): Form {
+  return {
+    topics: Object.fromEntries((s.topics ?? []).map((t) => [t, true])),
+    channels: { inapp: !!s.channels?.inApp, email: !!s.channels?.email, push: !!s.channels?.push, sms: !!s.channels?.sms },
+    types: { results: !!s.notifyOn?.submissionResults, viral: !!s.notifyOn?.viralMisinformation, reviews: !!s.notifyOn?.expertReviews },
+  }
+}
+
+function toApi(f: Form): ApiAlertSettings {
+  return {
+    topics: Object.keys(f.topics).filter((k) => f.topics[k]),
+    notifyOn: { submissionResults: f.types.results, viralMisinformation: f.types.viral, expertReviews: f.types.reviews },
+    channels: { inApp: f.channels.inapp, email: f.channels.email, push: f.channels.push, sms: f.channels.sms },
+  }
+}
+
+// FR-ALERT: topics, channels and what to be told about. Live they're GET/PATCH
+// /me/alert-settings; the delivery frequency has no API field yet, so it stays on this page.
 export function AlertSettings() {
-  const [topics, setTopics] = React.useState<Record<string, boolean>>({ health: true, elections: true, technology: true })
-  const [channels, setChannels] = React.useState<Record<string, boolean>>({ inapp: true, email: true, push: false, sms: false })
+  const live = accountApiLive()
+  const { data } = useLiveData(live, accountApi.alertSettings, DEMO, [])
+  if (!data) return <Skeleton className="h-96 w-full" />
+  return <AlertSettingsForm live={live} initial={toForm(data)} />
+}
+
+function AlertSettingsForm({ live, initial }: { live: boolean; initial: Form }) {
+  const [topics, setTopics] = React.useState<Record<string, boolean>>(initial.topics)
+  const [channels, setChannels] = React.useState<Record<string, boolean>>(initial.channels)
   const [connected, setConnected] = React.useState<Record<string, boolean>>({})
-  const [types, setTypes] = React.useState({ results: true, viral: true, reviews: true })
+  const [types, setTypes] = React.useState(initial.types)
+  const errorMessage = useApiErrorMessage()
   const [frequency, setFrequency] = React.useState<Frequency>("instant")
   const [dirty, setDirty] = React.useState(false)
   const t = useTranslations("Account.alerts")
@@ -97,7 +139,15 @@ export function AlertSettings() {
   }
   const followed = Object.values(topics).filter(Boolean).length
 
-  function save() {
+  async function save() {
+    if (live) {
+      try {
+        await accountApi.updateAlertSettings(toApi({ topics, channels, types }))
+      } catch (e) {
+        toast.error(errorMessage(e))
+        return
+      }
+    }
     setDirty(false)
     toast.success(t("saved"), {
       description: t("savedSummary", { count: followed, frequency: t(`frequencies.${frequency}.label`) }),

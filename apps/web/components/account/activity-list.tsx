@@ -27,6 +27,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { VerdictBadge } from "@/components/verdict/verdict-badge"
 import { useRelativeTime } from "@/hooks/use-relative-time"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useLiveData } from "@/hooks/use-live-data"
+import { accountApi, accountApiLive, type ActivityRating } from "@/lib/account-api"
 import { SAMPLE_RATINGS, SAMPLE_SUBMISSIONS, type ActivitySubmission } from "@/lib/mock/account"
 import { cn } from "@/lib/utils"
 
@@ -49,10 +52,10 @@ function StatusCell({ s }: { s: ActivitySubmission }) {
   )
 }
 
-function Submissions() {
+function Submissions({ items }: { items: ActivitySubmission[] }) {
   const t = useTranslations("Account.activity")
   const relativeTime = useRelativeTime()
-  if (SAMPLE_SUBMISSIONS.length === 0) {
+  if (items.length === 0) {
     return (
       <Empty className="border">
         <EmptyHeader>
@@ -70,7 +73,7 @@ function Submissions() {
 
   return (
     <ul className="flex flex-col divide-y border bg-card">
-      {SAMPLE_SUBMISSIONS.map((s) => {
+      {items.map((s) => {
         const Icon = TYPE_ICON[s.type]
         return (
           <li key={s.trackingId} className="flex flex-col gap-3 p-4 md:flex-row md:items-center">
@@ -108,12 +111,12 @@ function Submissions() {
   )
 }
 
-function Ratings() {
+function Ratings({ items }: { items: ActivityRating[] }) {
   const t = useTranslations("Account.activity")
   const relativeTime = useRelativeTime()
   return (
     <ul className="flex flex-col divide-y border bg-card">
-      {SAMPLE_RATINGS.map((r) => {
+      {items.map((r) => {
         const accurate = r.vote === "accurate"
         const Icon = accurate ? RiThumbUpFill : RiThumbDownFill
         return (
@@ -139,19 +142,25 @@ function Ratings() {
   )
 }
 
+// FR-ACCOUNT: your own submissions and ratings, from the API (GET /me/submissions, /me/ratings)
+// or, in demo builds, the samples.
 export function ActivityList() {
   const t = useTranslations("Account.activity")
+  const live = accountApiLive()
+  const submissions = useLiveData(live, () => accountApi.submissions().then((p) => p.data), SAMPLE_SUBMISSIONS, [])
+  const ratings = useLiveData(live, () => accountApi.ratings().then((p) => p.data), SAMPLE_RATINGS, [])
+  if (!submissions.data || !ratings.data) return <Skeleton className="h-64 w-full" />
   return (
     <Tabs defaultValue="submissions" className="gap-4">
       <TabsList>
-        <TabsTrigger value="submissions">{t("submissionsTab", { count: SAMPLE_SUBMISSIONS.length })}</TabsTrigger>
-        <TabsTrigger value="ratings">{t("ratingsTab", { count: SAMPLE_RATINGS.length })}</TabsTrigger>
+        <TabsTrigger value="submissions">{t("submissionsTab", { count: submissions.data.length })}</TabsTrigger>
+        <TabsTrigger value="ratings">{t("ratingsTab", { count: ratings.data.length })}</TabsTrigger>
       </TabsList>
       <TabsContent value="submissions">
-        <Submissions />
+        <Submissions items={submissions.data} />
       </TabsContent>
       <TabsContent value="ratings">
-        <Ratings />
+        <Ratings items={ratings.data} />
       </TabsContent>
     </Tabs>
   )

@@ -33,7 +33,11 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/u
 import { Field, FieldError, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
+import { useLiveData } from "@/hooks/use-live-data"
 import { useRelativeTime } from "@/hooks/use-relative-time"
+import { accountApi, accountApiLive } from "@/lib/account-api"
 import { useFormat } from "@/lib/format"
 import {
   API_RATE_LIMIT,
@@ -78,6 +82,7 @@ function CreateKeyDialog({
   const [secret, setSecret] = React.useState<string | null>(null)
   const t = useTranslations("Account.apiKeys")
   const tc = useTranslations("Common")
+  const errorMessage = useApiErrorMessage()
 
   function close(o: boolean) {
     onOpenChange(o)
@@ -89,10 +94,21 @@ function CreateKeyDialog({
     }
   }
 
-  function create(e: React.FormEvent) {
+  async function create(e: React.FormEvent) {
     e.preventDefault()
     if (name.trim().length < 2) return setError(t("nameRequired"))
     if (scopes.length === 0) return setError(t("scopeRequired"))
+    if (accountApiLive()) {
+      // The API makes the key and returns its secret this once (only a hash is stored).
+      try {
+        const { secret: real, ...key } = await accountApi.createApiKey({ name: name.trim(), scopes })
+        setSecret(real)
+        onCreate(key)
+      } catch (err) {
+        setError(errorMessage(err))
+      }
+      return
+    }
     const s = demoSecret()
     setSecret(s)
     onCreate({
@@ -170,10 +186,27 @@ function CreateKeyDialog({
 }
 
 // FR-API-01 / 02: API keys for partners and journalists.
+// FR-API-02: partner API keys. Live, the list, usage, creating and revoking go through the API
+// (GET/POST/DELETE /me/api-keys, GET /me/api-usage); demo builds keep the samples.
 export function ApiKeys() {
-  const [keys, setKeys] = React.useState(SAMPLE_API_KEYS)
+  const live = accountApiLive()
+  const loaded = useLiveData(live, accountApi.apiKeys, SAMPLE_API_KEYS, [])
+  const usageData = useLiveData(live, accountApi.apiUsage, SAMPLE_API_USAGE, [])
+  if (!loaded.data || !usageData.data) return <Skeleton className="h-64 w-full" />
+  return (
+    <ApiKeysView
+      live={live}
+      initial={loaded.data}
+      usage={{ usedThisHour: usageData.data.usedThisHour ?? 0, last24h: usageData.data.last24h ?? 0 }}
+    />
+  )
+}
+
+function ApiKeysView({ live, initial, usage }: { live: boolean; initial: ApiKey[]; usage: typeof SAMPLE_API_USAGE }) {
+  const [keys, setKeys] = React.useState(initial)
   const [open, setOpen] = React.useState(false)
-  const pct = Math.round((SAMPLE_API_USAGE.usedThisHour / API_RATE_LIMIT) * 100)
+  const errorMessage = useApiErrorMessage()
+  const pct = Math.round((usage.usedThisHour / API_RATE_LIMIT) * 100)
   const t = useTranslations("Account.apiKeys")
   const tc = useTranslations("Common")
   const f = useFormat()
@@ -231,7 +264,15 @@ export function ApiKeys() {
                       <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
                       <AlertDialogAction
                         className="bg-destructive text-white hover:bg-destructive/90"
-                        onClick={() => {
+                        onClick={async () => {
+                          if (live) {
+                            try {
+                              await accountApi.revokeApiKey(k.id)
+                            } catch (e) {
+                              toast.error(errorMessage(e))
+                              return
+                            }
+                          }
                           setKeys((ks) => ks.filter((x) => x.id !== k.id))
                           toast.success(t("revoked", { name: k.name }))
                         }}
@@ -256,12 +297,12 @@ export function ApiKeys() {
             <div className="flex items-baseline justify-between text-sm">
               <span>{t("thisHour")}</span>
               <span className="font-mono tabular-nums">
-                {SAMPLE_API_USAGE.usedThisHour} / {API_RATE_LIMIT}
+                {usage.usedThisHour} / {API_RATE_LIMIT}
               </span>
             </div>
             <Progress value={pct} aria-label={t("usageLabel", { percent: pct })} />
             <p className="text-xs text-muted-foreground">
-              {t("usageBody", { count: f.number(SAMPLE_API_USAGE.last24h) })}
+              {t("usageBody", { count: f.number(usage.last24h) })}
             </p>
           </div>
         </SettingsSection>
