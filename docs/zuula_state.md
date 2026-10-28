@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (password reset errors shown).
+*Last updated: 28 October 2026 (admin sign-in verified; role-verification idea recorded).
 
 **Contents**
 
@@ -133,7 +133,11 @@ Supabase: PostgreSQL 17 + pgvector + pg_trgm · Auth · Storage · Realtime
 
 Verified end to end on 27 Oct 2026: sign-up with the emailed code, account created and linked, `/api/v1/me` authenticated. The Expert second factor is covered by contract tests; a live run needs Redis + the worker locally (§6).
 
-**Who can change what:** users edit their own name, language, district, password, two-factor opt-in and devices, can export or delete their data, and can apply for Journalist/Expert verification (`/me/verification`). Only admins change roles and statuses (Admin → Users, audited; admins can't change their own). An admin review queue for verification requests is being built in a separate session.
+**Who can change what:** users edit their own name, language, district, password, two-factor opt-in and devices, can export or delete their data, and can apply for Journalist/Expert verification (`/me/verification`). Only admins change roles and statuses (Admin → Users, audited; admins can't change their own). An admin review queue for verification requests is built on branch `claude/competent-taussig-0c616a` (commit `abc8826`), not yet reviewed or merged.
+
+**How admin accounts are created:** every account starts as a Public User. The first Admin has to be set directly in the database, as done for `noahprinzy@gmail.com` on 28 Oct 2026 (audited); after that, Admins promote others through Admin → Users. Journalists and Experts apply through verification and are approved by an Admin. Admin sign-in was verified end to end on 28 Oct 2026: password, then the emailed second-step code, then the Admin area.
+
+**Future idea (Noah, 28 Oct 2026; not planned yet):** let people choose the role they're registering for at sign-up (Journalist, Expert, Admin). The account stays pending until checks pass: a series of confirmation steps where they submit details verified against official Ugandan documents as the source of truth. Builds on the verification flow and admin review queue.
 
 ## 6. Running it locally
 
