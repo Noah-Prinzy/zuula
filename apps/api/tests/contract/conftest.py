@@ -58,7 +58,9 @@ __all__ = ["ADMIN", "EXPERT", "JOURNALIST", "PARTNER_KEY", "PUBLIC", "SAMPLE_PAS
 
 
 def _text_form_loads(value: bytes, **parameters: str):
-    return MultiDict([(k, plain_loads(v)) for k, v in data_form_loads(value, **parameters).items(multi=True)])
+    return MultiDict(
+        [(k, plain_loads(v)) for k, v in data_form_loads(value, **parameters).items(multi=True)]
+    )
 
 
 @pytest.fixture(scope="session")
@@ -76,10 +78,15 @@ def validated_app():
     # `format: binary` file part (SubmissionInput.file) fails `type: string` too. Decoding each
     # part the way plain_loads does lets the file validate as the string OAS 3.0 says it is.
     # This only affects validation; the app still reads the raw upload.
+    #
+    # Likewise the accreditation document download's binary responses (PDF/image bodies
+    # against `type: string, format: binary`).
+    binary_types = ("application/pdf", "image/jpeg", "image/png", "image/webp")
     config = Config(
         extra_media_type_deserializers={
             "text/event-stream": plain_loads,
             "multipart/form-data": _text_form_loads,
+            **dict.fromkeys((*binary_types, "application/octet-stream"), plain_loads),
         }
     )
     spec = OpenAPI.from_file_path(str(SPEC_PATH), config=config)
