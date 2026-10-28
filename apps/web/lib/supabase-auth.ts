@@ -154,6 +154,24 @@ export async function startOAuth(
   if (error) fail(error)
 }
 
+/**
+ * Change the password of the signed-in Supabase user. Supabase would accept a new password on
+ * the session alone, so the current one is checked first by signing in with it.
+ */
+export async function changeSupabasePassword(current: string, next: string) {
+  const a = await auth()
+  const { data } = await a.getUser()
+  const email = data.user?.email
+  const phone = data.user?.phone
+  if (!email && !phone) throw new ApiError(401, "unauthorized", "Sign in again to change your password.")
+  const { error: wrong } = await a.signInWithPassword(
+    email ? { email, password: current } : { phone: `+${phone!.replace(/^\+/, "")}`, password: current }
+  )
+  if (wrong) throw new ApiError(400, "bad_request", "Your current password isn't right.")
+  const { error } = await a.updateUser({ password: next })
+  if (error) fail(error)
+}
+
 /** The current Supabase access token, for request()'s Authorization header. */
 export async function accessToken(): Promise<string | null> {
   const { data } = await (await auth()).getSession()

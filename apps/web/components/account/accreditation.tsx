@@ -19,6 +19,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
+import { useLiveData } from "@/hooks/use-live-data"
+import { accountApi, accountApiLive, type Verification } from "@/lib/account-api"
 import { identifierKind } from "@/lib/auth"
 import { useFormat } from "@/lib/format"
 import { formatBytes, MAX_FILE_BYTES } from "@/lib/submission"
@@ -95,6 +99,8 @@ function ApplicationForm({ onSubmitted }: { onSubmitted: () => void }) {
   const [busy, setBusy] = React.useState(false)
   const t = useTranslations("Account.accreditation")
 
+  const errorMessage = useApiErrorMessage()
+
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     const next: Record<string, string> = {}
@@ -107,7 +113,24 @@ function ApplicationForm({ onSubmitted }: { onSubmitted: () => void }) {
     setErrors(next)
     if (Object.keys(next).length) return
     setBusy(true)
-    await new Promise((r) => setTimeout(r, 700))
+    if (accountApiLive()) {
+      // POST /me/verification takes the outlet, the document and an optional press-card number;
+      // job title, work email and links have no API field yet and aren't sent.
+      const form = new FormData()
+      form.append("organisation", outlet.trim())
+      form.append("role", "journalist")
+      if (membership.trim()) form.append("pressCardNumber", membership.trim())
+      form.append("documents", file!)
+      try {
+        await accountApi.applyForVerification(form)
+      } catch (err) {
+        setBusy(false)
+        toast.error(errorMessage(err))
+        return
+      }
+    } else {
+      await new Promise((r) => setTimeout(r, 700))
+    }
     setBusy(false)
     onSubmitted()
     toast.success(t("submitted"), { description: t("submittedBody") })
@@ -194,10 +217,23 @@ function ApplicationForm({ onSubmitted }: { onSubmitted: () => void }) {
 }
 
 // FR-AUTH-02 / FR-RATE-06: becoming a Verified Journalist.
+// FR-AUTH-02: Verified Journalist accreditation. Live, the application and its status are the
+// API's (POST/GET /me/verification) and an admin decides it in Admin → Verifications; demo
+// builds simulate both. The API has no withdrawal, so that button is demo-only.
 export function Accreditation() {
+  const live = accountApiLive()
+  const { data } = useLiveData<Verification>(live, accountApi.verification, { status: "none" }, [])
+  if (!data) return <Skeleton className="h-96 w-full" />
+  return <AccreditationView live={live} status={data} />
+}
+
+function AccreditationView({ live, status }: { live: boolean; status: Verification }) {
   const { role, user } = useSession()
-  const [stage, setStage] = React.useState<Stage>("form")
-  const [submittedAt, setSubmittedAt] = React.useState<Date | null>(null)
+  const pending = live && status.status === "pending"
+  const [stage, setStage] = React.useState<Stage>(pending ? "submitted" : "form")
+  const [submittedAt, setSubmittedAt] = React.useState<Date | null>(
+    pending && status.submittedAt ? new Date(status.submittedAt) : null
+  )
   const t = useTranslations("Account.accreditation")
   const f = useFormat()
 
@@ -211,11 +247,15 @@ export function Accreditation() {
               <dt className="text-muted-foreground">{t("name")}</dt>
               <dd>{user?.name}</dd>
               <dt className="text-muted-foreground">{t("outlet")}</dt>
-              <dd>{t("sampleOutlet")}</dd>
+              <dd>{live ? (status.organisation ?? "—") : t("sampleOutlet")}</dd>
               <dt className="text-muted-foreground">{t("verified")}</dt>
-              <dd>{f.date("2026-08-12")}</dd>
-              <dt className="text-muted-foreground">{t("renews")}</dt>
-              <dd>{f.date("2027-08-12")}</dd>
+              <dd>{live ? (status.reviewedAt ? f.date(status.reviewedAt) : "—") : f.date("2026-08-12")}</dd>
+              {!live && (
+                <>
+                  <dt className="text-muted-foreground">{t("renews")}</dt>
+                  <dd>{f.date("2027-08-12")}</dd>
+                </>
+              )}
             </dl>
           </div>
           <p className="text-sm text-muted-foreground">{t("changedNewsroom")}</p>
@@ -244,15 +284,17 @@ export function Accreditation() {
           id="application"
           title={t("receivedTitle")}
           footer={
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setStage("form")
-                toast.info(t("withdrawn"))
-              }}
-            >
-              {t("withdraw")}
-            </Button>
+            live ? undefined : (
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setStage("form")
+                  toast.info(t("withdrawn"))
+                }}
+              >
+                {t("withdraw")}
+              </Button>
+            )
           }
         >
           {submittedAt && <Timeline submittedAt={submittedAt} />}

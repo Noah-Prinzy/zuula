@@ -43,24 +43,45 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui
 import { Input } from "@/components/ui/input"
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { Switch } from "@/components/ui/switch"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
+import { useLiveData } from "@/hooks/use-live-data"
+import { useRelativeTime } from "@/hooks/use-relative-time"
+import { accountApi, accountApiLive } from "@/lib/account-api"
+import { authApi, authMode } from "@/lib/api"
 import { identifierKind, PASSWORD_MIN, passwordStrength } from "@/lib/auth"
 import { LOCALES, type LocaleCode } from "@/lib/locales"
 import { isDemoCodeValid, SAMPLE_RATINGS, SAMPLE_SESSIONS, SAMPLE_SUBMISSIONS } from "@/lib/mock/account"
+import { changeSupabasePassword } from "@/lib/supabase-auth"
 import { initials } from "@/lib/utils"
 
+// FR-ACCOUNT. Live, everything here goes through the API: details (PATCH /me), password,
+// two-factor, devices (GET/DELETE /me/sessions), data export and erasure. With Supabase
+// sign-in the password and the email address belong to Supabase, so the password is changed
+// there and the address isn't edited here. Demo builds change nothing outside this page.
+
 function DetailsSection() {
-  const { user, locale, setLocale } = useSession()
+  const { user, locale, setLocale, refresh } = useSession()
+  const live = accountApiLive()
+  // Phone and district aren't in the session; the API's profile has them.
+  const { data: me } = useLiveData(live, authApi.me, null, [])
+  const errorMessage = useApiErrorMessage()
   const [name, setName] = React.useState(user?.name ?? "")
   const [email, setEmail] = React.useState(user?.email ?? "")
   const [phone, setPhone] = React.useState("")
   const [district, setDistrict] = React.useState("Kampala")
+  const [loadedMe, setLoadedMe] = React.useState(false)
+  if (me && !loadedMe) {
+    setLoadedMe(true)
+    setPhone(me.phone ?? "")
+    if (me.district) setDistrict(me.district)
+  }
   const [lang, setLang] = React.useState<LocaleCode>(locale)
   const [errors, setErrors] = React.useState<Record<string, string>>({})
   const t = useTranslations("Account.profile")
   const tc = useTranslations("Common")
   const tr = useTranslations("Roles")
 
-  function save(e: React.FormEvent) {
+  async function save(e: React.FormEvent) {
     e.preventDefault()
     const next: Record<string, string> = {}
     if (name.trim().length < 2) next.name = t("errors.name")
@@ -69,6 +90,20 @@ function DetailsSection() {
     if (!email && !phone) next.email = t("errors.contact")
     setErrors(next)
     if (Object.keys(next).length) return
+    if (live) {
+      try {
+        await accountApi.updateMe({
+          name: name.trim(),
+          district,
+          preferredLanguage: lang,
+          ...(authMode() === "supabase" ? {} : { email: email.trim() || undefined, phone: phone.trim() || undefined }),
+        })
+        await refresh()
+      } catch (err) {
+        toast.error(errorMessage(err))
+        return
+      }
+    }
     setLocale(lang)
     toast.success(t("saved"))
   }
@@ -147,13 +182,23 @@ function PasswordDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (
     setError(null)
   }
 
-  function submit(e: React.FormEvent) {
+  const errorMessage = useApiErrorMessage()
+
+  async function submit(e: React.FormEvent) {
     e.preventDefault()
     if (!current) return setError(t("currentRequired"))
     if (next.length < PASSWORD_MIN || passwordStrength(next).score < 3)
       return setError(t("weak", { min: PASSWORD_MIN }))
     if (next !== confirm) return setError(t("mismatch"))
     if (next === current) return setError(t("reused"))
+    if (accountApiLive()) {
+      try {
+        if (authMode() === "supabase") await changeSupabasePassword(current, next)
+        else await accountApi.changePassword({ currentPassword: current, newPassword: next })
+      } catch (err) {
+        return setError(errorMessage(err))
+      }
+    }
     onOpenChange(false)
     reset()
     toast.success(t("changed"), { description: t("changedBody") })
@@ -270,8 +315,47 @@ function SecuritySection() {
   const required = role === "expert" || role === "admin"
   const [pwOpen, setPwOpen] = React.useState(false)
   const [tfaOpen, setTfaOpen] = React.useState(false)
+  const live = accountApiLive()
   const [tfaOn, setTfaOn] = React.useState(required)
-  const [sessions, setSessions] = React.useState(SAMPLE_SESSIONS)
+  const loaded = useLiveData(live, accountApi.sessions, SAMPLE_SESSIONS, [])
+  const [removed, setRemoved] = React.useState<string[]>([])
+  const sessions = (loaded.data ?? []).filter((d) => !removed.includes(d.id))
+  const errorMessage = useApiErrorMessage()
+  const relativeTime = useRelativeTime()
+
+  // Live, signing a device out revokes its session; the list then drops it.
+  async function signOutOf(ids: string[]) {
+    if (live) {
+      try {
+        await Promise.all(ids.map((id) => accountApi.revokeSession(id)))
+      } catch (e) {
+        toast.error(errorMessage(e))
+        return false
+      }
+    }
+    setRemoved((r) => [...r, ...ids])
+    return true
+  }
+
+  async function setTwoFactor(on: boolean) {
+    if (!live) {
+      if (on) setTfaOpen(true)
+      else {
+        setTfaOn(false)
+        toast.info(t("tfa.disabled"))
+      }
+      return
+    }
+    try {
+      await accountApi.setTwoFactor({ enabled: on })
+    } catch (e) {
+      toast.error(errorMessage(e))
+      return
+    }
+    setTfaOn(on)
+    if (on) toast.success(t("tfa.enabled"), { description: t("tfa.enabledBody") })
+    else toast.info(t("tfa.disabled"))
+  }
   const t = useTranslations("Account.profile")
   const tr = useTranslations("Roles")
 
@@ -301,13 +385,7 @@ function SecuritySection() {
           id="tfa-switch"
           checked={tfaOn}
           disabled={required}
-          onCheckedChange={(on) => {
-            if (on) setTfaOpen(true)
-            else {
-              setTfaOn(false)
-              toast.info(t("tfa.disabled"))
-            }
-          }}
+          onCheckedChange={(on) => void setTwoFactor(on)}
         />
       </div>
 
@@ -319,9 +397,9 @@ function SecuritySection() {
               variant="link"
               size="xs"
               className="px-0"
-              onClick={() => {
-                setSessions((s) => s.filter((d) => d.current))
-                toast.success(t("signedOutOthers"))
+              onClick={async () => {
+                if (await signOutOf(sessions.filter((d) => !d.current).map((d) => d.id)))
+                  toast.success(t("signedOutOthers"))
               }}
             >
               {t("signOutOthers")}
@@ -340,16 +418,15 @@ function SecuritySection() {
                     {d.current && <Badge variant="secondary" className="ml-2">{t("thisDevice")}</Badge>}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {d.location} · {d.lastActive}
+                    {d.location} · {/^\d{4}-/.test(d.lastActive) ? relativeTime(d.lastActive) : d.lastActive}
                   </span>
                 </div>
                 {!d.current && (
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => {
-                      setSessions((s) => s.filter((x) => x.id !== d.id))
-                      toast.success(t("signedOutOf", { device: d.device }))
+                    onClick={async () => {
+                      if (await signOutOf([d.id])) toast.success(t("signedOutOf", { device: d.device }))
                     }}
                   >
                     {t("signOut")}
@@ -374,15 +451,28 @@ function DataSection() {
   const t = useTranslations("Account.profile")
   const tc = useTranslations("Common")
 
+  const errorMessage = useApiErrorMessage()
+
   // DPPA 2019 right of access: everything we hold about the user as a JSON file.
-  function exportData() {
-    const data = {
+  async function exportData() {
+    if (accountApiLive()) {
+      try {
+        download(await accountApi.exportData())
+      } catch (e) {
+        toast.error(errorMessage(e))
+      }
+      return
+    }
+    download({
       exportedAt: new Date().toISOString(),
       profile: user,
       submissions: SAMPLE_SUBMISSIONS,
       ratings: SAMPLE_RATINGS,
       note: "Sample export. The real export is generated by the server.",
-    }
+    })
+  }
+
+  function download(data: unknown) {
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }))
     const a = document.createElement("a")
     a.href = url
@@ -437,8 +527,17 @@ function DataSection() {
               <AlertDialogAction
                 disabled={confirmText !== "DELETE"}
                 className="bg-destructive text-white hover:bg-destructive/90"
-                onClick={() => {
-                  // Still a mock: nothing is deleted yet. For a real account this only signs out.
+                onClick={async () => {
+                  // Live, DELETE /me erases the account (anonymised; ratings and the audit
+                  // trail keep their shape). Demo builds only sign out.
+                  if (accountApiLive()) {
+                    try {
+                      await accountApi.deleteMe()
+                    } catch (e) {
+                      toast.error(errorMessage(e))
+                      return
+                    }
+                  }
                   void signOut().catch(() => {})
                   toast.success(t("deleted"), { description: t("deletedBody") })
                   router.push("/")
