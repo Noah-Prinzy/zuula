@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (Phase 2: submission flow wired).
+*Last updated: 28 October 2026 (migration 0008 applied).
 
 **Contents**
 
@@ -97,7 +97,7 @@ Supabase: PostgreSQL 17 + pgvector + pg_trgm · Auth · Storage · Realtime
 
 | Setting | Value |
 |---|---|
-| Database | Alembic migrations `0001`–`0007` applied (25 tables); `0008` (accreditation review) written, not applied yet. pgvector 0.8.2, pg_trgm 1.6. Sample data seeded. |
+| Database | Alembic migrations `0001`–`0008` applied (25 tables). pgvector 0.8.2, pg_trgm 1.6. Sample data seeded. |
 | RLS | On for every table, no policies; `anon`/`authenticated` hold no grants (migration 0005). |
 | Realtime | `supabase_realtime` publication has `submissions`, `notifications`, `fact_check_reports` (no effect until Broadcast is wired, see §3). |
 | Storage | Buckets `zuula-media` (public) and `zuula-documents` (private) exist; the API still uses its own S3 settings. |
@@ -133,7 +133,7 @@ Supabase: PostgreSQL 17 + pgvector + pg_trgm · Auth · Storage · Realtime
 
 Verified end to end on 27 Oct 2026: sign-up with the emailed code, account created and linked, `/api/v1/me` authenticated. The Expert second factor is covered by contract tests; a live run needs Redis + the worker locally (§6).
 
-**Who can change what:** users edit their own name, language, district, password, two-factor opt-in and devices, can export or delete their data, and can apply for Journalist/Expert verification (`/me/verification`). Only admins change roles and statuses (Admin → Users, audited; admins can't change their own). **Admin → Verifications** (merged 28 Oct 2026 from `claude/competent-taussig-0c616a`, reviewed): the queue of Journalist/Expert applications, each with the applicant's details and 10-minute signed links to their documents (virus-scanned before download; links work without a session). Approve gives the requested role; reject needs a note the applicant sees. Both are audited (`accreditation.approve` / `accreditation.reject`) and the applicant is notified in-app and by email. Applicants choose the role they apply for (`role` = journalist or expert) on `/me/verification`. Database change: migration **0008** (`requested_role` column, new audit actions) — **written, not yet applied to production**.
+**Who can change what:** users edit their own name, language, district, password, two-factor opt-in and devices, can export or delete their data, and can apply for Journalist/Expert verification (`/me/verification`). Only admins change roles and statuses (Admin → Users, audited; admins can't change their own). **Admin → Verifications** (merged 28 Oct 2026 from `claude/competent-taussig-0c616a`, reviewed): the queue of Journalist/Expert applications, each with the applicant's details and 10-minute signed links to their documents (virus-scanned before download; links work without a session). Approve gives the requested role; reject needs a note the applicant sees. Both are audited (`accreditation.approve` / `accreditation.reject`) and the applicant is notified in-app and by email. Applicants choose the role they apply for (`role` = journalist or expert) on `/me/verification`. Database change: migration **0008** (`requested_role` column, new audit actions), applied to production 28 Oct 2026.
 
 **How admin accounts are created:** every account starts as a Public User. The first Admin has to be set directly in the database, as done for `noahprinzy@gmail.com` on 28 Oct 2026 (audited); after that, Admins promote others through Admin → Users. Journalists and Experts apply through verification and are approved by an Admin. Admin sign-in was verified end to end on 28 Oct 2026: password, then the emailed second-step code, then the Admin area.
 
