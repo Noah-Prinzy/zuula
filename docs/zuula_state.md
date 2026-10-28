@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026.*
+*Last updated: 28 October 2026 (production data audit added).
 
 **Contents**
 
@@ -158,6 +158,7 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
   ```
 - Local env files are currently in Supabase mode (`ZUULA_AUTH_PROVIDER=supabase`, `NEXT_PUBLIC_AUTH_MODE=supabase`); set both back to `legacy`/unset for the original sign-in.
 - Never run `alembic upgrade` against production without Noah's go-ahead.
+- **IPv6:** `db.xskkttjlgkanopzivfpy.supabase.co` (the direct connection in `DATABASE_URL`) is IPv6-only. On a network without IPv6, connections fail with `getaddrinfo failed`; use Supabase's IPv4 session pooler instead: host `aws-0-eu-west-1.pooler.supabase.com`, port 5432, user `postgres.xskkttjlgkanopzivfpy`, same password. Hosting on Render/Fly.io will likely need the pooler too.
 
 ## 7. Security decisions
 
@@ -170,7 +171,20 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 
 ## 8. What's left
 
-**Launch blocker: sample accounts in production.** The production database was seeded with the sample data (`python -m app.db.seed`), so the nine sample accounts — including Admin `mary@example.com` and Expert `david@example.com` — exist there with the publicly documented password `zuula-sample-password`. Before the API is reachable publicly: suspend or delete those accounts (or re-create the database without sample data) and keep only real content such as the AFP fact-checks.
+**Launch blocker: production holds only sample data.** The production database was seeded with `python -m app.db.seed` *without* `--real`. Audit of 28 Oct 2026 (read-only):
+
+| What | In production | Notes |
+|---|---|---|
+| Named sample accounts `u1`–`u9` | 9 | **All open with the public password `zuula-sample-password`**: 1 Admin, 2 Experts, 2 Journalists (1 pending), 4 Public (1 suspended). |
+| Sample raters | 430 | No password; can't sign in. |
+| Real accounts (Supabase-linked) | 3 | Noah's sign-up tests. |
+| Fact-check reports | 12 | **All fictional** (`fc-2026-*`). The 363 AFP fact-checks and 11 Uganda claims were never loaded. |
+| Ratings / comments / submissions / review cases | 2,042 / 5 / 13 / 9 | Sample. |
+| Sessions / API keys | 3 / 2 | Seeded with random hashes; unusable. |
+| Notifications / audit entries / broadcasts / accreditation applications | 6 / 10 / 2 / 1 | Sample. |
+| Trusted sources | 12 | Real registry; keep. |
+
+Proposed fix: now, suspend `u1`–`u9` and replace their password hashes with unusable ones; before launch, back up the database, then reset it to real content only (no sample users, ratings or reports; AFP + Uganda fact-checks and trusted sources loaded). The seed script needs a real-content-only mode for that, since `--real` still adds the fictional set. Supabase's free plan has no backups, so take a `pg_dump` first.
 
 **Before Supabase sign-in can be the production default**
 - Google and Facebook providers (Google Cloud and Meta apps; redirect URI `https://xskkttjlgkanopzivfpy.supabase.co/auth/v1/callback`).
