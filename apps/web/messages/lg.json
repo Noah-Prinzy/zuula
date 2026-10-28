@@ -570,6 +570,7 @@
       },
       "saved": "Okwagala okutegeera kukuuma",
       "savedSummary": "{count, plural, one {# omutwe · {frequency}} other {# ensonga · {frequency}}}",
+      "savedTopics": "{count, plural, one {# topic} other {# topics}} followed",
       "save": "Kuuma ebyetaago",
       "topicsTitle": "Ensonga z'ogoberera",
       "topicsDescription": "Bategeezebwa buli lwe wabaawo ebipya ebikakasiddwa mu nsonga zino.",

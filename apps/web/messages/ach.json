@@ -564,6 +564,7 @@
       },
       "saved": "Cwiny me yero jami ki gwoko",
       "savedSummary": "{count, plural, one {# lok ma mako {frequency}} other {# pwonye · {frequency}}}",
+      "savedTopics": "{count, plural, one {# topic} other {# topics}} followed",
       "save": "Gwoko gin ma imaro",
       "topicsTitle": "Lok ma ilubu",
       "topicsDescription": "Nong ngec ka lok manyen me moko ada kicoyo i kom lok magi.",

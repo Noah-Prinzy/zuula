@@ -150,7 +150,9 @@ function AlertSettingsForm({ live, initial }: { live: boolean; initial: Form }) 
     }
     setDirty(false)
     toast.success(t("saved"), {
-      description: t("savedSummary", { count: followed, frequency: t(`frequencies.${frequency}.label`) }),
+      description: live
+        ? t("savedTopics", { count: followed })
+        : t("savedSummary", { count: followed, frequency: t(`frequencies.${frequency}.label`) }),
     })
   }
 
@@ -243,7 +245,8 @@ function AlertSettingsForm({ live, initial }: { live: boolean; initial: Form }) 
 
       <SettingsSection id="delivery" title={t("deliveryTitle")} description={t("deliveryDescription")}>
         <div className="flex flex-col gap-4">
-          {CHANNELS.map((c) => {
+          {/* Live, only the channels the API stores: WhatsApp and Telegram have no connection flow yet. */}
+          {(live ? CHANNELS.filter((c) => !("connect" in c)) : CHANNELS).map((c) => {
             const needsConnect = "connect" in c && c.connect && !connected[c.id]
             return (
               <ToggleRow
@@ -275,6 +278,8 @@ function AlertSettingsForm({ live, initial }: { live: boolean; initial: Form }) 
             )
           })}
         </div>
+        {/* Demo only: the API has no delivery frequency yet, so live it wouldn't be saved. */}
+        {!live && (
         <fieldset className="flex flex-col gap-2 border-t pt-4">
           <legend className="mb-2 text-sm font-medium">{t("frequencyLegend")}</legend>
           <RadioGroup value={frequency} onValueChange={(v) => touch(setFrequency)(v as Frequency)} className="gap-2">
@@ -296,6 +301,7 @@ function AlertSettingsForm({ live, initial }: { live: boolean; initial: Form }) 
             {t("frequencyNote")}
           </p>
         </fieldset>
+        )}
       </SettingsSection>
     </div>
   )

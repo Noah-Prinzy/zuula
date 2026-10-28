@@ -584,6 +584,7 @@
       },
       "saved": "Alert preferences saved",
       "savedSummary": "{count, plural, one {# topic} other {# topics}} · {frequency}",
+      "savedTopics": "{count, plural, one {# topic} other {# topics}} followed",
       "save": "Save preferences",
       "topicsTitle": "Topics you follow",
       "topicsDescription": "Get alerted when new fact-checks are published in these topics.",

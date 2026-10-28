@@ -570,6 +570,7 @@
       },
       "saved": "Ebyokukunda ebirikurabura bikabiikwa",
       "savedSummary": "{count, plural, one {# omutwe · {frequency}} other {# emitwe · {frequency}}}",
+      "savedTopics": "{count, plural, one {# topic} other {# topics}} followed",
       "save": "Kubiika ebyokutooranaho",
       "topicsTitle": "Emitwe ei orikukuratira",
       "topicsDescription": "Muhurire obu ebihikire ebisya birikushohozibwa omu mitwe egi.",

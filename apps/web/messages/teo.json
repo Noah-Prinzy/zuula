@@ -567,6 +567,7 @@
       },
       "saved": "Aponi imonoikinai aomisio nuka aitijenaret",
       "savedSummary": "{count, plural, one {# akirot · {frequency}} other {# akiro · {frequency}}}",
+      "savedTopics": "{count, plural, one {# topic} other {# topics}} followed",
       "save": "Kisimukec aomisio",
       "topicsTitle": "Iboro lu itupit jo",
       "topicsDescription": "Kotoma akiro nu itegelikina, ekapakina ajenun arai itolomunitai akiro nuitetiak.",

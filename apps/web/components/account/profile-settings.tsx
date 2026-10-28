@@ -364,7 +364,8 @@ function SecuritySection() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-sm font-medium">{t("passwordLabel")}</p>
-          <p className="text-xs text-muted-foreground">{t("passwordAge")}</p>
+          {/* A sample date: the API doesn't record when a password last changed. */}
+          {!live && <p className="text-xs text-muted-foreground">{t("passwordAge")}</p>}
         </div>
         <Button variant="outline" onClick={() => setPwOpen(true)}>
           {t("password.title")}
