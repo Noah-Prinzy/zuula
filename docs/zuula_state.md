@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (production data audit added).
+*Last updated: 28 October 2026 (sample accounts locked in production).
 
 **Contents**
 
@@ -175,7 +175,7 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 
 | What | In production | Notes |
 |---|---|---|
-| Named sample accounts `u1`–`u9` | 9 | **All open with the public password `zuula-sample-password`**: 1 Admin, 2 Experts, 2 Journalists (1 pending), 4 Public (1 suspended). |
+| Named sample accounts `u1`–`u9` | 9 | Their password `zuula-sample-password` is public. **Locked 28 Oct 2026:** all suspended, passwords removed, 3 sessions and 2 API keys revoked, one `user.suspend` audit entry each. (Were: 1 Admin, 2 Experts, 2 Journalists, 4 Public.) |
 | Sample raters | 430 | No password; can't sign in. |
 | Real accounts (Supabase-linked) | 3 | Noah's sign-up tests. |
 | Fact-check reports | 12 | **All fictional** (`fc-2026-*`). The 363 AFP fact-checks and 11 Uganda claims were never loaded. |
@@ -184,7 +184,9 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 | Notifications / audit entries / broadcasts / accreditation applications | 6 / 10 / 2 / 1 | Sample. |
 | Trusted sources | 12 | Real registry; keep. |
 
-Proposed fix: now, suspend `u1`–`u9` and replace their password hashes with unusable ones; before launch, back up the database, then reset it to real content only (no sample users, ratings or reports; AFP + Uganda fact-checks and trusted sources loaded). The seed script needs a real-content-only mode for that, since `--real` still adds the fictional set. Supabase's free plan has no backups, so take a `pg_dump` first.
+**No active Admin can sign in to production** since the lock (the remaining active Experts are passwordless sample raters). Noah's real account needs the Admin role set directly in the database, because only an Admin can change roles in the app.
+
+Remaining fix, before launch: back up the database, then reset it to real content only (no sample users, ratings or reports; AFP + Uganda fact-checks and trusted sources loaded). The seed script needs a real-content-only mode for that, since `--real` still adds the fictional set. Supabase's free plan has no backups, so take a `pg_dump` first.
 
 **Before Supabase sign-in can be the production default**
 - Google and Facebook providers (Google Cloud and Meta apps; redirect URI `https://xskkttjlgkanopzivfpy.supabase.co/auth/v1/callback`).
