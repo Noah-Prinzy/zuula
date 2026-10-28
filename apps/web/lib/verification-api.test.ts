@@ -64,6 +64,11 @@ describe("verificationApiConfigured", () => {
     vi.stubEnv("NODE_ENV", "production")
     expect(verificationApiConfigured()).toBe(false)
   })
+
+  it("is off when the demo sign-in is forced, even with an API address", () => {
+    vi.stubEnv("NEXT_PUBLIC_AUTH_MODE", "demo")
+    expect(verificationApiConfigured()).toBe(false)
+  })
 })
 
 describe("listApplications", () => {
