@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (production Admin set).
+*Last updated: 28 October 2026 (local Redis, worker and pooler set up).
 
 **Contents**
 
@@ -149,7 +149,12 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 
 - `.claude/launch.json` has `web` and `api` configurations.
 - Port 3000 is often taken by Noah's portfolio site (`D:\Noah\Desktop\My_Portfolio`); stop it first, or add `:3001` to `ZUULA_CORS_ORIGINS` and Supabase's redirect URLs.
-- **No Redis runs locally yet**, so anything the worker does (code emails, the pipeline) fails until Redis is running (`docker run -d -p 6379:6379 redis`) or Upstash is configured.
+- **Redis and the worker (set up 28 Oct 2026):** Redis runs in Docker as `zuula-redis` (`docker run -d --name zuula-redis --restart unless-stopped -p 6379:6379 redis:7-alpine`; Docker Desktop must be running). The API and worker use their built-in `localhost:6379` defaults; the `redis://redis:6379` values in `.env` are for Docker Compose and aren't read locally. The worker needs `--pool=solo` on Windows, and the `EMAIL_*` values from `.env` in its environment, so code emails go out through Brevo instead of only being logged:
+  ```bash
+  cd apps/api && set -a && eval "$(grep -E '^EMAIL_[A-Z_]+=' .env | tr -d '\r' | sed -E "s/^([A-Z_]+)=(.*)$/\1='\2'/")" && set +a
+  .venv/Scripts/python.exe -m celery -A app.worker.celery_app worker --pool=solo --loglevel=INFO
+  ```
+- `apps/api/.env`'s `DATABASE_URL` now uses the IPv4 session pooler (the direct IPv6 line is kept as a comment above it).
 - **Tests never touch production.** `apps/api/.env` points at Supabase production; tests pin `DATABASE_URL` to `TEST_DATABASE_URL`. Use a throwaway database:
   ```bash
   docker run -d --rm --name zuula-test-db -e POSTGRES_USER=zuula -e POSTGRES_PASSWORD=zuula -e POSTGRES_DB=zuula -p 55433:5432 pgvector/pgvector:pg17
