@@ -5,8 +5,8 @@
 //
 // Every exported fetch function throws ApiError (reused from lib/api.ts) on failure — including
 // when apiBaseUrl() is null (no NEXT_PUBLIC_API_URL configured, e.g. today's production build
-// with no API hosted yet). Callers (the page components) catch that and fall back to
-// lib/mock/fact-checks.ts's SAMPLE_REPORTS, the same "demo when unconfigured" pattern
+// with no API hosted yet). Callers fall back to
+// lib/mock/fact-checks.ts's SAMPLE_REPORTS only when unconfigured (demo builds), the pattern
 // lib/demo-auth.ts uses for sign-in.
 
 import { apiBaseUrl, ApiError } from "@/lib/api"

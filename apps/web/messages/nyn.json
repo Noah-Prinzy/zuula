@@ -1800,7 +1800,9 @@
       "link": "Eibikiro ry'ebitabo",
       "tagNew": "Eshyaaka",
       "tagDebated": "Okuhanuura",
-      "ccsTitle": "Obwesigye bw'abantu omu kyanga"
+      "ccsTitle": "Obwesigye bw'abantu omu kyanga",
+      "unavailable": "Fact-checks can't be loaded right now. Try again in a moment.",
+      "empty": "No fact-checks published yet."
     },
     "community": {
       "eyebrow": "Abantu b'omukyanga",

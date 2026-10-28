@@ -1792,7 +1792,9 @@
       "link": "Eibikiro loka itabon",
       "tagNew": "Loitetet",
       "tagDebated": "Aponi kitirianarai",
-      "ccsTitle": "Etapit loka amunokina naka itunga"
+      "ccsTitle": "Etapit loka amunokina naka itunga",
+      "unavailable": "Fact-checks can't be loaded right now. Try again in a moment.",
+      "empty": "No fact-checks published yet."
     },
     "community": {
       "eyebrow": "Atukot naka itunga",

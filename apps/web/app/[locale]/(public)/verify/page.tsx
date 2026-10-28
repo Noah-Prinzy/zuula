@@ -18,16 +18,14 @@ import { factChecksApiConfigured, fetchHomeFeed } from "@/lib/fact-checks-api"
 import { leaderboard } from "@/lib/library"
 import { SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
 
-// Real data when the API is configured, the sample leaderboard otherwise or if the fetch
-// fails (home-feed computes the same FR-RATE-10 ranking server-side as lib/library.ts's
-// leaderboard() does locally).
+// Real data when the API is configured, the sample leaderboard only in demo builds (home-feed
+// computes the same FR-RATE-10 ranking server-side as lib/library.ts's leaderboard() does
+// locally). Live, a failed fetch hides the leaderboard rather than show invented checks.
 async function loadLeaderboard() {
   if (factChecksApiConfigured()) {
-    try {
-      return (await fetchHomeFeed()).leaderboard
-    } catch {
-      // Fall through to the sample leaderboard below.
-    }
+    return fetchHomeFeed()
+      .then((feed) => feed.leaderboard)
+      .catch(() => [])
   }
   return leaderboard(SAMPLE_REPORTS, 5)
 }

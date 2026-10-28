@@ -1797,7 +1797,9 @@
       "link": "Ettendekero ly'ebitabo",
       "tagNew": "Mupya",
       "tagDebated": "Okuwakanya",
-      "ccsTitle": "Obubonero bw'Obwesige mu Kitundu"
+      "ccsTitle": "Obubonero bw'Obwesige mu Kitundu",
+      "unavailable": "Fact-checks can't be loaded right now. Try again in a moment.",
+      "empty": "No fact-checks published yet."
     },
     "community": {
       "eyebrow": "Abantu b'ekitundu",

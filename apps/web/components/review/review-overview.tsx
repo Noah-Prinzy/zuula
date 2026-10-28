@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { VerdictBadge } from "@/components/verdict/verdict-badge"
 import { fetchFullReport } from "@/lib/fact-checks-api"
 import { SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
+import { useLiveData } from "@/hooks/use-live-data"
 import { useRelativeTime } from "@/hooks/use-relative-time"
 import { useFormat } from "@/lib/format"
 import {
@@ -45,6 +46,25 @@ type State = {
   decisions: ReviewDecision[]
 }
 
+const EMPTY_STATE: State = { queueSize: 0, overdue: 0, dueSoon: 0, cases: [], reports: new Map(), decisions: [] }
+
+async function loadState(): Promise<State> {
+  const [overview, queue, history] = await Promise.all([getOverview(), getQueue({ perPage: 100 }), getHistory()])
+  // Not fetchAllReportsForLibrary(): that's the public listing, which excludes suspended
+  // reports (app/services/reports.py's LISTED) — exactly the kind of report a review case is
+  // often open about. Fetch each case's report directly instead (GET /fact-checks/{id} always
+  // serves it, suspended or not).
+  const fetched = await Promise.all(queue.data.map((c) => fetchFullReport(c.reportId).catch(() => null)))
+  return {
+    queueSize: overview.queueSize,
+    overdue: overview.overdue,
+    dueSoon: overview.dueSoon,
+    cases: queue.data,
+    reports: new Map(fetched.filter((r): r is FactCheckReport => r !== null).map((r) => [r.id, r])),
+    decisions: history.data,
+  }
+}
+
 function sampleState(): State {
   return {
     queueSize: SAMPLE_CASES.length,
@@ -61,54 +81,22 @@ function sampleState(): State {
 
 export function ReviewOverview() {
   const { user } = useSession()
-  const [state, setState] = React.useState<State>(sampleState)
+  const live = reviewApiConfigured()
+  // Sample data only in demo builds; live, empty until loaded and a toast if it fails.
+  const [demo] = React.useState(() => (live ? EMPTY_STATE : sampleState()))
+  const state = useLiveData(live, loadState, demo, []).data ?? EMPTY_STATE
   const t = useTranslations("Review.overview")
   const tr = useTranslations("Review.reasons")
   const to = useTranslations("Review.outcomes")
   const f = useFormat()
   const relativeTime = useRelativeTime()
 
-  React.useEffect(() => {
-    if (!reviewApiConfigured()) return
-    let cancelled = false
-    Promise.all([getOverview(), getQueue({ perPage: 100 }), getHistory()])
-      .then(async ([overview, queue, history]) => {
-        if (cancelled) return
-        // Not fetchAllReportsForLibrary(): that's the public listing, which excludes
-        // suspended reports (app/services/reports.py's LISTED) — exactly the kind of report a
-        // review case is often open about. Fetch each case's report directly instead (GET
-        // /fact-checks/{id} always serves it, suspended or not).
-        const fetched = await Promise.all(
-          queue.data.map((c) => fetchFullReport(c.reportId).catch(() => null))
-        )
-        if (cancelled) return
-        setState({
-          queueSize: overview.queueSize,
-          overdue: overview.overdue,
-          dueSoon: overview.dueSoon,
-          cases: queue.data,
-          reports: new Map(
-            fetched
-              .filter((r): r is FactCheckReport => r !== null)
-              .map((r) => [r.id, r])
-          ),
-          decisions: history.data,
-        })
-      })
-      .catch(() => {
-        // Keep the sample state already in state.
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [])
-
   const withSla = state.cases
     .map((c) => ({ ...c, hoursLeft: hoursLeftFor(dueAtFor(c)) }))
     .sort((a, b) => a.hoursLeft - b.hoursLeft)
   // getHistory() is already "my decisions" server-side; the sample data isn't, so it still
   // needs the name filter.
-  const mine = reviewApiConfigured()
+  const mine = live
     ? state.decisions
     : state.decisions.filter((d) => d.reviewer === user?.name)
   const avgTurnaround = mine.length

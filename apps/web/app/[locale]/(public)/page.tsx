@@ -24,16 +24,16 @@ import { SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
 import type { FactCheckReport } from "@/lib/types/fact-check"
 import { formatDate } from "@/lib/verdicts"
 
-// Real data when the API is configured (lib/api.ts's apiBaseUrl()); the sample feed otherwise
-// (today's deployed site, with no NEXT_PUBLIC_API_URL) or if the API call itself fails —
-// the same "demo when unconfigured" fallback lib/demo-auth.ts uses for sign-in.
+// Real data when the API is configured (lib/api.ts's apiBaseUrl()); the sample feed only in
+// demo builds (no NEXT_PUBLIC_API_URL). If the API call fails the feed is empty and marked
+// unavailable: invented sample checks must never pass for real ones on a live site.
 async function loadHomeFeed() {
   if (factChecksApiConfigured()) {
     try {
       const feed = await fetchHomeFeed()
-      return { recent: feed.recent, debated: feed.debated, topics: feed.trending, leaders: feed.leaderboard }
+      return { recent: feed.recent, debated: feed.debated, topics: feed.trending, leaders: feed.leaderboard, unavailable: false }
     } catch {
-      // Fall through to the sample feed below.
+      return { recent: [], debated: [], topics: [], leaders: [], unavailable: true }
     }
   }
   const recent = latest(SAMPLE_REPORTS, 5)
@@ -45,7 +45,17 @@ async function loadHomeFeed() {
     debated,
     topics: trendingTopics(SAMPLE_REPORTS, 6, NOW),
     leaders: leaderboard(SAMPLE_REPORTS, 5),
+    unavailable: false,
   }
+}
+
+// Stands in for a card's slides when there are none: the API failed, or has nothing yet.
+function EmptySlide({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex h-full items-center px-4 py-2.5 text-sm text-muted-foreground">
+      {children}
+    </div>
+  )
 }
 
 // Sample data is dated September 2026; anchor "this week" to the newest sample.
@@ -124,7 +134,8 @@ async function HomeHero() {
     slide: t.raw("carousel.slide") as string,
   }
 
-  const { recent, debated, topics, leaders } = await loadHomeFeed()
+  const { recent, debated, topics, leaders, unavailable } = await loadHomeFeed()
+  const emptyText = unavailable ? t("feed.unavailable") : t("feed.empty")
 
   return (
     <PhotoHero
@@ -226,6 +237,7 @@ async function HomeHero() {
                 ccsTitle={t("feed.ccsTitle")}
               />
             ))}
+            {recent.length + debated.length === 0 && <EmptySlide>{emptyText}</EmptySlide>}
           </RotatingCard>
 
           <RotatingCard
@@ -238,6 +250,8 @@ async function HomeHero() {
             interval={6000}
             style={delay(9)}
           >
+            {topics.length + leaders.length === 0 && <EmptySlide>{emptyText}</EmptySlide>}
+            {topics.length > 0 && (
             <div className="flex h-full flex-col justify-center gap-1.5 px-4 py-2.5 xl:flex-row xl:items-center xl:justify-start xl:gap-3">
               <p className="shrink-0 text-xs font-semibold">
                 {t("community.trending")}
@@ -265,6 +279,7 @@ async function HomeHero() {
                 ))}
               </ul>
             </div>
+            )}
             {leaders.map(({ report, score }, i) => (
               <div
                 key={report.id}

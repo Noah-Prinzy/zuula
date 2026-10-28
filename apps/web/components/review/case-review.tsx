@@ -35,6 +35,7 @@ import { ClaimHighlighter } from "@/components/verdict/claim-highlighter"
 import { VerdictBadge } from "@/components/verdict/verdict-badge"
 import { VerdictSummary } from "@/components/verdict/verdict-summary"
 import { WhatIsTrueCard } from "@/components/verdict/what-is-true-card"
+import { ApiError } from "@/lib/api"
 import { communityScore, RATING_WEIGHTS } from "@/lib/community"
 import { getCase as getMockCase } from "@/lib/mock/review"
 import {
@@ -280,14 +281,12 @@ export function CaseReview({ caseId }: { caseId: string }) {
       if (reviewApiConfigured()) {
         try {
           const { case: c, report } = await getApiCase(caseId)
-          if (!cancelled && c && report) {
-            setState({ case: c, report })
-            return
-          }
-        } catch {
-          if (!cancelled) setState("error")
-          return
+          // Live, a case the API doesn't have is not found: never a sample case instead.
+          if (!cancelled) setState(c && report ? { case: c, report } : null)
+        } catch (e) {
+          if (!cancelled) setState(e instanceof ApiError && e.status === 404 ? null : "error")
         }
+        return
       }
       const found = getMockCase(caseId)
       if (cancelled) return

@@ -48,6 +48,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { VerdictBadge } from "@/components/verdict/verdict-badge"
 import { communityScore } from "@/lib/community"
 import { fetchFullReport } from "@/lib/fact-checks-api"
+import { useApiErrorMessage } from "@/hooks/use-api-error-message"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { getSampleReport, SAMPLE_REPORTS } from "@/lib/mock/fact-checks"
 import { REASON_META, SAMPLE_CASES, type ReviewReason } from "@/lib/mock/review"
@@ -114,10 +115,13 @@ function reportsById(reports: FactCheckReport[]): Map<string, FactCheckReport> {
 // entirely client-side; there's no server-rendered fallback.
 export function ReviewQueue() {
   const { user } = useSession()
-  const [cases, setCases] = React.useState<ReviewCase[]>(SAMPLE_CASES)
+  // Sample data only in demo builds; live, empty until loaded and a toast if it fails.
+  const [cases, setCases] = React.useState<ReviewCase[]>(() => (reviewApiConfigured() ? [] : SAMPLE_CASES))
   const [reports, setReports] = React.useState<Map<string, FactCheckReport>>(
-    () => reportsById(SAMPLE_REPORTS)
+    () => (reviewApiConfigured() ? new Map() : reportsById(SAMPLE_REPORTS))
   )
+  const tc = useTranslations("Common")
+  const errorMessage = useApiErrorMessage()
   const [query, setQuery] = React.useState("")
   const [reason, setReason] = React.useState<ReviewReason | "">("")
   const [scope, setScope] = React.useState<Scope>("all")
@@ -149,12 +153,14 @@ export function ReviewQueue() {
           reportsById(fetched.filter((r): r is FactCheckReport => r !== null))
         )
       })
-      .catch(() => {
-        // Keep the sample cases already in state.
+      .catch((e) => {
+        if (!cancelled) toast.error(tc("loadFailed"), { description: errorMessage(e) })
       })
     return () => {
       cancelled = true
     }
+    // Load once: tc and errorMessage are fresh functions on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const assign = React.useCallback(

@@ -1852,7 +1852,9 @@
       "link": "Library",
       "tagNew": "New",
       "tagDebated": "Debated",
-      "ccsTitle": "Community Confidence Score"
+      "ccsTitle": "Community Confidence Score",
+      "unavailable": "Fact-checks can't be loaded right now. Try again in a moment.",
+      "empty": "No fact-checks published yet."
     },
     "community": {
       "eyebrow": "Community",

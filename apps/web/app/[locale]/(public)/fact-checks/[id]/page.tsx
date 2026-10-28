@@ -31,30 +31,17 @@ import type { FactCheckReport } from "@/lib/types/fact-check"
 
 type Props = { params: Promise<{ id: string }> }
 
-// Real data when the API is configured, the sample report otherwise or if the id isn't a real
-// one (404s and network errors both fall back, same "demo when unconfigured" pattern as the
-// rest of these pages) — getSampleReport() never fails, so this always resolves to a report or
-// null, never throws.
+// Real data when the API is configured, the sample report only in demo builds. Live, an
+// unknown id is a 404 (null) and any other failure throws to the error page (with Retry):
+// invented sample checks must never pass for real ones on a live site.
 async function loadReport(id: string): Promise<FactCheckReport | null> {
-  if (factChecksApiConfigured()) {
-    try {
-      const report = await fetchFullReport(id)
-      if (report) return report
-    } catch {
-      // Fall through to the sample report below.
-    }
-  }
+  if (factChecksApiConfigured()) return fetchFullReport(id)
   return getSampleReport(id) ?? null
 }
 
+// Related reports are extras: live, a failed fetch just leaves the section empty.
 async function loadRelated(id: string, report: FactCheckReport): Promise<FactCheckReport[]> {
-  if (factChecksApiConfigured()) {
-    try {
-      return await fetchRelated(id, 3)
-    } catch {
-      // Fall through to the sample-data relation below.
-    }
-  }
+  if (factChecksApiConfigured()) return fetchRelated(id, 3).catch(() => [])
   return relatedReports(SAMPLE_REPORTS, report, 3)
 }
 

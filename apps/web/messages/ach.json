@@ -1786,7 +1786,9 @@
       "link": "Ot gwoko buk",
       "tagNew": "Manyen",
       "tagDebated": "Kinywako tam iye",
-      "ccsTitle": "Rwom me gen pa lwak"
+      "ccsTitle": "Rwom me gen pa lwak",
+      "unavailable": "Fact-checks can't be loaded right now. Try again in a moment.",
+      "empty": "No fact-checks published yet."
     },
     "community": {
       "eyebrow": "Lwak",

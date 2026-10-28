@@ -14,21 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("metaTitle"), description: t("metaDescription") }
 }
 
-// Real data when the API is configured, the sample library otherwise or if the fetch fails —
+// Real data when the API is configured, the sample library only in demo builds —
 // LibraryBrowser's own search/filter/sort/pagination (lib/library.ts) then runs over whichever
-// set came back exactly as it does today, unchanged.
+// set came back. A failed fetch throws to the error page (with Retry): invented sample checks
+// must never pass for real ones on a live site.
 async function loadLibrary(): Promise<{
   reports: FactCheckReport[]
   categories: string[]
   languages: string[]
 }> {
-  if (factChecksApiConfigured()) {
-    try {
-      return await fetchAllReportsForLibrary()
-    } catch {
-      // Fall through to the sample library below.
-    }
-  }
+  if (factChecksApiConfigured()) return fetchAllReportsForLibrary()
   return { reports: SAMPLE_REPORTS, ...facets(SAMPLE_REPORTS) }
 }
 

@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { VerdictBadge } from "@/components/verdict/verdict-badge"
+import { useLiveData } from "@/hooks/use-live-data"
 import { useFormat } from "@/lib/format"
 import { SAMPLE_DECISIONS, REVIEW_SLA_HOURS } from "@/lib/mock/review"
 import { getHistory, reviewApiConfigured, type ReviewDecision } from "@/lib/review-api"
@@ -16,29 +17,16 @@ import { cn } from "@/lib/utils"
 
 type Filter = "all" | "confirmed" | "overridden"
 
+const loadDecisions = () => getHistory().then((page) => page.data)
+
 // FR-REVIEW-03: the reviewer's own logged decisions. Real API when configured, the sample
-// decisions otherwise — same "demo when unconfigured" pattern as the rest of the app.
+// decisions only in demo builds; live, a failed load shows a toast, never the samples.
 export function ReviewHistory() {
   const [filter, setFilter] = React.useState<Filter>("all")
-  const [decisions, setDecisions] = React.useState<ReviewDecision[]>(SAMPLE_DECISIONS)
+  const decisions: ReviewDecision[] = useLiveData(reviewApiConfigured(), loadDecisions, SAMPLE_DECISIONS, []).data ?? []
   const t = useTranslations("Review.history")
   const to = useTranslations("Review.outcomes")
   const f = useFormat()
-
-  React.useEffect(() => {
-    if (!reviewApiConfigured()) return
-    let cancelled = false
-    getHistory()
-      .then((page) => {
-        if (!cancelled) setDecisions(page.data)
-      })
-      .catch(() => {
-        // Keep the sample decisions already in state.
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [])
 
   const shown = filter === "all" ? decisions : decisions.filter((d) => d.outcome === filter)
   const count = (f: Filter) => (f === "all" ? decisions.length : decisions.filter((d) => d.outcome === f).length)
