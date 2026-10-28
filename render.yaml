@@ -1,22 +1,17 @@
 # Render Blueprint: the Zuula API on one free web service (Milestone B, docs/zuula_state.md
 # §11, option 1). Background jobs run inside the API (JOB_RUNNER=inline): Render's free plan
 # has no background workers. Email goes over Brevo's HTTPS API: free services can't use SMTP.
-# Redis is a free Render Key Value instance in the same region (private network, no TLS).
+# Redis is Upstash's free plan (Frankfurt, TLS): Render allows one free Key Value per
+# workspace, and the older `zuula-redis` holds it. With jobs inline, Redis only carries live
+# status updates and the sign-in lockout, well within Upstash's 500K commands a month.
 #
-# Both live in Frankfurt, the nearest Render region to Supabase (eu-west-1, Ireland). The
+# The API lives in Frankfurt, the nearest Render region to Supabase (eu-west-1, Ireland). The
 # older `zuula-api` / `zuula-redis` in Ohio predate this file and aren't managed by it.
 #
 # `sync: false` values are secrets: Render asks for them when the Blueprint is applied, and
 # they live only in Render's dashboard, never in git. No pre-deploy migration step on purpose:
 # production migrations are run by hand, with Noah's go-ahead.
 services:
-  - type: keyvalue
-    name: zuula-kv
-    plan: free
-    region: frankfurt
-    ipAllowList: [] # private network only
-    maxmemoryPolicy: allkeys-lru # pub/sub and short-lived counters only
-
   - type: web
     name: zuula-api-eu
     runtime: docker
@@ -64,11 +59,8 @@ services:
       # ---- Jobs and Redis ----
       - key: JOB_RUNNER
         value: inline
-      - key: REDIS_URL
-        fromService:
-          type: keyvalue
-          name: zuula-kv
-          property: connectionString
+      - key: REDIS_URL # Upstash: rediss://default:<password>@<host>.upstash.io:6379
+        sync: false
 
       # ---- Email (Brevo HTTPS API) ----
       - key: EMAIL_FROM
