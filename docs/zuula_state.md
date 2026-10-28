@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (synced with GitHub main).
+*Last updated: 28 October 2026 (Next.js security upgrade).
 
 **Contents**
 
@@ -214,6 +214,8 @@ Remaining fix, before launch: back up the database, then reset it to real conten
 - Upstash Redis for Celery; Cloudflare (DNS, CDN, Turnstile); local AI providers on.
 
 **Phase 2 onwards** — see §9: wire admin, account and submission screens to the API; AI SDK fallback chain and a trustworthy FR-DETECT-03 run with dedicated keys; missing features; deployment; translations, accessibility, performance, tests.
+
+**Security updates (28 Oct 2026):** Next.js 16.3.8 → 16.4.1 (fixes two critical unauthenticated remote-code-execution flaws and a high denial-of-service flaw), eslint-config-next 16.4.1, vitest/@vitest/mocker 4.1.12, ip-address 10.7.5. Still open: `deepmerge` 4.3.1 (low severity, transitive; no fixed version exists yet). Check GitHub's Dependabot alerts after each dependency change; production runs whatever `main` holds.
 
 **Housekeeping**
 - 9 seed/backfill API tests fail on Windows only (`UnicodeDecodeError: 'charmap'` reading a data file — needs `encoding="utf-8"`).
