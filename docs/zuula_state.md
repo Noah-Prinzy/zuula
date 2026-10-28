@@ -280,6 +280,35 @@ About 4½ weeks to the 30 November deadline. The §9 phases are reordered so the
 | F | **Missing features** (Phase 4, by priority) | Webhook dedupe; regional broadcast targeting; WhatsApp/Telegram media via Groq Whisper; push notifications last, cut if time runs out. | Agreed subset shipped. | 4–5 days |
 | G | **Hardening and launch** (Phase 6 + remaining Phase 5) | Cloudflare DNS + Turnstile, `zuula.ug` sending domain in Brevo, Google/Facebook sign-in, credential rotation, delete legacy auth, WCAG 2.1 AA and Lighthouse ≥ 80 passes, Playwright smoke tests, native-speaker translation review (needs reviewers Noah arranges). | Launch checklist signed off by Noah. | 5–6 days |
 
+### Milestone B in detail: hosting the API (planned 28 Oct 2026)
+
+[Appendix E](#appendix-e--deploying-the-api-to-render) predates the Supabase move; this replaces its plan. Facts checked on 28 Oct 2026:
+
+- **Render free web services** sleep after 15 minutes idle, have 512 MB RAM and 750 instance-hours a month (enough for one service around the clock), and since Sept 2025 **block outbound SMTP (25/465/587)**, so Brevo SMTP won't work there. **Background workers have no free tier** (Starter about $7/month each); pre-deploy commands are paid too.
+- **Upstash free**: one database (no Redis DB indexes 0/1/2), 256 MB, **500K commands a month**. An idle Celery worker polls Redis constantly and can use that up on its own.
+- **Brevo's HTTP API** is on the free plan (300 emails/day), so emails can go over HTTPS instead of SMTP.
+- The Docker image installs `sentence-transformers`, which pulls in PyTorch (the multi-GB CUDA build by default) and won't fit 512 MB at runtime once the local models are switched on.
+
+**Options**
+
+| | How | Cost | Catch |
+|---|---|---|---|
+| **1. Render free, one process** (recommended) | API on one free Render web service (Frankfurt, nearest to Supabase in Ireland). Background jobs run inside the API process instead of a Celery worker; Redis (Upstash free) only for live status and sign-in lockout. Email over Brevo's HTTP API. An UptimeRobot check on `/healthz` every 5 min keeps it awake within the 750 hours. | $0 | 512 MB: local AI models stay off (stub or hosted APIs); one instance only; jobs in flight are lost if the service restarts. |
+| 2. Render paid | API + Celery worker as in Appendix E, Upstash Redis. | ≈ $14/month (+ Upstash pay-as-you-go if Celery's polling passes 500K commands) | Costs money; otherwise the closest to today's code. |
+| 3. Oracle Cloud Always Free VM | The whole Docker Compose stack (API, worker, Redis) on a free ARM VM. | $0 | Card required, ARM capacity often unavailable, and we'd run the server ourselves (TLS, updates, restarts). |
+
+**Steps (option 1)**
+1. Email over Brevo's HTTP API (`EMAIL_PROVIDER`); SMTP stays for local use.
+2. An in-process job mode for `app/worker/dispatch.py` (the four `.delay()` calls), switched by a setting; Celery stays the default locally.
+3. One Redis URL: no DB-index separation, keys already distinct.
+4. A slimmer image: local-model packages become an optional extra; CPU-only PyTorch when they're installed.
+5. `render.yaml` Blueprint (shown to Noah before use); production env var list (names only) in this document.
+6. Noah: create the Render and Upstash accounts and paste secrets into their dashboards (Milka never enters keys or passwords into web forms); approve Supabase's Site URL and redirect list for the Vercel domain.
+7. Deploy and verify: `/healthz`, sign-in with the second step (email arrives), a submission through the pipeline, CORS, and which client IP the API sees behind Vercel.
+8. Vercel: point a **Preview** deployment at the API first. Switch **Production** only after Milestone E, so the public site never shows the sample data as real.
+
+No database migration is involved: production is already at `0008`.
+
 **Calls for Noah:** where to start (recommended: A, then B); whether Realtime Broadcast can wait until after launch; which Phase 4 features may be cut; who reviews the translations.
 
 ---
