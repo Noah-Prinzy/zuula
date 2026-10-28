@@ -73,8 +73,7 @@ export function VerificationReview() {
   const live = verificationApiConfigured()
   const [status, setStatus] = React.useState<AccreditationStatus | "">("pending")
   const [page, setPage] = React.useState(1)
-  const [items, setItems] = React.useState<AccreditationApplication[] | null>(null)
-  const [total, setTotal] = React.useState(0)
+  const [loaded, setLoaded] = React.useState<{ key: string; items: AccreditationApplication[]; total: number } | null>(null)
   const [demo, setDemo] = React.useState(SAMPLE_APPLICATIONS)
   const [openId, setOpenId] = React.useState<string | null>(null)
   const [reload, setReload] = React.useState(0)
@@ -83,31 +82,26 @@ export function VerificationReview() {
   const f = useFormat()
   const errorMessage = useApiErrorMessage()
 
+  // Which page of the queue is on screen; a result for an older key means "still loading".
+  const key = `${status}|${page}|${reload}`
   React.useEffect(() => {
-    if (!live) {
-      const shown = demo.filter((a) => !status || a.status === status)
-      setItems(shown)
-      setTotal(shown.length)
-      return
-    }
+    if (!live) return
     let cancelled = false
-    setItems(null)
     listApplications({ status: status || undefined, page, perPage: PER_PAGE })
-      .then((r) => {
-        if (cancelled) return
-        setItems(r.data)
-        setTotal(r.total)
-      })
+      .then((r) => !cancelled && setLoaded({ key, items: r.data, total: r.total }))
       .catch((e) => {
         if (cancelled) return
-        setItems([])
-        setTotal(0)
+        setLoaded({ key, items: [], total: 0 })
         toast.error(t("loadFailed"), { description: errorMessage(e) })
       })
     return () => {
       cancelled = true
     }
-  }, [live, demo, status, page, reload, t, errorMessage])
+  }, [live, key, status, page, t, errorMessage])
+
+  const demoItems = React.useMemo(() => demo.filter((a) => !status || a.status === status), [demo, status])
+  const items = live ? (loaded?.key === key ? loaded.items : null) : demoItems
+  const total = live ? (loaded?.total ?? 0) : demoItems.length
 
   const pages = Math.max(1, Math.ceil(total / PER_PAGE))
 
@@ -197,6 +191,7 @@ export function VerificationReview() {
       )}
 
       <ApplicationSheet
+        key={openId ?? "closed"}
         id={openId}
         live={live}
         demoApplication={demo.find((a) => a.id === openId) ?? null}
@@ -234,18 +229,15 @@ function ApplicationSheet({
   const errorMessage = useApiErrorMessage()
 
   const load = React.useCallback(
-    (appId: string) => {
-      setFetched(null)
+    (appId: string) =>
       getApplication(appId)
         .then(setFetched)
-        .catch((e) => toast.error(t("loadFailed"), { description: errorMessage(e) }))
-    },
+        .catch((e) => toast.error(t("loadFailed"), { description: errorMessage(e) })),
     [t, errorMessage]
   )
 
+  // The parent remounts this per application (key={id}), so the reject form starts fresh.
   React.useEffect(() => {
-    setRejecting(false)
-    setNote("")
     if (id && live) load(id)
   }, [id, live, load])
 

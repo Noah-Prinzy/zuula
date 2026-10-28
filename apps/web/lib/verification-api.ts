@@ -6,7 +6,7 @@
 
 import type { components } from "@zuula/shared"
 
-import { apiBaseUrl, request, type JsonBody } from "@/lib/api"
+import { apiBaseUrl, authMode, request, type JsonBody } from "@/lib/api"
 
 type Schemas = components["schemas"]
 
@@ -19,8 +19,9 @@ export type VerificationDecision = JsonBody<"decideVerificationApplication">
 
 type Paged<T> = { data: T[]; page: number; perPage: number; total: number }
 
+/** Admin calls need a real API session, so the demo sign-in (lib/demo-auth.ts) gets samples. */
 export function verificationApiConfigured(): boolean {
-  return apiBaseUrl() !== null
+  return authMode() === "api"
 }
 
 /** GET /admin/verifications — pending oldest first, then decided ones, newest decision first. */

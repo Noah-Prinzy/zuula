@@ -4,7 +4,7 @@
 
 This is the project's single document. It replaces the separate READMEs, ADRs, UI docs, deploy notes, eval report and the `app plan/` planning notes. Part 1 says where things stand today; Part 2 keeps every earlier document word for word, so nothing that was written down has been lost.
 
-*Last updated: 28 October 2026 (account screens wired; Phase 2 wiring done).
+*Last updated: 28 October 2026 (synced with GitHub main).
 
 **Contents**
 
@@ -181,7 +181,7 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 
 ## 8. What's left
 
-**GitHub `main` vs local `main` (28 Oct 2026):** local `main` has ~25 commits not pushed yet. Meanwhile GitHub `main` got PR #70 (the same accreditation review work, merged by its session) with its migration still named **`0005_accreditation_review`**, plus Dependabot merges. Production already has that change as **0008** (on top of local 0005–0007), so **never apply GitHub's 0005 to production**. When syncing, merge GitHub `main` into local `main`, delete `migrations/versions/0005_accreditation_review.py`, keep `0008_accreditation_review.py`, and check `alembic heads` shows one head.
+**GitHub `main` vs local `main`:** synced 28 Oct 2026 by merging GitHub `main` into local `main` (PR #70's follow-up fix and Dependabot #66–#69). GitHub's `0005_accreditation_review` doesn't exist locally (it's `0008`, applied to production); `alembic heads` shows the single head `0008`. Local `main` is ahead of GitHub and not pushed yet; pushing deploys the web app to Vercel. **Never apply a `0005_accreditation_review` migration to production.**
 
 **Launch blocker: production holds only sample data.** The production database was seeded with `python -m app.db.seed` *without* `--real`. Audit of 28 Oct 2026 (read-only):
 
