@@ -210,7 +210,7 @@ class EvalItem:
 def load_eval_items(eval_dir: Path) -> list[EvalItem]:
     records: list[dict] = []
     for path in sorted(eval_dir.glob("*.json")):
-        records.extend(json.loads(path.read_text()))
+        records.extend(json.loads(path.read_text(encoding="utf-8")))
     records.sort(key=lambda r: (r["country"], r["source_url"]))
     return [
         EvalItem(
@@ -383,7 +383,7 @@ def _load_done(out_path: Path) -> dict[int, ItemResult]:
     if not out_path.exists():
         return {}
     done: dict[int, ItemResult] = {}
-    for line in out_path.read_text().splitlines():
+    for line in out_path.read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
         row = json.loads(line)
@@ -422,7 +422,7 @@ async def run(args: argparse.Namespace) -> list[ItemResult]:
     out_mode = "a" if (args.resume and done) else "w"
     try:
         print(f"Running {len(remaining)} remaining items at concurrency {args.concurrency} ...")
-        with args.out.open(out_mode) as out_f:
+        with args.out.open(out_mode, encoding="utf-8") as out_f:
             tasks = [process_item(provider, engine, item, semaphore) for item in remaining]
             for i, coro in enumerate(asyncio.as_completed(tasks), start=1):
                 result = await coro

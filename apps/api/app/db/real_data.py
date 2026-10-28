@@ -153,6 +153,6 @@ def load_real_reports(data_dir: Path = SEED_DATA_DIR) -> list[FactCheckReport]:
     order (by country then source URL) so report ids are deterministic across runs."""
     records: list[dict] = []
     for path in sorted(data_dir.glob("*.json")):
-        records.extend(json.loads(path.read_text()))
+        records.extend(json.loads(path.read_text(encoding="utf-8")))
     records.sort(key=lambda r: (r["country"], r["source_url"]))
     return [_to_report(i, r) for i, r in enumerate(records, start=1)]

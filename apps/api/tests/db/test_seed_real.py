@@ -31,7 +31,7 @@ def test_real_reports_load_from_the_seed_split_only():
     eval_urls = {
         rec["source_url"]
         for path in EVAL_DATA_DIR.glob("*.json")
-        for rec in json.loads(path.read_text())
+        for rec in json.loads(path.read_text(encoding="utf-8"))
     }
     assert eval_urls, "eval split should be non-empty for this to be a meaningful check"
     assert eval_urls.isdisjoint({r.source_url for r in reports})
