@@ -1,0 +1,81 @@
+# Render Blueprint: the Zuula API on one free web service (Milestone B, docs/zuula_state.md
+# §11, option 1). Background jobs run inside the API (JOB_RUNNER=inline): Render's free plan
+# has no background workers. Email goes over Brevo's HTTPS API: free services can't use SMTP.
+#
+# `sync: false` values are secrets: Render asks for them when the Blueprint is applied, and
+# they live only in Render's dashboard, never in git. No pre-deploy migration step (that needs
+# a paid plan, and production migrations are run by hand with Noah's go-ahead).
+services:
+  - type: web
+    name: zuula-api
+    runtime: docker
+    plan: free
+    region: frankfurt # nearest Render region to Supabase (eu-west-1, Ireland)
+    branch: main
+    rootDir: apps/api
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      # ---- App ----
+      - key: ZUULA_ENV
+        value: production
+      - key: ZUULA_DEBUG
+        value: "false"
+      - key: ZUULA_SECRET_KEY
+        generateValue: true
+      - key: ZUULA_SESSION_COOKIE_SECURE
+        value: "true"
+      - key: ZUULA_CORS_ORIGINS # the web app's exact origins, comma-separated
+        sync: false
+      - key: ZUULA_WEB_APP_URL
+        sync: false
+      # Integrations not set up yet run as stubs (docs/zuula_state.md §11). Remove each one
+      # from this list as its credentials are added.
+      - key: ZUULA_ALLOW_STUB_ADAPTERS
+        value: google,facebook,sms,turnstile,clamav,s3,whatsapp,telegram
+
+      # ---- Database (Supabase, IPv4 session pooler; postgresql+asyncpg://...) ----
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_POOL_SIZE
+        value: "5"
+
+      # ---- Sign-in (Supabase Auth) ----
+      - key: ZUULA_AUTH_PROVIDER
+        value: supabase
+      - key: SUPABASE_URL
+        value: https://xskkttjlgkanopzivfpy.supabase.co
+      - key: SUPABASE_JWT_SECRET
+        sync: false
+
+      # ---- Jobs and Redis (Upstash free: one database, TLS) ----
+      - key: JOB_RUNNER
+        value: inline
+      - key: REDIS_URL # rediss://default:<password>@<host>:6379
+        sync: false
+
+      # ---- Email (Brevo HTTPS API) ----
+      - key: EMAIL_FROM
+        value: zuulaug@gmail.com
+      - key: BREVO_API_KEY
+        sync: false
+
+      # ---- AI engine: hosted services; the local models stay off on 512 MB ----
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-120b
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: SUNBIRD_API_KEY
+        sync: false
+      - key: EMBEDDING_PROVIDER
+        value: stub
+      - key: AI_TEXT_DETECTOR_PROVIDER
+        value: stub
+      - key: DEEPFAKE_DETECTOR_PROVIDER
+        value: stub
+      - key: METADATA_TAMPERING_PROVIDER
+        value: stub

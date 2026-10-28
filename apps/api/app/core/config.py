@@ -1,4 +1,5 @@
 from functools import lru_cache
+from typing import Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -81,6 +82,10 @@ class SupabaseSettings(BaseSettings):
 class CelerySettings(BaseSettings):
     model_config = SettingsConfigDict(extra="ignore")
 
+    # Where background jobs run (app/worker/dispatch.py): "celery", a separate worker process,
+    # or "inline", tasks inside the API's own event loop, for a single free-tier instance
+    # with no worker (Render free). Inline jobs in flight are lost if the process restarts.
+    job_runner: Literal["celery", "inline"] = "celery"
     celery_broker_url: str = "redis://localhost:6379/0"
     celery_result_backend: str = "redis://localhost:6379/1"
     # Shared by app/realtime/ too — pub/sub for SSE lives on the same Redis, a different DB
@@ -238,6 +243,8 @@ class AdaptersSettings(BaseSettings):
     s3_region: str = "us-east-1"
 
     email_from: str = "hello@zuula.ug"
+    # Brevo's HTTPS API; preferred over SMTP when set (SMTP ports are blocked on some hosts).
+    brevo_api_key: str = ""
     email_smtp_host: str = ""
     email_smtp_port: int = 587
     email_smtp_user: str = ""

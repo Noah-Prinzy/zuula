@@ -26,15 +26,9 @@ dependencies = [
   "boto3>=1.35",
   "aiosmtplib>=3.0",
   # P4 verdict engine (app/providers/): Groq and Tavily are plain httpx calls (no vendor SDK,
-  # same convention as every adapter above), but the three local models need their own
-  # packages. trafilatura is the `fetch` step's article extraction (self-hosted, no key).
-  # sentence-transformers is the dedupe check's embedding model (all-MiniLM-L6-v2, CPU).
-  # transformers is the AI-text detector (RoBERTa, CPU). Both default to a stub
-  # (EMBEDDING_PROVIDER/AI_TEXT_DETECTOR_PROVIDER=stub) so routine dev/CI never downloads
-  # either model; torch itself comes in transitively via sentence-transformers.
+  # same convention as every adapter above). trafilatura is the `fetch` step's article
+  # extraction (self-hosted, no key). The local models' packages are the optional `ml` extra.
   "trafilatura>=1.12",
-  "sentence-transformers>=3.0",
-  "transformers>=4.44",
   # Metadata tampering (EXIF) and the deepfake/AI-image signal both decode the uploaded image
   # with Pillow — lightweight, no model weights, so unlike the two packages above it isn't
   # tied to a stub-by-default provider for download-size reasons (both still default to
@@ -43,6 +37,16 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# The local models (pip install ".[ml]"): sentence-transformers is the dedupe check's
+# embedding model (all-MiniLM-L6-v2, CPU), transformers the AI-text and deepfake detectors.
+# All default to a stub (EMBEDDING_PROVIDER, AI_TEXT_DETECTOR_PROVIDER,
+# DEEPFAKE_DETECTOR_PROVIDER) and are imported only when switched on, so the API runs
+# without them, e.g. on a 512 MB free instance. torch comes in via sentence-transformers;
+# the Dockerfile installs its CPU-only build first (INSTALL_ML=true).
+ml = [
+  "sentence-transformers>=3.0",
+  "transformers>=4.44",
+]
 dev = [
   "pytest>=8.3",
   "pytest-asyncio>=0.24",

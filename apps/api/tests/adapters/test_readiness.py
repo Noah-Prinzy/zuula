@@ -10,7 +10,7 @@ from app.adapters.readiness import ADAPTERS, assert_production_ready
 from app.core.config import AdaptersSettings, Settings, get_settings
 
 _ALL = {var.lower(): "set" for _, variables in ADAPTERS.values() for var in variables}
-_READY = {**_ALL, "africastalking_username": "zuula"}
+_READY = {**_ALL, "africastalking_username": "zuula", "email_smtp_host": "smtp.example.com"}
 
 
 def _prod(**overrides) -> Settings:

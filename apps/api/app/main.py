@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -12,12 +14,23 @@ from app.db.session import get_db
 from app.partner.v1 import router as partner_v1_router
 from app.realtime import redis_client
 from app.webhooks import router as webhooks_router
+from app.worker import dispatch
 
 settings = get_settings()
 # In production, missing adapter credentials stop startup rather than fall back to stubs.
 assert_production_ready()
 
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    # With JOB_RUNNER=inline there's no Celery beat: the API runs the periodic jobs itself.
+    stop = dispatch.start_periodic_jobs()
+    yield
+    stop()
+
+
 app = FastAPI(
+    lifespan=lifespan,
     title="Zuula API",
     version="0.1.0",
     description=(

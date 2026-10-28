@@ -1,8 +1,9 @@
 """Outbound email: verification and reset codes, 2FA codes and email broadcasts.
 
-`SmtpEmailSender` sends through any SMTP server with `aiosmtplib` (STARTTLS on 587, implicit
-TLS on 465). Without EMAIL_SMTP_HOST the stub logs instead of sending. Messages are sent
-from the worker (app/worker/messaging.py), not inside a request.
+`BrevoApiEmailSender` sends through Brevo's HTTPS API (BREVO_API_KEY): for hosts that block
+outbound SMTP, such as Render's free tier. Otherwise `SmtpEmailSender` sends through any SMTP
+server with `aiosmtplib` (STARTTLS on 587, implicit TLS on 465). With neither, the stub logs
+instead of sending. Messages are sent off the request path (app/worker/dispatch.py).
 """
 
 import logging
@@ -11,6 +12,7 @@ from email.message import EmailMessage
 from typing import Protocol
 
 import aiosmtplib
+import httpx
 
 from app.adapters.readiness import configured
 from app.core.config import get_adapters_settings
@@ -71,9 +73,41 @@ class SmtpEmailSender:
         )
 
 
+class EmailError(RuntimeError):
+    pass
+
+
+BREVO_URL = "https://api.brevo.com/v3/smtp/email"
+
+
+class BrevoApiEmailSender:
+    def __init__(self, *, api_key: str, sender: str, timeout: float = 15.0):
+        self._api_key = api_key
+        self._sender = sender
+        self._timeout = timeout
+
+    async def send(self, *, to: str, subject: str, body: str) -> None:
+        async with httpx.AsyncClient(timeout=self._timeout) as client:
+            response = await client.post(
+                BREVO_URL,
+                headers={"api-key": self._api_key, "accept": "application/json"},
+                json={
+                    "sender": {"name": "Zuula", "email": self._sender},
+                    "to": [{"email": to}],
+                    "subject": subject,
+                    "textContent": body,
+                },
+            )
+        if response.status_code >= 400:
+            # Brevo's error body names the problem (e.g. an unverified sender), never the key.
+            raise EmailError(f"Brevo refused the email ({response.status_code}): {response.text}")
+
+
 def get_email_sender() -> EmailSender:
     if configured("email"):
         settings = get_adapters_settings()
+        if settings.brevo_api_key:
+            return BrevoApiEmailSender(api_key=settings.brevo_api_key, sender=settings.email_from)
         return SmtpEmailSender(
             host=settings.email_smtp_host,
             port=settings.email_smtp_port,

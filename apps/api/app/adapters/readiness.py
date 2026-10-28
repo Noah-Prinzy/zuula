@@ -31,7 +31,9 @@ ADAPTERS: dict[str, tuple[str, tuple[str, ...]]] = {
         ("FACEBOOK_OAUTH_CLIENT_ID", "FACEBOOK_OAUTH_CLIENT_SECRET"),
     ),
     "sms": ("SMS (Africa's Talking)", ("AFRICASTALKING_USERNAME", "AFRICASTALKING_API_KEY")),
-    "email": ("Email (SMTP)", ("EMAIL_SMTP_HOST", "EMAIL_FROM")),
+    # Plus a way to send: BREVO_API_KEY (HTTPS, works where SMTP ports are blocked, as on
+    # Render's free tier) or EMAIL_SMTP_HOST. See _missing().
+    "email": ("Email (Brevo API or SMTP)", ("EMAIL_FROM",)),
     "turnstile": ("Captcha (Turnstile)", ("TURNSTILE_SECRET_KEY",)),
     "clamav": ("Malware scanning (ClamAV)", ("CLAMAV_HOST",)),
     "s3": ("Media storage (S3)", ("S3_BUCKET", "S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY")),
@@ -50,6 +52,8 @@ ADAPTERS: dict[str, tuple[str, tuple[str, ...]]] = {
 
 def configured(adapter: str, settings: AdaptersSettings | None = None) -> bool:
     settings = settings or get_adapters_settings()
+    if adapter == "email" and not (settings.brevo_api_key or settings.email_smtp_host):
+        return False
     return all(getattr(settings, var.lower()) for var in ADAPTERS[adapter][1])
 
 
@@ -73,6 +77,8 @@ def _missing(adapter: str, adapters: AdaptersSettings) -> list[str]:
     # The sandbox username only reaches Africa's Talking's simulator: no SMS is delivered.
     if adapter == "sms" and adapters.africastalking_username == "sandbox":
         missing.append("AFRICASTALKING_USERNAME (not 'sandbox')")
+    if adapter == "email" and not (adapters.brevo_api_key or adapters.email_smtp_host):
+        missing.append("BREVO_API_KEY or EMAIL_SMTP_HOST")
     return missing
 
 

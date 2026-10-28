@@ -1,4 +1,6 @@
-"""Africa's Talking over respx, and SMTP with `aiosmtplib.send` captured."""
+"""Africa's Talking and Brevo over respx, and SMTP with `aiosmtplib.send` captured."""
+
+import json
 
 import httpx
 import pytest
@@ -79,3 +81,33 @@ async def test_email_goes_out_over_smtp(monkeypatch, port, tls, starttls):
     assert message.get_content().strip() == "123456"
     assert sent["kwargs"]["hostname"] == "smtp.example.com"
     assert (sent["kwargs"]["use_tls"], sent["kwargs"]["start_tls"]) == (tls, starttls)
+
+
+@respx.mock
+async def test_email_goes_out_over_brevos_api():
+    route = respx.post(email_adapter.BREVO_URL).mock(return_value=httpx.Response(201))
+    sender = email_adapter.BrevoApiEmailSender(api_key="key", sender="zuulaug@gmail.com")
+    await sender.send(to="a@b.com", subject="Your code", body="123456")
+    request = route.calls.last.request
+    assert request.headers["api-key"] == "key"
+    assert json.loads(request.content) == {
+        "sender": {"name": "Zuula", "email": "zuulaug@gmail.com"},
+        "to": [{"email": "a@b.com"}],
+        "subject": "Your code",
+        "textContent": "123456",
+    }
+
+
+@respx.mock
+async def test_brevo_refusals_raise():
+    respx.post(email_adapter.BREVO_URL).mock(
+        return_value=httpx.Response(400, json={"message": "sender not valid"})
+    )
+    sender = email_adapter.BrevoApiEmailSender(api_key="key", sender="x@y.com")
+    with pytest.raises(email_adapter.EmailError, match="sender not valid"):
+        await sender.send(to="a@b.com", subject="S", body="B")
+
+
+def test_brevo_is_preferred_over_smtp(adapter_env):
+    adapter_env(BREVO_API_KEY="key", EMAIL_SMTP_HOST="smtp.example.com")
+    assert isinstance(email_adapter.get_email_sender(), email_adapter.BrevoApiEmailSender)
