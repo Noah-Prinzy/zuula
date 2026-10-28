@@ -78,6 +78,7 @@ class EmailError(RuntimeError):
 
 
 BREVO_URL = "https://api.brevo.com/v3/smtp/email"
+BREVO_ACCOUNT_URL = "https://api.brevo.com/v3/account"
 
 
 class BrevoApiEmailSender:
@@ -101,6 +102,16 @@ class BrevoApiEmailSender:
         if response.status_code >= 400:
             # Brevo's error body names the problem (e.g. an unverified sender), never the key.
             raise EmailError(f"Brevo refused the email ({response.status_code}): {response.text}")
+
+    async def check(self) -> None:
+        """Raises EmailError unless Brevo accepts the key (for /readyz): a wrong key, such as
+        the SMTP key instead of an API key, otherwise only shows when a code never arrives."""
+        async with httpx.AsyncClient(timeout=self._timeout) as client:
+            response = await client.get(
+                BREVO_ACCOUNT_URL, headers={"api-key": self._api_key, "accept": "application/json"}
+            )
+        if response.status_code >= 400:
+            raise EmailError(f"Brevo refused the API key ({response.status_code}): {response.text}")
 
 
 def get_email_sender() -> EmailSender:

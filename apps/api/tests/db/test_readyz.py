@@ -1,4 +1,4 @@
-"""/readyz answers 200 only while PostgreSQL and Redis both do."""
+"""/readyz answers 200 only while PostgreSQL and Redis both do, and Brevo takes the key."""
 
 import json
 
@@ -21,3 +21,29 @@ async def test_503_names_what_is_down(db, monkeypatch):
     assert response.status_code == 503
     body = json.loads(response.body)
     assert body["status"] == "unavailable" and body["checks"]["redis"] == "unavailable"
+
+
+async def test_a_rejected_brevo_key_makes_email_unavailable(db, adapter_env, monkeypatch):
+    # The bug this guards against: Brevo didn't recognise Render's BREVO_API_KEY, so every
+    # sign-in code was refused ("Key not found") while /readyz still said ok.
+    import httpx
+    import respx
+
+    from app.adapters import email
+
+    adapter_env(BREVO_API_KEY="xsmtpsib-wrong-kind-of-key")
+    monkeypatch.setattr("app.main._email_check", {"at": 0.0, "ok": True})
+    with respx.mock:
+        respx.get(email.BREVO_ACCOUNT_URL).mock(
+            return_value=httpx.Response(401, json={"message": "Key not found"})
+        )
+        response = await readyz(db)
+    assert response.status_code == 503
+    assert json.loads(response.body)["checks"]["email"] == "unavailable"
+
+    monkeypatch.setattr("app.main._email_check", {"at": 0.0, "ok": True})
+    with respx.mock:
+        respx.get(email.BREVO_ACCOUNT_URL).mock(return_value=httpx.Response(200, json={}))
+        response = await readyz(db)
+    assert response.status_code == 200
+    assert json.loads(response.body)["checks"]["email"] == "ok"
