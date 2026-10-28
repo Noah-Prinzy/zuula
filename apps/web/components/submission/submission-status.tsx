@@ -20,18 +20,128 @@ import { startNavigationProgress } from "@/components/shell/route-progress"
 import { AnalysisProgress, type AnalysisState } from "@/components/submission/analysis-progress"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
-import { pipelineFor } from "@/lib/analysis"
+import { pipelineFor, type StepDef } from "@/lib/analysis"
 import { useFormat } from "@/lib/format"
 import { getSubmission, type StoredSubmission } from "@/lib/mock/submissions"
 import { CONTENT_LANGUAGES } from "@/lib/submission"
+import { followSubmission, submissionsLive } from "@/lib/submissions-api"
 import { cn } from "@/lib/utils"
 
 const noopSubscribe = () => () => {}
 const REDIRECT_SECONDS = 5
 
-// Mock: every finished check opens one of the sample reports.
-function reportFor(s: StoredSubmission | null) {
+// Demo mode: every finished check opens one of the sample reports.
+function demoReportFor(s: StoredSubmission | null) {
   return s?.type === "media" ? "/fact-checks/fc-2026-0157" : "/fact-checks/fc-2026-0142"
+}
+
+type Progress = {
+  state: AnalysisState
+  current: number
+  elapsed: number
+  reportHref: string | null
+  /** The API's reason a check failed, when it gave one. */
+  error: string | null
+  retry: () => void
+}
+
+// Elapsed seconds while `running`, picking up where it left off after a retry.
+function useElapsed(running: boolean) {
+  const [elapsed, setElapsed] = React.useState(0)
+  React.useEffect(() => {
+    if (!running) return
+    const started = Date.now() - elapsed * 1000
+    const t = setInterval(() => setElapsed((Date.now() - started) / 1000), 100)
+    return () => clearInterval(t)
+    // elapsed is read once when the timer (re)starts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [running])
+  return elapsed
+}
+
+// Live: follow the real pipeline (lib/submissions-api.ts), step by step, to its report.
+function useLiveProgress(trackingId: string, steps: StepDef[]): Progress {
+  const [current, setCurrent] = React.useState(0)
+  const [state, setState] = React.useState<AnalysisState>("running")
+  const [reportHref, setReportHref] = React.useState<string | null>(null)
+  const [error, setError] = React.useState<string | null>(null)
+  const [attempt, setAttempt] = React.useState(0)
+  const elapsed = useElapsed(state === "running")
+
+  React.useEffect(() => {
+    return followSubmission(trackingId, {
+      onStep: (step) => {
+        const index = steps.findIndex((s) => s.id === step.step)
+        if (index < 0) return
+        const reached = step.status === "done" ? Math.min(index + 1, steps.length - 1) : index
+        setCurrent((c) => Math.max(c, reached))
+      },
+      onFinish: (status) => {
+        if (status.status === "completed" && status.result) {
+          setCurrent(steps.length - 1)
+          setReportHref(`/fact-checks/${status.result.id}`)
+          setState("done")
+        } else {
+          setError(status.error?.error.message ?? null)
+          setState("error")
+        }
+      },
+      onError: (e) => {
+        setError(e instanceof Error ? e.message : null)
+        setState("error")
+      },
+    })
+  }, [trackingId, steps, attempt])
+
+  return {
+    state,
+    current,
+    elapsed,
+    reportHref,
+    error,
+    retry: () => {
+      setError(null)
+      setState("running")
+      setAttempt((a) => a + 1)
+    },
+  }
+}
+
+// Demo mode (no API): step through the pipeline on its expected timings.
+function useDemoProgress(submission: StoredSubmission | null, steps: StepDef[]): Progress {
+  // No local record means the submission was made elsewhere: treat it as already finished.
+  const [current, setCurrent] = React.useState(0)
+  const [state, setState] = React.useState<AnalysisState>(submission ? "running" : "done")
+  const [attempt, setAttempt] = React.useState(0)
+  const elapsed = useElapsed(state === "running")
+
+  // Demo of the failure path: links containing "fail" can't be fetched on the first attempt.
+  const failsAt =
+    attempt === 0 && submission?.type === "url" && submission.preview.includes("fail")
+      ? steps.findIndex((s) => s.id === "fetch")
+      : -1
+
+  React.useEffect(() => {
+    if (state !== "running") return
+    const t = setTimeout(() => {
+      if (current === failsAt) setState("error")
+      else if (current + 1 >= steps.length) setState("done")
+      else setCurrent((c) => c + 1)
+    }, steps[current].seconds * 1000)
+    return () => clearTimeout(t)
+  }, [state, current, steps, failsAt])
+
+  return {
+    state,
+    current,
+    elapsed,
+    reportHref: demoReportFor(submission),
+    error: null,
+    retry: () => {
+      setAttempt((a) => a + 1)
+      setState("running")
+    },
+  }
 }
 
 async function copy(text: string, success: string, failure: string) {
@@ -64,7 +174,17 @@ function TrackingIdCard({ trackingId }: { trackingId: string }) {
   )
 }
 
-function Tracker({ trackingId, submission }: { trackingId: string; submission: StoredSubmission | null }) {
+function Tracker({
+  trackingId,
+  submission,
+  steps,
+  progress,
+}: {
+  trackingId: string
+  submission: StoredSubmission | null
+  steps: StepDef[]
+  progress: Progress
+}) {
   const t = useTranslations("Status")
   const ts = useTranslations("Submit")
   const f = useFormat()
@@ -72,57 +192,20 @@ function Tracker({ trackingId, submission }: { trackingId: string; submission: S
   const { source } = useSession()
   const signedIn = source === "account"
   const type = submission?.type ?? "text"
-  const steps = React.useMemo(() => pipelineFor(type), [type])
+  const { state, current, elapsed, reportHref, error, retry } = progress
 
-  // No local record means the submission was made elsewhere; the API would return its real
-  // status. In the mock we treat it as already finished.
-  const [current, setCurrent] = React.useState(0)
-  const [state, setState] = React.useState<AnalysisState>(submission ? "running" : "done")
-  const [elapsed, setElapsed] = React.useState(0)
+  // FR-SUBMIT-06: open the report automatically when a check you just submitted finishes.
   const [countdown, setCountdown] = React.useState<number | null>(submission ? REDIRECT_SECONDS : null)
-  const [attempt, setAttempt] = React.useState(0)
-
-  // Demo of the failure path: links containing "fail" can't be fetched on the first attempt.
-  const failsAt =
-    attempt === 0 && submission?.type === "url" && submission.preview.includes("fail")
-      ? steps.findIndex((s) => s.id === "fetch")
-      : -1
-
   React.useEffect(() => {
-    if (state !== "running") return
-    const t = setTimeout(() => {
-      if (current === failsAt) setState("error")
-      else if (current + 1 >= steps.length) setState("done")
-      else setCurrent((c) => c + 1)
-    }, steps[current].seconds * 1000)
-    return () => clearTimeout(t)
-  }, [state, current, steps, failsAt])
-
-  React.useEffect(() => {
-    if (state !== "running") return
-    const started = Date.now() - elapsed * 1000
-    const t = setInterval(() => setElapsed((Date.now() - started) / 1000), 100)
-    return () => clearInterval(t)
-    // elapsed is read once when the timer (re)starts
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state])
-
-  // FR-SUBMIT-06: open the report automatically when the check finishes.
-  React.useEffect(() => {
-    if (state !== "done" || countdown === null) return
+    if (state !== "done" || countdown === null || !reportHref) return
     if (countdown === 0) {
       startNavigationProgress()
-      router.push(reportFor(submission))
+      router.push(reportHref)
       return
     }
     const t = setTimeout(() => setCountdown((c) => (c === null ? null : c - 1)), 1000)
     return () => clearTimeout(t)
-  }, [state, countdown, router, submission])
-
-  function retry() {
-    setAttempt((a) => a + 1)
-    setState("running")
-  }
+  }, [state, countdown, router, reportHref])
 
   const language =
     CONTENT_LANGUAGES.find((l) => l.code === submission?.language)?.label ?? ts("detectLanguage")
@@ -143,7 +226,7 @@ function Tracker({ trackingId, submission }: { trackingId: string; submission: S
             </div>
             <div className="flex flex-wrap gap-2">
               <Button asChild size="lg">
-                <Link href={reportFor(submission)}>
+                <Link href={reportHref ?? "/fact-checks"}>
                   {t("viewReport")} <RiArrowRightLine aria-hidden />
                 </Link>
               </Button>
@@ -157,7 +240,7 @@ function Tracker({ trackingId, submission }: { trackingId: string; submission: S
         ) : state === "error" ? (
           <div role="alert" className="flex flex-col gap-3 border border-destructive/40 bg-destructive/5 p-5">
             <h2 className="font-heading text-lg font-bold">{t("errorTitle")}</h2>
-            <p className="text-sm text-muted-foreground">{t("errorBody")}</p>
+            <p className="text-sm text-muted-foreground">{error ?? t("errorBody")}</p>
             <div className="flex flex-wrap gap-2">
               <Button onClick={retry}>
                 <RiRefreshLine aria-hidden /> {t("tryAgain")}
@@ -233,6 +316,18 @@ function Tracker({ trackingId, submission }: { trackingId: string; submission: S
   )
 }
 
+function LiveTracker({ trackingId, submission }: { trackingId: string; submission: StoredSubmission | null }) {
+  const steps = React.useMemo(() => pipelineFor(submission?.type ?? "text"), [submission?.type])
+  const progress = useLiveProgress(trackingId, steps)
+  return <Tracker trackingId={trackingId} submission={submission} steps={steps} progress={progress} />
+}
+
+function DemoTracker({ trackingId, submission }: { trackingId: string; submission: StoredSubmission | null }) {
+  const steps = React.useMemo(() => pipelineFor(submission?.type ?? "text"), [submission?.type])
+  const progress = useDemoProgress(submission, steps)
+  return <Tracker trackingId={trackingId} submission={submission} steps={steps} progress={progress} />
+}
+
 export function SubmissionStatus({ trackingId }: { trackingId: string }) {
   // sessionStorage is only readable in the browser; render a skeleton until then.
   const mounted = React.useSyncExternalStore(noopSubscribe, () => true, () => false)
@@ -242,5 +337,6 @@ export function SubmissionStatus({ trackingId }: { trackingId: string }) {
   )
 
   if (!mounted) return <Skeleton className="h-96 w-full" />
-  return <Tracker key={trackingId} trackingId={trackingId} submission={submission} />
+  const Driver = submissionsLive() ? LiveTracker : DemoTracker
+  return <Driver key={trackingId} trackingId={trackingId} submission={submission} />
 }

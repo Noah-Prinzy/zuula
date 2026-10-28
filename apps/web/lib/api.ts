@@ -72,12 +72,12 @@ export class ApiError extends Error {
 
 export async function request<T>(
   path: string,
-  init: { method?: string; body?: unknown } = {}
+  init: { method?: string; body?: unknown; headers?: Record<string, string> } = {}
 ): Promise<T> {
   const base = apiBaseUrl()
   if (base === null) throw new ApiError(0, "unconfigured", "NEXT_PUBLIC_API_URL is not set.")
 
-  const headers: Record<string, string> = {}
+  const headers: Record<string, string> = { ...init.headers }
   if (init.body !== undefined) headers["Content-Type"] = "application/json"
   // Supabase mode: the session is Supabase's, so its access token goes along as a bearer.
   const token = authMode() === "supabase" ? await accessToken() : null

@@ -20,6 +20,8 @@ import { pipelineFor } from "@/lib/analysis"
 import { saveSubmission } from "@/lib/mock/submissions"
 
 beforeEach(() => {
+  // The simulated (no-API) flow; the live one is tested in lib/submissions-api.test.ts.
+  vi.stubEnv("NEXT_PUBLIC_AUTH_MODE", "demo")
   router.push.mockClear()
   toast.success.mockClear()
   toast.error.mockClear()

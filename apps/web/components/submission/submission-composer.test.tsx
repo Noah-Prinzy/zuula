@@ -24,6 +24,8 @@ const CLAIM = "Drinking salt water every morning cures malaria, says a message o
 const submitButton = () => screen.getByRole("button", { name: /verify|check|submit/i })
 
 beforeEach(() => {
+  // The simulated (no-API) flow; the live one is tested in lib/submissions-api.test.ts.
+  vi.stubEnv("NEXT_PUBLIC_AUTH_MODE", "demo")
   session.role = "public"
   router.push.mockClear()
   toast.success.mockClear()

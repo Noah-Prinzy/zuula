@@ -8,8 +8,10 @@ import { toast } from "sonner"
 
 import { useSession } from "@/components/providers/session-provider"
 import { startNavigationProgress } from "@/components/shell/route-progress"
+import { ApiError } from "@/lib/api"
 import { newTrackingId, saveSubmission } from "@/lib/mock/submissions"
 import { EMPTY_SUBMISSION, submissionSchema, type SubmissionValues } from "@/lib/submission"
+import { createSubmission, submissionsLive } from "@/lib/submissions-api"
 
 function previewOf(v: SubmissionValues) {
   switch (v.type) {
@@ -30,7 +32,8 @@ export function isLink(value: string) {
 }
 
 // Form state and submit flow shared by the full composer (/verify) and the quick one (Home):
-// validate → simulated upload → tracking ID → Status page.
+// validate → POST /submissions (upload progress for media) → tracking ID → Status page. In
+// demo mode (no API) the upload and tracking ID are simulated.
 export function useSubmissionForm({ detectLinks = false }: { detectLinks?: boolean } = {}) {
   const router = useRouter()
   // FR-AUTH-07: anyone may submit; only a real account skips the CAPTCHA, never a role preview.
@@ -61,17 +64,34 @@ export function useSubmissionForm({ detectLinks = false }: { detectLinks?: boole
       return
     }
 
-    // Simulated upload until the API exists; real uploads stream progress from the server.
-    if (values.type === "media") {
-      for (let p = 0; p <= 100; p += 10) {
-        setUploadProgress(p)
-        await new Promise((r) => setTimeout(r, 120))
+    let trackingId: string
+    if (submissionsLive()) {
+      try {
+        // One key per submit attempt: a retried request returns the same submission.
+        const accepted = await createSubmission(values, {
+          idempotencyKey: crypto.randomUUID(),
+          onUploadProgress: values.type === "media" ? setUploadProgress : undefined,
+        })
+        trackingId = accepted.trackingId
+      } catch (e) {
+        setUploadProgress(undefined)
+        toast.error(e instanceof ApiError ? e.message : "Couldn't submit. Please try again.")
+        return
       }
     } else {
-      await new Promise((r) => setTimeout(r, 400))
+      // Demo mode (no API): a simulated upload and a locally made tracking ID.
+      if (values.type === "media") {
+        for (let p = 0; p <= 100; p += 10) {
+          setUploadProgress(p)
+          await new Promise((r) => setTimeout(r, 120))
+        }
+      } else {
+        await new Promise((r) => setTimeout(r, 400))
+      }
+      trackingId = newTrackingId()
     }
 
-    const trackingId = newTrackingId()
+    // Kept locally either way, for the Status page's "what you submitted" card.
     saveSubmission({
       trackingId,
       type: values.type,
