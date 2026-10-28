@@ -1,6 +1,7 @@
 // SAMPLE DATA for the Admin area. Replaced by the admin API in Phase 3.
 
 import type { Role } from "@/lib/roles"
+import type { AccreditationApplicationDetail } from "@/lib/verification-api"
 import type { Verdict } from "@/lib/types/fact-check"
 
 // ---- KPIs (§13, year-one targets) ----
@@ -80,6 +81,46 @@ export const SAMPLE_USERS: AdminUser[] = [
   { id: "u7", name: "James Ssentongo", email: "james@example.com", role: "public", status: "active", joined: "2026-06-30", lastActive: "2026-09-18", ratings: 21 },
   { id: "u8", name: "Peter Wabwire", email: "peter@example.com", role: "public", status: "suspended", joined: "2026-07-14", lastActive: "2026-09-02", ratings: 410 },
   { id: "u9", name: "Joseph Opio", email: "joseph@example.com", role: "public", status: "active", joined: "2026-08-01", lastActive: "2026-09-20", ratings: 9 },
+]
+
+// ---- Accreditation (FR-AUTH-02) ----
+
+// The demo queue when there's no API (components/admin/verification-review.tsx). Same shape as
+// GET /admin/verifications/{id}; documents have no links because there's nothing to download.
+export const SAMPLE_APPLICATIONS: AccreditationApplicationDetail[] = [
+  {
+    id: "acc-u5",
+    status: "pending",
+    requestedRole: "journalist",
+    organisation: "Daily Monitor",
+    pressCardNumber: "UMC-2026-0412",
+    submittedAt: "2026-09-19T08:12:00Z",
+    documentCount: 0,
+    documents: [],
+    applicant: { id: "u5", name: "Grace Nankya", email: "grace@example.com", role: "journalist", status: "pending", joined: "2026-09-19" },
+  },
+  {
+    id: "acc-u7",
+    status: "pending",
+    requestedRole: "expert",
+    organisation: "Makerere University School of Public Health",
+    submittedAt: "2026-09-20T14:40:00Z",
+    documentCount: 0,
+    documents: [],
+    applicant: { id: "u7", name: "James Ssentongo", email: "james@example.com", role: "public", status: "active", district: "Wakiso", joined: "2026-06-30" },
+  },
+  {
+    id: "acc-u4",
+    status: "approved",
+    requestedRole: "journalist",
+    organisation: "Nile Post",
+    submittedAt: "2026-04-09T10:00:00Z",
+    reviewedAt: "2026-04-10T09:30:00Z",
+    reviewer: "Mary Akello",
+    documentCount: 0,
+    documents: [],
+    applicant: { id: "u4", name: "Sarah Namutebi", email: "sarah@example.com", role: "journalist", status: "active", joined: "2026-04-09" },
+  },
 ]
 
 // ---- Moderation (FR-RATE-07) ----

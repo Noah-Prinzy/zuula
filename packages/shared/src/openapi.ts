@@ -291,7 +291,7 @@ export interface paths {
         /** Accreditation application status (FR-AUTH-02, FR-RATE-06). */
         get: operations["getVerification"];
         put?: never;
-        /** Apply as a Verified Journalist. */
+        /** Apply as a Verified Journalist or Expert Reviewer (FR-AUTH-02). */
         post: operations["applyForVerification"];
         delete?: never;
         options?: never;
@@ -818,6 +818,77 @@ export interface paths {
         patch: operations["updateAdminUser"];
         trace?: never;
     };
+    "/api/v1/admin/verifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Accreditation applications (FR-AUTH-02). Pending oldest first, then decided ones, newest decision first. */
+        get: operations["listVerificationApplications"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/verifications/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One application, its applicant, and short-lived links to its documents. */
+        get: operations["getVerificationApplication"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/verifications/{id}/documents/{index}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Download an application's document through a signed link.
+         * @description The `url` of an application document. The signature is the credential, so no session is needed, and the link expires after 10 minutes. The file is virus-scanned before it is served; a document that fails the scan is never returned.
+         */
+        get: operations["downloadVerificationDocument"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/verifications/{id}/decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Approve (grants the requested role) or reject an application. Audited; the applicant is notified in-app and by email. */
+        post: operations["decideVerificationApplication"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/moderation/reports": {
         parameters: {
             query?: never;
@@ -1107,7 +1178,7 @@ export interface components {
         /** @enum {string} */
         ReviewReason: "community-escalation" | "suspended" | "user-reports" | "low-confidence";
         /** @enum {string} */
-        AuditAction: "verdict.override" | "verdict.confirm" | "user.role_change" | "user.suspend" | "user.reinstate" | "ratings.exclude" | "source.add" | "source.deactivate" | "broadcast.send" | "settings.update" | "moderation.remove";
+        AuditAction: "verdict.override" | "verdict.confirm" | "user.role_change" | "user.suspend" | "user.reinstate" | "ratings.exclude" | "source.add" | "source.deactivate" | "broadcast.send" | "settings.update" | "moderation.remove" | "accreditation.approve" | "accreditation.reject";
         /**
          * @example {
          *       "error": {
@@ -1409,12 +1480,53 @@ export interface components {
         AccreditationStatus: {
             /** @enum {string} */
             status: "none" | "pending" | "approved" | "rejected";
+            role?: components["schemas"]["AccreditationRole"];
             organisation?: string;
             /** Format: date-time */
             submittedAt?: string;
             /** Format: date-time */
             reviewedAt?: string;
             note?: string;
+        };
+        /** @enum {string} */
+        AccreditationRole: "journalist" | "expert";
+        AccreditationApplication: {
+            id: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "rejected";
+            requestedRole: components["schemas"]["AccreditationRole"];
+            organisation?: string;
+            pressCardNumber?: string;
+            /** Format: date-time */
+            submittedAt: string;
+            /** Format: date-time */
+            reviewedAt?: string;
+            /** @description The deciding admin's name. */
+            reviewer?: string;
+            /** @description The admin's note; shown to the applicant. */
+            note?: string;
+            documentCount: number;
+            applicant: {
+                id: string;
+                name: string;
+                /** @description Or their phone */
+                email: string;
+                role: components["schemas"]["Role"];
+                /** @enum {string} */
+                status: "active" | "suspended" | "pending";
+                district?: string;
+                /** Format: date */
+                joined: string;
+            };
+        };
+        AccreditationApplicationDetail: components["schemas"]["AccreditationApplication"] & {
+            documents: {
+                index: number;
+                /** @description Signed path on this API (downloadVerificationDocument); prefix the API origin. */
+                url: string;
+                /** Format: date-time */
+                expiresAt: string;
+            }[];
         };
         ApiKey: {
             id: string;
@@ -2228,6 +2340,12 @@ export interface operations {
                 "multipart/form-data": {
                     organisation: string;
                     pressCardNumber?: string;
+                    /**
+                     * @description The role applied for. Expert Reviewer is open to public users and journalists.
+                     * @default journalist
+                     * @enum {string}
+                     */
+                    role?: "journalist" | "expert";
                     documents: string[];
                 };
             };
@@ -3190,6 +3308,139 @@ export interface operations {
             401: components["responses"]["Unauthorized"];
             403: components["responses"]["Forbidden"];
             404: components["responses"]["NotFound"];
+        };
+    };
+    listVerificationApplications: {
+        parameters: {
+            query?: {
+                status?: "pending" | "approved" | "rejected";
+                page?: components["parameters"]["Page"];
+                perPage?: components["parameters"]["PerPage"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageMeta"] & {
+                        data?: components["schemas"]["AccreditationApplication"][];
+                    };
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            401: components["responses"]["Unauthorized"];
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    getVerificationApplication: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccreditationApplicationDetail"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            403: components["responses"]["Forbidden"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    downloadVerificationDocument: {
+        parameters: {
+            query: {
+                /** @description Unix timestamp. */
+                expires: number;
+                sig: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+                index: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The document (PDF, JPEG, PNG or WebP). */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/pdf": string;
+                    "image/jpeg": string;
+                    "image/png": string;
+                    "image/webp": string;
+                    "application/octet-stream": string;
+                };
+            };
+            403: components["responses"]["Forbidden"];
+            404: components["responses"]["NotFound"];
+            422: components["responses"]["UnprocessableEntity"];
+            /** @description The malware scanner could not be reached; the document is not served unscanned. */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+        };
+    };
+    decideVerificationApplication: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @enum {string} */
+                    decision: "approve" | "reject";
+                    /** @description Required to reject (at least 5 characters); the applicant sees it. */
+                    note?: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Decided. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccreditationApplicationDetail"];
+                };
+            };
+            400: components["responses"]["BadRequest"];
+            401: components["responses"]["Unauthorized"];
+            403: components["responses"]["Forbidden"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
         };
     };
     listContentReports: {

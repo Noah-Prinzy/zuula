@@ -16,6 +16,7 @@ import {
   RiSlideshowLine,
   RiTimeLine,
   RiUserSettingsLine,
+  RiVerifiedBadgeLine,
   type RemixiconComponentType,
 } from "@remixicon/react"
 
@@ -74,6 +75,7 @@ export const APP_NAV: NavGroup[] = [
     items: [
       { key: "adminOverview", title: "Overview", href: "/admin", icon: RiPieChartLine },
       { key: "adminUsers", title: "Users", href: "/admin/users", icon: RiGroupLine },
+      { key: "adminVerifications", title: "Verifications", href: "/admin/verifications", icon: RiVerifiedBadgeLine },
       { key: "adminModeration", title: "Moderation", href: "/admin/moderation", icon: RiFileSearchLine },
       { key: "adminSources", title: "Sources", href: "/admin/sources", icon: RiFileList3Line },
       { key: "adminBroadcasts", title: "Broadcasts", href: "/admin/broadcasts", icon: RiMegaphoneLine },
