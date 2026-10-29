@@ -341,6 +341,35 @@ Steps for Noah: (1) Supabase → Storage → Settings (S3 connection): enable it
 
 Open question for Noah: clean uploads are kept indefinitely (no rule in the requirements says otherwise). The free plan has 1 GB of storage, so before launch decide a retention period (for example, delete originals 90 days after the report) or move to R2 if media grows.
 
+### Milestone D in detail: the AI engine (planned 29 Oct 2026)
+
+**What the code does today** (`apps/api/app/providers/`, `app/worker/pipeline.py`): one Tavily search per submission (trusted domains first, unrestricted if fewer than a few hits), then one Groq chat completion (`openai/gpt-oss-120b`, JSON mode) that writes the verdict, then Sunbird translates the explanation into the submission's language. On Render the local models (embeddings, RoBERTa AI-text, deepfake) are stubs, because they don't fit in 512 MB.
+
+**Found while planning:**
+1. *Fake waiting.* Every pipeline step also sleeps its display time (`STEP_SECONDS × PIPELINE_STEP_SCALE`, 1.0 by default), about 10–17 s per check that does no work. It was there for the demo's progress bar.
+2. *Translation is the slow step and eats the quota.* `_explain_in` translates the title, summary, every bullet and every claim reason one after another: 10–15 Sunbird requests per non-English check at several seconds each (the 97 s Luganda check). Sunbird's daily quota is about 450–500 requests, so only about 30–40 non-English checks a day.
+3. *One LLM, no fallback.* If Groq is down or over quota, every check fails ("We couldn't check that").
+4. *Search fails silently.* When Tavily fails (as with the exhausted quota on 28 Oct), the check goes on without web evidence and nobody is told.
+5. *Images are never really checked.* Nothing reads the picture: no OCR or vision model, so an image always comes back "unverifiable" (`fc-2026-0167`).
+6. *No duplicate detection in production.* The embedding model is a stub on Render, so the dedupe check and the "Zuula's own earlier reports as evidence" step are off.
+7. *Accuracy unmeasured.* FR-DETECT-03 (≥ 90 %) ran on only 17 usable items (64.7 %) because shared quotas ran out.
+
+**Plan, in order** (each step tested and deployed on its own):
+
+| # | Step | Done when |
+|---|---|---|
+| D1 | **Real timing:** no sleeps in production (`PIPELINE_STEP_SCALE=0` on Render; the demo keeps 1.0); steps report real seconds. | A text check finishes in seconds, not ~15 s. |
+| D2 | **Faster, cheaper translation:** translate the explanation's fields concurrently (bounded, under Sunbird's ~50/min), skip empty fields, and fall back to the English explanation with a note if Sunbird fails, instead of failing the check. | The Luganda test claim comes back in under 30 s. |
+| D3 | **LLM fallback chain:** one OpenAI-compatible client tried in order: Groq → Gemini (Google's OpenAI-compatible endpoint, free tier) → OpenRouter (free models). A timeout, 429 or 5xx moves to the next; the report records which model answered. No new SDK: plain `httpx`, like today. | With Groq's key broken, a check still completes via Gemini. |
+| D4 | **Read images:** send the image to a vision model (Groq `llama-4-scout`, Gemini as fallback) to extract its text and the claim it makes, then check that like text. | An image of a claim gets a real verdict. |
+| D5 | **Search fallback and visibility:** a second search provider when Tavily fails or runs out of quota; the report says when no web evidence was found. | Tavily's key broken → the check still cites sources. |
+| D6 | **AI status on Admin → System health:** Groq, Gemini, OpenRouter, Sunbird, Tavily: last success, last error, quota errors today. | A broken key shows up there, not just in thinner reports. |
+| D7 | **Duplicates in production:** hosted embeddings for the same 384-dimension model (Hugging Face Inference API, free token), so no migration and existing vectors still match. | Submitting a known claim reuses its report. |
+| D8 | **Trusted sources 12 → 50:** list drafted from the requirements' source types (media, government, fact-checkers, health, NGOs), for Noah to approve before it's seeded. | 50 active sources in production. |
+| D9 | **FR-DETECT-03, measured honestly:** the 278-item held-out set over two days with dedicated keys (Groq's daily token limit), results into Appendix F. | A real accuracy number, whatever it is. |
+
+**Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (recommended: **Brave Search API**, free tier about 2,000 queries a month, or Serper); approval of the D8 source list.
+
 **Calls for Noah:** where to start (recommended: A, then B); whether Realtime Broadcast can wait until after launch; which Phase 4 features may be cut; who reviews the translations.
 
 ---
