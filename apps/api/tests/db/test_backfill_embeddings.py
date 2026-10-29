@@ -117,3 +117,22 @@ async def test_all_replaces_vectors_from_another_model(backfill_db):
     assert first > 0
     assert await backfill_embeddings(backfill_db) == 0
     assert await backfill_embeddings(backfill_db, replace_all=True) == first
+
+
+async def test_a_refused_call_is_retried(backfill_db, monkeypatch):
+    from app.db import backfill_embeddings as module
+    from app.providers.embedding import EmbeddingError
+
+    class Flaky:
+        calls = 0
+
+        async def embed(self, text):
+            Flaky.calls += 1
+            if Flaky.calls == 1:
+                raise EmbeddingError("HTTP 429")
+            return stub_embedding(text)
+
+    monkeypatch.setattr(module, "_RETRY_DELAYS", (0,))
+    monkeypatch.setattr(module, "get_embedding_provider", Flaky)
+    filled = await backfill_embeddings(backfill_db)
+    assert filled > 0 and Flaky.calls == filled + 1

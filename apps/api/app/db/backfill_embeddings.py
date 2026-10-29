@@ -30,20 +30,43 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import models as m
-from app.providers.embedding import get_embedding_provider
+from app.providers.embedding import (
+    EmbeddingError,
+    StubEmbeddingProvider,
+    get_embedding_provider,
+)
 
 
 def _claim_text(report: m.FactCheckReport) -> str:
     return report.submitted_text or report.title
 
 
-async def backfill_embeddings(session: AsyncSession, *, replace_all: bool = False) -> int:
+# A hosted model can refuse a burst (429) or blip; one row's failure shouldn't lose the rest.
+_RETRY_DELAYS = (2, 5, 15, 30)
+
+
+async def _embed_with_retries(provider, text: str) -> list[float]:
+    for delay in (*_RETRY_DELAYS, None):
+        try:
+            return await provider.embed(text)
+        except EmbeddingError:
+            if delay is None:
+                raise
+            await asyncio.sleep(delay)
+    raise AssertionError("unreachable")
+
+
+async def backfill_embeddings(
+    session: AsyncSession, *, replace_all: bool = False, commit_every: int = 0
+) -> int:
     """Embeds every FactCheckReport row with `embedding IS NULL` (every row, with
     `replace_all`), using whichever EmbeddingProvider EMBEDDING_PROVIDER currently selects.
     Returns how many rows it filled in (rows whose claim text is empty are left as-is, same
-    as the live pipeline)."""
+    as the live pipeline). With `commit_every`, commits after that many rows, so a run
+    stopped part way keeps what it did (rerunning without --all finishes the rest only if
+    the old vectors were empty)."""
     provider = get_embedding_provider()
-    stmt = select(m.FactCheckReport)
+    stmt = select(m.FactCheckReport).order_by(m.FactCheckReport.id)
     if not replace_all:
         stmt = stmt.where(m.FactCheckReport.embedding.is_(None))
     reports = (await session.scalars(stmt)).all()
@@ -52,8 +75,11 @@ async def backfill_embeddings(session: AsyncSession, *, replace_all: bool = Fals
         text = _claim_text(report)
         if not text.strip():
             continue
-        report.embedding = await provider.embed(text)
+        report.embedding = await _embed_with_retries(provider, text)
         filled += 1
+        if commit_every and filled % commit_every == 0:
+            await session.commit()
+            print(f"  {filled} of {len(reports)} done", flush=True)
     await session.flush()
     return filled
 
@@ -71,9 +97,15 @@ async def _main() -> int:
             "sentence-transformers (local) and rerun to compute real embeddings."
         )
         return 1
+    if isinstance(get_embedding_provider(), StubEmbeddingProvider):
+        # e.g. EMBEDDING_PROVIDER=gemini without GEMINI_API_KEY: never write placeholders.
+        print(f"EMBEDDING_PROVIDER={settings.embedding_provider} is missing its key.")
+        return 1
 
     async with get_sessionmaker()() as session:
-        filled = await backfill_embeddings(session, replace_all="--all" in sys.argv)
+        filled = await backfill_embeddings(
+            session, replace_all="--all" in sys.argv, commit_every=25
+        )
         await session.commit()
     await get_engine().dispose()
     print(f"Backfilled embeddings for {filled} report(s).")
