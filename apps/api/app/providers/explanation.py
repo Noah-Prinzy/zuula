@@ -51,7 +51,12 @@ _STANCES: tuple[CitationStance, ...] = ("supports", "contradicts", "context")
 
 
 class GroqError(Exception):
-    """Every model in the chain failed (the name predates the fallbacks)."""
+    """A chat model failed, or every model in the chain did (the name predates the
+    fallbacks). `reason` is the short form Admin → System health shows."""
+
+    def __init__(self, message: str, *, reason: str = ""):
+        super().__init__(message)
+        self.reason = reason or message[:80]
 
 
 @dataclass(frozen=True)
@@ -216,6 +221,18 @@ async def first_json(
 
 
 async def _complete(model: ChatModel, messages: list[dict], *, timeout: float) -> dict:
+    from app.services import provider_health  # Admin → System health (Milestone D6)
+
+    try:
+        data = await _request(model, messages, timeout=timeout)
+    except GroqError as exc:
+        await provider_health.record(model.name, ok=False, error=exc.reason)
+        raise
+    await provider_health.record(model.name, ok=True)
+    return data
+
+
+async def _request(model: ChatModel, messages: list[dict], *, timeout: float) -> dict:
     payload = {
         "model": model.model,
         "messages": messages,
@@ -228,7 +245,10 @@ async def _complete(model: ChatModel, messages: list[dict], *, timeout: float) -
         async with httpx.AsyncClient(timeout=timeout) as client:
             response = await client.post(url, json=payload, headers=headers)
     except httpx.HTTPError as exc:
-        raise GroqError(f"{model.name} chat completion failed ({type(exc).__name__}).") from exc
+        raise GroqError(
+            f"{model.name} chat completion failed ({type(exc).__name__}).",
+            reason=type(exc).__name__,
+        ) from exc
     if response.status_code >= 400:
         # The error body (e.g. a 429's "tokens per day" vs. plain per-minute rate-limit
         # message, with its own suggested retry delay) is otherwise discarded; keeping it
@@ -236,15 +256,22 @@ async def _complete(model: ChatModel, messages: list[dict], *, timeout: float) -
         # can see about *why* a call failed.
         raise GroqError(
             f"{model.name} chat completion failed with HTTP {response.status_code}: "
-            f"{response.text[:500]}"
+            f"{response.text[:500]}",
+            reason=f"HTTP {response.status_code} ({model.model})",
         )
     try:
         content = response.json()["choices"][0]["message"]["content"]
         data = json.loads(_strip_fences(content))
     except (KeyError, IndexError, TypeError, ValueError) as exc:
-        raise GroqError(f"{model.name} returned something other than the expected JSON.") from exc
+        raise GroqError(
+            f"{model.name} returned something other than the expected JSON.",
+            reason=f"Unreadable answer ({model.model})",
+        ) from exc
     if not isinstance(data, dict):
-        raise GroqError(f"{model.name} returned something other than the expected JSON.")
+        raise GroqError(
+            f"{model.name} returned something other than the expected JSON.",
+            reason=f"Unreadable answer ({model.model})",
+        )
     return data
 
 

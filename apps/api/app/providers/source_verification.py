@@ -112,6 +112,19 @@ class TavilySourceVerifier(SourceVerifier):
     async def _search(
         self, search, text: str, trusted_domains: list[str], name: str
     ) -> list[TavilyResult]:
+        from app.services import provider_health  # Admin → System health (Milestone D6)
+
+        try:
+            results = await self._search_once(search, text, trusted_domains, name)
+        except TavilySearchError as exc:
+            await provider_health.record(name, ok=False, error=str(exc).removeprefix(f"{name} "))
+            raise
+        await provider_health.record(name, ok=True)
+        return results
+
+    async def _search_once(
+        self, search, text: str, trusted_domains: list[str], name: str
+    ) -> list[TavilyResult]:
         """One search per claim (the module's cost constraint), restricted to the trusted
         registry when it has enough to offer. Only 12 of SOURCE_TARGET=50 sources are seeded
         today, so a hard restriction would starve most claims of evidence — fall back to an

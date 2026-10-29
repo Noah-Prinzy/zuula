@@ -29,6 +29,7 @@ from app.schemas.admin import (
     SystemHealthItem,
     VerdictCount,
 )
+from app.services import provider_health
 
 _KAMPALA = "Africa/Kampala"
 _LOCAL_DAY = func.date(func.timezone(_KAMPALA, FactCheckReport.checked_at))
@@ -221,6 +222,8 @@ async def _system_health(db: AsyncSession, now: datetime) -> list[SystemHealthIt
             ok=failing == 0,
             note="See Sources" if failing else "Active sources crawled",
         ),
+        # Milestone D6: each hosted AI service's last answer or failure.
+        *await provider_health.status_items(),
     ]
 
 

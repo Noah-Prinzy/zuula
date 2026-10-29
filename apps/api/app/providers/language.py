@@ -249,6 +249,21 @@ class SunbirdLanguageProvider:
         self._timeout = timeout
 
     async def _post(self, client: httpx.AsyncClient, path: str, payload: dict) -> dict:
+        from app.services import provider_health  # Admin → System health (Milestone D6)
+
+        try:
+            body = await self._send(client, path, payload)
+        except httpx.HTTPError as exc:
+            await provider_health.record("Sunbird", ok=False, error=type(exc).__name__)
+            raise
+        except SunbirdError as exc:
+            reason = f"HTTP {exc.status_code}" if exc.status_code else "Unreadable answer"
+            await provider_health.record("Sunbird", ok=False, error=reason)
+            raise
+        await provider_health.record("Sunbird", ok=True)
+        return body
+
+    async def _send(self, client: httpx.AsyncClient, path: str, payload: dict) -> dict:
         started = time.monotonic()
         response = await client.post(f"{self._url}{path}", json=payload, headers=self._headers)
         took = time.monotonic() - started
