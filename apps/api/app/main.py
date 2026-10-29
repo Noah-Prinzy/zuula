@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.email import get_email_sender
 from app.adapters.readiness import assert_production_ready
+from app.adapters.storage import get_object_storage
 from app.api.v1 import router as api_v1_router
 from app.core.config import get_settings
 from app.core.errors import register_error_handlers
@@ -64,26 +65,27 @@ def healthz():
     return {"status": "ok"}
 
 
-# Brevo's key is checked at most every 10 minutes: readyz may be polled often (UptimeRobot).
-EMAIL_CHECK_SECONDS = 600
-_email_check: dict = {"at": 0.0, "ok": True}
+# Brevo's key and the storage bucket are checked at most every 10 minutes: readyz may be
+# polled often (UptimeRobot).
+EXTERNAL_CHECK_SECONDS = 600
+_external_checks: dict[str, dict] = {}
 
 
-async def _email_ok() -> bool | None:
-    """None when the email sender has no check (SMTP, the stub); else whether Brevo takes
-    the key, cached for EMAIL_CHECK_SECONDS."""
-    sender = get_email_sender()
-    if not hasattr(sender, "check"):
+async def _external_ok(what: str, service) -> bool | None:
+    """None when the service has no check (SMTP, the stubs); else whether it accepts our
+    credentials, cached for EXTERNAL_CHECK_SECONDS."""
+    if not hasattr(service, "check"):
         return None
-    if time.monotonic() - _email_check["at"] > EMAIL_CHECK_SECONDS or not _email_check["at"]:
+    last = _external_checks.get(what)
+    if last is None or time.monotonic() - last["at"] > EXTERNAL_CHECK_SECONDS:
         try:
-            await sender.check()
-            _email_check["ok"] = True
+            await service.check()
+            ok = True
         except Exception as e:  # noqa: BLE001
-            _email_check["ok"] = False
-            _log_unavailable("email", e)
-        _email_check["at"] = time.monotonic()
-    return _email_check["ok"]
+            ok = False
+            _log_unavailable(what, e)
+        last = _external_checks[what] = {"at": time.monotonic(), "ok": ok}
+    return last["ok"]
 
 
 def _log_unavailable(what: str, error: Exception) -> None:
@@ -94,9 +96,9 @@ def _log_unavailable(what: str, error: Exception) -> None:
 
 @app.get("/readyz", tags=["health"])
 async def readyz(db: AsyncSession = Depends(get_db)):  # noqa: B008
-    """Readiness — PostgreSQL and Redis both answer, and Brevo accepts the email key when
-    email goes through Brevo. 503 (with which one failed) otherwise, so monitoring notices
-    before sign-in codes stop arriving."""
+    """Readiness — PostgreSQL and Redis both answer, Brevo accepts the email key when email
+    goes through Brevo, and the storage bucket answers when S3 is configured. 503 (with which
+    one failed) otherwise, so monitoring notices before sign-in codes or uploads fail."""
     checks = {"app": "ok"}
     try:
         await db.execute(text("SELECT 1"))
@@ -110,9 +112,10 @@ async def readyz(db: AsyncSession = Depends(get_db)):  # noqa: B008
     except Exception as e:  # noqa: BLE001
         checks["redis"] = "unavailable"
         _log_unavailable("redis", e)
-    email = await _email_ok()
-    if email is not None:
-        checks["email"] = "ok" if email else "unavailable"
+    for what, service in (("email", get_email_sender()), ("storage", get_object_storage())):
+        ok = await _external_ok(what, service)
+        if ok is not None:
+            checks[what] = "ok" if ok else "unavailable"
     ready = all(v == "ok" for v in checks.values())
     return JSONResponse(
         {"status": "ok" if ready else "unavailable", "checks": checks},

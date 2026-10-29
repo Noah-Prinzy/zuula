@@ -1,7 +1,8 @@
 """S3-compatible object storage: media submissions and accreditation documents.
 
-`S3ObjectStorage` uses `boto3` with an optional custom endpoint, so AWS S3, Cloudflare R2,
-MinIO and Wasabi all work. The bucket is private: objects are addressed by key, and `put`
+`S3ObjectStorage` uses `boto3` with an optional custom endpoint, so AWS S3, Supabase Storage
+(production: its S3 endpoint, path-style), Cloudflare R2 and MinIO all work. The bucket is
+private: objects are addressed by key, and `put`
 returns an `s3://bucket/key` reference rather than a public URL. boto3 is synchronous, so
 each call runs in a thread. Without S3 credentials the stub keeps objects in this process's
 memory, which is enough for the tests and for local dev.
@@ -55,10 +56,13 @@ class S3ObjectStorage:
     @classmethod
     def from_settings(cls) -> "S3ObjectStorage":
         import boto3  # only when S3 is configured: importing boto3 takes a while
+        from botocore.config import Config
 
         settings = get_adapters_settings()
         client = boto3.client(
             "s3",
+            # Supabase serves buckets as paths (…/storage/v1/s3/<bucket>), not subdomains.
+            config=Config(s3={"addressing_style": "path"}) if settings.s3_endpoint_url else None,
             endpoint_url=settings.s3_endpoint_url or None,
             region_name=settings.s3_region or None,
             aws_access_key_id=settings.s3_access_key_id,
@@ -84,6 +88,10 @@ class S3ObjectStorage:
 
     async def delete(self, *, key: str) -> None:
         await asyncio.to_thread(self._client.delete_object, Bucket=self._bucket, Key=key)
+
+    async def check(self) -> None:
+        """Raises unless the keys are accepted and the bucket exists (for /readyz)."""
+        await asyncio.to_thread(self._client.head_bucket, Bucket=self._bucket)
 
 
 _s3: S3ObjectStorage | None = None

@@ -68,6 +68,21 @@ services:
       - key: BREVO_API_KEY
         sync: false
 
+      # ---- File storage (Supabase Storage's S3 endpoint; one private bucket) ----
+      # Uploads and accreditation documents are only ever read by the API (admins get signed
+      # links to it), so both live in the private bucket. Keys: Supabase → Storage → S3.
+      # Remove s3 from ZUULA_ALLOW_STUB_ADAPTERS once both keys are set.
+      - key: S3_ENDPOINT_URL
+        value: https://xskkttjlgkanopzivfpy.supabase.co/storage/v1/s3
+      - key: S3_REGION
+        value: eu-west-1
+      - key: S3_BUCKET
+        value: zuula-documents
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+
       # ---- AI engine: hosted services; the local models stay off on 512 MB ----
       - key: GROQ_API_KEY
         sync: false

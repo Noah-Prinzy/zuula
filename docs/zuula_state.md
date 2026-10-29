@@ -326,6 +326,17 @@ Fixed on the way:
 
 **Sunbird and Tavily fixed (28 Oct 2026, late).** Both keys had failed everywhere, local too: Sunbird answered 401 (the token wasn't expired, valid to 2126, but carries a version claim, so it had most likely been revoked by generating a newer one) and Tavily answered 432 (the free plan's monthly quota was used up). Noah made new keys and set them locally and on Render. Checked: locally Sunbird identifies a Luganda sentence as `lg` and Tavily returns results; on the preview a Luganda test claim (`ZL-S55V-LH`) came back as report `fc-2026-0166` with language **Luganda**, an English title, and no Tavily error in the logs (no sources cited, as expected for an invented claim). It took **97 s**, against the "about 10 seconds" the status page promises; Sunbird translation is the slow step, a Milestone D item. Also for D: these failures were silent (only thinner reports); the Admin "System health" card should show Groq, Sunbird and Tavily status, and search should fall back to a second provider when Tavily's quota runs out.
 
+### Milestone C in detail: file storage on Supabase Storage (29 Oct 2026)
+
+The API's storage adapter (`app/adapters/storage.py`) already spoke S3, so C is mostly settings. What the API stores, and who reads it: media submissions (`submissions/<id>/original`, read by the pipeline's malware scan and metadata check, then deleted) and accreditation documents (`accreditation/<user>/<application>/<n>`, read only by the API when an admin opens a signed link). Nothing is ever served straight from the bucket, so **both go in the private bucket `zuula-documents`**; the public `zuula-media` bucket stays unused for now (it's for public assets later, such as report images).
+
+Code (tests: 502 passed):
+- Path-style addressing whenever `S3_ENDPOINT_URL` is set: Supabase serves buckets as `…/storage/v1/s3/<bucket>`, not as subdomains.
+- `/readyz` checks the bucket (`HeadBucket`) every 10 minutes, as it does Brevo's key, and reports `storage: unavailable` with a WARNING log naming the error. The Brevo check and this one share `_external_ok()`.
+- `render.yaml` declares `S3_ENDPOINT_URL`, `S3_REGION=eu-west-1`, `S3_BUCKET=zuula-documents` and the two keys (`sync: false`). `s3` stays in `ZUULA_ALLOW_STUB_ADAPTERS` until the keys are set, because production refuses to start with a half-configured adapter.
+
+Steps for Noah: (1) Supabase → Storage → Settings (S3 connection): enable it, create an access key, copy the key id and secret (shown once). (2) Render `zuula-api-eu` → Environment: set `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, and the three plain values above if the Blueprint sync didn't add them; remove `s3` from `ZUULA_ALLOW_STUB_ADAPTERS`; save and redeploy. Then: `/readyz` shows `storage: ok`; on the preview an image submission completes and its file is gone from the bucket afterwards; an accreditation upload appears under `accreditation/` and opens from Admin → Verifications.
+
 **Calls for Noah:** where to start (recommended: A, then B); whether Realtime Broadcast can wait until after launch; which Phase 4 features may be cut; who reviews the translations.
 
 ---

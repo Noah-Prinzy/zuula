@@ -56,3 +56,29 @@ async def test_errors_propagate(s3):
     stubber.add_client_error("get_object", service_error_code="NoSuchKey", http_status_code=404)
     with pytest.raises(Exception, match="NoSuchKey"):
         await storage.get(key="missing")
+
+
+async def test_check_asks_for_the_bucket(s3):
+    storage, stubber = s3
+    stubber.add_response("head_bucket", {}, {"Bucket": "zuula-media"})
+    await storage.check()
+    stubber.add_client_error("head_bucket", service_error_code="403", http_status_code=403)
+    with pytest.raises(Exception, match="403"):
+        await storage.check()
+
+
+def test_a_custom_endpoint_uses_path_style(adapter_env):
+    # Supabase Storage only answers path-style requests (…/storage/v1/s3/<bucket>/<key>).
+    adapter_env(
+        S3_ENDPOINT_URL="https://abc.supabase.co/storage/v1/s3",
+        S3_ACCESS_KEY_ID="id",
+        S3_SECRET_ACCESS_KEY="secret",
+        S3_BUCKET="zuula-documents",
+        S3_REGION="eu-west-1",
+    )
+    client = S3ObjectStorage.from_settings()._client
+    assert client.meta.config.s3["addressing_style"] == "path"
+    url = client.generate_presigned_url(
+        "get_object", Params={"Bucket": "zuula-documents", "Key": "k"}
+    )
+    assert url.startswith("https://abc.supabase.co/storage/v1/s3/zuula-documents/k")
