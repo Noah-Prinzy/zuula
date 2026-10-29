@@ -42,9 +42,9 @@ async def test_named_votes_keep_the_role_they_were_cast_with(db):
 async def test_sample_ids_are_preserved(db):
     assert {u.id for u in SAMPLE_USERS} <= set((await db.scalars(select(m.User.id))).all())
     assert {c.id for c in SAMPLE_CASES} <= set((await db.scalars(select(m.ReviewCase.id))).all())
-    assert {s.id for s in SAMPLE_SOURCES} == set(
-        (await db.scalars(select(m.TrustedSource.id))).all()
-    )
+    source_ids = set((await db.scalars(select(m.TrustedSource.id))).all())
+    # The 12 sample sources keep their ids; app/db/trusted_sources.py adds 38 real ones.
+    assert {s.id for s in SAMPLE_SOURCES} <= source_ids and len(source_ids) == 50
     audit_ids = set((await db.scalars(select(m.AuditLogEntry.id))).all())
     assert audit_ids == {int(e.id.removeprefix("a")) for e in SAMPLE_AUDIT}
 

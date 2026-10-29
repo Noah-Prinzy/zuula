@@ -33,6 +33,7 @@ from app.db.sample_data import admin as stub_admin
 from app.db.sample_data import notifications as stub_notifications
 from app.db.sample_data import review as stub_review
 from app.db.sample_data.fact_checks import SAMPLE_REPORTS
+from app.db.trusted_sources import add_missing_sources
 from app.schemas.fact_check import FactCheckReport as FactCheckReportSchema
 from app.services.auth import hash_password
 from app.services.community import recompute_report_community
@@ -461,6 +462,8 @@ async def _seed_admin(session: AsyncSession, users_by_name: dict[str, str]) -> N
             for s in stub_admin.SAMPLE_SOURCES
         ],
     )
+    # The real additions that take the registry to FR-DETECT-06's 50 (Milestone D8).
+    await add_missing_sources(session)
     await session.execute(
         insert(m.Broadcast),
         [

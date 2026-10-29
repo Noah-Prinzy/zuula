@@ -159,8 +159,8 @@ class TestSignals:
 
 class TestSources:
     SOURCE = {
-        "name": "The Observer",
-        "domain": "https://www.observer.ug/",
+        "name": "KFM",
+        "domain": "https://www.kfm.co.ug/",
         "type": "media",
         "languages": ["English"],
         "tier": 2,
@@ -169,7 +169,7 @@ class TestSources:
     def test_add_is_normalised_and_audited(self, core_client):
         r = core_client.post("/api/v1/admin/sources", json=self.SOURCE, headers=ADMIN)
         assert r.status_code == 201
-        assert r.json()["domain"] == "observer.ug" and r.json()["active"] is True
+        assert r.json()["domain"] == "kfm.co.ug" and r.json()["active"] is True
         assert (
             audit_entries(core_client, "source.add")[0]["detail"] == "Media house, English, tier 2"
         )

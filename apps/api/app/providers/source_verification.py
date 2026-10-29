@@ -25,8 +25,8 @@ from app.providers.tavily import TavilyResult, TavilySearchError, tavily_search
 logger = logging.getLogger("zuula.providers.source_verification")
 
 # Below this many results, a trusted-only search is too sparse to prefer over an open one —
-# the registry only has 12 of its SOURCE_TARGET=50 sources seeded so far (app/db/sample_data/
-# admin.py), so a hard restriction to it would tank evidence coverage for most claims.
+# the registry started with 12 sources and has 50 since Milestone D8 (app/db/trusted_sources.py),
+# still far too few for a hard restriction not to tank evidence coverage for most claims.
 _RESTRICTED_SEARCH_MIN_RESULTS = 2
 
 
@@ -126,8 +126,8 @@ class TavilySourceVerifier(SourceVerifier):
         self, search, text: str, trusted_domains: list[str], name: str
     ) -> list[TavilyResult]:
         """One search per claim (the module's cost constraint), restricted to the trusted
-        registry when it has enough to offer. Only 12 of SOURCE_TARGET=50 sources are seeded
-        today, so a hard restriction would starve most claims of evidence — fall back to an
+        registry when it has enough to offer. Even at 50 sources (app/db/trusted_sources.py) a
+        hard restriction would starve many claims of evidence — fall back to an
         unrestricted search instead of returning sparse or empty results. `search` is
         tavily_search or exa_search (same arguments, same results)."""
         key, url = (
