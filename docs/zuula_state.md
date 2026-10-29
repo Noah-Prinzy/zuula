@@ -368,7 +368,7 @@ Open question for Noah: clean uploads are kept indefinitely (no rule in the requ
 | D8 | **Trusted sources 12 → 50:** list drafted from the requirements' source types (media, government, fact-checkers, health, NGOs), for Noah to approve before it's seeded. | 50 active sources in production. |
 | D9 | **FR-DETECT-03, measured honestly:** the 278-item held-out set over two days with dedicated keys (Groq's daily token limit), results into Appendix F. | A real accuracy number, whatever it is. |
 
-**Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (recommended: **Brave Search API**, free tier about 2,000 queries a month, or Serper); approval of the D8 source list.
+**Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (options: Brave Search API, Serper or Exa; I will check current free tiers before recommending one); approval of the D8 source list.
 
 **Calls for Noah:** where to start (recommended: A, then B); whether Realtime Broadcast can wait until after launch; which Phase 4 features may be cut; who reviews the translations.
 
