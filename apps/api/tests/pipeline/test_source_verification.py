@@ -115,3 +115,74 @@ def test_is_trusted_matches_subdomains():
     assert is_trusted("https://monitor.co.ug/a", trusted)
     assert is_trusted("https://news.monitor.co.ug/a", trusted)
     assert not is_trusted("https://example.com/a", trusted)
+
+
+# ---- Exa as the backup search (Milestone D5) ----
+
+EXA = "https://exa.example"
+
+
+def _exa_results(*urls):
+    return httpx.Response(
+        200,
+        json={
+            "results": [
+                {
+                    "title": f"Title {u}",
+                    "url": u,
+                    "publishedDate": "2026-10-01T00:00:00.000Z",
+                    "highlights": ["first passage", "second passage"],
+                }
+                for u in urls
+            ]
+        },
+    )
+
+
+@respx.mock
+async def test_a_failing_tavily_goes_to_exa(db, caplog):
+    respx.post(SEARCH).mock(return_value=httpx.Response(432))  # Tavily: quota used up
+    exa = respx.post(f"{EXA}/search").mock(
+        return_value=_exa_results("https://a.example/x", "https://b.example/y")
+    )
+    evidence = await _verifier(exa_api_key="exa-key", exa_api_url=EXA).gather_evidence(
+        db, "some claim"
+    )
+    assert [s.url for s in evidence.sources] == ["https://a.example/x", "https://b.example/y"]
+    first = evidence.sources[0]
+    assert first.snippet == "first passage … second passage" and first.published_at == "2026-10-01"
+    request = exa.calls[0].request
+    assert request.headers["x-api-key"] == "exa-key"
+    assert json.loads(request.content)["query"] == "some claim"
+    assert "Tavily search failed with HTTP 432.; searching with Exa instead" in caplog.text
+
+
+@respx.mock
+async def test_both_failing_still_gives_a_bundle(db, caplog):
+    respx.post(SEARCH).mock(side_effect=httpx.ConnectError("down"))
+    respx.post(f"{EXA}/search").mock(return_value=httpx.Response(402))  # Exa: out of credit
+    evidence = await _verifier(exa_api_key="exa-key", exa_api_url=EXA).gather_evidence(
+        db, "some claim"
+    )
+    assert evidence.sources == []
+    assert "Exa search failed with HTTP 402.; verifying without web evidence" in caplog.text
+
+
+@respx.mock
+async def test_without_an_exa_key_a_tavily_failure_means_no_evidence(db):
+    respx.post(SEARCH).mock(return_value=httpx.Response(500))
+    exa = respx.post(f"{EXA}/search")
+    evidence = await _verifier(exa_api_url=EXA).gather_evidence(db, "some claim")
+    assert evidence.sources == [] and not exa.called
+
+
+@respx.mock
+async def test_a_healthy_tavily_never_touches_exa(db):
+    respx.post(SEARCH).mock(
+        return_value=httpx.Response(
+            200, json={"results": [{"title": "A", "url": "https://a.example", "content": "x"}]}
+        )
+    )
+    exa = respx.post(f"{EXA}/search")
+    await _verifier(exa_api_key="exa-key", exa_api_url=EXA).gather_evidence(db, "some claim")
+    assert not exa.called

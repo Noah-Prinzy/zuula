@@ -95,6 +95,8 @@ services:
         sync: false
       - key: TAVILY_API_KEY
         sync: false
+      - key: EXA_API_KEY # backup search when Tavily fails
+        sync: false
       - key: SUNBIRD_API_KEY
         sync: false
       - key: EMBEDDING_PROVIDER

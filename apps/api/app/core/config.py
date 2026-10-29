@@ -152,6 +152,10 @@ class AnalysisSettings(BaseSettings):
     # app/providers/tavily.py — one web search per claim (free tier, 1,000 searches/month).
     tavily_api_key: str = ""
     tavily_api_url: str = "https://api.tavily.com"
+    # app/providers/exa.py — searched when Tavily fails or is out of quota (Milestone D5).
+    # Empty: no backup, the check goes on without web evidence. Key: dashboard.exa.ai.
+    exa_api_key: str = ""
+    exa_api_url: str = "https://api.exa.ai"
 
     # app/providers/vector_db.py: where the dedupe check's nearest-neighbor lookup runs.
     # `pgvector` (default) matches the live demo path exactly — queries

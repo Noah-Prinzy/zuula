@@ -61,7 +61,13 @@ def _no_real_analysis_provider():
     that exercise GroqAnalysisProvider mock HTTP with respx and configure their own keys."""
     saved = {
         name: os.environ.pop(name, None)
-        for name in ("GROQ_API_KEY", "TAVILY_API_KEY", "GEMINI_API_KEY", "OPENROUTER_API_KEY")
+        for name in (
+            "GROQ_API_KEY",
+            "TAVILY_API_KEY",
+            "GEMINI_API_KEY",
+            "OPENROUTER_API_KEY",
+            "EXA_API_KEY",
+        )
     }
     get_analysis_settings.cache_clear()
     yield

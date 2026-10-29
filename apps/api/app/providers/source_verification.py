@@ -19,6 +19,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.models import TrustedSource
+from app.providers.exa import exa_search
 from app.providers.tavily import TavilyResult, TavilySearchError, tavily_search
 
 logger = logging.getLogger("zuula.providers.source_verification")
@@ -75,30 +76,57 @@ class TavilySourceVerifier(SourceVerifier):
     admin-managed trusted-source registry (`TrustedSource`, FR-DETECT-06) when it has enough
     to offer."""
 
-    def __init__(self, *, tavily_api_key: str, tavily_api_url: str, timeout: float = 30.0):
+    def __init__(
+        self,
+        *,
+        tavily_api_key: str,
+        tavily_api_url: str,
+        exa_api_key: str = "",
+        exa_api_url: str = "https://api.exa.ai",
+        timeout: float = 30.0,
+    ):
         self._tavily_api_key = tavily_api_key
         self._tavily_api_url = tavily_api_url
+        self._exa_api_key = exa_api_key
+        self._exa_api_url = exa_api_url
         self._timeout = timeout
 
     async def gather_evidence(self, db: AsyncSession, text: str) -> EvidenceBundle:
         trusted_domains = await _trusted_domains(db)
         try:
-            sources = await self._search(text=text, trusted_domains=trusted_domains)
-        except TavilySearchError:
-            logger.warning("Tavily search failed; verifying without web evidence", exc_info=True)
-            sources = []
+            sources = await self._search(tavily_search, text, trusted_domains, "Tavily")
+        except TavilySearchError as tavily_error:
+            # Milestone D5: Tavily down or out of quota no longer means "no evidence".
+            # WARNING so it shows under plain uvicorn (Render's logs).
+            if not self._exa_api_key:
+                logger.warning("%s; verifying without web evidence", tavily_error)
+                return EvidenceBundle(sources=[], trusted_domains=trusted_domains)
+            logger.warning("%s; searching with Exa instead", tavily_error)
+            try:
+                sources = await self._search(exa_search, text, trusted_domains, "Exa")
+            except TavilySearchError as exa_error:
+                logger.warning("%s; verifying without web evidence", exa_error)
+                sources = []
         return EvidenceBundle(sources=sources, trusted_domains=trusted_domains)
 
-    async def _search(self, *, text: str, trusted_domains: list[str]) -> list[TavilyResult]:
+    async def _search(
+        self, search, text: str, trusted_domains: list[str], name: str
+    ) -> list[TavilyResult]:
         """One search per claim (the module's cost constraint), restricted to the trusted
         registry when it has enough to offer. Only 12 of SOURCE_TARGET=50 sources are seeded
         today, so a hard restriction would starve most claims of evidence — fall back to an
-        unrestricted search instead of returning sparse or empty results."""
+        unrestricted search instead of returning sparse or empty results. `search` is
+        tavily_search or exa_search (same arguments, same results)."""
+        key, url = (
+            (self._tavily_api_key, self._tavily_api_url)
+            if name == "Tavily"
+            else (self._exa_api_key, self._exa_api_url)
+        )
         query = text[:400]
         if trusted_domains:
-            restricted = await tavily_search(
-                api_key=self._tavily_api_key,
-                api_url=self._tavily_api_url,
+            restricted = await search(
+                api_key=key,
+                api_url=url,
                 query=query,
                 include_domains=trusted_domains,
                 timeout=self._timeout,
@@ -106,14 +134,10 @@ class TavilySourceVerifier(SourceVerifier):
             if len(restricted) >= _RESTRICTED_SEARCH_MIN_RESULTS:
                 return restricted
             logger.info(
-                "Trusted-source search returned only %d result(s) (of %d trusted domains); "
+                "%s trusted-source search returned only %d result(s) (of %d trusted domains); "
                 "falling back to an unrestricted search",
+                name,
                 len(restricted),
                 len(trusted_domains),
             )
-        return await tavily_search(
-            api_key=self._tavily_api_key,
-            api_url=self._tavily_api_url,
-            query=query,
-            timeout=self._timeout,
-        )
+        return await search(api_key=key, api_url=url, query=query, timeout=self._timeout)

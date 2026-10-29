@@ -359,7 +359,10 @@ def get_analysis_provider() -> AnalysisProvider:
         deepfake_detector=get_deepfake_detector(),
         vector_db=get_vector_db_provider(),
         source_verifier=TavilySourceVerifier(
-            tavily_api_key=settings.tavily_api_key, tavily_api_url=settings.tavily_api_url
+            tavily_api_key=settings.tavily_api_key,
+            tavily_api_url=settings.tavily_api_url,
+            exa_api_key=settings.exa_api_key,
+            exa_api_url=settings.exa_api_url,
         ),
         explanation_generator=GroqExplanationGenerator(
             groq_api_key=settings.groq_api_key,
