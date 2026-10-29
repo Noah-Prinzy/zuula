@@ -9,6 +9,7 @@ from app.providers.language import (
     SunbirdLanguageProvider,
     display_name,
     get_language_provider,
+    plainly_english,
     resolve_submission_language,
 )
 
@@ -149,3 +150,54 @@ def test_unusable_provider_choices_raise(monkeypatch, choice):
             get_language_provider()
     finally:
         get_language_settings.cache_clear()
+
+
+# ---- Plainly English text skips detection (Milestone D2b) ----
+
+
+class _NoDetect(StubLanguageProvider):
+    async def detect(self, *, text):
+        raise AssertionError("detection should have been skipped")
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        FIXTURES["en"],
+        "Museveni said that the roads in Kampala will be repaired by December.",
+        "Is it true that the government has banned boda bodas in the city centre?",
+    ],
+)
+async def test_plainly_english_text_is_resolved_without_the_provider(text):
+    assert await resolve_submission_language("auto", text, _NoDetect()) == PIVOT_LANGUAGE
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        *(FIXTURES[code] for code in ("lg", "ach", "nyn", "teo")),
+        # Luganda quoting English names and a number.
+        "Gavumenti egamba nti ssente za bannabyabufuzi zijja kweyongera emirundi esatu omwaka guno.",
+        "Abasawo mu ddwaliro ly e Mulago bagamba nti eddagala eppya liwonya omusujja.",
+        # Too short to be sure: detection decides.
+        "Fuel is the price.",
+    ],
+)
+def test_other_text_is_left_to_detection(text):
+    assert not plainly_english(text)
+
+
+async def test_a_slow_sunbird_call_is_logged(caplog, monkeypatch):
+    import httpx
+    import respx
+
+    from app.providers import language
+
+    monkeypatch.setattr(language, "_SLOW_SECONDS", -1.0)  # every call counts as slow
+    provider = SunbirdLanguageProvider(api_url="https://sunbird.test", api_key="k")
+    with respx.mock:
+        respx.post("https://sunbird.test/tasks/language_id").mock(
+            return_value=httpx.Response(200, json={"language": "lug"})
+        )
+        assert (await provider.detect(text="Gavumenti egamba")).language == "lg"
+    assert "Sunbird /tasks/language_id took" in caplog.text and "(HTTP 200)" in caplog.text

@@ -20,6 +20,7 @@ The pipeline calls both (app/worker/pipeline.py's `_resolve_language()`, `_to_pi
 
 import logging
 import re
+import time
 from dataclasses import dataclass, field
 from typing import Protocol
 
@@ -148,13 +149,45 @@ class StubLanguageProvider:
         )
 
 
+# The commonest English function words, leaving out ones that are also common Acholi words
+# ("to", "me", "ki"). A stray match in Ugandan-language text can't reach _ENGLISH_SHARE.
+# fmt: off
+_ENGLISH_WORDS = frozenset({
+    "the", "a", "an", "and", "or", "but", "is", "are", "was", "were", "be", "been", "has",
+    "have", "had", "will", "would", "can", "could", "should", "of", "in", "on", "at", "for",
+    "from", "with", "by", "about", "as", "into", "than", "that", "this", "these", "those", "it",
+    "its", "they", "their", "them", "he", "she", "his", "her", "we", "our", "you", "your",
+    "not", "no", "if", "which", "who", "what", "when", "said", "says", "there", "more", "most",
+    "also", "after", "before", "over",
+})
+# fmt: on
+# How much of a text must be _ENGLISH_WORDS to count as plainly English. Running English
+# prose is about 40-50% function words; a Ugandan-language sentence quoting an English name
+# or two stays far below this.
+_ENGLISH_SHARE = 0.25
+_ENGLISH_MIN_WORDS = 6
+
+
+def plainly_english(text: str) -> bool:
+    """Whether `text` is obviously English, so detection can skip the network. Conservative:
+    anything short or mixed goes to the provider."""
+    words = [w.lower() for w in _WORD.findall(text)]
+    if len(words) < _ENGLISH_MIN_WORDS:
+        return False
+    return sum(w in _ENGLISH_WORDS for w in words) / len(words) >= _ENGLISH_SHARE
+
+
 async def resolve_submission_language(requested: str, text: str, provider: LanguageProvider) -> str:
     """What the pipeline's `language` step needs to decide: the submission's language code.
 
-    A language the submitter picked explicitly is trusted as-is (no detection call). `auto`,
-    or anything that isn't a supported code, goes to detection, which may return OTHER."""
+    A language the submitter picked explicitly is trusted as-is (no detection call), and so
+    is plainly English text (most submissions; Sunbird's language_id call is the slowest one
+    a check makes). `auto`, or anything that isn't a supported code, otherwise goes to
+    detection, which may return OTHER."""
     if requested in SUPPORTED_LANGUAGES:
         return requested
+    if plainly_english(text):
+        return PIVOT_LANGUAGE
     return (await provider.detect(text=text)).language
 
 
@@ -216,7 +249,12 @@ class SunbirdLanguageProvider:
         self._timeout = timeout
 
     async def _post(self, client: httpx.AsyncClient, path: str, payload: dict) -> dict:
+        started = time.monotonic()
         response = await client.post(f"{self._url}{path}", json=payload, headers=self._headers)
+        took = time.monotonic() - started
+        # WARNING so it shows under plain uvicorn (Render's logs); usual calls take 1-4 s.
+        if took > _SLOW_SECONDS:
+            logger.warning("Sunbird %s took %.1f s (HTTP %s)", path, took, response.status_code)
         # Never include the response body: it could echo the submission back into logs.
         if response.status_code == 429:
             raise SunbirdError(
@@ -287,6 +325,9 @@ _FROM_SUNBIRD: dict[str, str] = {v: k for k, v in _SUNBIRD_CODES.items()}
 # model output, both likelier on one long generation. 1,000 is still an assumption, not a
 # verified limit.
 _CHUNK_CHARS = 1000
+
+# A Sunbird call slower than this is logged (see _post).
+_SLOW_SECONDS = 5.0
 _SENTENCE_END = re.compile(r"(?<=[.!?])\s+|\n+")
 
 
