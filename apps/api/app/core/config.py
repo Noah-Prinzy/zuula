@@ -130,6 +130,15 @@ class AnalysisSettings(BaseSettings):
     # (free tier, 2,000 requests/day).
     groq_whisper_model: str = "whisper-large-v3-turbo"
     groq_api_url: str = "https://api.groq.com/openai/v1"
+    # Fallbacks for the verdict when Groq fails (Milestone D3), tried in this order, each only
+    # when its key is set. Both speak the same OpenAI-style chat API as Groq. Free keys:
+    # Google AI Studio (Gemini) and openrouter.ai (models ending in `:free`).
+    gemini_api_key: str = ""
+    gemini_model: str = "gemini-2.5-flash"
+    gemini_api_url: str = "https://generativelanguage.googleapis.com/v1beta/openai"
+    openrouter_api_key: str = ""
+    openrouter_model: str = "meta-llama/llama-3.3-70b-instruct:free"
+    openrouter_api_url: str = "https://openrouter.ai/api/v1"
     # TRANSCRIPTION_PROVIDER: independent of ANALYSIS_PROVIDER so either can be exercised on
     # its own. Same empty/`stub`/`groq` convention as LANGUAGE_PROVIDER.
     transcription_provider: str = ""

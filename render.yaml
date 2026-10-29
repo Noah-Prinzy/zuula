@@ -88,6 +88,11 @@ services:
         sync: false
       - key: GROQ_MODEL
         value: openai/gpt-oss-120b
+      # Fallbacks when Groq fails, in this order (each only when its key is set).
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
       - key: TAVILY_API_KEY
         sync: false
       - key: SUNBIRD_API_KEY

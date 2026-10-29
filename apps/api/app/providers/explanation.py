@@ -23,6 +23,7 @@ to justify the extra cost.
 
 import json
 import logging
+from dataclasses import dataclass
 
 import httpx
 
@@ -50,7 +51,19 @@ _STANCES: tuple[CitationStance, ...] = ("supports", "contradicts", "context")
 
 
 class GroqError(Exception):
-    pass
+    """Every model in the chain failed (the name predates the fallbacks)."""
+
+
+@dataclass(frozen=True)
+class ChatModel:
+    """One OpenAI-compatible chat-completions endpoint: Groq, Gemini (Google's
+    `/v1beta/openai` endpoint) and OpenRouter all take the same request, so a fallback is
+    just another URL, key and model name."""
+
+    name: str
+    api_url: str
+    api_key: str
+    model: str
 
 
 class Explanation:
@@ -144,57 +157,95 @@ def _coerce(value: object, allowed: tuple[str, ...], default: str) -> str:
 
 
 class GroqExplanationGenerator:
+    """Groq first; when it fails (network, timeout, 429 quota, 5xx, or an answer that isn't
+    the JSON asked for) the same request goes to each of `fallbacks` in order (Milestone D3:
+    one provider's outage or exhausted free tier must not fail a check). Raises GroqError
+    only when every model failed."""
+
     def __init__(
         self,
         *,
         groq_api_key: str,
         groq_api_url: str,
         groq_model: str,
+        fallbacks: tuple[ChatModel, ...] = (),
         timeout: float = 30.0,
     ):
-        self._groq_api_key = groq_api_key
-        self._groq_url = f"{groq_api_url.rstrip('/')}/chat/completions"
-        self._groq_model = groq_model
+        self._models = (
+            ChatModel(name="Groq", api_url=groq_api_url, api_key=groq_api_key, model=groq_model),
+            *fallbacks,
+        )
         self._timeout = timeout
 
     async def generate(
         self, *, content_type: str, text: str, evidence: EvidenceBundle
     ) -> Explanation:
+        messages = [
+            {"role": "system", "content": _SYSTEM_PROMPT},
+            {
+                "role": "user",
+                "content": (
+                    f"Content type: {content_type}\n\nSubmitted content:\n{text}\n\n"
+                    f"Evidence:\n{_sources_block(evidence)}"
+                ),
+            },
+        ]
+        failures = []
+        for i, model in enumerate(self._models):
+            try:
+                data = await self._complete(model, messages)
+            except GroqError as exc:
+                failures.append(str(exc))
+                if i + 1 < len(self._models):
+                    # WARNING so it shows under plain uvicorn (Render's logs).
+                    logger.warning("%s; trying %s", exc, self._models[i + 1].name)
+                continue
+            if i:
+                logger.warning("The verdict came from fallback %s (%s)", model.name, model.model)
+            return _parse_explanation(data, text, evidence)
+        raise GroqError(" | ".join(failures))
+
+    async def _complete(self, model: ChatModel, messages: list[dict]) -> dict:
         payload = {
-            "model": self._groq_model,
-            "messages": [
-                {"role": "system", "content": _SYSTEM_PROMPT},
-                {
-                    "role": "user",
-                    "content": (
-                        f"Content type: {content_type}\n\nSubmitted content:\n{text}\n\n"
-                        f"Evidence:\n{_sources_block(evidence)}"
-                    ),
-                },
-            ],
+            "model": model.model,
+            "messages": messages,
             "temperature": 0.2,
             "response_format": {"type": "json_object"},
         }
-        headers = {"Authorization": f"Bearer {self._groq_api_key}"}
+        headers = {"Authorization": f"Bearer {model.api_key}"}
+        url = f"{model.api_url.rstrip('/')}/chat/completions"
         try:
             async with httpx.AsyncClient(timeout=self._timeout) as client:
-                response = await client.post(self._groq_url, json=payload, headers=headers)
+                response = await client.post(url, json=payload, headers=headers)
         except httpx.HTTPError as exc:
-            raise GroqError("Groq chat completion failed.") from exc
+            raise GroqError(f"{model.name} chat completion failed ({type(exc).__name__}).") from exc
         if response.status_code >= 400:
-            # Groq's error body (e.g. a 429's "tokens per day" vs. plain per-minute rate-limit
+            # The error body (e.g. a 429's "tokens per day" vs. plain per-minute rate-limit
             # message, with its own suggested retry delay) is otherwise discarded; keeping it
             # here is diagnostic only — it changes no verdict/scoring logic, just what callers
             # can see about *why* a call failed.
             raise GroqError(
-                f"Groq chat completion failed with HTTP {response.status_code}: {response.text}"
+                f"{model.name} chat completion failed with HTTP {response.status_code}: "
+                f"{response.text[:500]}"
             )
         try:
             content = response.json()["choices"][0]["message"]["content"]
-            data = json.loads(content)
-        except (KeyError, IndexError, ValueError) as exc:
-            raise GroqError("Groq returned something other than the expected JSON.") from exc
-        return _parse_explanation(data, text, evidence)
+            data = json.loads(_strip_fences(content))
+        except (KeyError, IndexError, TypeError, ValueError) as exc:
+            raise GroqError(
+                f"{model.name} returned something other than the expected JSON."
+            ) from exc
+        if not isinstance(data, dict):
+            raise GroqError(f"{model.name} returned something other than the expected JSON.")
+        return data
+
+
+def _strip_fences(content: str) -> str:
+    """Some models wrap JSON in a ```json fence even when asked for a bare object."""
+    content = content.strip()
+    if content.startswith("```"):
+        content = content.split("\n", 1)[-1].rsplit("```", 1)[0]
+    return content
 
 
 def _parse_explanation(data: dict, text: str, evidence: EvidenceBundle) -> Explanation:

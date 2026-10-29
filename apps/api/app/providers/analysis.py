@@ -54,13 +54,14 @@ from typing import Protocol
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import get_analysis_settings
+from app.core.config import AnalysisSettings, get_analysis_settings
 from app.db.models import FactCheckReport
 from app.db.sample_data.fact_checks import SAMPLE_REPORTS
 from app.providers.ai_text_detector import AiTextDetector, get_ai_text_detector
 from app.providers.deepfake_detector import DeepfakeDetector, get_deepfake_detector
 from app.providers.embedding import EmbeddingProvider, get_embedding_provider
 from app.providers.explanation import (
+    ChatModel,
     Explanation,
     GroqError,
     GroqExplanationGenerator,
@@ -315,6 +316,25 @@ def _result_from_explanation(explanation: Explanation) -> AnalysisResult:
     )
 
 
+def fallback_models(settings: AnalysisSettings) -> tuple[ChatModel, ...]:
+    """The verdict's fallbacks after Groq (Milestone D3), each only when its key is set."""
+    candidates = (
+        ChatModel(
+            name="Gemini",
+            api_url=settings.gemini_api_url,
+            api_key=settings.gemini_api_key,
+            model=settings.gemini_model,
+        ),
+        ChatModel(
+            name="OpenRouter",
+            api_url=settings.openrouter_api_url,
+            api_key=settings.openrouter_api_key,
+            model=settings.openrouter_model,
+        ),
+    )
+    return tuple(m for m in candidates if m.api_key)
+
+
 def get_analysis_provider() -> AnalysisProvider:
     """ANALYSIS_PROVIDER: `groq`, `stub`, or empty for Groq when GROQ_API_KEY is set and the
     stub otherwise (the same real-when-configured rule as app/providers/language.py)."""
@@ -343,6 +363,7 @@ def get_analysis_provider() -> AnalysisProvider:
             groq_api_key=settings.groq_api_key,
             groq_api_url=settings.groq_api_url,
             groq_model=settings.groq_model,
+            fallbacks=fallback_models(settings),
         ),
         dedupe_max_cosine_distance=settings.dedupe_max_cosine_distance,
         local_evidence_max_cosine_distance=settings.local_evidence_max_cosine_distance,

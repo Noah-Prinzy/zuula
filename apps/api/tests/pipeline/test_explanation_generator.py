@@ -158,3 +158,91 @@ async def test_an_invalid_verdict_falls_back_to_unverifiable():
         content_type="text", text="x", evidence=EvidenceBundle(sources=[], trusted_domains=[])
     )
     assert explanation.verdict == "unverifiable"
+
+
+# ---- Fallback chain (Milestone D3) ----
+
+GEMINI = "https://gemini.example/v1beta/openai"
+OPENROUTER = "https://openrouter.example/api/v1"
+NO_EVIDENCE = EvidenceBundle(sources=[], trusted_domains=[])
+
+
+def _chain():
+    from app.providers.explanation import ChatModel
+
+    return _generator(
+        fallbacks=(
+            ChatModel(name="Gemini", api_url=GEMINI, api_key="g", model="gemini-2.5-flash"),
+            ChatModel(name="OpenRouter", api_url=OPENROUTER, api_key="o", model="llama:free"),
+        )
+    )
+
+
+@pytest.mark.parametrize(
+    "groq_failure",
+    [
+        httpx.Response(429, json={"error": {"message": "tokens per day"}}),
+        httpx.Response(503),
+        httpx.ConnectTimeout("timed out"),
+        httpx.Response(200, json={"choices": [{"message": {"content": "not json"}}]}),
+    ],
+)
+@respx.mock
+async def test_a_groq_failure_goes_to_gemini(groq_failure, caplog):
+    groq = respx.post(CHAT)
+    if isinstance(groq_failure, Exception):
+        groq.mock(side_effect=groq_failure)
+    else:
+        groq.mock(return_value=groq_failure)
+    gemini = respx.post(f"{GEMINI}/chat/completions").mock(
+        return_value=_verdict_response(summary="From Gemini.")
+    )
+    explanation = await _chain().generate(content_type="text", text="x", evidence=NO_EVIDENCE)
+    assert explanation.summary == "From Gemini."
+    assert json.loads(gemini.calls.last.request.content)["model"] == "gemini-2.5-flash"
+    assert gemini.calls.last.request.headers["Authorization"] == "Bearer g"
+    assert "The verdict came from fallback Gemini" in caplog.text
+
+
+@respx.mock
+async def test_openrouter_is_tried_after_gemini_and_fences_are_tolerated():
+    respx.post(CHAT).mock(return_value=httpx.Response(500))
+    respx.post(f"{GEMINI}/chat/completions").mock(return_value=httpx.Response(429))
+    fenced = "```json\n" + json.dumps({"verdict": "false", "summary": "From OpenRouter."}) + "\n```"
+    respx.post(f"{OPENROUTER}/chat/completions").mock(
+        return_value=httpx.Response(200, json={"choices": [{"message": {"content": fenced}}]})
+    )
+    explanation = await _chain().generate(content_type="text", text="x", evidence=NO_EVIDENCE)
+    assert explanation.summary == "From OpenRouter."
+
+
+@respx.mock
+async def test_groq_error_only_when_every_model_failed():
+    respx.post(CHAT).mock(return_value=httpx.Response(500))
+    respx.post(f"{GEMINI}/chat/completions").mock(return_value=httpx.Response(401))
+    respx.post(f"{OPENROUTER}/chat/completions").mock(return_value=httpx.Response(503))
+    with pytest.raises(GroqError) as raised:
+        await _chain().generate(content_type="text", text="x", evidence=NO_EVIDENCE)
+    message = str(raised.value)
+    assert "Groq" in message and "Gemini" in message and "OpenRouter" in message
+
+
+@respx.mock
+async def test_a_healthy_groq_never_touches_the_fallbacks():
+    respx.post(CHAT).mock(return_value=_verdict_response())
+    gemini = respx.post(f"{GEMINI}/chat/completions")
+    await _chain().generate(content_type="text", text="x", evidence=NO_EVIDENCE)
+    assert not gemini.called
+
+
+def test_fallbacks_are_only_the_ones_with_keys(monkeypatch):
+    from app.core.config import AnalysisSettings
+    from app.providers.analysis import fallback_models
+
+    for var in ("GEMINI_API_KEY", "OPENROUTER_API_KEY"):
+        monkeypatch.delenv(var, raising=False)
+    assert fallback_models(AnalysisSettings(_env_file=None)) == ()
+    monkeypatch.setenv("OPENROUTER_API_KEY", "o")
+    assert [m.name for m in fallback_models(AnalysisSettings(_env_file=None))] == ["OpenRouter"]
+    monkeypatch.setenv("GEMINI_API_KEY", "g")
+    assert [m.name for m in fallback_models(AnalysisSettings(_env_file=None))] == ["Gemini", "OpenRouter"]
