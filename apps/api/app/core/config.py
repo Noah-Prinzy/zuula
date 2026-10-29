@@ -132,12 +132,15 @@ class AnalysisSettings(BaseSettings):
     groq_api_url: str = "https://api.groq.com/openai/v1"
     # Fallbacks for the verdict when Groq fails (Milestone D3), tried in this order, each only
     # when its key is set. Both speak the same OpenAI-style chat API as Groq. Free keys:
-    # Google AI Studio (Gemini) and openrouter.ai (models ending in `:free`).
+    # Google AI Studio (Gemini) and openrouter.ai (models ending in `:free`). Each *_MODEL is
+    # a comma-separated list tried in order: free models get retired or overloaded often
+    # (29 Oct 2026: gemini-2.5-flash closed to new keys, gemini-flash-latest hanging past
+    # 90 s, gemma-4-31b:free answering 502), so one name alone isn't enough.
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-2.5-flash"
+    gemini_model: str = "gemini-3.1-flash-lite,gemini-flash-lite-latest"
     gemini_api_url: str = "https://generativelanguage.googleapis.com/v1beta/openai"
     openrouter_api_key: str = ""
-    openrouter_model: str = "meta-llama/llama-3.3-70b-instruct:free"
+    openrouter_model: str = "nvidia/nemotron-3.5-super-vl:free,google/gemma-4-31b-it:free"
     openrouter_api_url: str = "https://openrouter.ai/api/v1"
     # TRANSCRIPTION_PROVIDER: independent of ANALYSIS_PROVIDER so either can be exercised on
     # its own. Same empty/`stub`/`groq` convention as LANGUAGE_PROVIDER.

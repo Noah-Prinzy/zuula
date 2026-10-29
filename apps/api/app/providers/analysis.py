@@ -317,22 +317,24 @@ def _result_from_explanation(explanation: Explanation) -> AnalysisResult:
 
 
 def fallback_models(settings: AnalysisSettings) -> tuple[ChatModel, ...]:
-    """The verdict's fallbacks after Groq (Milestone D3), each only when its key is set."""
-    candidates = (
-        ChatModel(
-            name="Gemini",
-            api_url=settings.gemini_api_url,
-            api_key=settings.gemini_api_key,
-            model=settings.gemini_model,
-        ),
-        ChatModel(
-            name="OpenRouter",
-            api_url=settings.openrouter_api_url,
-            api_key=settings.openrouter_api_key,
-            model=settings.openrouter_model,
+    """The verdict's fallbacks after Groq (Milestone D3): every model named in GEMINI_MODEL,
+    then in OPENROUTER_MODEL (comma-separated), each provider only when its key is set."""
+    providers = (
+        ("Gemini", settings.gemini_api_url, settings.gemini_api_key, settings.gemini_model),
+        (
+            "OpenRouter",
+            settings.openrouter_api_url,
+            settings.openrouter_api_key,
+            settings.openrouter_model,
         ),
     )
-    return tuple(m for m in candidates if m.api_key)
+    return tuple(
+        ChatModel(name=name, api_url=url, api_key=key, model=model.strip())
+        for name, url, key, models in providers
+        if key
+        for model in models.split(",")
+        if model.strip()
+    )
 
 
 def get_analysis_provider() -> AnalysisProvider:

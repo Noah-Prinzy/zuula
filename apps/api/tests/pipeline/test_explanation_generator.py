@@ -243,6 +243,10 @@ def test_fallbacks_are_only_the_ones_with_keys(monkeypatch):
         monkeypatch.delenv(var, raising=False)
     assert fallback_models(AnalysisSettings(_env_file=None)) == ()
     monkeypatch.setenv("OPENROUTER_API_KEY", "o")
-    assert [m.name for m in fallback_models(AnalysisSettings(_env_file=None))] == ["OpenRouter"]
+    monkeypatch.setenv("OPENROUTER_MODEL", "a:free, b:free,")
+    models = fallback_models(AnalysisSettings(_env_file=None))
+    assert [(m.name, m.model) for m in models] == [("OpenRouter", "a:free"), ("OpenRouter", "b:free")]
     monkeypatch.setenv("GEMINI_API_KEY", "g")
-    assert [m.name for m in fallback_models(AnalysisSettings(_env_file=None))] == ["Gemini", "OpenRouter"]
+    monkeypatch.setenv("GEMINI_MODEL", "gemini-x")
+    models = fallback_models(AnalysisSettings(_env_file=None))
+    assert [m.model for m in models] == ["gemini-x", "a:free", "b:free"]
