@@ -184,12 +184,19 @@ class AnalysisSettings(BaseSettings):
     # Inference API. A read token from huggingface.co/settings/tokens.
     hf_token: str = ""
     hf_api_url: str = "https://router.huggingface.co/hf-inference"
+    # EMBEDDING_PROVIDER=gemini (production, Milestone D7): Google's embedding model with
+    # GEMINI_API_KEY, asked for EMBEDDING_DIMENSIONS so the column stays 384.
+    gemini_embedding_model: str = "gemini-embedding-001"
+    gemini_native_api_url: str = "https://generativelanguage.googleapis.com/v1beta"
     # Cosine distance (1 - cosine similarity) below which a new claim is treated as a
     # near-duplicate of an existing report and reused instead of re-run through Tavily+Groq.
     # 0.08 is roughly 92% cosine similarity — tight enough that two different claims about the
     # same event shouldn't collide, loose enough to catch the reworded/retranslated copies of
     # the same viral claim that make repeats worth catching. Picked by inspection, not a tuned
-    # threshold; revisit once real traffic exists.
+    # threshold; revisit once real traffic exists. Rechecked for gemini-embedding-001 at 384
+    # dimensions (29 Oct 2026, nine pairs): reworded copies 0.055-0.060, the same claim in
+    # Luganda 0.12, a different claim of the same shape (free school vs free electricity)
+    # 0.146, related 0.21, unrelated 0.23-0.31. 0.08 still reuses only the rewordings.
     dedupe_max_cosine_distance: float = 0.08
     # Looser than dedupe_max_cosine_distance: a match in this band isn't the same claim (not
     # reused outright) but is close enough to be useful grounding — a previously-verified
@@ -197,8 +204,9 @@ class AnalysisSettings(BaseSettings):
     # an always-trusted citation alongside the live Tavily search (app/providers/analysis.py's
     # GroqAnalysisProvider._augment_with_local_evidence). This is the local half of the
     # engine's retrieval: our own verified corpus, not the open web. Same "picked by
-    # inspection" caveat as dedupe_max_cosine_distance.
-    local_evidence_max_cosine_distance: float = 0.3
+    # inspection" caveat as dedupe_max_cosine_distance. 0.3 under the old local model; 0.2
+    # for gemini-embedding-001, whose unrelated claims start at about 0.23.
+    local_evidence_max_cosine_distance: float = 0.2
     # How many local-corpus matches (within local_evidence_max_cosine_distance) to surface per
     # claim at most.
     local_evidence_limit: int = 3

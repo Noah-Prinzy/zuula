@@ -99,11 +99,9 @@ services:
         sync: false
       - key: SUNBIRD_API_KEY
         sync: false
-      # The duplicate search's model, hosted (Milestone D7); the stub until HF_TOKEN is set.
+      # The duplicate search's model: Gemini's, with GEMINI_API_KEY (Milestone D7).
       - key: EMBEDDING_PROVIDER
-        value: huggingface
-      - key: HF_TOKEN
-        sync: false
+        value: gemini
       - key: AI_TEXT_DETECTOR_PROVIDER
         value: stub
       - key: DEEPFAKE_DETECTOR_PROVIDER

@@ -108,3 +108,12 @@ async def test_backfill_embeds_the_real_reports_own_claim_text(backfill_db, monk
         assert row.embedding is not None
         assert len(row.embedding) == EMBEDDING_DIMENSIONS
     assert {r.submitted_text for r in real_reports} <= set(provider.seen)
+
+
+async def test_all_replaces_vectors_from_another_model(backfill_db):
+    # Milestone D7: production's reports carry placeholder (stub) vectors; switching to a
+    # real model means every row is re-embedded, not just the empty ones.
+    first = await backfill_embeddings(backfill_db)
+    assert first > 0
+    assert await backfill_embeddings(backfill_db) == 0
+    assert await backfill_embeddings(backfill_db, replace_all=True) == first

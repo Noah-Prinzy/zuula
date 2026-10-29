@@ -17,6 +17,10 @@ it defaults to `stub` so routine dev/CI never downloads it. Run this after seedi
 already-seeded — it only ever touches rows with no embedding yet):
 
     EMBEDDING_PROVIDER=sentence-transformers python -m app.db.backfill_embeddings
+
+`--all` re-embeds every report, not only empty ones: needed after switching models
+(vectors from different models can't be compared), e.g. production's placeholder
+vectors from before Milestone D7 (`EMBEDDING_PROVIDER=gemini ... --all`).
 """
 
 import asyncio
@@ -33,12 +37,15 @@ def _claim_text(report: m.FactCheckReport) -> str:
     return report.submitted_text or report.title
 
 
-async def backfill_embeddings(session: AsyncSession) -> int:
-    """Embeds every FactCheckReport row with `embedding IS NULL`, using whichever
-    EmbeddingProvider EMBEDDING_PROVIDER currently selects. Returns how many rows it filled
-    in (rows whose claim text is empty are left as-is, same as the live pipeline)."""
+async def backfill_embeddings(session: AsyncSession, *, replace_all: bool = False) -> int:
+    """Embeds every FactCheckReport row with `embedding IS NULL` (every row, with
+    `replace_all`), using whichever EmbeddingProvider EMBEDDING_PROVIDER currently selects.
+    Returns how many rows it filled in (rows whose claim text is empty are left as-is, same
+    as the live pipeline)."""
     provider = get_embedding_provider()
-    stmt = select(m.FactCheckReport).where(m.FactCheckReport.embedding.is_(None))
+    stmt = select(m.FactCheckReport)
+    if not replace_all:
+        stmt = stmt.where(m.FactCheckReport.embedding.is_(None))
     reports = (await session.scalars(stmt)).all()
     filled = 0
     for report in reports:
@@ -60,13 +67,13 @@ async def _main() -> int:
         print(
             "EMBEDDING_PROVIDER is 'stub' (the default), so this would only backfill "
             "placeholder vectors the dedupe check can't meaningfully match against real "
-            "traffic. Set EMBEDDING_PROVIDER=sentence-transformers (local) or huggingface "
-            "(with HF_TOKEN) and rerun to compute real embeddings."
+            "traffic. Set EMBEDDING_PROVIDER=gemini (with GEMINI_API_KEY) or "
+            "sentence-transformers (local) and rerun to compute real embeddings."
         )
         return 1
 
     async with get_sessionmaker()() as session:
-        filled = await backfill_embeddings(session)
+        filled = await backfill_embeddings(session, replace_all="--all" in sys.argv)
         await session.commit()
     await get_engine().dispose()
     print(f"Backfilled embeddings for {filled} report(s).")
