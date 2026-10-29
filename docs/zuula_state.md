@@ -50,7 +50,7 @@ Deadline: **30 November 2026**.
 | P1 Frontend | Every page built (Next.js 16 + shadcn/ui) and wired to the API (Phase 2). Sample data only in demo builds; live builds show an error or empty state when the API fails (§8). |
 | P2 API design | Done (FastAPI core API + partner API, webhooks, Celery pipeline). |
 | P3 Backend + database | Done (PostgreSQL + pgvector, auth, weighted CCS, audit log). |
-| P4 AI engine | Built (Groq + Tavily verdict engine, multilingual embeddings, local-evidence RAG, Sunbird, Whisper, local signals). FR-DETECT-03's ≥90% accuracy is **unverified** — see §8 and [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03). |
+| P4 AI engine | Built (Groq + Tavily verdict engine, multilingual embeddings, local-evidence RAG, Sunbird, Whisper, local signals). FR-DETECT-03's ≥90% accuracy is **not met** on the AFP set (33.5 %, D9), which can't certify it — see §8 and [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03). |
 | **Phase 1 of the completion plan: Supabase migration** | **Mostly done.** Database live on Supabase, RLS lockdown, Supabase Auth working end to end behind a switch (email sign-up with code, sign-in, Expert/Admin second factor), Brevo email, uptime monitor. Storage and Realtime not migrated yet. |
 | Phase 2: frontend-to-API wiring | **Done (28 Oct).** Submission flow done (28 Oct): the composers post to `POST /submissions` (JSON, or multipart with real upload progress for media; idempotency key per attempt), and the Status page follows the real pipeline over the API's server-sent events, polling the status if the stream drops, then opens the real report. Demo builds keep the simulated flow. **All 8 admin screens wired** (28 Oct; `lib/admin-api.ts`, shared `useAdminData` hook and `Pager`): Overview, Users (server-side search/filters/paging), Moderation, Sources, Broadcasts, Audit log (action filter + paging server-side), Settings, Reports. Actions the API doesn't have yet are hidden live and kept in demo builds: "send to review" and manipulation-signal actions (Moderation), source re-crawl, WhatsApp broadcasts. **Account screens wired** (28 Oct; `lib/account-api.ts`, shared `hooks/use-live-data.ts`): Profile (details, password, two-factor, devices, data export, account erasure), Activity, Notifications (bell + page), API keys, Alerts, and the journalist verification application (feeds Admin → Verifications). With Supabase sign-in, passwords change in Supabase (current password re-checked first) and the email address isn't edited here. Not in the API yet, so local or demo-only: marking a notification unread or deleting it, alert delivery frequency, withdrawing a verification application, and the application's job title / work email / links fields. Erasing an account anonymises the Zuula account but leaves its Supabase login (deleting that needs the service-role key server-side). **Phase 2's wiring is done**, and a signed-in click-through as Admin (28 Oct) checked every admin, account and review screen against production data through the local API; what it fixed is in §8. |
 | Hardening + launch | Not started. |
@@ -401,6 +401,8 @@ Open question for Noah: clean uploads are kept indefinitely (no rule in the requ
 **D8 built (29 Oct 2026; 557 API tests pass).** Noah approved the 38 sources in `docs/trusted_sources_d8.md` as drafted (11 Ugandan media incl. Luganda, Runyankole and Acholi outlets, 15 government bodies, AFP Fact Check, Dubawa, Snopes, WHO, Africa CDC, UNICEF, World Bank, UNHCR, AP, BBC, Al Jazeera, ULII). They live in `app/db/trusted_sources.py`; the seed adds them after the 12 samples (50 in all), and `python -m app.db.trusted_sources` adds only the domains a database doesn't hold yet, so an admin's later edits (deactivated, re-tiered) survive. No invented crawl history on the new rows. Gap: no Ateso outlet with a working site. For Milestone E: production's 12 original rows come from the *sample* seed and carry made-up crawl results (two marked failing, which is why Admin shows "2 sources failing"); the reset should clear that.
 
 **D8 live (29 Oct 2026).** Noah ran `python -m app.db.trusted_sources` against production: "Added 38 trusted source(s); the registry now holds 50." Check on Render: "The Bank of Uganda has cut the Central Bank Rate to 5 percent this month" → `fc-2026-0178`, likely false, 78 %, 6.9 s, citing two Bank of Uganda monetary-policy documents (bou.or.ug) and a World Bank report, all marked **trusted**; both domains are among the 38 new sources.
+
+**D9 measured (30 Oct 2026).** Blind run (afp.com results dropped) of all 278 held-out items, production engine, 0 errors: **93/278 = 33.5 % exact**, 40.3 % with false ≈ likely false, 44.4 % on the 169 text-judgeable items; 45 % unverifiable, 40 called authentic (mostly at 85–100 %). The set has no true claims and 109 items are photo or video captions, so it can't certify the 90 % target either way. Next, for Noah to choose: a balanced, checked text-claim set (~100, half true); a prompt fix so media captions are never "authentic"; capped confidence when nothing is cited; replace the seeded `model_evaluations` row. Full write-up: Appendix F.
 
 **Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (options: Brave Search API, Serper or Exa; I will check current free tiers before recommending one); approval of the D8 source list.
 
@@ -768,7 +770,7 @@ Repo layout: `apps/web` (this app), `apps/api` (P2–P4), `packages/shared`. `ap
 
 What's between the app today and a fully wired, launch-ready platform:
 
-- **FR-DETECT-03 is unverified, not just "not met"**: the eval harness (`apps/api/scripts/run_eval.py`) ran the full 278-item held-out set to completion, but Groq's shared daily token quota and Tavily's shared monthly search quota were both exhausted by other concurrent work during the run. Only 17 of 278 items got both a real verdict and real web evidence — those hit 64.7% accuracy, well under the 90% target but too small a sample to certify either way. A trustworthy number needs a dedicated (non-shared) Groq/Tavily key. Full results: `apps/api/EVAL_RESULTS.md`.
+- **FR-DETECT-03 is not met, and the AFP set can't certify it** (D9, 30 Oct 2026): the blind run of all 278 held-out items with dedicated keys scored 33.5 % exact (40.3 % counting false and likely false as one; 44.4 % on the 169 items judgeable from text). The set has no true claims and 39 % of it is captions of photos or videos the engine never sees. A balanced, checked text-claim set is needed. Details: [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03).
 - **Frontend-to-API wiring**: ratings, review, admin and account settings still run on mock data (`lib/mock`) — only fact-checks and auth call the real API so far. This is the largest remaining gap for an end-to-end-real demo.
 - **Role enforcement in the UI**: the API checks roles on its own endpoints, but most screens still only check the browser session's role, not the API. Needs wiring screen-by-screen.
 - **Translation review**: `messages/{lg,ach,nyn,teo}.json` are unreviewed Sunbird AI machine drafts and need native-speaker review before they count as real translations.
@@ -1225,137 +1227,96 @@ When you're done, give me: the API URL, each resource and plan with its monthly 
 
 ## Appendix F — AI evaluation results (FR-DETECT-03)
 
-*Formerly `apps/api/EVAL_RESULTS.md`.*
+*`scripts/run_eval.py` writes its report to `apps/api/EVAL_RESULTS.md` (not tracked); the
+results are folded in here. Per-item results: `apps/api/scripts/eval_results.jsonl`.*
 
-**Headline: FR-DETECT-03's >=90% target is NOT MET. The run is now complete (278/278
-items attempted), but the result is dominated by Tavily's web-search quota being fully
-exhausted for the entire eval — read "What actually happened" before the numbers below.**
+**Headline (D9, run 29–30 Oct 2026): 93/278 = 33.5 % exact; 40.3 % if "false" and
+"likely false" count as one. FR-DETECT-03's ≥ 90 % target is NOT MET, and this item set
+can't certify it either way: read "What this set can and can't show" first.**
 
-### What actually happened
+### How it was run
 
-This is the completed run of `scripts/run_eval.py` against live Groq + Tavily traffic,
-combining the original attempt (31/278 scored before Groq's daily quota ran out) with a
-`--resume` pass that retried the other 247 items once that quota had partially recovered.
+- The engine as production runs it (D3–D8): Groq → Gemini → OpenRouter chain, Tavily with
+  Exa as backup, the 50 trusted sources. Dedicated keys; 0 errors, 0 search failures.
+- **Blind:** every item is an AFP fact-check, and AFP Fact Check is a trusted source since
+  D8, so afp.com results were dropped before the model saw them (118 items had AFP results
+  removed). Without that, the search hands the model AFP's own verdict and the score
+  measures retrieval of the answer key.
+- Two sittings (the first was interrupted at 82 items, then resumed). Verdicts: Gemini
+  3.1 Flash-Lite 148, Groq gpt-oss-120b 123, Gemini Flash-Lite latest 7 (Groq's per-minute
+  limit pushed many items down the chain).
 
-- **Groq's daily token quota (200,000 tokens/day, free tier) was repeatedly re-exhausted
-  during the resume by other concurrent sessions sharing the same key.** The resume pass
-  saw the same `"Rate limit reached ... on tokens per day (TPD)"` error recur several
-  times (e.g. `Used 199685/200000`, `Used 199847/200000`) as the quota trickled back and
-  got spent again before this harness's turn. The harness's "give up fast on daily-quota
-  waits" logic correctly treated each of these as an error and moved on rather than
-  blocking, which is why the run reached 278/278 attempted despite the quota fighting it
-  the whole way. **Result: 102/278 items (37%) got a real Groq verdict; 176/278 failed
-  outright (175 GroqError, 1 transient ConnectionRefusedError from a Postgres restart
-  mid-run).**
-- **Tavily's monthly search-plan quota was already fully exhausted before the resume
-  started, and stayed exhausted for its entire duration.** Every single search attempted
-  during the `--resume` pass got Tavily's HTTP 432 ("exceeds your plan's set usage
-  limit"). `GroqAnalysisProvider.analyze()` catches this and proceeds "with no evidence"
-  rather than failing, exactly as designed — but it means **zero new evidence-backed
-  verdicts were produced during the entire resume.** All 17 evidence-backed scored items
-  in this report are the same 17 from the original attempt, before Tavily's quota died.
-  **260/278 items (94%) got no real web evidence at all**, up from 148/278 before the
-  resume.
+### What this set can and can't show
 
-Neither of these is a bug in the harness or in `GroqAnalysisProvider` — both are this
-project's shared free-tier capacity being spent elsewhere before/during this eval's turn.
+- **No true claims.** 236 false, 36 likely false, 6 AI-generated. It can't show false
+  alarms on true claims, which matter as much for a public fact-checker.
+- **109 of 278 (39 %) are captions of miscaptioned photos or videos** ("This picture shows
+  …", "Video of …"). AFP's "false" is about the picture, which the engine never sees; from
+  the words alone, "unverifiable" is often the honest answer.
+- **39 more are under 7 words**, mostly AFP headlines, and several AFP "claims" are AFP's
+  own true description of a hoax ("Doctored newspaper front pages spread disinformation as
+  Kenya elections draw near"), which evidence rightly confirms.
 
-#### The one number worth trusting more than the headline accuracy
+| Slice | Items | Exact | Flagged false / likely false | Called authentic | Unverifiable |
+|---|---|---|---|---|---|
+| All | 278 | 33.5 % | 40.3 % | 40 (14 %) | 124 (45 %) |
+| Photo / video captions | 109 | 27.5 % | 33.9 % | 16 | 54 |
+| Under 7 words | 39 | 43.6 % | 56.4 % | 6 | 11 |
+| Text claims, 7+ words | 130 | 35.4 % | 40.8 % | 18 | 59 |
+| **Judgeable from text (last two)** | **169** | **37.3 %** | **44.4 %** | **24** | **70** |
 
-Of the 102 items that got a real Groq verdict, **17 had real Tavily evidence (frozen at
-17 — no new evidence came in during the resume) and 85 did not.** Split by that:
+"Flagged" counts false ↔ likely-false as a match. Media detection is a word match on the
+claim (photo, picture, image, video, footage, clip, screenshot, graphic, poster, meme,
+audio, recording), so it's approximate.
 
-- **With real evidence: 11/17 = 64.7%** accuracy — unchanged from the first attempt,
-  since no new evidence-backed items were added.
-- **Without evidence (Tavily exhausted): 0/85 = 0.0%** accuracy — every evidence-free
-  guess was wrong, across all 85 of them. This is a much larger, starker sample than the
-  14 we had before, and it says the same thing more forcefully: **on this held-out set,
-  this verdict engine has not gotten a single evidence-free call right.**
+### What the numbers do say
 
-That split is the honest way to read this run. The flat **"10.8% overall" figure below is
-not a regression** — it's the same 11 correct answers as before, diluted by 71 more
-evidence-free items (all wrong) that the resume was able to attempt once Groq's quota
-briefly reopened. The underlying analyzer didn't get worse; the eval just got to test more
-of its worst-case behavior (no evidence) and none of its best-case behavior (evidence),
-because Tavily had nothing left to give for the entire second half of this run.
+- **The engine leans hard on "unverifiable" (45 %).** On the text it can judge, it still
+  declines more than 4 in 10. Half of those cite no source: the search found nothing
+  usable once AFP was removed, which is a coverage problem for Kenyan and Tanzanian claims
+  in a registry built for Uganda.
+- **When it cites evidence, it does much better:** 101 of the 162 verdicts that cite a
+  source flagged the claim correctly (62 %), against 11 of 116 with no source.
+- **Gemini 3.1 Flash-Lite flagged more than Groq's model** (47.3 % against 34.1 %), on
+  different items, so not a controlled comparison, but enough to test making it first.
+- **40 claims were called authentic, mostly at 85–100 % confidence.** This is the most
+  damaging mistake. Reading the 18 text ones: most are AFP headlines or true events with a
+  false image attached ("Odinga urges Kenyans to join 2024 tax bill protests", "Poll puts
+  Kenya's Ruto ahead"), where the event is real. The engine reads them as claims about the
+  event, not about the media that carried them.
 
-#### Two more things worth knowing when reading the numbers below
+### What would make this a real test
 
-- **Dedupe hits are 0/278, and that's structural, not a sign dedupe is broken.** This
-  environment runs `EMBEDDING_PROVIDER=stub` (the default), and separately, seeded
-  `fact_check_reports` rows (fictional and real-AFP alike) are never given a real embedding
-  at seed time — only `app/worker/pipeline.py`'s live submission path writes one.
-  Production dedupe isn't exercised by this harness at all right now;
-  `app/db/backfill_embeddings.py` (merged separately) exists to close that gap but needs
-  `EMBEDDING_PROVIDER=sentence-transformers` to produce a real vector, which this run
-  didn't set.
-- **AFP's `claim` field sometimes isn't the false assertion itself.** Spot-checking
-  mismatches earlier while building this harness, several AFP records' `claim` text is
-  AFP's own true, descriptive headline about a disinformation pattern (e.g. "False quotes
-  and media company logos combine to mislead voters in Kenya") rather than the literal
-  false claim circulating — real evidence can correctly confirm that *headline* as true,
-  nudging a well-evidenced model toward "authentic" on an item whose ground truth is
-  "false". This is a genuine property of the eval data, not something to fix in it or in
-  the provider.
+1. **A balanced, text-only set**: about 100 claims, half true and half false, ideally
+   Ugandan, each label checked by a person. This is the only honest way to test the 90 %
+   target (and false alarms).
+2. **A prompt change for media captions**: "this photo / video shows X" is a claim about
+   the media; without the media, answer "unverifiable", never "authentic".
+3. **Lower confidence when nothing is cited**, so a verdict without evidence never shows
+   85 %+.
+4. **Replace the seeded `model_evaluations` row** (F1 91.4 %, deepfake 83.1 %): Admin
+   shows those as if measured.
 
-#### Next steps
+### Raw numbers (blind run, 278 items)
 
-- **This project's Groq/Tavily keys need to move off the free tier, or get a dedicated key
-  separate from day-to-day dev traffic, before this eval can produce a trustworthy
-  headline number.** Both quotas were fully or mostly spent by other concurrent work
-  before and during this eval's only two attempts — a third attempt would very likely hit
-  the same wall.
-- The evidence-backed sample (N=17, 64.7%) is the only part of this run worth treating as
-  a real signal, and it's still too small and too far under 90% to certify FR-DETECT-03
-  either way. A re-run with a fresh/dedicated Tavily quota, large enough to cover all 278
-  items with real evidence, is what this eval actually needs to produce a meaningful
-  number.
+| actual \ predicted | authentic | likely-false | false | ai-generated | unverifiable |
+|---|---|---|---|---|---|
+| likely-false | 4 | 3 | 11 | 0 | 18 |
+| false | 36 | 8 | 90 | 1 | 101 |
+| ai-generated | 0 | 0 | 1 | 0 | 5 |
 
-### Raw numbers from this run (278 items, resume completed; Tavily exhausted throughout)
+- By country: Kenya 79/250 = 31.6 %, Tanzania 14/28 = 50.0 %.
+- By category: Politics 40/91 = 44.0 %, Health 5/15 = 33.3 %, Economy 5/15 = 33.3 %,
+  Elections 10/31 = 32.3 %, Education 2/7 = 28.6 %, Society 29/105 = 27.6 %, Weather
+  2/14 = 14.3 %.
+- Dedupe hits 0/278 (expected: the eval DB holds no embedded reports to match).
 
-- Items: 278 (Kenya + Tanzania held-out split)
-- Scored (no error): 102/278
-- Errors: 176/278
-- **Overall accuracy: 11/102 = 10.8%** (see "one number worth trusting" above)
-- FR-DETECT-03 target (>=90% text accuracy): NOT MET
-- Dedupe hits: 0/278
-- Tavily failures (evidence-free fallback): 260/278
+### Earlier runs (superseded)
 
-### Confusion matrix (rows = actual, columns = predicted)
-
-| actual \ predicted | authentic | likely-false | false | ai-generated | unverifiable | (error) |
-|---|---|---|---|---|---|---|
-| likely-false | 0 | 0 | 0 | 0 | 15 | 21 |
-| false | 3 | 0 | 11 | 0 | 71 | 151 |
-| ai-generated | 0 | 0 | 0 | 0 | 2 | 4 |
-
-### Accuracy by country
-
-- KE: 9/90 = 10.0%
-- TZ: 2/12 = 16.7%
-
-### Accuracy by category
-
-- Economy: 0/6 = 0.0%
-- Education: 1/3 = 33.3%
-- Elections: 0/13 = 0.0%
-- Health: 2/8 = 25.0%
-- Politics: 5/37 = 13.5%
-- Society: 3/31 = 9.7%
-- Weather: 0/4 = 0.0%
-
-### Note: likely-false / false ground-truth mapping
-
-`app/db/real_data.py`'s AFP-rating -> Verdict mapping is an editorial judgment call, not something AFP itself assigns, so a predicted/actual mismatch across just these two verdicts is a softer miss than e.g. predicting `authentic` for a `false` claim.
-- Ground truth `likely-false`, predicted `false`: 0
-- Ground truth `false`, predicted `likely-false`: 0
-- Accuracy if these two verdicts are treated as equivalent: 10.8%
-
-### Errors
-
-- GroqError: 175
-- ConnectionRefusedError: 1
-
+The P4 run (before Milestone D) shared free-tier Groq and Tavily keys with other work;
+both quotas ran out, so only 102 of 278 items got a verdict and 17 got web evidence
+(11/17 = 64.7 %; every evidence-free verdict was wrong). It also searched with AFP
+visible. Its numbers don't compare with the blind run above.
 
 ---
 
