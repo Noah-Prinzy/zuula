@@ -22,13 +22,19 @@ async def exa_search(
     timeout: float = 20.0,
     include_domains: list[str] | None = None,
 ) -> list[TavilyResult]:
+    # Checked against Exa's build-with-exa skill (29 Oct 2026): `auto` is its recommended
+    # type; highlights alone (not stacked with text/summary) are the passages most relevant
+    # to the query, the closest thing to Tavily's `content`. Two deliberate departures from
+    # its bare defaults: maxCharacters 500 is the verdict prompt's per-source budget
+    # (explanation.py's _sources_block), and numResults matches Tavily's count.
     payload: dict = {
         "query": query,
         "numResults": max_results,
         "type": "auto",
-        # The passages most relevant to the query, the closest thing to Tavily's `content`.
         "contents": {"highlights": {"maxCharacters": 500}},
     }
+    # Only the admin-approved trusted-source registry is ever passed here (the hard
+    # allowlist the skill reserves includeDomains for); the open search follows if it's thin.
     if include_domains:
         payload["includeDomains"] = include_domains
     try:
