@@ -59,7 +59,11 @@ from app.db.models import FactCheckReport
 from app.db.sample_data.fact_checks import SAMPLE_REPORTS
 from app.providers.ai_text_detector import AiTextDetector, get_ai_text_detector
 from app.providers.deepfake_detector import DeepfakeDetector, get_deepfake_detector
-from app.providers.embedding import EmbeddingProvider, get_embedding_provider
+from app.providers.embedding import (
+    EmbeddingError,
+    EmbeddingProvider,
+    get_embedding_provider,
+)
 from app.providers.explanation import (
     ChatModel,
     Explanation,
@@ -195,7 +199,7 @@ class GroqAnalysisProvider:
         language: str,
         media: bytes | None = None,
     ) -> AnalysisResult:
-        embedding = self._embedder.embed(text) if text.strip() else None
+        embedding = await self._embed(text) if text.strip() else None
         local_matches: list[VectorMatch] = []
 
         if embedding is not None:
@@ -226,6 +230,15 @@ class GroqAnalysisProvider:
                 if signal is not None:
                     result.ai_signals = [*result.ai_signals, signal]
         return result
+
+    async def _embed(self, text: str) -> list[float] | None:
+        """No vector (so no dedupe and no local evidence) rather than a failed check when the
+        hosted embedding model is down."""
+        try:
+            return await self._embedder.embed(text)
+        except EmbeddingError:
+            logger.warning("Embedding failed; checking without the duplicate search")
+            return None
 
     async def _reuse_report(
         self, db: AsyncSession, match: VectorMatch, embedding: list[float]

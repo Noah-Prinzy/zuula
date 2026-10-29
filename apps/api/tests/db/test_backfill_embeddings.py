@@ -14,7 +14,7 @@ from sqlalchemy.pool import NullPool
 from app.db import models as m
 from app.db.backfill_embeddings import backfill_embeddings
 from app.db.real_data import load_real_reports
-from app.providers.embedding import EMBEDDING_DIMENSIONS, StubEmbeddingProvider
+from app.providers.embedding import EMBEDDING_DIMENSIONS, stub_embedding
 from tests.dbutil import TEST_DATABASE_URL, alembic_config, recreate_database, seed_database
 
 BACKFILL_DB_URL = f"{TEST_DATABASE_URL}_backfill"
@@ -88,9 +88,9 @@ async def test_backfill_embeds_the_real_reports_own_claim_text(backfill_db, monk
         def __init__(self):
             self.seen: list[str] = []
 
-        def embed(self, text):
+        async def embed(self, text):
             self.seen.append(text)
-            return StubEmbeddingProvider().embed(text)
+            return stub_embedding(text)
 
     provider = RecordingProvider()
     monkeypatch.setattr("app.db.backfill_embeddings.get_embedding_provider", lambda: provider)

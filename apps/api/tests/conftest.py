@@ -67,6 +67,7 @@ def _no_real_analysis_provider():
             "GEMINI_API_KEY",
             "OPENROUTER_API_KEY",
             "EXA_API_KEY",
+            "HF_TOKEN",
         )
     }
     get_analysis_settings.cache_clear()

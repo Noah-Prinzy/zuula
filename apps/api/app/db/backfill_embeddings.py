@@ -45,7 +45,7 @@ async def backfill_embeddings(session: AsyncSession) -> int:
         text = _claim_text(report)
         if not text.strip():
             continue
-        report.embedding = provider.embed(text)
+        report.embedding = await provider.embed(text)
         filled += 1
     await session.flush()
     return filled
@@ -60,8 +60,8 @@ async def _main() -> int:
         print(
             "EMBEDDING_PROVIDER is 'stub' (the default), so this would only backfill "
             "placeholder vectors the dedupe check can't meaningfully match against real "
-            "traffic. Set EMBEDDING_PROVIDER=sentence-transformers and rerun to compute real "
-            "embeddings."
+            "traffic. Set EMBEDDING_PROVIDER=sentence-transformers (local) or huggingface "
+            "(with HF_TOKEN) and rerun to compute real embeddings."
         )
         return 1
 

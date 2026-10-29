@@ -19,7 +19,7 @@ from app.schemas.admin import SystemHealthItem
 logger = logging.getLogger("zuula.services.provider_health")
 
 # Shown in this order; a provider appears only when its key is set.
-PROVIDERS = ("Groq", "Gemini", "OpenRouter", "Sunbird", "Tavily", "Exa")
+PROVIDERS = ("Groq", "Gemini", "OpenRouter", "Sunbird", "Tavily", "Exa", "Hugging Face")
 _WHAT = {
     "Groq": "verdicts and images",
     "Gemini": "backup verdicts",
@@ -27,6 +27,7 @@ _WHAT = {
     "Sunbird": "Ugandan languages",
     "Tavily": "web search",
     "Exa": "backup search",
+    "Hugging Face": "duplicate search",
 }
 _KEY = "zuula:provider:{}"
 _FAILS = "zuula:provider:{}:fails:{}"
@@ -58,6 +59,9 @@ def _configured() -> list[str]:
         "Sunbird": language.sunbird_api_key,
         "Tavily": analysis.tavily_api_key,
         "Exa": analysis.exa_api_key,
+        "Hugging Face": analysis.hf_token
+        if analysis.embedding_provider.strip().lower() == "huggingface"
+        else "",
     }
     return [p for p in PROVIDERS if keys[p]]
 

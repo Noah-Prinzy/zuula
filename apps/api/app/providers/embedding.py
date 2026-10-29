@@ -15,23 +15,40 @@ credential to gate on the way there is for Groq/Tavily, and the test suite must 
 pull a model over the network. The model is loaded once per process and cached (_load_model),
 not once per call — it's too slow to reload for every submission.
 
+On Render the local model doesn't fit in 512 MB, so production uses the same model hosted by
+Hugging Face's Inference API (`HuggingFaceEmbeddingProvider`, Milestone D7): identical
+vectors, so stored embeddings and the pgvector column are unaffected. `embed()` is async
+because that one is a network call, and checks run on the API's own event loop on Render
+(JOB_RUNNER=inline); the local model runs in a thread for the same reason.
+
 EMBEDDING_DIMENSIONS (384) must match the configured model's output size: it's also the
 pgvector column's fixed dimension (migrations/versions/0004_embedding_dimensions.py).
 paraphrase-multilingual-MiniLM-L12-v2 happens to share all-MiniLM-L6-v2's 384 dims, so this
 model swap needed no new migration; a future model with a different output size would.
 """
 
+import asyncio
+import logging
 import zlib
 from functools import lru_cache
 from typing import Protocol
 
+import httpx
+
 from app.core.config import get_analysis_settings
+
+logger = logging.getLogger("zuula.providers.embedding")
 
 EMBEDDING_DIMENSIONS = 384
 
 
+class EmbeddingError(Exception):
+    """The hosted model didn't answer with a vector; the check goes on without one (no
+    dedupe, no local evidence), as with an empty text."""
+
+
 class EmbeddingProvider(Protocol):
-    def embed(self, text: str) -> list[float]:
+    async def embed(self, text: str) -> list[float]:
         """A unit-length vector of length EMBEDDING_DIMENSIONS representing `text`."""
         ...
 
@@ -42,28 +59,90 @@ class StubEmbeddingProvider:
     StubLanguageProvider's marker-word matching, good enough to tell test fixtures apart:
     near-identical text hashes to a near-identical vector, unrelated text doesn't."""
 
-    def embed(self, text: str) -> list[float]:
-        # zlib.crc32, not Python's randomized str hash, so the same text hashes to the same
-        # vector across processes (the worker runs in its own process) — same reasoning as
-        # StubAnalysisProvider's digest.
-        vector = [0.0] * EMBEDDING_DIMENSIONS
-        words = text.lower().split()
-        if not words:
-            return vector
-        for word in words:
-            digest = zlib.crc32(word.encode())
-            vector[digest % EMBEDDING_DIMENSIONS] += 1.0 if digest % 2 == 0 else -1.0
-        norm = sum(v * v for v in vector) ** 0.5
-        return [v / norm for v in vector] if norm else vector
+    async def embed(self, text: str) -> list[float]:
+        return stub_embedding(text)
+
+
+def stub_embedding(text: str) -> list[float]:
+    """StubEmbeddingProvider's vector, synchronously (tests build expected vectors with it)."""
+    # zlib.crc32, not Python's randomized str hash, so the same text hashes to the same
+    # vector across processes (the worker runs in its own process) — same reasoning as
+    # StubAnalysisProvider's digest.
+    vector = [0.0] * EMBEDDING_DIMENSIONS
+    words = text.lower().split()
+    if not words:
+        return vector
+    for word in words:
+        digest = zlib.crc32(word.encode())
+        vector[digest % EMBEDDING_DIMENSIONS] += 1.0 if digest % 2 == 0 else -1.0
+    norm = sum(v * v for v in vector) ** 0.5
+    return [v / norm for v in vector] if norm else vector
 
 
 class SentenceTransformerEmbeddingProvider:
     def __init__(self, model_name: str):
         self._model_name = model_name
 
-    def embed(self, text: str) -> list[float]:
-        model = _load_model(self._model_name)
-        return model.encode(text, normalize_embeddings=True).tolist()
+    async def embed(self, text: str) -> list[float]:
+        def encode() -> list[float]:
+            model = _load_model(self._model_name)
+            return model.encode(text, normalize_embeddings=True).tolist()
+
+        return await asyncio.to_thread(encode)
+
+
+class HuggingFaceEmbeddingProvider:
+    """The same model on Hugging Face's Inference API (`hf-inference`, its feature-extraction
+    pipeline), with a read token. One short call per check."""
+
+    def __init__(self, *, api_url: str, token: str, model_name: str, timeout: float = 20.0):
+        self._url = f"{api_url.rstrip('/')}/models/{model_name}/pipeline/feature-extraction"
+        self._headers = {"Authorization": f"Bearer {token}"}
+        self._timeout = timeout
+
+    async def embed(self, text: str) -> list[float]:
+        from app.services import provider_health  # Admin → System health (Milestone D6)
+
+        try:
+            vector = await self._request(text)
+        except EmbeddingError as exc:
+            await provider_health.record("Hugging Face", ok=False, error=str(exc))
+            raise
+        await provider_health.record("Hugging Face", ok=True)
+        return vector
+
+    async def _request(self, text: str) -> list[float]:
+        try:
+            async with httpx.AsyncClient(timeout=self._timeout) as client:
+                response = await client.post(
+                    self._url, json={"inputs": text}, headers=self._headers
+                )
+        except httpx.HTTPError as exc:
+            raise EmbeddingError(type(exc).__name__) from exc
+        # Never include the body: it could echo the submission back.
+        if response.status_code >= 400:
+            raise EmbeddingError(f"HTTP {response.status_code}")
+        try:
+            vector = _pooled(response.json())
+        except (ValueError, TypeError) as exc:
+            raise EmbeddingError("Unexpected answer") from exc
+        if len(vector) != EMBEDDING_DIMENSIONS:
+            raise EmbeddingError(f"{len(vector)} dimensions, not {EMBEDDING_DIMENSIONS}")
+        norm = sum(v * v for v in vector) ** 0.5
+        return [v / norm for v in vector] if norm else vector
+
+
+def _pooled(body) -> list[float]:
+    """The sentence vector: the pipeline answers with it directly, or (for some deployments)
+    with one vector per token, which sentence-transformers would mean-pool."""
+    while isinstance(body, list) and body and isinstance(body[0], list):
+        if body[0] and isinstance(body[0][0], list):
+            body = body[0]  # a batch of one
+            continue
+        return [sum(column) / len(body) for column in zip(*body, strict=True)]
+    if not isinstance(body, list) or not all(isinstance(v, int | float) for v in body):
+        raise TypeError("not a vector")
+    return [float(v) for v in body]
 
 
 @lru_cache
@@ -74,15 +153,25 @@ def _load_model(model_name: str):
 
 
 def get_embedding_provider() -> EmbeddingProvider:
-    """EMBEDDING_PROVIDER: `sentence-transformers` for the real local model, `stub` (the
-    default) otherwise."""
+    """EMBEDDING_PROVIDER: `huggingface` for the hosted model (production; needs HF_TOKEN,
+    and falls back to the stub with a warning without one), `sentence-transformers` for the
+    local model, `stub` (the default) otherwise."""
     settings = get_analysis_settings()
     choice = settings.embedding_provider.strip().lower()
-    if choice not in ("stub", "sentence-transformers"):
+    if choice not in ("stub", "sentence-transformers", "huggingface"):
         raise NotImplementedError(
             f"Unknown EMBEDDING_PROVIDER '{settings.embedding_provider}': use "
-            "'sentence-transformers' or 'stub'."
+            "'huggingface', 'sentence-transformers' or 'stub'."
         )
+    if choice == "huggingface":
+        if settings.hf_token:
+            return HuggingFaceEmbeddingProvider(
+                api_url=settings.hf_api_url,
+                token=settings.hf_token,
+                model_name=settings.embedding_model,
+            )
+        logger.warning("EMBEDDING_PROVIDER=huggingface needs HF_TOKEN; using the stub")
+        return StubEmbeddingProvider()
     if choice == "stub":
         return StubEmbeddingProvider()
     return SentenceTransformerEmbeddingProvider(settings.embedding_model)

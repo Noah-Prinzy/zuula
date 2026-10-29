@@ -184,9 +184,9 @@ async def test_a_new_report_with_an_embedding_is_upserted_into_the_vector_db(db,
         async def upsert(self, *, report_id, embedding):
             calls.append((report_id, embedding))
 
-    from app.providers.embedding import StubEmbeddingProvider
+    from app.providers.embedding import stub_embedding
 
-    embedding = StubEmbeddingProvider().embed("Some submitted text long enough to check.")
+    embedding = stub_embedding("Some submitted text long enough to check.")
     monkeypatch.setattr("app.worker.pipeline.get_vector_db_provider", lambda: _RecordingVectorDb())
     monkeypatch.setattr(
         "app.worker.pipeline.get_analysis_provider",

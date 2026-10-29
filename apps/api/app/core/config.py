@@ -169,8 +169,8 @@ class AnalysisSettings(BaseSettings):
     # local-evidence retrieval step (no API key, CPU-only). Defaults to `stub` — same
     # real-when-configured spirit as the other providers, but gated on an explicit opt-in
     # rather than a credential, since there's no key to gate on and the real model is a
-    # download the test suite must never trigger. `ANALYSIS_PROVIDER=groq` in production
-    # should set this to `sentence-transformers`.
+    # download the test suite must never trigger. Production (Render, 512 MB) uses
+    # `huggingface`, the same model hosted; `sentence-transformers` runs it locally.
     embedding_provider: str = "stub"
     # paraphrase-multilingual-MiniLM-L12-v2, not the original all-MiniLM-L6-v2: same
     # sentence-transformers family and the same 384-dim output (no migration needed — see
@@ -180,6 +180,10 @@ class AnalysisSettings(BaseSettings):
     # already-checked claim to its existing report, nor to a related one in the local-evidence
     # corpus below. See docs/zuula_state.md, ADR 0004.
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    # EMBEDDING_PROVIDER=huggingface (Milestone D7): the same model on Hugging Face's
+    # Inference API. A read token from huggingface.co/settings/tokens.
+    hf_token: str = ""
+    hf_api_url: str = "https://router.huggingface.co/hf-inference"
     # Cosine distance (1 - cosine similarity) below which a new claim is treated as a
     # near-duplicate of an existing report and reused instead of re-run through Tavily+Groq.
     # 0.08 is roughly 92% cosine similarity — tight enough that two different claims about the

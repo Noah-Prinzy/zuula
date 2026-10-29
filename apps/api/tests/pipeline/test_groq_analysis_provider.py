@@ -19,7 +19,7 @@ from app.db import models as m
 from app.providers.ai_text_detector import StubAiTextDetector
 from app.providers.analysis import GroqAnalysisProvider, GroqError, get_analysis_provider
 from app.providers.deepfake_detector import StubDeepfakeDetector
-from app.providers.embedding import StubEmbeddingProvider
+from app.providers.embedding import StubEmbeddingProvider, stub_embedding
 from app.providers.explanation import GroqExplanationGenerator
 from app.providers.metadata_integrity import StubMetadataTamperingDetector
 from app.providers.source_verification import TavilySourceVerifier
@@ -98,7 +98,7 @@ async def _existing_report(
         category="Politics",
         checked_at=datetime.now(UTC),
         processing_seconds=1.0,
-        embedding=StubEmbeddingProvider().embed(text),
+        embedding=stub_embedding(text),
         citations=citations or [],
     )
     db.add(report)
@@ -122,7 +122,7 @@ async def test_a_near_duplicate_claim_reuses_the_existing_report_without_calling
         "false",
         88,
     )
-    assert result.embedding == StubEmbeddingProvider().embed(text)
+    assert result.embedding == stub_embedding(text)
 
 
 @respx.mock
@@ -483,3 +483,21 @@ def test_groq_is_used_when_both_keys_are_set(monkeypatch):
         monkeypatch.delenv("TAVILY_API_KEY", raising=False)
         config.get_analysis_settings.cache_clear()
         _restore_fast_pipeline()
+
+
+@respx.mock
+async def test_an_embedding_outage_still_produces_a_verdict(db):
+    # Milestone D7: the hosted embedding model being down costs the duplicate search, not
+    # the check.
+    from app.providers.embedding import EmbeddingError
+
+    class Down:
+        async def embed(self, text):
+            raise EmbeddingError("HTTP 503")
+
+    respx.post(SEARCH).mock(return_value=httpx.Response(200, json={"results": []}))
+    respx.post(CHAT).mock(return_value=_verdict_response(verdict="false"))
+    result = await _provider(embedder=Down()).analyze(
+        db=db, content_type="text", text="Free electricity for every home.", language="en"
+    )
+    assert result.verdict == "false" and result.embedding is None

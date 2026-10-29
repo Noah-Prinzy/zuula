@@ -10,7 +10,7 @@ import respx
 
 from app.core import config
 from app.db import models as m
-from app.providers.embedding import StubEmbeddingProvider
+from app.providers.embedding import stub_embedding
 from app.providers.vector_db import (
     PgVectorProvider,
     PineconeVectorProvider,
@@ -38,7 +38,7 @@ async def _report(db, *, text: str, tracking_id: str, report_id: str) -> m.FactC
         category="Politics",
         checked_at=datetime.now(UTC),
         processing_seconds=1.0,
-        embedding=StubEmbeddingProvider().embed(text),
+        embedding=stub_embedding(text),
     )
     db.add(report)
     await db.flush()
@@ -52,14 +52,14 @@ async def test_pgvector_finds_the_nearest_report(db):
     text = "Free unlimited internet for every Ugandan starting January 2027."
     report = await _report(db, text=text, tracking_id="ZL-VECA-EF", report_id="fc-2026-8001")
 
-    match = await PgVectorProvider().find_nearest(db, StubEmbeddingProvider().embed(text))
+    match = await PgVectorProvider().find_nearest(db, stub_embedding(text))
     assert match is not None
     assert match.report_id == report.id
     assert match.distance == pytest.approx(0.0, abs=1e-6)
 
 
 async def test_pgvector_returns_none_with_no_embeddings(db):
-    match = await PgVectorProvider().find_nearest(db, StubEmbeddingProvider().embed("anything"))
+    match = await PgVectorProvider().find_nearest(db, stub_embedding("anything"))
     assert match is None
 
 
@@ -76,7 +76,7 @@ async def test_pgvector_find_similar_returns_up_to_limit_closest_first(db):
         tracking_id="ZL-SIMB-EF",
         report_id="fc-2026-8011",
     )
-    query = StubEmbeddingProvider().embed(
+    query = stub_embedding(
         "Free unlimited internet for every Ugandan starting soon."
     )
 
@@ -94,14 +94,14 @@ async def test_pgvector_find_similar_respects_limit(db):
             report_id=f"fc-2026-802{i}",
         )
     matches = await PgVectorProvider().find_similar(
-        db, StubEmbeddingProvider().embed("Claim number 0 about something in Uganda."), limit=1
+        db, stub_embedding("Claim number 0 about something in Uganda."), limit=1
     )
     assert len(matches) == 1
 
 
 async def test_pgvector_find_similar_with_no_embeddings_returns_empty(db):
     matches = await PgVectorProvider().find_similar(
-        db, StubEmbeddingProvider().embed("anything"), limit=3
+        db, stub_embedding("anything"), limit=3
     )
     assert matches == []
 
