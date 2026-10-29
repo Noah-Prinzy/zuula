@@ -17,7 +17,16 @@ Usage:
     python -m scripts.run_eval --concurrency 1 --limit 5 --out /tmp/smoke.jsonl
 
 Needs GROQ_API_KEY and TAVILY_API_KEY set (real keys — this calls the live APIs and spends
-free-tier quota). Prints a summary report to stdout; per-item results go to --out as JSONL.
+free-tier quota); GEMINI_API_KEY, OPENROUTER_API_KEY and EXA_API_KEY too, to measure the engine
+as production runs it (Milestone D3–D5 fallbacks). Prints a summary report to stdout; per-item
+results go to --out as JSONL.
+
+**Blind to the answer key (default, Milestone D9).** Every item is an AFP fact-check, and AFP
+Fact Check is a trusted source since D8, so the search would usually return AFP's own verdict
+on the very claim being scored. Search results from afp.com are dropped before the model sees
+them (`--open` keeps them), so the number measures the engine's judgement from other evidence.
+The item set has no true claims (236 false, 36 likely-false, 6 AI-generated), so accuracy here
+says nothing about false alarms on true claims; the report says so.
 """
 
 import argparse
@@ -43,8 +52,10 @@ EVAL_DATA_DIR = REPO_ROOT / "data" / "fact-checks" / "eval"
 
 sys.path.insert(0, str(API_ROOT))
 
-from app.providers import analysis as analysis_module  # noqa: E402
+from app.providers import explanation as explanation_module  # noqa: E402
+from app.providers import source_verification as search_module  # noqa: E402
 from app.providers.analysis import GroqError, get_analysis_provider  # noqa: E402
+from app.providers.exa import exa_search as _real_exa_search  # noqa: E402
 from app.providers.tavily import TavilySearchError  # noqa: E402
 from app.providers.tavily import tavily_search as _real_tavily_search  # noqa: E402
 from tests.dbutil import TEST_DATABASE_URL as _DEFAULT_TEST_DATABASE_URL  # noqa: E402
@@ -89,10 +100,53 @@ _pacer: _Pacer | None = None
 # ---- retry/backoff instrumentation (wraps the real network calls; changes no provider logic) ----
 
 
+# Domains whose pages are the answer key: AFP publishes every item in the eval set.
+ANSWER_KEY_DOMAINS = ("afp.com",)
+_blind = True
+
+
+def _without_answer_key(results):
+    if not _blind:
+        return results
+    kept = [
+        r
+        for r in results
+        if not any(
+            search_module.domain_of(r.url) == d or search_module.domain_of(r.url).endswith("." + d)
+            for d in ANSWER_KEY_DOMAINS
+        )
+    ]
+    event = _event.get(None)
+    if event is not None:
+        event["answer_key_dropped"] = event.get("answer_key_dropped", 0) + len(results) - len(kept)
+    return kept
+
+
+async def _exa_search_recorded(**kwargs):
+    """Drop-in for source_verification's `exa_search` (Tavily's backup): records that the
+    backup was used and drops the answer key, like the Tavily wrapper below."""
+    event = _event.get(None)
+    if event is not None:
+        event["search"] = "Exa"
+    return _without_answer_key(await _real_exa_search(**kwargs))
+
+
+async def _first_json_recorded(models, messages, *, timeout, what):
+    """Drop-in for explanation's `first_json`: records which model gave the verdict."""
+    data, model = await _real_first_json(models, messages, timeout=timeout, what=what)
+    event = _event.get(None)
+    if event is not None:
+        event["model"] = f"{model.name}: {model.model}"
+    return data, model
+
+
+_real_first_json = explanation_module.first_json
+
+
 async def _tavily_search_with_retry(
     *, api_key, api_url, query, max_results=5, timeout=20.0, include_domains=None
 ):
-    """Drop-in replacement for app.providers.analysis's imported `tavily_search`: retries a
+    """Drop-in replacement for app.providers.source_verification's `tavily_search`: retries a
     transient (429/5xx/network) failure a few times before giving up, so a Tavily hiccup
     doesn't permanently degrade one claim to "no evidence" the way a bare call would. On final
     failure it raises the same TavilySearchError the real function would, so
@@ -112,7 +166,8 @@ async def _tavily_search_with_retry(
             )
             if event is not None:
                 event["tavily_called"] = True
-            return result
+                event.setdefault("search", "Tavily")
+            return _without_answer_key(result)
         except TavilySearchError as exc:
             attempt += 1
             transient = any(code in str(exc) for code in ("429", "500", "502", "503", "504")) or (
@@ -182,16 +237,16 @@ async def analyze_with_retry(provider, *, db, content_type, text, language, max_
 def _instrument_dedupe(provider) -> None:
     """Records whether `analyze()` reused an existing report instead of calling out, without
     changing what it returns."""
-    original = provider._reuse_if_duplicate
+    original = provider._reuse_report
 
-    async def recording(db, embedding):
-        result = await original(db, embedding)
+    async def recording(db, match, embedding):
+        result = await original(db, match, embedding)
         event = _event.get(None)
         if event is not None:
             event["dedupe_hit"] = result is not None
         return result
 
-    provider._reuse_if_duplicate = recording
+    provider._reuse_report = recording
 
 
 # ---- eval data ----
@@ -239,6 +294,10 @@ class ItemResult:
     groq_error: str | None = None
     error: str | None = None
     seconds: float = 0.0
+    model: str | None = None  # which model in the D3 chain gave the verdict
+    search: str | None = None  # Tavily, or Exa when Tavily failed
+    answer_key_dropped: int = 0  # afp.com results removed (blind run)
+    citations: int = 0
 
 
 async def process_item(
@@ -260,6 +319,7 @@ async def process_item(
                 )
             result.predicted_verdict = analysis.verdict
             result.confidence = analysis.confidence
+            result.citations = len(analysis.citations)
         except Exception as exc:  # noqa: BLE001 - one bad item must not abort the run
             result.error = f"{type(exc).__name__}: {exc}"
             logger.warning("Item %s failed: %s", item.idx, result.error)
@@ -269,6 +329,9 @@ async def process_item(
             result.tavily_called = event.get("tavily_called", False)
             result.tavily_error = event.get("tavily_error")
             result.groq_error = event.get("groq_error")
+            result.model = event.get("model")
+            result.search = event.get("search")
+            result.answer_key_dropped = event.get("answer_key_dropped", 0)
             result.seconds = time.monotonic() - started
             _event.reset(token)
         return result
@@ -290,8 +353,17 @@ def build_report(results: list[ItemResult]) -> str:
     correct, scored = _accuracy(results)
     accuracy = correct / scored if scored else 0.0
 
-    lines.append("# P4 verdict-engine eval results (FR-DETECT-03)\n")
+    lines.append("# Verdict-engine eval results (FR-DETECT-03)\n")
     lines.append(f"- Items: {total} (Kenya + Tanzania held-out split)")
+    lines.append(
+        "- Mode: "
+        + ("blind (afp.com results dropped: the answer key)" if _blind else "open (afp.com kept)")
+        + f"; {sum(1 for r in results if r.answer_key_dropped)} items had AFP results removed"
+    )
+    lines.append(
+        "- **Caveat:** every item is false, likely-false or AI-generated; there are no true "
+        "claims, so this cannot show false alarms on true claims."
+    )
     lines.append(f"- Scored (no error): {scored}/{total}")
     lines.append(f"- Errors: {len(errors)}/{total}")
     lines.append(f"- **Overall accuracy: {correct}/{scored} = {accuracy:.1%}**")
@@ -301,7 +373,24 @@ def build_report(results: list[ItemResult]) -> str:
     dedupe_hits = sum(1 for r in results if r.dedupe_hit)
     lines.append(f"- Dedupe hits: {dedupe_hits}/{total}")
     tavily_failures = sum(1 for r in results if r.tavily_error)
-    lines.append(f"- Tavily failures (evidence-free fallback): {tavily_failures}/{total}")
+    lines.append(f"- Tavily failures: {tavily_failures}/{total}")
+    falsish = ("false", "likely-false")
+    caught = sum(
+        1 for r in results if r.predicted_verdict in falsish and r.actual_verdict in falsish
+    )
+    false_family = sum(
+        1 for r in results if r.predicted_verdict is not None and r.actual_verdict in falsish
+    )
+    if false_family:
+        lines.append(
+            f"- **Flagged as false or likely false** (of claims that are): "
+            f"{caught}/{false_family} = {caught / false_family:.1%}"
+        )
+    no_evidence = sum(1 for r in results if r.predicted_verdict is not None and not r.citations)
+    lines.append(f"- Verdicts citing no source: {no_evidence}/{scored}")
+    for label, key in (("Verdict model", "model"), ("Search", "search")):
+        counts = Counter(getattr(r, key) or "(none)" for r in results if r.predicted_verdict)
+        lines.append(f"- {label}: " + ", ".join(f"{k} {v}" for k, v in counts.most_common()))
     lines.append("")
 
     lines.append("## Confusion matrix (rows = actual, columns = predicted)\n")
@@ -402,8 +491,12 @@ async def run(args: argparse.Namespace) -> list[ItemResult]:
     if done:
         print(f"Resuming: {len(done)}/{len(items)} items already scored in {args.out}")
 
+    global _blind
+    _blind = not args.open
     _pacer = _Pacer(args.request_interval)
-    analysis_module.tavily_search = _tavily_search_with_retry
+    search_module.tavily_search = _tavily_search_with_retry
+    search_module.exa_search = _exa_search_recorded
+    explanation_module.first_json = _first_json_recorded
     provider = get_analysis_provider()
     if type(provider).__name__ != "GroqAnalysisProvider":
         raise SystemExit(
@@ -457,6 +550,11 @@ def main() -> int:
             "comfortably under that with no reliance on 429 retries."
         ),
     )
+    parser.add_argument(
+        "--open",
+        action="store_true",
+        help="Keep afp.com search results (the answer key); default is a blind run",
+    )
     parser.add_argument("--database-url", default=EVAL_DB_URL)
     parser.add_argument(
         "--skip-setup",
@@ -491,7 +589,7 @@ def main() -> int:
     print(f"{len(results)} per-item results in {args.out}")
 
     report = build_report(results)
-    args.report_out.write_text(report + "\n")
+    args.report_out.write_text(report + "\n", encoding="utf-8")
     print(f"Wrote report to {args.report_out}")
     print()
     print(report)
