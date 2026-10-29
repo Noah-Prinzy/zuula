@@ -59,7 +59,10 @@ def _no_real_analysis_provider():
     environment may carry real GROQ_API_KEY/TAVILY_API_KEY, which would switch
     get_analysis_provider()/get_transcription_provider() to Groq/Tavily's live APIs. Tests
     that exercise GroqAnalysisProvider mock HTTP with respx and configure their own keys."""
-    saved = {name: os.environ.pop(name, None) for name in ("GROQ_API_KEY", "TAVILY_API_KEY")}
+    saved = {
+        name: os.environ.pop(name, None)
+        for name in ("GROQ_API_KEY", "TAVILY_API_KEY", "GEMINI_API_KEY", "OPENROUTER_API_KEY")
+    }
     get_analysis_settings.cache_clear()
     yield
     for name, value in saved.items():

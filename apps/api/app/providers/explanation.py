@@ -190,54 +190,62 @@ class GroqExplanationGenerator:
                 ),
             },
         ]
-        failures = []
-        for i, model in enumerate(self._models):
-            try:
-                data = await self._complete(model, messages)
-            except GroqError as exc:
-                failures.append(str(exc))
-                if i + 1 < len(self._models):
-                    # WARNING so it shows under plain uvicorn (Render's logs).
-                    logger.warning("%s; trying %s", exc, self._models[i + 1].name)
-                continue
-            if i:
-                logger.warning("The verdict came from fallback %s (%s)", model.name, model.model)
-            return _parse_explanation(data, text, evidence)
-        raise GroqError(" | ".join(failures))
+        data, _ = await first_json(self._models, messages, timeout=self._timeout, what="verdict")
+        return _parse_explanation(data, text, evidence)
 
-    async def _complete(self, model: ChatModel, messages: list[dict]) -> dict:
-        payload = {
-            "model": model.model,
-            "messages": messages,
-            "temperature": 0.2,
-            "response_format": {"type": "json_object"},
-        }
-        headers = {"Authorization": f"Bearer {model.api_key}"}
-        url = f"{model.api_url.rstrip('/')}/chat/completions"
+
+async def first_json(
+    models: tuple[ChatModel, ...], messages: list[dict], *, timeout: float, what: str
+) -> tuple[dict, ChatModel]:
+    """Send `messages` to each model in turn until one answers with a JSON object; returns
+    it and the model that gave it. Raises GroqError (every failure, joined) when none did."""
+    failures = []
+    for i, model in enumerate(models):
         try:
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
-                response = await client.post(url, json=payload, headers=headers)
-        except httpx.HTTPError as exc:
-            raise GroqError(f"{model.name} chat completion failed ({type(exc).__name__}).") from exc
-        if response.status_code >= 400:
-            # The error body (e.g. a 429's "tokens per day" vs. plain per-minute rate-limit
-            # message, with its own suggested retry delay) is otherwise discarded; keeping it
-            # here is diagnostic only — it changes no verdict/scoring logic, just what callers
-            # can see about *why* a call failed.
-            raise GroqError(
-                f"{model.name} chat completion failed with HTTP {response.status_code}: "
-                f"{response.text[:500]}"
-            )
-        try:
-            content = response.json()["choices"][0]["message"]["content"]
-            data = json.loads(_strip_fences(content))
-        except (KeyError, IndexError, TypeError, ValueError) as exc:
-            raise GroqError(
-                f"{model.name} returned something other than the expected JSON."
-            ) from exc
-        if not isinstance(data, dict):
-            raise GroqError(f"{model.name} returned something other than the expected JSON.")
-        return data
+            data = await _complete(model, messages, timeout=timeout)
+        except GroqError as exc:
+            failures.append(str(exc))
+            if i + 1 < len(models):
+                # WARNING so it shows under plain uvicorn (Render's logs).
+                logger.warning("%s; trying %s", exc, models[i + 1].name)
+            continue
+        if i:
+            logger.warning("The %s came from fallback %s (%s)", what, model.name, model.model)
+        return data, model
+    raise GroqError(" | ".join(failures))
+
+
+async def _complete(model: ChatModel, messages: list[dict], *, timeout: float) -> dict:
+    payload = {
+        "model": model.model,
+        "messages": messages,
+        "temperature": 0.2,
+        "response_format": {"type": "json_object"},
+    }
+    headers = {"Authorization": f"Bearer {model.api_key}"}
+    url = f"{model.api_url.rstrip('/')}/chat/completions"
+    try:
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            response = await client.post(url, json=payload, headers=headers)
+    except httpx.HTTPError as exc:
+        raise GroqError(f"{model.name} chat completion failed ({type(exc).__name__}).") from exc
+    if response.status_code >= 400:
+        # The error body (e.g. a 429's "tokens per day" vs. plain per-minute rate-limit
+        # message, with its own suggested retry delay) is otherwise discarded; keeping it
+        # here is diagnostic only — it changes no verdict/scoring logic, just what callers
+        # can see about *why* a call failed.
+        raise GroqError(
+            f"{model.name} chat completion failed with HTTP {response.status_code}: "
+            f"{response.text[:500]}"
+        )
+    try:
+        content = response.json()["choices"][0]["message"]["content"]
+        data = json.loads(_strip_fences(content))
+    except (KeyError, IndexError, TypeError, ValueError) as exc:
+        raise GroqError(f"{model.name} returned something other than the expected JSON.") from exc
+    if not isinstance(data, dict):
+        raise GroqError(f"{model.name} returned something other than the expected JSON.")
+    return data
 
 
 def _strip_fences(content: str) -> str:

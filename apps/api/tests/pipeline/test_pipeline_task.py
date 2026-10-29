@@ -122,7 +122,9 @@ async def test_image_media_is_never_sent_for_transcription(db):
             select(m.FactCheckReport).where(m.FactCheckReport.tracking_id == s.tracking_id)
         )
     ).one()
-    assert report.submitted_text == ""
+    # No transcript: an image is checked on its headline (and, with a vision model, what the
+    # image says; the stub reader reads nothing).
+    assert report.submitted_text == "A photo"
 
 
 class _RecordingAnalysisProvider:
@@ -425,3 +427,68 @@ async def test_a_partial_translation_failure_keeps_the_whole_explanation_in_engl
     )
     out = await _explain_in(analysis, "lg", Flaky(), "ZL-TEST")
     assert (out.title, out.summary) == ("Title", "Summary")
+
+
+# ---- Reading images (Milestone D4) ----
+
+
+def _png() -> bytes:
+    import io
+
+    from PIL import Image
+
+    out = io.BytesIO()
+    Image.new("RGB", (8, 8), "white").save(out, "PNG")
+    return out.getvalue()
+
+
+async def _submit_image(db, headline="Is this true?"):
+    from app.adapters.storage import StubObjectStorage
+
+    s = await _submit(db, {"type": "media", "headline": headline})
+    s.media_object_key, s.media_content_type = f"submissions/{s.tracking_id}/original", "image/png"
+    StubObjectStorage.OBJECTS[s.media_object_key] = (_png(), "image/png")
+    await db.commit()
+    return s
+
+
+async def test_an_image_is_checked_on_what_it_says(db, monkeypatch):
+    from app.providers.image_reader import ImageReading
+
+    class Reader:
+        async def read(self, *, image):
+            assert image[1:4] == b"PNG"
+            return ImageReading(
+                text="FREE electricity for all homes",
+                claim="Uganda announced free electricity for all homes.",
+                description="A blue news graphic.",
+            )
+
+    recording = _Recording()
+    monkeypatch.setattr("app.worker.pipeline.get_image_reader", Reader)
+    monkeypatch.setattr("app.worker.pipeline.get_analysis_provider", lambda: recording)
+    s = await _submit_image(db)
+    await run_pipeline(db, s.tracking_id)
+    checked = recording.seen["text"]
+    assert checked.startswith("Is this true?\n\nUganda announced free electricity")
+    assert "Text in the image: FREE electricity for all homes" in checked
+    report = (
+        await db.scalars(
+            select(m.FactCheckReport).where(m.FactCheckReport.tracking_id == s.tracking_id)
+        )
+    ).one()
+    assert report.content_type == "image" and report.submitted_text == checked
+
+
+async def test_an_unreadable_image_is_checked_on_its_headline(db, monkeypatch):
+    class Down:
+        async def read(self, *, image):
+            raise ConnectionError("every vision model failed")
+
+    recording = _Recording()
+    monkeypatch.setattr("app.worker.pipeline.get_image_reader", Down)
+    monkeypatch.setattr("app.worker.pipeline.get_analysis_provider", lambda: recording)
+    s = await _submit_image(db, headline="Fuel prices doubling?")
+    await run_pipeline(db, s.tracking_id)
+    await db.refresh(s)
+    assert s.status == "completed" and recording.seen["text"] == "Fuel prices doubling?"

@@ -35,6 +35,7 @@ from app.db.ids import next_report_id
 from app.db.models import FactCheckReport, Submission
 from app.providers.analysis import AnalysisResult, get_analysis_provider
 from app.providers.fetch import FetchError, get_article_fetcher
+from app.providers.image_reader import get_image_reader
 from app.providers.language import (
     OTHER,
     PIVOT_LANGUAGE,
@@ -78,6 +79,8 @@ def _report_content_type(s: Submission) -> str:
 def _analysis_text(s: Submission) -> str:
     if s.type == "url":
         return s.url or ""
+    if s.type == "media":
+        return s.headline or ""  # until the media step reads the image or transcript
     return s.content or ""
 
 
@@ -123,6 +126,10 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
                 pivot_text = text
             except FetchError as exc:
                 failure = ("invalid_content", str(exc))
+        elif step == "media" and report_content_type == "image":
+            reading = await _read_image(s)
+            if reading:
+                text = pivot_text = reading
         elif step == "transcribe" and _is_spoken_media(s):
             try:
                 text = await _transcribe_media(s)
@@ -340,6 +347,25 @@ async def _media_bytes(s: Submission) -> bytes | None:
     except Exception:  # noqa: BLE001 — storage down: analyze without the image-only signals
         logger.warning("Couldn't read upload %s for image AI signals", s.tracking_id, exc_info=True)
         return None
+
+
+async def _read_image(s: Submission) -> str:
+    """The `media` step for an image (Milestone D4): its text and the claim it makes, read
+    by a vision model, become what the claims/sources/ai steps check, after the submitter's
+    headline if they gave one. Best effort: if the image can't be read, it's checked on the
+    headline alone ("" means nothing new to check)."""
+    data = await _media_bytes(s)
+    if not data:
+        return ""
+    try:
+        reading = await get_image_reader().read(image=data)
+    except Exception:  # noqa: BLE001 — every vision model failed, or the file isn't an image
+        logger.warning("Couldn't read image %s", s.tracking_id, exc_info=True)
+        return ""
+    found = reading.as_submission_text()
+    if not found:
+        return ""
+    return f"{s.headline}\n\n{found}" if s.headline else found
 
 
 def _is_spoken_media(s: Submission) -> bool:

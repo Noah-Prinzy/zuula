@@ -142,6 +142,10 @@ class AnalysisSettings(BaseSettings):
     openrouter_api_key: str = ""
     openrouter_model: str = "nvidia/nemotron-3.5-super-vl:free,google/gemma-4-31b-it:free"
     openrouter_api_url: str = "https://openrouter.ai/api/v1"
+    # app/providers/image_reader.py (Milestone D4): models that read an uploaded image's text
+    # and claim, tried before the Gemini models (all of which take images). Comma-separated.
+    groq_vision_model: str = "qwen/qwen3.8-27b"
+    openrouter_vision_model: str = "nvidia/nemotron-3.5-super-vl:free"
     # TRANSCRIPTION_PROVIDER: independent of ANALYSIS_PROVIDER so either can be exercised on
     # its own. Same empty/`stub`/`groq` convention as LANGUAGE_PROVIDER.
     transcription_provider: str = ""
