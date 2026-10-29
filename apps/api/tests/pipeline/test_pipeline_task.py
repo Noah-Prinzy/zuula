@@ -326,3 +326,102 @@ async def test_a_language_provider_outage_still_produces_a_report(db, monkeypatc
     report = (await db.scalars(select(m.FactCheckReport).where(m.FactCheckReport.tracking_id == s.tracking_id))).one()
     # The explicit choice needs no detection; the explanation stays in English.
     assert report.language == "Luganda" and "stub-translation" not in report.summary
+
+
+# ---- Timing (Milestone D1) and explanation translation (D2) ----
+
+
+async def test_steps_report_real_time_and_the_verdict_is_reached_in_sources(db, monkeypatch):
+    # With no padding (PIPELINE_STEP_SCALE=0, as in production) a step reports how long its
+    # work took, not its display estimate; the slow analysis shows up under `sources`.
+    import asyncio
+
+    class Slow(_Recording):
+        async def analyze(self, **kwargs):
+            await asyncio.sleep(0.3)
+            return await super().analyze(**kwargs)
+
+    monkeypatch.setattr("app.worker.pipeline.get_analysis_provider", Slow)
+    s = await _submit(db, _INPUT["text"])
+    await run_pipeline(db, s.tracking_id)
+    await db.refresh(s)
+    seconds = {step["step"]: step["seconds"] for step in s.steps}
+    assert seconds["sources"] >= 0.3
+    assert seconds["received"] < 0.3 and seconds["claims"] < 0.3
+
+
+async def test_an_analysis_outage_fails_at_sources(db, monkeypatch):
+    class Down:
+        async def analyze(self, **kwargs):
+            raise ConnectionError("Groq is down")
+
+    monkeypatch.setattr("app.worker.pipeline.get_analysis_provider", Down)
+    s = await _submit(db, _INPUT["text"])
+    await run_pipeline(db, s.tracking_id)
+    await db.refresh(s)
+    assert s.status == "failed"
+    assert [step["step"] for step in s.steps] == ["received", "language", "claims"]
+    assert s.error["error"] == {
+        "code": "server_error",
+        "message": "We couldn't check that. Please try again.",
+    }
+
+
+async def test_the_explanation_is_translated_concurrently_once_per_distinct_string():
+    import asyncio
+
+    from app.providers.analysis import AnalysisResult
+    from app.providers.language import TranslationResult
+    from app.worker.pipeline import TRANSLATE_CONCURRENCY, _explain_in
+
+    class Counting:
+        def __init__(self):
+            self.calls, self.in_flight, self.peak = [], 0, 0
+
+        async def translate(self, *, text, source, target):
+            self.calls.append(text)
+            self.in_flight += 1
+            self.peak = max(self.peak, self.in_flight)
+            await asyncio.sleep(0.01)
+            self.in_flight -= 1
+            return TranslationResult(
+                text=f"lg:{text}", source=source, target=target, translated=True
+            )
+
+    analysis = AnalysisResult(
+        title="Title",
+        verdict="false",
+        confidence=80,
+        summary="Summary",
+        category="politics",
+        what_is_false=[f"false {i}" for i in range(6)] + ["Summary"],
+        what_is_true=["", "true"],
+    )
+    languages = Counting()
+    out = await _explain_in(analysis, "lg", languages, "ZL-TEST")
+    assert sorted(languages.calls) == sorted(
+        {"Title", "Summary", "true", *(f"false {i}" for i in range(6))}
+    )
+    assert 1 < languages.peak <= TRANSLATE_CONCURRENCY
+    assert out.title == "lg:Title" and out.what_is_false[-1] == "lg:Summary"
+    assert out.what_is_true == ["", "lg:true"]
+
+
+async def test_a_partial_translation_failure_keeps_the_whole_explanation_in_english():
+    from app.providers.analysis import AnalysisResult
+    from app.providers.language import TranslationResult
+    from app.worker.pipeline import _explain_in
+
+    class Flaky:
+        async def translate(self, *, text, source, target):
+            if text == "Summary":
+                raise ConnectionError("429")
+            return TranslationResult(
+                text=f"lg:{text}", source=source, target=target, translated=True
+            )
+
+    analysis = AnalysisResult(
+        title="Title", verdict="false", confidence=80, summary="Summary", category="politics"
+    )
+    out = await _explain_in(analysis, "lg", Flaky(), "ZL-TEST")
+    assert (out.title, out.summary) == ("Title", "Summary")

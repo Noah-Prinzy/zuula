@@ -109,10 +109,10 @@ class AnalysisSettings(BaseSettings):
     # explicitly.
     analysis_provider: str = ""
     analysis_provider_region: str = ""
-    # Real step durations (app/worker/pipeline.py's STEP_SECONDS, matching
-    # apps/web/lib/analysis.ts) are scaled by this factor — 1.0 for a realistic demo feel,
-    # near-0 so pipeline tests don't spend ~10 real seconds per text submission.
-    pipeline_step_scale: float = 1.0
+    # Pads each pipeline step that finishes early up to STEP_SECONDS × this factor (the
+    # display times in apps/web/lib/analysis.ts). 0 (production, tests): a check takes as long
+    # as its real work. 1.0 gives local dev with stub providers the demo's paced progress.
+    pipeline_step_scale: float = 0.0
 
     # `groq` provider (app/providers/analysis.py's GroqAnalysisProvider): one chat completion
     # per claim (Groq's free tier) over the claim text and Tavily's search results — no agent

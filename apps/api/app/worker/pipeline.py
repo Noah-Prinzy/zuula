@@ -56,6 +56,9 @@ from app.worker import celery_app
 
 logger = logging.getLogger("zuula.worker.pipeline")
 
+# How many explanation fields are sent to the translator at once (_explain_in).
+TRANSLATE_CONCURRENCY = 4
+
 __all__ = ["PIPELINES", "STEP_SECONDS", "run_pipeline", "run_submission_pipeline"]
 
 # apps/web/lib/submission.ts's SubmissionType ("text"/"url"/"media"/"article", what the form
@@ -98,10 +101,13 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
     # What the claims/sources/ai steps read: the text, in English.
     pivot_text = text
 
+    report_content_type = _report_content_type(s)
+    analysis: AnalysisResult | None = None
+
     for step in PIPELINES[s.type]:
-        seconds = STEP_SECONDS[step]
-        publish_step(r, tracking_id, {"step": step, "status": "active", "seconds": seconds})
-        await asyncio.sleep(seconds * scale)
+        estimate = STEP_SECONDS[step]
+        publish_step(r, tracking_id, {"step": step, "status": "active", "seconds": estimate})
+        step_started = time.monotonic()
 
         if step == "language":
             lang = await _resolve_language(s, text, languages)
@@ -123,6 +129,23 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
                 pivot_text = text
             except TranscriptionError as exc:
                 failure = ("invalid_content", str(exc))
+        elif step == "sources":
+            # The verdict itself (search, then the LLM): every pipeline has this step.
+            media = await _media_bytes(s) if report_content_type == "image" else None
+            try:
+                analysis = await get_analysis_provider().analyze(
+                    db=db,
+                    content_type=report_content_type,
+                    text=pivot_text,
+                    language=PIVOT_LANGUAGE,
+                    media=media,
+                )
+            except Exception:  # noqa: BLE001 — Groq/Tavily down: fail closed, as `_scan_upload`
+                logger.exception("Analysis failed for %s", s.tracking_id)
+                failure = ("server_error", "We couldn't check that. Please try again.")
+        elif step == "report" and analysis is not None:
+            # FR-EXPLAIN-05: the explanation comes back in the submission's own language.
+            analysis = await _explain_in(analysis, lang, languages, tracking_id)
 
         if failure is not None:
             code, message = failure
@@ -132,36 +155,24 @@ async def run_pipeline(db: AsyncSession, tracking_id: str) -> None:
             s.error = {"error": {"code": code, "message": message}}
             await db.commit()
             publish_failed(r, tracking_id, await status_of(db, s))
-            await _reply_on_channel(s, f"We couldn't check that. {message}")
+            reply = (
+                message
+                if message.startswith("We couldn't")
+                else f"We couldn't check that. {message}"
+            )
+            await _reply_on_channel(s, reply)
             return
 
+        # PIPELINE_STEP_SCALE > 0 pads a step that finished early up to its display time
+        # (the demo's feel); production runs at 0, so a check takes as long as its work.
+        await asyncio.sleep(max(0.0, estimate * scale - (time.monotonic() - step_started)))
+        seconds = round(time.monotonic() - step_started, 1)
         # Reassign rather than append: JSONB mutation isn't tracked in place.
         s.steps = [*s.steps, {"step": step, "status": "done", "seconds": seconds}]
         await db.commit()
         publish_step(r, tracking_id, {"step": step, "status": "done", "seconds": seconds})
 
-    report_content_type = _report_content_type(s)
-    media = await _media_bytes(s) if report_content_type == "image" else None
-    try:
-        analysis = await get_analysis_provider().analyze(
-            db=db,
-            content_type=report_content_type,
-            text=pivot_text,
-            language=PIVOT_LANGUAGE,
-            media=media,
-        )
-    except Exception:  # noqa: BLE001 — Groq/Tavily down: fail closed, same as `_scan_upload`
-        logger.exception("Analysis failed for %s", s.tracking_id)
-        message = "We couldn't check that. Please try again."
-        s.status = "failed"
-        s.completed_at = datetime.now(UTC)
-        s.error = {"error": {"code": "server_error", "message": message}}
-        await db.commit()
-        publish_failed(r, tracking_id, await status_of(db, s))
-        await _reply_on_channel(s, message)
-        return
-    # FR-EXPLAIN-05: the explanation comes back in the submission's own language.
-    analysis = await _explain_in(analysis, lang, languages, tracking_id)
+    assert analysis is not None  # every pipeline has a `sources` step
     now = datetime.now(UTC)
     report = FactCheckReport(
         id=await next_report_id(db, now=now),
@@ -256,21 +267,38 @@ async def _explain_in(
     if lang in (PIVOT_LANGUAGE, OTHER):
         return analysis
 
+    # Every distinct string once, all at the same time but at most TRANSLATE_CONCURRENCY in
+    # flight (Sunbird allows about 50 requests a minute): one after another, a Luganda report
+    # took over a minute. All or nothing, so a report is never half translated.
+    fields = [
+        analysis.title,
+        analysis.summary,
+        *analysis.what_is_false,
+        *analysis.what_is_true,
+        *(c.reason for c in analysis.claims),
+    ]
+    distinct = list(dict.fromkeys(v for v in fields if v and v.strip()))
+    limit = asyncio.Semaphore(TRANSLATE_CONCURRENCY)
+
     async def tr(value: str) -> str:
-        if not value:
-            return value
-        result = await languages.translate(text=value, source=PIVOT_LANGUAGE, target=lang)
+        async with limit:
+            result = await languages.translate(text=value, source=PIVOT_LANGUAGE, target=lang)
         return result.text
 
     try:
-        title = await tr(analysis.title)
-        summary = await tr(analysis.summary)
-        what_is_false = [await tr(v) for v in analysis.what_is_false]
-        what_is_true = [await tr(v) for v in analysis.what_is_true]
-        claims = [c.model_copy(update={"reason": await tr(c.reason)}) for c in analysis.claims]
+        translated = dict(zip(distinct, await asyncio.gather(*map(tr, distinct)), strict=True))
     except Exception:  # noqa: BLE001
         logger.warning("Translating %s's explanation failed", tracking_id, exc_info=True)
         return analysis
+
+    def t(value: str) -> str:
+        return translated.get(value, value)
+
+    title = t(analysis.title)
+    summary = t(analysis.summary)
+    what_is_false = [t(v) for v in analysis.what_is_false]
+    what_is_true = [t(v) for v in analysis.what_is_true]
+    claims = [c.model_copy(update={"reason": t(c.reason)}) for c in analysis.claims]
     return dataclasses.replace(
         analysis,
         title=title,

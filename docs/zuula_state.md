@@ -368,6 +368,8 @@ Open question for Noah: clean uploads are kept indefinitely (no rule in the requ
 | D8 | **Trusted sources 12 → 50:** list drafted from the requirements' source types (media, government, fact-checkers, health, NGOs), for Noah to approve before it's seeded. | 50 active sources in production. |
 | D9 | **FR-DETECT-03, measured honestly:** the 278-item held-out set over two days with dedicated keys (Groq's daily token limit), results into Appendix F. | A real accuracy number, whatever it is. |
 
+**D1 and D2 built (29 Oct 2026; 506 API tests pass).** D1: the verdict (search + LLM) now runs inside the `sources` step and the translation back inside `report`, so the progress bar follows the real work; each step reports its real duration; `PIPELINE_STEP_SCALE` now defaults to 0 (no padding; production needs no new variable) and only pads steps that finish early (`.env.example` keeps 1.0 for local dev with stubs). An analysis failure now fails at `sources`. D2: `_explain_in` translates each distinct field once, up to `TRANSLATE_CONCURRENCY = 4` at a time; any failure keeps the whole explanation in English (never half translated), as before.
+
 **Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (options: Brave Search API, Serper or Exa; I will check current free tiers before recommending one); approval of the D8 source list.
 
 **Calls for Noah:** where to start (recommended: A, then B); whether Realtime Broadcast can wait until after launch; which Phase 4 features may be cut; who reviews the translations.
