@@ -129,7 +129,20 @@ reply with ONLY a JSON object, no other text, of this exact shape:
 
 If there is no evidence, or none of it is relevant, say so in "summary" and lean toward
 "unverifiable" rather than guessing. Only use the evidence given; never invent URLs or
-sources."""
+sources.
+
+A claim that a photo, video or recording shows something ("This picture shows ...", "Video
+of ...") is a claim about that media, not only about the event. You cannot see the media
+unless the claim includes "The image shows: ...". Evidence that the event happened does not
+make the media authentic: say "authentic" only if evidence shows this media is what it is
+said to be; "false" or "likely-false" if evidence shows it comes from another time, place or
+event; otherwise "unverifiable".
+
+Say "authentic" only when at least one evidence item supports the claim."""
+
+# A verdict that cites nothing is a guess, however sure the model sounds (D9: 40 false
+# claims were called authentic, most at 85-100 %).
+NO_SOURCE_MAX_CONFIDENCE = 60
 
 
 def _sources_block(evidence: EvidenceBundle) -> str:
@@ -335,12 +348,20 @@ def _parse_explanation(data: dict, text: str, evidence: EvidenceBundle) -> Expla
 
     confidence = data.get("confidence")
     confidence = max(0, min(100, int(confidence))) if isinstance(confidence, int | float) else 50
+    if not citations:
+        confidence = min(confidence, NO_SOURCE_MAX_CONFIDENCE)
+    verdict = _coerce(data.get("verdict"), _VERDICTS, "unverifiable")
+    summary = str(data.get("summary") or "")
+    if verdict == "authentic" and not any(c.stance == "supports" for c in citations):
+        verdict = "unverifiable"
+        confidence = min(confidence, NO_SOURCE_MAX_CONFIDENCE)
+        summary = (summary + " No source found confirms it, so Zuula can't verify it.").strip()
 
     return Explanation(
         title=str(data.get("title") or "Untitled claim")[:200],
-        verdict=_coerce(data.get("verdict"), _VERDICTS, "unverifiable"),
+        verdict=verdict,
         confidence=confidence,
-        summary=str(data.get("summary") or ""),
+        summary=summary,
         category=str(data.get("category") or "General"),
         what_is_false=[str(v) for v in data.get("whatIsFalse") or [] if isinstance(v, str)],
         what_is_true=[str(v) for v in data.get("whatIsTrue") or [] if isinstance(v, str)],

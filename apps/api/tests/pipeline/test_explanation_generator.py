@@ -53,6 +53,67 @@ async def test_generates_an_explanation_with_no_evidence():
     )
     assert explanation.verdict == "false"
     assert explanation.summary == "Unverifiable, no evidence."
+    assert explanation.confidence == 60  # 85, capped: nothing cited
+
+
+_ONE_SOURCE = EvidenceBundle(
+    sources=[TavilyResult(title="A", url="https://a.example", snippet="x", published_at=None)],
+    trusted_domains=[],
+)
+
+
+@respx.mock
+async def test_authentic_with_nothing_cited_becomes_unverifiable():
+    respx.post(CHAT).mock(
+        return_value=_verdict_response(verdict="authentic", confidence=95, summary="It happened.")
+    )
+    explanation = await _generator().generate(
+        content_type="text", text="This picture shows a flooded hospital", evidence=_ONE_SOURCE
+    )
+    assert explanation.verdict == "unverifiable"
+    assert explanation.confidence == 60
+    assert explanation.summary.startswith("It happened. No source found confirms it")
+
+
+@respx.mock
+async def test_authentic_with_only_context_sources_becomes_unverifiable():
+    respx.post(CHAT).mock(
+        return_value=_verdict_response(
+            verdict="authentic",
+            confidence=95,
+            citationStances=[{"index": 0, "stance": "context"}],
+        )
+    )
+    explanation = await _generator().generate(
+        content_type="text", text="claim", evidence=_ONE_SOURCE
+    )
+    assert explanation.verdict == "unverifiable"
+    assert explanation.confidence == 60
+
+
+@respx.mock
+async def test_authentic_with_a_supporting_source_keeps_its_confidence():
+    respx.post(CHAT).mock(
+        return_value=_verdict_response(
+            verdict="authentic",
+            confidence=95,
+            citationStances=[{"index": 0, "stance": "supports"}],
+        )
+    )
+    explanation = await _generator().generate(
+        content_type="text", text="claim", evidence=_ONE_SOURCE
+    )
+    assert explanation.verdict == "authentic"
+    assert explanation.confidence == 95
+
+
+@respx.mock
+async def test_the_prompt_treats_media_captions_as_claims_about_the_media():
+    route = respx.post(CHAT).mock(return_value=_verdict_response())
+    await _generator().generate(content_type="text", text="claim", evidence=_ONE_SOURCE)
+    system = json.loads(route.calls[0].request.content)["messages"][0]["content"]
+    assert "claim about that media" in system
+    assert 'Say "authentic" only when at least one evidence item supports' in system
 
 
 @respx.mock
