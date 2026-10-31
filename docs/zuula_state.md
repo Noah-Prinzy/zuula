@@ -194,7 +194,7 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 - *Review* screens showed zeros while loading (over 8 s against the remote database), which read as an empty queue; they show a placeholder now (`297a243`).
 - *Sign-in crash* when Chrome autofills a password: the "D" theme shortcut read `event.key` of a keydown that has none (`e481523`).
 
-Still sample data in production (goes with the Milestone E reset): the overview's "Text detection F1 91.4%" and "Deepfake accuracy 83.1%" are seeded `model_evaluations` rows, not a real evaluation; moderation reports, review cases rc-0414–0418, source crawl times and the one accreditation application are seeded too. Noah's Admin account is named "admin" (from sign-up); he can rename it under Account → Profile. The local API runs without auto-reload: restart it after API changes.
+The overview's "Text detection F1" is real since 31 Oct 2026: the seeded 91.4 % / 83.1 % `model_evaluations` rows were deleted and replaced by the D9 run (70.4 %; "Deepfake accuracy" shows 0 % "No evaluation run yet" until one is measured). Still sample data in production (goes with the Milestone E reset): moderation reports, review cases rc-0414–0418, source crawl times and the one accreditation application are seeded too. Noah's Admin account is named "admin" (from sign-up); he can rename it under Account → Profile. The local API runs without auto-reload: restart it after API changes.
 
 **Launch blocker: production holds only sample data.** The production database was seeded with `python -m app.db.seed` *without* `--real`. Audit of 28 Oct 2026 (read-only):
 
@@ -408,7 +408,9 @@ Open question for Noah: clean uploads are kept indefinitely (no rule in the requ
 
 **D9 text-claim set drafted (31 Oct 2026), awaiting Noah's review.** `docs/eval_text_set_d9.md` / `data/fact-checks/eval-text/uganda-text-claims-draft.json`: 82 Ugandan English claims judgeable from text, 40 true (29 checked against a linked report on 31 Oct, 11 hand-curated) and 42 false (30 from AFP Uganda fact-checks where the text itself is false, 12 checked facts with one detail changed). Before running: keep the AFP and hand-curated rows out of the eval DB (they're in the seed corpus) and add a harness switch to turn duplicate reuse off.
 
-**D9 text-claim set run (31 Oct 2026).** Noah approved the set as drafted (now `uganda-text-claims.json`). `run_eval.py --items text` seeds the eval DB with sample data only and turns reuse off; blind run, 0 errors: **54/82 = 65.9 % exact, 70.7 % false ≈ likely false; 33/40 true claims confirmed, 4 false alarms**, 1 false claim called authentic. 16 of 42 false claims came back unverifiable, all citing nothing; verdicts that cite a source are right 58/65 (89.2 %). FR-DETECT-03 not met. Next: search coverage for Ugandan claims, the 4 false alarms, and replacing the seeded `model_evaluations` row. Appendix F.
+**D9 text-claim set run (31 Oct 2026).** Noah approved the set as drafted (now `uganda-text-claims.json`). `run_eval.py --items text` seeds the eval DB with sample data only and turns reuse off; blind run, 0 errors: **54/82 = 65.9 % exact, 70.7 % false ≈ likely false; 33/40 true claims confirmed, 4 false alarms**, 1 false claim called authentic. 16 of 42 false claims came back unverifiable, all citing nothing; verdicts that cite a source are right 58/65 (89.2 %). FR-DETECT-03 not met. Next: search coverage for Ugandan claims and the 4 false alarms. Appendix F.
+
+**D9 closed (31 Oct 2026).** With Noah's approval, production's seeded `model_evaluations` rows (F1 91.4 %, deepfake 83.1 %) were replaced by the D9 result: Admin's "Text detection F1" now reads **70.4 %** (flagging false claims on the text set; accuracy 65.9 % in the note), System health's AI model "Groq gpt-oss-120b (D9 prompt)", evaluated 31 Oct. Deepfake accuracy shows 0 % "No evaluation run yet". Checked by running the API's KPI code read-only against production; the Admin page itself wasn't viewed (the preview session was signed out).
 
 **Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (options: Brave Search API, Serper or Exa; I will check current free tiers before recommending one); approval of the D8 source list.
 
@@ -1354,8 +1356,14 @@ audio, recording), so it's approximate.
 1. ~~**A balanced, text-only set**~~ **Done 31 Oct 2026:** 82 Ugandan claims, 40 true; results above.
 2. ~~**A prompt change for media captions**~~ **Done 31 Oct 2026** (`b9b6707`, `1cfd96e`).
 3. ~~**Lower confidence when nothing is cited**~~ **Done 31 Oct 2026** (capped at 60 %, `b9b6707`).
-4. **Still open: replace the seeded `model_evaluations` row** (F1 91.4 %, deepfake 83.1 %): Admin
-   shows those as if measured.
+4. ~~**Replace the seeded `model_evaluations` row**~~ **Done 31 Oct 2026**, with Noah's
+   approval: production's seeded `eval-f1` (91.4 %) and `eval-deepfake` (83.1 %) rows were
+   deleted and `eval-d9-text-2026-10-31` written: metric `f1`, **70.4**, model
+   "Groq gpt-oss-120b (D9 prompt)". That F1 treats flagging a claim as false or likely
+   false as the detection (on the text set: 25 caught, 4 false alarms, 17 missed;
+   precision 86.2 %, recall 59.5 %); the note gives accuracy 65.9 %. Deepfake accuracy now
+   shows 0 % "No evaluation run yet" (the API's fallback); nothing has measured it. The
+   seed script still writes the sample rows for local and test databases.
 
 ### After the prompt fix (31 Oct 2026, `b9b6707`)
 
