@@ -27,6 +27,11 @@ on the very claim being scored. Search results from afp.com are dropped before t
 them (`--open` keeps them), so the number measures the engine's judgement from other evidence.
 The item set has no true claims (236 false, 36 likely-false, 6 AI-generated), so accuracy here
 says nothing about false alarms on true claims; the report says so.
+
+**The text-claim set (`--items text`, D9).** 82 Ugandan claims judgeable from text, 40 true and
+42 false, approved by Noah on 31 Oct 2026 (docs/eval_text_set_d9.md). Its AFP and hand-curated
+rows are in the real seed data, so this set seeds the eval database with sample data only, and
+turns duplicate reuse off so near-identical claims can't copy each other's verdict.
 """
 
 import argparse
@@ -49,6 +54,8 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 API_ROOT = SCRIPTS_DIR.parent
 REPO_ROOT = API_ROOT.parents[1]
 EVAL_DATA_DIR = REPO_ROOT / "data" / "fact-checks" / "eval"
+TEXT_SET_DIR = REPO_ROOT / "data" / "fact-checks" / "eval-text"
+ITEM_SETS = {"afp": EVAL_DATA_DIR, "text": TEXT_SET_DIR}
 
 sys.path.insert(0, str(API_ROOT))
 
@@ -249,6 +256,15 @@ def _instrument_dedupe(provider) -> None:
     provider._reuse_report = recording
 
 
+def _disable_reuse(provider) -> None:
+    """Every item gets a fresh verdict: no report is reused as a duplicate."""
+
+    async def never(db, match, embedding):
+        return None
+
+    provider._reuse_report = never
+
+
 # ---- eval data ----
 
 
@@ -354,16 +370,18 @@ def build_report(results: list[ItemResult]) -> str:
     accuracy = correct / scored if scored else 0.0
 
     lines.append("# Verdict-engine eval results (FR-DETECT-03)\n")
-    lines.append(f"- Items: {total} (Kenya + Tanzania held-out split)")
+    lines.append(f"- Items: {total}")
     lines.append(
         "- Mode: "
         + ("blind (afp.com results dropped: the answer key)" if _blind else "open (afp.com kept)")
         + f"; {sum(1 for r in results if r.answer_key_dropped)} items had AFP results removed"
     )
-    lines.append(
-        "- **Caveat:** every item is false, likely-false or AI-generated; there are no true "
-        "claims, so this cannot show false alarms on true claims."
-    )
+    true_claims = [r for r in results if r.actual_verdict == "authentic"]
+    if not true_claims:
+        lines.append(
+            "- **Caveat:** every item is false, likely-false or AI-generated; there are no "
+            "true claims, so this cannot show false alarms on true claims."
+        )
     lines.append(f"- Scored (no error): {scored}/{total}")
     lines.append(f"- Errors: {len(errors)}/{total}")
     lines.append(f"- **Overall accuracy: {correct}/{scored} = {accuracy:.1%}**")
@@ -386,6 +404,12 @@ def build_report(results: list[ItemResult]) -> str:
             f"- **Flagged as false or likely false** (of claims that are): "
             f"{caught}/{false_family} = {caught / false_family:.1%}"
         )
+    if true_claims:
+        confirmed = sum(1 for r in true_claims if r.predicted_verdict == "authentic")
+        alarms = sum(1 for r in true_claims if r.predicted_verdict in falsish)
+        n = len(true_claims)
+        lines.append(f"- **True claims confirmed:** {confirmed}/{n} = {confirmed / n:.1%}")
+        lines.append(f"- **False alarms** (true claims called false or likely false): {alarms}/{n}")
     no_evidence = sum(1 for r in results if r.predicted_verdict is not None and not r.citations)
     lines.append(f"- Verdicts citing no source: {no_evidence}/{scored}")
     for label, key in (("Verdict model", "model"), ("Search", "search")):
@@ -457,13 +481,13 @@ def build_report(results: list[ItemResult]) -> str:
 # ---- setup + main ----
 
 
-def setup_database(database_url: str) -> None:
+def setup_database(database_url: str, *, include_real: bool = True) -> None:
     # Mirrors tests/conftest.py's migrated_db_url fixture: recreate/seed each run their own
     # asyncio.run(), and alembic's env.py does the same internally for the upgrade — none of
     # this may run inside an already-running event loop (asyncio.run() refuses to nest).
     asyncio.run(recreate_database(database_url))
     command.upgrade(alembic_config(database_url), "head")
-    asyncio.run(seed_database(database_url, include_real=True))
+    asyncio.run(seed_database(database_url, include_real=include_real))
 
 
 def _load_done(out_path: Path) -> dict[int, ItemResult]:
@@ -482,7 +506,7 @@ def _load_done(out_path: Path) -> dict[int, ItemResult]:
 
 async def run(args: argparse.Namespace) -> list[ItemResult]:
     global _pacer
-    items = load_eval_items(EVAL_DATA_DIR)
+    items = load_eval_items(ITEM_SETS[args.items])
     if args.limit:
         items = items[: args.limit]
 
@@ -503,6 +527,8 @@ async def run(args: argparse.Namespace) -> list[ItemResult]:
             "get_analysis_provider() returned a stub — set GROQ_API_KEY and TAVILY_API_KEY "
             "before running the eval."
         )
+    if args.items == "text":
+        _disable_reuse(provider)
     _instrument_dedupe(provider)
 
     engine = create_async_engine(args.database_url, poolclass=NullPool)
@@ -555,6 +581,12 @@ def main() -> int:
         action="store_true",
         help="Keep afp.com search results (the answer key); default is a blind run",
     )
+    parser.add_argument(
+        "--items",
+        choices=sorted(ITEM_SETS),
+        default="afp",
+        help="afp: the 278 Kenya/Tanzania AFP items; text: the 82-claim balanced Ugandan set",
+    )
     parser.add_argument("--database-url", default=EVAL_DB_URL)
     parser.add_argument(
         "--skip-setup",
@@ -583,7 +615,7 @@ def main() -> int:
 
     if not args.skip_setup:
         print(f"Provisioning eval database at {args.database_url} ...")
-        setup_database(args.database_url)
+        setup_database(args.database_url, include_real=args.items != "text")
 
     results = asyncio.run(run(args))
     print(f"{len(results)} per-item results in {args.out}")

@@ -1,10 +1,12 @@
-# D9 text-claim eval set: draft for review
+# D9 text-claim eval set
 
 **82 Ugandan claims in English: 40 true, 42 false.** Data:
-`data/fact-checks/eval-text/uganda-text-claims-draft.json` (every row `review: pending`).
+`data/fact-checks/eval-text/uganda-text-claims.json` (every row `review: approved`).
+Approved by Noah as drafted on 31 Oct 2026.
 
-Every claim can be judged from text: none describes a photo or video. Strike, fix or relabel rows;
-when it's approved I set `review: approved` and run the blind eval on it.
+Every claim can be judged from text: none describes a photo or video. Blind run on 31 Oct
+2026: 54/82 = 65.9 % exact, 70.7 % counting false and likely false as one; results in
+`docs/zuula_state.md`, Appendix F.
 
 ## How it was built
 

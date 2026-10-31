@@ -50,7 +50,7 @@ Deadline: **30 November 2026**.
 | P1 Frontend | Every page built (Next.js 16 + shadcn/ui) and wired to the API (Phase 2). Sample data only in demo builds; live builds show an error or empty state when the API fails (§8). |
 | P2 API design | Done (FastAPI core API + partner API, webhooks, Celery pipeline). |
 | P3 Backend + database | Done (PostgreSQL + pgvector, auth, weighted CCS, audit log). |
-| P4 AI engine | Built (Groq + Tavily verdict engine, multilingual embeddings, local-evidence RAG, Sunbird, Whisper, local signals). FR-DETECT-03's ≥90% accuracy is **not met** on the AFP set (33.5 %, D9), which can't certify it — see §8 and [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03). |
+| P4 AI engine | Built (Groq + Tavily verdict engine, multilingual embeddings, local-evidence RAG, Sunbird, Whisper, local signals). FR-DETECT-03's ≥90% accuracy is **not met**: 65.9 % exact (70.7 % false ≈ likely false) on the balanced Ugandan text-claim set (D9, 31 Oct 2026); 33.5 % on the AFP set, which can't certify it — see §8 and [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03). |
 | **Phase 1 of the completion plan: Supabase migration** | **Mostly done.** Database live on Supabase, RLS lockdown, Supabase Auth working end to end behind a switch (email sign-up with code, sign-in, Expert/Admin second factor), Brevo email, uptime monitor. Storage and Realtime not migrated yet. |
 | Phase 2: frontend-to-API wiring | **Done (28 Oct).** Submission flow done (28 Oct): the composers post to `POST /submissions` (JSON, or multipart with real upload progress for media; idempotency key per attempt), and the Status page follows the real pipeline over the API's server-sent events, polling the status if the stream drops, then opens the real report. Demo builds keep the simulated flow. **All 8 admin screens wired** (28 Oct; `lib/admin-api.ts`, shared `useAdminData` hook and `Pager`): Overview, Users (server-side search/filters/paging), Moderation, Sources, Broadcasts, Audit log (action filter + paging server-side), Settings, Reports. Actions the API doesn't have yet are hidden live and kept in demo builds: "send to review" and manipulation-signal actions (Moderation), source re-crawl, WhatsApp broadcasts. **Account screens wired** (28 Oct; `lib/account-api.ts`, shared `hooks/use-live-data.ts`): Profile (details, password, two-factor, devices, data export, account erasure), Activity, Notifications (bell + page), API keys, Alerts, and the journalist verification application (feeds Admin → Verifications). With Supabase sign-in, passwords change in Supabase (current password re-checked first) and the email address isn't edited here. Not in the API yet, so local or demo-only: marking a notification unread or deleting it, alert delivery frequency, withdrawing a verification application, and the application's job title / work email / links fields. Erasing an account anonymises the Zuula account but leaves its Supabase login (deleting that needs the service-role key server-side). **Phase 2's wiring is done**, and a signed-in click-through as Admin (28 Oct) checked every admin, account and review screen against production data through the local API; what it fixed is in §8. |
 | Hardening + launch | Not started. |
@@ -233,7 +233,7 @@ Remaining fix, before launch: back up the database, then reset it to real conten
 **Housekeeping**
 - Done 28 Oct 2026: seed and eval data files are read as UTF-8 (`6ca9507`), so all 489 API tests pass on Windows without `PYTHONUTF8`; the unused setup leftovers `apps/web/lib/supabase-api.ts` and `apps/api/scripts/test_supabase_connection.py` were deleted (never committed).
 - Restart the web dev server after any `npm install` that changes Next.js: a server left running across the 16.4.1 upgrade served only 500s (Turbopack "module not found") until it was restarted with `.next/dev` cleared.
-- `scripts/run_eval.py` still writes its report to `apps/api/EVAL_RESULTS.md`; fold new results into Appendix F.
+- `scripts/run_eval.py` still writes its report to `apps/api/EVAL_RESULTS.md` (or `EVAL_TEXT_RESULTS.md` with `--items text`); fold new results into Appendix F.
 
 **Open questions for the supervisor** are listed in [Appendix B](#appendix-b--zuula-web-app) ("Changes from the specification").
 
@@ -407,6 +407,8 @@ Open question for Noah: clean uploads are kept indefinitely (no rule in the requ
 **D9 prompt fix (31 Oct 2026, `b9b6707`).** Media captions read as claims about the media; "authentic" needs a supporting source (else unverifiable); no-source verdicts cap at 60 %. Re-running the 40 claims called authentic: 27 fixed, 13 still authentic with a supporting source (mostly true events with a false photo attached). Overall 34.5 % exact, 42.1 % false ≈ likely false. Then a code rule: no "authentic" for a photo/video caption without an image reading (4 more fixed, 9 authentic left). **Live (31 Oct 2026, `1cfd96e`):** "Video shows flooding in Nairobi, Kenya, this week" on the preview → `fc-2026-0179`, **false, 90 %, 7.3 s**, citing an AFP fact-check on AI-generated Kenyan flood visuals (contradicts) and a BBC flood report (supports the floods, not the video): it judged the video, not the event. The summary calls the clip "AI-generated" and dates the floods "March 2026", stronger than its sources show; worth watching.
 
 **D9 text-claim set drafted (31 Oct 2026), awaiting Noah's review.** `docs/eval_text_set_d9.md` / `data/fact-checks/eval-text/uganda-text-claims-draft.json`: 82 Ugandan English claims judgeable from text, 40 true (29 checked against a linked report on 31 Oct, 11 hand-curated) and 42 false (30 from AFP Uganda fact-checks where the text itself is false, 12 checked facts with one detail changed). Before running: keep the AFP and hand-curated rows out of the eval DB (they're in the seed corpus) and add a harness switch to turn duplicate reuse off.
+
+**D9 text-claim set run (31 Oct 2026).** Noah approved the set as drafted (now `uganda-text-claims.json`). `run_eval.py --items text` seeds the eval DB with sample data only and turns reuse off; blind run, 0 errors: **54/82 = 65.9 % exact, 70.7 % false ≈ likely false; 33/40 true claims confirmed, 4 false alarms**, 1 false claim called authentic. 16 of 42 false claims came back unverifiable, all citing nothing; verdicts that cite a source are right 58/65 (89.2 %). FR-DETECT-03 not met. Next: search coverage for Ugandan claims, the 4 false alarms, and replacing the seeded `model_evaluations` row. Appendix F.
 
 **Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (options: Brave Search API, Serper or Exa; I will check current free tiers before recommending one); approval of the D8 source list.
 
@@ -774,7 +776,7 @@ Repo layout: `apps/web` (this app), `apps/api` (P2–P4), `packages/shared`. `ap
 
 What's between the app today and a fully wired, launch-ready platform:
 
-- **FR-DETECT-03 is not met, and the AFP set can't certify it** (D9, 30 Oct 2026): the blind run of all 278 held-out items with dedicated keys scored 33.5 % exact (40.3 % counting false and likely false as one; 44.4 % on the 169 items judgeable from text). The set has no true claims and 39 % of it is captions of photos or videos the engine never sees. A balanced, checked text-claim set is needed. Details: [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03).
+- **FR-DETECT-03 is not met, and the AFP set can't certify it** (D9, 30 Oct 2026): the blind run of all 278 held-out items with dedicated keys scored 33.5 % exact (40.3 % counting false and likely false as one; 44.4 % on the 169 items judgeable from text). The set has no true claims and 39 % of it is captions of photos or videos the engine never sees. On the balanced, checked Ugandan text-claim set (82 claims, 40 true; 31 Oct 2026) it scored 65.9 % exact, 70.7 % counting false and likely false as one, with 4 false alarms on true claims. Details: [Appendix F](#appendix-f--ai-evaluation-results-fr-detect-03).
 - **Frontend-to-API wiring**: ratings, review, admin and account settings still run on mock data (`lib/mock`) — only fact-checks and auth call the real API so far. This is the largest remaining gap for an end-to-end-real demo.
 - **Role enforcement in the UI**: the API checks roles on its own endpoints, but most screens still only check the browser session's role, not the API. Needs wiring screen-by-screen.
 - **Translation review**: `messages/{lg,ach,nyn,teo}.json` are unreviewed Sunbird AI machine drafts and need native-speaker review before they count as real translations.
@@ -1231,12 +1233,70 @@ When you're done, give me: the API URL, each resource and plan with its monthly 
 
 ## Appendix F — AI evaluation results (FR-DETECT-03)
 
-*`scripts/run_eval.py` writes its report to `apps/api/EVAL_RESULTS.md` (not tracked); the
-results are folded in here. Per-item results: `apps/api/scripts/eval_results.jsonl`.*
+*`scripts/run_eval.py` writes its report to `apps/api/EVAL_RESULTS.md` (AFP set) or
+`apps/api/EVAL_TEXT_RESULTS.md` (text set, `--items text`), neither tracked; the results
+are folded in here. Per-item results: `apps/api/scripts/eval_results.jsonl` and
+`apps/api/scripts/eval_text_results.jsonl`.*
 
-**Headline (D9, run 29–30 Oct 2026): 93/278 = 33.5 % exact; 40.3 % if "false" and
-"likely false" count as one. FR-DETECT-03's ≥ 90 % target is NOT MET, and this item set
-can't certify it either way: read "What this set can and can't show" first.**
+**Headline (D9, balanced text-claim set, run 31 Oct 2026): 54/82 = 65.9 % exact; 70.7 %
+if "false" and "likely false" count as one. 33 of 40 true claims confirmed, 4 false
+alarms. FR-DETECT-03's ≥ 90 % target is NOT MET.** This is the set that can test it; the
+AFP set's 33.5 % (below) can't certify the target either way.
+
+### Balanced text-claim set (31 Oct 2026)
+
+82 Ugandan English claims judgeable from text, approved by Noah on 31 Oct 2026: 40 true
+(29 checked against a linked report, 11 hand-curated) and 42 false (30 from AFP Uganda
+fact-checks where the text itself is false, 12 checked facts with one detail changed).
+Set and method: `docs/eval_text_set_d9.md`, `data/fact-checks/eval-text/uganda-text-claims.json`.
+
+How it was run: the production engine (after the D9 prompt fix and caption rule), blind
+(afp.com results dropped; 10 items had them), on a fresh eval DB seeded with sample data
+only, so the AFP and hand-curated claims weren't there to be matched, and with duplicate
+reuse turned off. 0 errors, 0 search failures; every verdict came from Groq gpt-oss-120b,
+every search from Tavily.
+
+| Slice | Items | Exact | Flagged (false ≈ likely false) | Called authentic | Unverifiable |
+|---|---|---|---|---|---|
+| All | 82 | 65.9 % | 70.7 % | 34 | 19 |
+| True claims | 40 | 82.5 % (33) | — | 33 | 3 |
+| False claims | 42 | 50.0 % (21) | 59.5 % (25) | 1 | 16 |
+| — true, checked against a report | 29 | 25 | 25 | 25 | 1 |
+| — true, hand-curated | 11 | 8 | 8 | 8 | 2 |
+| — false, AFP Uganda | 30 | 14 | 17 | 0 | 13 |
+| — false, one detail changed | 12 | 7 | 8 | 1 | 3 |
+
+| actual \ predicted | authentic | likely-false | false | unverifiable |
+|---|---|---|---|---|
+| authentic | 33 | 4 | 0 | 3 |
+| likely-false | 0 | 0 | 1 | 0 |
+| false | 1 | 3 | 21 | 16 |
+
+What it says:
+
+- **The gap to 90 % is "unverifiable" on false claims.** 16 of 42 false claims (38 %)
+  came back unverifiable, and every one cited no source: the search found nothing usable.
+  Of the 17 verdicts citing nothing, none matched. **Of the 65 citing a source, 58 were
+  right (89.2 %).** Better search coverage for Ugandan claims is where the next points
+  are, not the prompt.
+- **True claims mostly come through (82.5 %), but 4 are false alarms**, each citing
+  sources, at 65–85 %: "At least 30 people died when the Kiteezi landfill collapsed in
+  August 2024", "At least 54 people were killed in the protests after Bobi Wine's arrest
+  in Luuka in November 2020", "Under the Parish Development Model, each parish receives
+  100 million shillings a year", and the 10 July 2026 Karuma contract with Zenitaka. Three
+  are specific figures and one a recent date; a public fact-checker calling these likely
+  false is the mistake to fix first.
+- **One false claim called authentic:** "Peruth Chemutai won Uganda's first ever Olympic
+  gold medal at the Tokyo 2020 Games" (92 %). She won gold in Tokyo, but Uganda's first
+  was John Akii-Bua in 1972. The engine checked the event and missed the changed detail.
+- By category: Education 5/5, Elections 6/7, Politics 19/29, Economy 12/19, Health 5/8,
+  Society 3/5, Technology 3/5, Sport 1/3, Infrastructure 0/1. Groups this small don't
+  support conclusions.
+
+### AFP held-out set (29–30 Oct 2026)
+
+**93/278 = 33.5 % exact; 40.3 % if "false" and "likely false" count as one.** Read
+"What this set can and can't show" first.
 
 ### How it was run
 
@@ -1291,14 +1351,10 @@ audio, recording), so it's approximate.
 
 ### What would make this a real test
 
-1. **A balanced, text-only set**: about 100 claims, half true and half false, ideally
-   Ugandan, each label checked by a person. This is the only honest way to test the 90 %
-   target (and false alarms).
-2. **A prompt change for media captions**: "this photo / video shows X" is a claim about
-   the media; without the media, answer "unverifiable", never "authentic".
-3. **Lower confidence when nothing is cited**, so a verdict without evidence never shows
-   85 %+.
-4. **Replace the seeded `model_evaluations` row** (F1 91.4 %, deepfake 83.1 %): Admin
+1. ~~**A balanced, text-only set**~~ **Done 31 Oct 2026:** 82 Ugandan claims, 40 true; results above.
+2. ~~**A prompt change for media captions**~~ **Done 31 Oct 2026** (`b9b6707`, `1cfd96e`).
+3. ~~**Lower confidence when nothing is cited**~~ **Done 31 Oct 2026** (capped at 60 %, `b9b6707`).
+4. **Still open: replace the seeded `model_evaluations` row** (F1 91.4 %, deepfake 83.1 %): Admin
    shows those as if measured.
 
 ### After the prompt fix (31 Oct 2026, `b9b6707`)
