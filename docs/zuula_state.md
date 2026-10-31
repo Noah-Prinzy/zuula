@@ -402,7 +402,9 @@ Open question for Noah: clean uploads are kept indefinitely (no rule in the requ
 
 **D8 live (29 Oct 2026).** Noah ran `python -m app.db.trusted_sources` against production: "Added 38 trusted source(s); the registry now holds 50." Check on Render: "The Bank of Uganda has cut the Central Bank Rate to 5 percent this month" → `fc-2026-0178`, likely false, 78 %, 6.9 s, citing two Bank of Uganda monetary-policy documents (bou.or.ug) and a World Bank report, all marked **trusted**; both domains are among the 38 new sources.
 
-**D9 measured (30 Oct 2026).** Blind run (afp.com results dropped) of all 278 held-out items, production engine, 0 errors: **93/278 = 33.5 % exact**, 40.3 % with false ≈ likely false, 44.4 % on the 169 text-judgeable items; 45 % unverifiable, 40 called authentic (mostly at 85–100 %). The set has no true claims and 109 items are photo or video captions, so it can't certify the 90 % target either way. Next, for Noah to choose: a balanced, checked text-claim set (~100, half true); a prompt fix so media captions are never "authentic"; capped confidence when nothing is cited; replace the seeded `model_evaluations` row. Full write-up: Appendix F.
+**D9 measured (30 Oct 2026).** Blind run (afp.com results dropped) of all 278 held-out items, production engine, 0 errors: **93/278 = 33.5 % exact**, 40.3 % with false ≈ likely false, 44.4 % on the 169 text-judgeable items; 45 % unverifiable, 40 called authentic (mostly at 85–100 %). The set has no true claims and 109 items are photo or video captions, so it can't certify the 90 % target either way. Next, for Noah to choose: a balanced, checked text-claim set (~100, half true); replace the seeded `model_evaluations` row. Full write-up: Appendix F.
+
+**D9 prompt fix (31 Oct 2026, `b9b6707`).** Media captions read as claims about the media; "authentic" needs a supporting source (else unverifiable); no-source verdicts cap at 60 %. Re-running the 40 claims called authentic: 27 fixed, 13 still authentic with a supporting source (mostly true events with a false photo attached). Overall 34.5 % exact, 42.1 % false ≈ likely false. Not pushed yet.
 
 **Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (options: Brave Search API, Serper or Exa; I will check current free tiers before recommending one); approval of the D8 source list.
 
@@ -1296,6 +1298,22 @@ audio, recording), so it's approximate.
    85 %+.
 4. **Replace the seeded `model_evaluations` row** (F1 91.4 %, deepfake 83.1 %): Admin
    shows those as if measured.
+
+### After the prompt fix (31 Oct 2026, `b9b6707`)
+
+Fixes 2 and 3 above shipped: the prompt reads "this photo / video shows X" as a claim about
+the media; "authentic" needs a source that supports the claim, or the verdict becomes
+"unverifiable"; a verdict citing nothing caps at 60 %. The 40 claims called authentic were
+re-run blind (the other 238 kept):
+
+- **27 of 40 fixed:** 22 now unverifiable, 3 false, 2 likely false. Overall 96/278 =
+  34.5 % exact, 42.1 % counting false and likely false as one (from 33.5 % and 40.3 %).
+- **13 still authentic, each citing a supporting source**, at 80–95 %. Most are events
+  that really happened (Ken Okoth's death, official 2022 results, Turkana drought, West
+  Pokot floods) where AFP's "false" is about the photo or video attached. Four begin
+  "Photo of" or "Video shows", so the model still sometimes treats a caption as a claim
+  about the event. A code rule (no "authentic" for a media caption without an image
+  description) would close that; it isn't in yet.
 
 ### Raw numbers (blind run, 278 items)
 
