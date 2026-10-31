@@ -172,6 +172,53 @@ async def _seed_submissions_and_reports(
     tracking_ids: dict[str, str],
     all_reports: list[FactCheckReportSchema],
 ) -> None:
+    await insert_reports(session, users_by_name, tracking_ids, all_reports)
+
+    # Submissions with no report: the sample "failed" one in Amina's history.
+    report_tids = {r.tracking_id for r in all_reports}
+    submissions = []
+    for s in stub_account.SAMPLE_SUBMISSIONS:
+        if s.tracking_id in report_tids:
+            continue
+        submissions.append(
+            {
+                "tracking_id": s.tracking_id,
+                "user_id": SAMPLE_OWNER,
+                "channel": "web",
+                "type": s.type,
+                "url": s.preview if s.type == "url" else None,
+                "language": "auto",
+                "preview": s.preview,
+                "status": "failed" if s.status == "failed" else "processing",
+                "steps": [],
+                "submitted_at": s.submitted_at,
+                "error": (
+                    {"error": {"code": "unprocessable", "message": "We couldn't fetch that link."}}
+                    if s.status == "failed"
+                    else None
+                ),
+            }
+        )
+    if submissions:
+        await session.execute(insert(m.Submission), submissions)
+
+    # Real reports use a separate "fc-real-*" id namespace, not this "fc-<year>-<n>" sequence
+    # (app.worker.pipeline generates the next one for new submissions) — only SAMPLE_REPORTS'
+    # own numbers belong in it.
+    numbers = [int(r.id.rsplit("-", 1)[1]) for r in SAMPLE_REPORTS]
+    await session.execute(
+        text("SELECT setval('fact_check_report_number_seq', :n)"), {"n": max(numbers)}
+    )
+
+
+async def insert_reports(
+    session: AsyncSession,
+    users_by_name: dict[str, str],
+    tracking_ids: dict[str, str],
+    all_reports: list[FactCheckReportSchema],
+) -> None:
+    """Each report with the completed submission it came from (and its expert annotations).
+    Also used by app/db/reset_real.py to load the real fact-checks into production."""
     owned = {s.tracking_id: s for s in stub_account.SAMPLE_SUBMISSIONS}
     submissions, reports, annotations = [], [], []
 
@@ -236,43 +283,10 @@ async def _seed_submissions_and_reports(
                 }
             )
 
-    # Submissions with no report: the sample "failed" one in Amina's history.
-    report_tids = {r.tracking_id for r in all_reports}
-    for s in stub_account.SAMPLE_SUBMISSIONS:
-        if s.tracking_id in report_tids:
-            continue
-        submissions.append(
-            {
-                "tracking_id": s.tracking_id,
-                "user_id": SAMPLE_OWNER,
-                "channel": "web",
-                "type": s.type,
-                "url": s.preview if s.type == "url" else None,
-                "language": "auto",
-                "preview": s.preview,
-                "status": "failed" if s.status == "failed" else "processing",
-                "steps": [],
-                "submitted_at": s.submitted_at,
-                "error": (
-                    {"error": {"code": "unprocessable", "message": "We couldn't fetch that link."}}
-                    if s.status == "failed"
-                    else None
-                ),
-            }
-        )
-
     await session.execute(insert(m.Submission), submissions)
     await session.execute(insert(m.FactCheckReport), reports)
     if annotations:
         await session.execute(insert(m.ExpertAnnotation), annotations)
-
-    # Real reports use a separate "fc-real-*" id namespace, not this "fc-<year>-<n>" sequence
-    # (app.worker.pipeline generates the next one for new submissions) — only SAMPLE_REPORTS'
-    # own numbers belong in it.
-    numbers = [int(r.id.rsplit("-", 1)[1]) for r in SAMPLE_REPORTS]
-    await session.execute(
-        text("SELECT setval('fact_check_report_number_seq', :n)"), {"n": max(numbers)}
-    )
 
 
 def _host(url: str | None) -> str | None:

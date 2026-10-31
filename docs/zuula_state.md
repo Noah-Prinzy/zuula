@@ -194,9 +194,11 @@ cd apps/web && npm run dev              # http://localhost:3000 — must be 3000
 - *Review* screens showed zeros while loading (over 8 s against the remote database), which read as an empty queue; they show a placeholder now (`297a243`).
 - *Sign-in crash* when Chrome autofills a password: the "D" theme shortcut read `event.key` of a keydown that has none (`e481523`).
 
-The overview's "Text detection F1" is real since 31 Oct 2026: the seeded 91.4 % / 83.1 % `model_evaluations` rows were deleted and replaced by the D9 run (70.4 %; "Deepfake accuracy" shows 0 % "No evaluation run yet" until one is measured). Still sample data in production (goes with the Milestone E reset): moderation reports, review cases rc-0414–0418, source crawl times and the one accreditation application are seeded too. Noah's Admin account is named "admin" (from sign-up); he can rename it under Account → Profile. The local API runs without auto-reload: restart it after API changes.
+The overview's "Text detection F1" is real since 31 Oct 2026: the seeded 91.4 % / 83.1 % `model_evaluations` rows were deleted and replaced by the D9 run (70.4 %; "Deepfake accuracy" shows 0 % "No evaluation run yet" until one is measured). The rest of the sample data (moderation reports, review cases, source crawl times, the accreditation application) went with the Milestone E reset on 31 Oct 2026. Noah's Admin account is named "admin" (from sign-up); he can rename it under Account → Profile. The local API runs without auto-reload: restart it after API changes.
 
-**Launch blocker: production holds only sample data.** The production database was seeded with `python -m app.db.seed` *without* `--real`. Audit of 28 Oct 2026 (read-only):
+**Fixed 31 Oct 2026 (Milestone E): production holds real content only.** With Noah's approval, `python -m app.db.reset_real --apply` (new, `app/db/reset_real.py`) removed the sample data and the 18 test checks (`fc-2026-0162`–`0179`, claims written while testing D3–D9) and loaded the 96 real fact-checks of the seed split (85 AFP, 11 hand-curated; the 278 held-out eval items stay out); then `EMBEDDING_PROVIDER=gemini python -m app.db.backfill_embeddings` embedded all 96. Production now: 3 users (Noah's), 96 reports, 0 ratings, 0 review cases, 50 trusted sources (no crawl history), 1 evaluation row (D9), 10 audit entries (the 28 Oct maintenance). The audit log's append-only trigger was lifted for one delete inside the reset transaction (the 10 fictional entries, whose actor keys blocked deleting the sample accounts) and is enabled again. Backup first: `C:\Users\Noah\zuula-backups\prod-public-2026-10-31-pre-reset.dump` (`pg_dump -n public -Fc`, postgres:17 in Docker; outside the repo). Rehearsed on a restore of that dump before production. Live: the library on the preview lists 96 fact-checks; old sample report ids return 404. The table below is the state before.
+
+**Was the launch blocker: production held only sample data.** The production database was seeded with `python -m app.db.seed` *without* `--real`. Audit of 28 Oct 2026 (read-only):
 
 | What | In production | Notes |
 |---|---|---|
@@ -211,7 +213,7 @@ The overview's "Text detection F1" is real since 31 Oct 2026: the seeded 91.4 % 
 
 **Production's Admin:** after the lock, Noah's Supabase-linked account **noahprinzy@gmail.com** (`usr_41ed27efa0095765`) was made Admin directly in the database (audited `user.role_change`, 28 Oct 2026). It's the only active Admin; further role changes go through Admin → Users. As an Admin it needs the second sign-in step, so signing in to Supabase mode needs Redis and the worker running for the code email.
 
-Remaining fix, before launch: back up the database, then reset it to real content only (no sample users, ratings or reports; AFP + Uganda fact-checks and trusted sources loaded). The seed script needs a real-content-only mode for that, since `--real` still adds the fictional set. Supabase's free plan has no backups, so take a `pg_dump` first.
+Done 31 Oct 2026 (above). Supabase's free plan has no backups: take a `pg_dump` before any further bulk change.
 
 **Before Supabase sign-in can be the production default**
 - Google and Facebook providers (Google Cloud and Meta apps; redirect URI `https://xskkttjlgkanopzivfpy.supabase.co/auth/v1/callback`).
@@ -411,6 +413,8 @@ Open question for Noah: clean uploads are kept indefinitely (no rule in the requ
 **D9 text-claim set run (31 Oct 2026).** Noah approved the set as drafted (now `uganda-text-claims.json`). `run_eval.py --items text` seeds the eval DB with sample data only and turns reuse off; blind run, 0 errors: **54/82 = 65.9 % exact, 70.7 % false ≈ likely false; 33/40 true claims confirmed, 4 false alarms**, 1 false claim called authentic. 16 of 42 false claims came back unverifiable, all citing nothing; verdicts that cite a source are right 58/65 (89.2 %). FR-DETECT-03 not met. Next: search coverage for Ugandan claims and the 4 false alarms. Appendix F.
 
 **D9 closed (31 Oct 2026).** With Noah's approval, production's seeded `model_evaluations` rows (F1 91.4 %, deepfake 83.1 %) were replaced by the D9 result: Admin's "Text detection F1" now reads **70.4 %** (flagging false claims on the text set; accuracy 65.9 % in the note), System health's AI model "Groq gpt-oss-120b (D9 prompt)", evaluated 31 Oct. Deepfake accuracy shows 0 % "No evaluation run yet". Checked by running the API's KPI code read-only against production; the Admin page itself wasn't viewed (the preview session was signed out).
+
+**Milestone E done (31 Oct 2026).** Production reset to real content only: 96 real fact-checks (embedded), Noah's 3 accounts, no sample users, ratings, reports or test checks. `app/db/reset_real.py` (dry run by default; `--apply`; `--drop-report`), 4 tests in `tests/db/test_reset_real.py`, 570 API tests pass. Details in §8. Next: Vercel **Production** can now point at the API (§11 step 8); Milestones F and G.
 
 **Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (options: Brave Search API, Serper or Exa; I will check current free tiers before recommending one); approval of the D8 source list.
 
