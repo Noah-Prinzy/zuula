@@ -23,6 +23,7 @@ to justify the extra cost.
 
 import json
 import logging
+import re
 from dataclasses import dataclass
 
 import httpx
@@ -143,6 +144,20 @@ Say "authentic" only when at least one evidence item supports the claim."""
 # A verdict that cites nothing is a guess, however sure the model sounds (D9: 40 false
 # claims were called authentic, most at 85-100 %).
 NO_SOURCE_MAX_CONFIDENCE = 60
+
+# "Photo of ...", "Video shows ...", "this picture showing ...": a claim about media the
+# engine hasn't seen unless an image reading ("The image shows: ...") came with it. The
+# prompt says so, but in the D9 re-run 4 of the 13 remaining "authentic" misses were captions.
+_MEDIA_CAPTION = re.compile(
+    r"\b(photo|photograph|picture|image|video|footage|clip|recording)s?\s+"
+    r"(of|shows?|showing|shot|taken|from)\b",
+    re.IGNORECASE,
+)
+_IMAGE_READING = "The image shows:"
+
+
+def _unseen_media_caption(text: str) -> bool:
+    return bool(_MEDIA_CAPTION.search(text)) and _IMAGE_READING not in text
 
 
 def _sources_block(evidence: EvidenceBundle) -> str:
@@ -356,6 +371,13 @@ def _parse_explanation(data: dict, text: str, evidence: EvidenceBundle) -> Expla
         verdict = "unverifiable"
         confidence = min(confidence, NO_SOURCE_MAX_CONFIDENCE)
         summary = (summary + " No source found confirms it, so Zuula can't verify it.").strip()
+    elif verdict == "authentic" and _unseen_media_caption(text):
+        verdict = "unverifiable"
+        confidence = min(confidence, NO_SOURCE_MAX_CONFIDENCE)
+        summary = (
+            summary + " Zuula hasn't seen the photo or video itself, so it can't confirm that it"
+            " shows what is claimed."
+        ).strip()
 
     return Explanation(
         title=str(data.get("title") or "Untitled claim")[:200],

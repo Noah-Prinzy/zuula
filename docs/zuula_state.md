@@ -404,7 +404,7 @@ Open question for Noah: clean uploads are kept indefinitely (no rule in the requ
 
 **D9 measured (30 Oct 2026).** Blind run (afp.com results dropped) of all 278 held-out items, production engine, 0 errors: **93/278 = 33.5 % exact**, 40.3 % with false ≈ likely false, 44.4 % on the 169 text-judgeable items; 45 % unverifiable, 40 called authentic (mostly at 85–100 %). The set has no true claims and 109 items are photo or video captions, so it can't certify the 90 % target either way. Next, for Noah to choose: a balanced, checked text-claim set (~100, half true); replace the seeded `model_evaluations` row. Full write-up: Appendix F.
 
-**D9 prompt fix (31 Oct 2026, `b9b6707`).** Media captions read as claims about the media; "authentic" needs a supporting source (else unverifiable); no-source verdicts cap at 60 %. Re-running the 40 claims called authentic: 27 fixed, 13 still authentic with a supporting source (mostly true events with a false photo attached). Overall 34.5 % exact, 42.1 % false ≈ likely false. Not pushed yet.
+**D9 prompt fix (31 Oct 2026, `b9b6707`).** Media captions read as claims about the media; "authentic" needs a supporting source (else unverifiable); no-source verdicts cap at 60 %. Re-running the 40 claims called authentic: 27 fixed, 13 still authentic with a supporting source (mostly true events with a false photo attached). Overall 34.5 % exact, 42.1 % false ≈ likely false. Then a code rule: no "authentic" for a photo/video caption without an image reading (4 more fixed, 9 authentic left). Not pushed yet.
 
 **Needs from Noah** (keys entered by Noah only): a Gemini API key (Google AI Studio, free) for D3/D4; an OpenRouter key (free) for D3; a Hugging Face token (read) for D7; the choice of second search provider for D5 (options: Brave Search API, Serper or Exa; I will check current free tiers before recommending one); approval of the D8 source list.
 
@@ -1312,8 +1312,13 @@ re-run blind (the other 238 kept):
   that really happened (Ken Okoth's death, official 2022 results, Turkana drought, West
   Pokot floods) where AFP's "false" is about the photo or video attached. Four begin
   "Photo of" or "Video shows", so the model still sometimes treats a caption as a claim
-  about the event. A code rule (no "authentic" for a media caption without an image
-  description) would close that; it isn't in yet.
+  about the event.
+- **Caption rule added (31 Oct 2026):** the verdict parser now refuses "authentic" for a
+  photo or video caption ("Photo of", "Video shows", ...) unless an image reading came with
+  it, and says why in the summary. It's deterministic on the model's answer, so applied to
+  the re-run: those 4 become unverifiable, **9 authentic left**, all events that happened.
+  Accuracy is unchanged (34.5 %): unverifiable still doesn't match AFP's "false", but it no
+  longer tells a reader a miscaptioned photo is genuine.
 
 ### Raw numbers (blind run, 278 items)
 

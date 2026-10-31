@@ -107,6 +107,45 @@ async def test_authentic_with_a_supporting_source_keeps_its_confidence():
     assert explanation.confidence == 95
 
 
+def _supported_authentic() -> httpx.Response:
+    return _verdict_response(
+        verdict="authentic",
+        confidence=92,
+        summary="The floods happened.",
+        citationStances=[{"index": 0, "stance": "supports"}],
+    )
+
+
+@pytest.mark.parametrize(
+    "text",
+    ["Photo of Kenyans queuing for food", "Video shows flooding in Nairobi", "Photos of the drought"],
+)
+@respx.mock
+async def test_an_unseen_media_caption_is_never_authentic(text):
+    respx.post(CHAT).mock(return_value=_supported_authentic())
+    explanation = await _generator().generate(content_type="text", text=text, evidence=_ONE_SOURCE)
+    assert explanation.verdict == "unverifiable"
+    assert explanation.confidence == 60
+    assert "hasn't seen the photo or video" in explanation.summary
+
+
+@respx.mock
+async def test_a_media_caption_with_an_image_reading_can_be_authentic():
+    respx.post(CHAT).mock(return_value=_supported_authentic())
+    text = "Photo of floods in West Pokot\n\nThe image shows: a flooded road with a bus"
+    explanation = await _generator().generate(content_type="image", text=text, evidence=_ONE_SOURCE)
+    assert explanation.verdict == "authentic"
+    assert explanation.confidence == 92
+
+
+@respx.mock
+async def test_a_claim_merely_mentioning_a_video_isnt_a_caption():
+    respx.post(CHAT).mock(return_value=_supported_authentic())
+    text = "The ministry released a video statement on the floods"
+    explanation = await _generator().generate(content_type="text", text=text, evidence=_ONE_SOURCE)
+    assert explanation.verdict == "authentic"
+
+
 @respx.mock
 async def test_the_prompt_treats_media_captions_as_claims_about_the_media():
     route = respx.post(CHAT).mock(return_value=_verdict_response())
